@@ -1,0 +1,58 @@
+/**app.wxss**/
+.container {
+  overflow: hidden;
+  font-size: 16px;
+  color: #333;
+  background-color: #f2f2f2;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, 
+        "Droid Sans","wenquanyi micro hei","Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+}
+.imgRadio {
+  position: relative;
+}
+.imgRadio:before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
+}
+.imgRadio.rect:before {
+  padding-top: 100%;
+}
+.imgRadio > image,
+.bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.imgRadio > image {
+  width: 100%;
+  height: 100%;
+}
+
+
+.flex-row {
+  display: flex;
+  flex-direction: column;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row > .shrink,
+.flex-col > .shrink {
+  flex-shrink: 0;
+}
+.flex-row > .grow,
+.flex-col > .grow {
+  flex-grow: 1;
+}
+
+page, view, scroll-view {
+  box-sizing:border-box;
+}
+
+scroll-view {
+  height: 100%;
+}

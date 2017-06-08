@@ -1,0 +1,34 @@
+<!--detail.wxml-->
+<view class="container">
+  <!--<scroll-view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" scroll-y="true" bindscrolltolower="loadMore">-->
+    <view class="banner">
+        <swiper>
+            <swiper-item class="imgRadio">
+                <image src="http://sum.kdcer.com{{detail.PictureUrl}}"></image>
+            </swiper-item>
+        </swiper>
+        <view class="title">
+            <text class="backToIndex" bindtap="backToIndex"></text>
+            <text>{{detail.Title}}</text>
+            <text class="isOld">{{!detail.IsTheme?'(已结束)':''}}</text>
+        </view>
+    </view>
+    <view class="info" wx:if="{{detail.Content!=''}}">
+        <view>{{detail.Content!=''?'品牌优惠':''}}</view>
+        <view><text>{{detail.BeginTime}} - {{detail.EndTime}}</text></view>
+        <view><text>{{detail.Content}}</text></view>
+    </view>
+    <view class="list">
+        <block wx:for="{{detail.BrandEventIds}}" wx:key="item.Id">
+            <navigator>
+                <view class="item">
+                    <image class="item-img" src="http://sum.kdcer.com{{item.BrandId.Logo}}"></image>
+                    <view class="item-name"><text>{{item.Title}}</text></view>
+                    <view class="item-word"><text>{{item.Content}}</text></view>
+                    <view class="item-time"><text>{{item.BeginTime}} ~ {{item.EndTime}}</text></view>
+                </view>
+            </navigator>
+        </block>
+    </view>
+  <!--</scroll-view>-->
+</view>

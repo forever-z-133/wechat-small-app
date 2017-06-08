@@ -1,0 +1,21 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/detail/detail"
+  ],
+  "window":{
+    "navigationBarBackgroundColor": "#FFF",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "青浦奥莱优惠资讯",
+    "backgroundColor": "#eee",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+  "networkTimeout": {
+    "request": 120000,
+    "downloadFile": 120000,
+    "connectSocket": 120000,
+    "uploadFile": 120000
+  },
+  "debug": true
+}

@@ -1,0 +1,50 @@
+/**app.wxss**/
+
+.body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.main {
+  flex-grow: 1;
+  height: calc(100% - 50px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transform: translate3d(0, 0, 0);
+}
+
+.flex-tabs {
+  display: flex;
+}
+
+.flex-tabs > .tab {
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 0;
+}
+
+.text {
+  word-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display:-webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

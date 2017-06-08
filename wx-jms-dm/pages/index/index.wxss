@@ -1,0 +1,132 @@
+/**index.wxss**/
+
+.header {
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1), inset 0 1px 1px orange;*/
+}
+
+.top-nav {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  transform: translate3d(0, 0, 0);
+}
+
+.top-nav .tab {
+  position: relative;
+  text-align: center;
+  line-height: 50px;
+  margin: 0 15rpx;
+  transition: color 0.3s;
+  min-width: calc(30% - 30rpx);
+}
+
+.top-nav .tab:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: orange;
+  transition: left 0.3s, width 0.3s;
+}
+
+.top-nav .tab.active {
+  color: orange;
+}
+
+.top-nav .tab.active:after {
+  width: 100%;
+  left: 0;
+}
+
+.products-list-box {
+  height: 100%;
+  background: #f7f7f7;
+  overflow: hidden;
+  display: none;
+}
+
+.products-list-box.active {
+  display: block;
+}
+
+.swiper-wrapper {
+  height: 100%;
+  transform: translate3d(0, 0, 0);
+}
+
+.list {
+  height: 100%;
+  overflow: hidden;
+  padding: 10rpx 10rpx;
+  box-sizing: border-box;
+}
+
+.item {
+  width: 50%;
+  height: 33.333%;
+  box-sizing: border-box;
+  float: left;
+  padding: 10rpx 10rpx;
+}
+
+.one {
+  position: relative;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  padding: 15rpx;
+  flex-direction: column;
+  box-sizing: border-box;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.image {
+  flex-grow: 1;
+  margin: -15rpx -15rpx 10rpx;
+  background-color: #fff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.title {
+  font-size: 1em;
+  height: 2.5em;
+  line-height: 1.25em;
+}
+
+.price {
+  position: absolute;
+  bottom: 2.7em;
+  right: 15rpx;
+  text-shadow: 0 0 3px #fff;
+}
+
+.yuan {
+  font-size: 1.5em;
+  color: red;
+}
+.fen {
+  color: red;
+}
+
+.list:first-child .item:first-child {
+  width: 100%;
+}
+.list:first-child .item:first-child .image {
+  margin: -15rpx -15rpx;
+  background-size: 100% 100%;
+}
+.list:first-child .item:first-child .title {
+  display: none;
+}
+
+.listEnd {
+  font-size: .8em;
+  text-align: center;
+  padding: 20rpx 10rpx;
+  color: #999;
+}

@@ -1,0 +1,9 @@
+{
+  "pages":[
+    "pages/index/index"
+  ],
+  "window":{
+    "navigationBarTitleText": "吉买盛DM",
+    "navigationBarTextStyle":"white"
+  }
+}
