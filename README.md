@@ -13,3 +13,4 @@
 * 完成时间：2017.06.08
 * 难点：纵向轮播组件
 * 文件夹：[wx-jms-dm](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-jms-dm)
+* 无预览。没搞食品证书，所以未上线。
