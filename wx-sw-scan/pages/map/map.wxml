@@ -1,0 +1,7 @@
+<!--logs.wxml-->
+<view class="body">
+  <view class="top-btn">
+    <view class="btn btn-share" open-type="share"></view>
+    <view class="btn btn-scan" catchtap="scan"></view>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+.body {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/area_bg.jpg) center / cover;
+}
+.top-btn {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 20px;
+}
+.btn {
+  position: relative;
+}
+.btn:before {
+  content: "";
+  padding-top: 75%;
+  display: block;
+}
+.btn {
+  width: 23%;
+  margin: 0 1%;
+}
+.btn-share {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/share_btn_sm.png) center / contain no-repeat;
+}
+.btn-scan {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/scan_btn_sm.png) center / contain no-repeat;
+}
