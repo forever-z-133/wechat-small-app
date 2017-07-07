@@ -1,14 +1,14 @@
 {
   "pages":[
-    "pages/detail/detail",
+    "pages/index/index",
     "pages/card/card",
     "pages/map/map",
-    "pages/index/index"
+    "pages/detail/detail"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#000",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "上海购物节点亮地图",
     "navigationBarTextStyle":"white"
   }
 }

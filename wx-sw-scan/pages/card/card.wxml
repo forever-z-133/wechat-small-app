@@ -13,7 +13,7 @@
       <view class="image" style="background-image: url({{info.avatarUrl}})"></view>
       <view class="content">
         <text>昵称：{{info.nickName}}</text>
-        <text>性别：{{(info.gender ? '男' : '女') || '未知'}}</text>
+        <text>性别：{{info.gender === 1 ? '男' : (info.gerder ? '女' : '未知')}}</text>
         <text>地区：{{info.city + ' ' + info.province}}</text>
       </view>
     </view>
@@ -23,12 +23,12 @@
       <navigator url="../detail/detail?tab={{index}}" class="area {{area.active?'active':''}}" data-id="{{index}}"></navigator>
     </block>
   </view>
-  <view class="prize">
-    <view class="bg">{{prize_result}}</view>
+  <view class="prize {{coverHide?'active':''}}">
+    <view class="bg" catchtap="restart">{{prize_result}}</view>
     <canvas canvas-id="prize" catchtouchmove="wipe"></canvas>
-    <view class="cover" style="{{coverHide?'display:none':''}}">
+    <view class="cover">
       <text>{{prize_tip}}</text>
-      <button class="btn-start" catchtap="startPrize">开始抽奖</button>
+      <button wx:if="{{prize_able}}" class="btn-start" catchtap="startPrize">开始抽奖</button>
     </view>
   </view>
   <view catchtap="myPrize" class="btn-prize"></view>

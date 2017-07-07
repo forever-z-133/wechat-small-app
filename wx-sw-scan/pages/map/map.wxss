@@ -2,6 +2,11 @@
   background: url(https://sum.kdcer.com/test/wx-sw-scan/img/area_bg.jpg) center / cover;
 }
 .top-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width:100%;
+  box-sizing:border-box;
   display: flex;
   justify-content: flex-end;
   padding: 5px 15px 0;

@@ -13,7 +13,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: '优惠尽在吉买盛',
+      title: '上海购物节点亮地图',
       path: '/pages/index/index',
       fail: function () {
         wx.showToast({
@@ -27,14 +27,14 @@ Page({
 
   // 播放视频
   videoPlay: function () {
-    this.videoClick = true;
-    if (!this.videoOnce) {
+    // this.videoClick = true;
+    // if (!this.videoOnce) {
       this.video.play();
-      this.videoOnce = true;
+      // this.videoOnce = true;
       this.setData({
         videoPlaying: true,
       });
-    }
+    // }
   },
   videoPlay2: function (e) {
     // if (!this.videoClick) return;
@@ -56,6 +56,6 @@ Page({
           console.log(e)
         }
       })
-    }, 500);
+    }, 400);
   },
 })

@@ -10,5 +10,5 @@
 </view>-->
 <view class="video-box {{videoPlaying?'active':''}}">
   <view class="cover" catchtap="videoPlay"></view>
-  <video id="indexVideo" src="https://sum.kdcer.com/test/wx-sw-scan/media/index.mp4" controls="{{false}}" bindended="videoEnd" objectFit="cover" bindtimeupdate="videoPlay2"></video>
+  <video id="indexVideo" src="https://sum.kdcer.com/test/wx-sw-scan/media/index.mp4" controls="{{false}}" bindended="videoEnd" objectFit="cover" bindtimeupdate="videoPlay2" autoplay="{{autoplay}}" catchtap="videoPlay"></video>
 </view>

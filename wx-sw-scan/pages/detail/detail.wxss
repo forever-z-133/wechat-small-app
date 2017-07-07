@@ -45,14 +45,122 @@ button:after {
 
 
 .main {
-  height: 560rpx;
-  margin: 5% 0;
+  margin: 20rpx 0 0;
+  flex-grow: 1;
+  height: calc(100vh - 100rpx);
+  text-align: center;
+  color: #634338;
 }
 .item {
-  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
 }
-.main image {
-  width: 100%;
-  height: 100%;
+.image {
+  position: relative;
+  margin: 0 5%;
+  padding: 15rpx 0;
+  border-top: 1px dashed red;
+  border-bottom: 1px dashed red;
+  box-sizing: border-box;
+}
+.image image {
+  width: 750rpx;
+  height: 630rpx;
   margin: 0 -5%;
+  display: block;
+}
+.mark {
+	position: absolute;
+	width: 30vw;
+  height: 30vw;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(4);
+  z-index: -1;
+}
+.active .mark {
+  z-index: 1;
+  opacity: 1;
+  transform: scale(1);
+  transition: .15s .4s;
+}
+.mark0 {
+	left: 0;
+	bottom: 10%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/1.png)
+}
+.mark1 {
+	right: 4%;
+	top: 8%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/2.png)
+}
+.mark2 {
+	left: 3%;
+	bottom: 2%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/3.png)
+}
+.mark3 {
+	right: 10%;
+	bottom: 9%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/4.png)
+}
+.mark4 {
+	right: 8%;
+	bottom: 19%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/5.png)
+}
+.mark5 {
+	left: 12%;
+	bottom: 8%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/6.png)
+}
+.mark6 {
+	right: 0;
+	bottom: -2vw;
+  width: 40vw;
+  background-size: 100% auto;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/7.png)
+}
+.mark7 {
+	left: 7%;
+	bottom: 16%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/8.png)
+}
+.mark8 {
+	right: 5%;
+	bottom: 17%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/9.png)
+}
+.mark9 {
+	right: 14%;
+	bottom: 5%;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/mark/10.png)
+}
+.name {
+  margin: 3% 0;
+}
+.slide {
+  overflow: hidden;
+  background: rgba(221,189,157,.7);
+  box-shadow: inset 0 0 30rpx rgba(0,0,0,.1);
+}
+.slide-wrap {
+  height: 100%;
+  min-height: 250rpx;
+  padding: 0 0 2%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+}
+.one image {
+  width: 385rpx;
+  height: 185rpx;
+}
+.page {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

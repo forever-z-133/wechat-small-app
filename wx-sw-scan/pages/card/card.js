@@ -4,89 +4,86 @@ Page({
   data: {
     id: '00000001',
     info: {},
-    maps: [
-      {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }, {
-        name: '浦东新区',
-        active: false
-      }
-    ],
+    maps: [],
+    prize_tip: '',
+    prize_able: false,
     ruleShow: false,
     coverHide: false,
   },
   onLoad: function (options) {
+    // 地图数据
+    this.setData({
+      maps: app.getMaps()
+    });
+
+    // 用户数据
     var that = this
-    app.getUserInfo(function(userInfo){
-      console.log(userInfo)
+    app.getUserInfo(function (userInfo) {
       that.setData({
         info: userInfo
       })
     })
+
+    // 机会数据
+    this.choice();
   },
-  onReady: function() {
-    this.ctx = wx.createCanvasContext('prize');
-    this.ctx.setFillStyle('#cccccc');
-    this.ctx.fillRect(0, 0, 400, 90);
-    // this.ctx.globalCompositeOperation = "destination-out";
-    // this.ctx.lineTo(0, 0);
-    // this.ctx.moveTo(100, 50);
-    // this.ctx.stroke();
-    // console.log(this.ctx);
-    this.ctx.draw();
+  onReady: function () {
+    // this.ctx = wx.createCanvasContext('prize');
+    // this.ctx.setFillStyle('#cccccc');
+    // this.ctx.fillRect(0, 0, 400, 90);
+    // // this.ctx.clearRect(10, 10, 10, 10)
+    // this.ctx.draw();
   },
   onShareAppMessage: function () {
     return {
-      title: '优惠尽在吉买盛',
+      title: '上海购物节点亮地图',
       path: '/pages/index/index',
     }
   },
   /* 查看我的活动奖励 */
   myPrize: function () {
+    var prize = app.getChoice();
+    var tips = '';
+    for (var i in prize) {
+      if (typeof prize[i] == 'string') {
+        tips += prize[i] + '\n';
+      }
+    }
+    if (tips.length > 0) {
+      tips = '恭喜您已获得：\n' + tips;
+    } else {
+      tips = '您还未获得奖品，再接再厉'
+    }
     wx.showModal({
       title: '提示',
-      content: '本活动尚未开始！',
-      success: function (res) {
-        if (res.confirm) { // 确定
-        } else if (res.cancel) { // 取消
-        }
-      }
+      content: tips || '本活动尚未开始！',
     })
   },
   /* 开始刮奖 */
-  startPrize: function(){
+  startPrize: function () {
+    var has = app.getChoice();
+    var rdm = parseInt(Math.random() * 4, 10);
+    var prize = ['礼品1', '礼品2', '礼品3', '礼品4'];
+    var tips = '';
+    var index = 0;
+    for (var i in has) {
+      if (has[i] === true) {index = i}
+    }
+    if (rdm < 1) {
+      tips = '抱歉，您没有中奖';
+      app.setChoice(index, false);
+    } else {
+      tips = '恭喜，您获得了' + prize[rdm];
+      app.setChoice(index, prize[rdm]);
+    }
     this.setData({
-      coverHide: true
+      coverHide: true,
+      prize_result: tips,
     })
   },
-  /* 刮卡 */
-  wipe: function(evt) {
-
+  /* 刮奖完成重新开始 */
+  restart: function() {
+    this.choice();
   },
   /* 扫码 */
   scan: function () {
@@ -94,21 +91,82 @@ Page({
     wx.scanCode({
       onlyFromCamera: true,
       success: function (res) {
-        that.light(2);
-        console.log(res)
+        /* 判断码的正误 */
+        if (!/^\d{1,2}$/.test(res.result)) {
+          wx.showModal({
+            title: '提示',
+            content: '您扫的码好像不对吧',
+          });
+          return false;
+        }
+        var index = parseInt(res.result, 10) - 1;
+        var one = that.data.maps[index];
+        /* 判断重复扫码 */
+        if (one.active) {
+          wx.showModal({
+            title: '提示',
+            content: '此区域您已点亮',
+          });
+          return false;
+        }
+        /* 成功点亮 */
+        that.light(index);
+        /* 判断抽奖 */
+        that.choice();
       }
     });
+  },
+  /* 判断抽奖次数 */
+  choice: function () {
+    var tips = '';
+    var count = 0;
+    var able = false;
+    var has = app.getChoice();
+    /* 判断距离下次抽奖缺少数目 */
+    for (var i in this.data.maps) {
+      if (this.data.maps[i].active) { ++count; }
+    }
+    if (count < 0 || count > 10) {
+      tips = '数据有误，请联系工作人员';
+    } else if (count < 3) {
+      tips += '还差' + (3 - count) + '次扫码获得更多机会！';
+    } else if (count < 6) {
+      if (count == 3 && !has[0]) { app.setChoice(0, true) }
+      tips += '还差' + (6 - count) + '次扫码获得更多机会！';
+    } else if (count < 10) {
+      if (count == 6 && !has[1]) { app.setChoice(1, true) }
+      tips += '还差' + (10 - count) + '次扫码获得更多机会！';
+    } else if (count == 10) {
+      if (!has[2]) { app.setChoice(2, true) }
+      tips += '恭喜您点亮了所有地图！';
+    }
+    /* 判断剩余抽奖次数 */
+    var choice = 0;
+    has = app.getChoice();
+    for (var i in has) {
+      if (has[i] === true) {
+        ++choice;
+      }
+    }
+    tips = '您有' + choice + '次抽奖机会！' + tips;
+    if (choice > 0) able = true;
+    /* 修改提示文字 */
+    this.setData({
+      prize_tip: tips,
+      prize_able: able,
+      coverHide: false,
+    })
   },
   /* 点亮 */
   light: function (index) {
     this.data.maps[index].active = true;
-    console.log(this.data.maps);
+    app.setMaps(index);
     this.setData({
       maps: this.data.maps
     })
   },
   /* 显示规则 */
-  rule: function(){
+  rule: function () {
     this.setData({
       ruleShow: true,
     });
