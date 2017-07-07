@@ -4,23 +4,74 @@
 .top-btn {
   display: flex;
   justify-content: flex-end;
-  padding: 5px 20px;
+  padding: 5px 15px 0;
 }
 .btn {
   position: relative;
 }
 .btn:before {
   content: "";
-  padding-top: 75%;
+  padding-top: 50%;
   display: block;
 }
 .btn {
-  width: 23%;
+  width: 30%;
   margin: 0 1%;
 }
+button:after {
+  display: none;
+}
 .btn-share {
-  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/share_btn_sm.png) center / contain no-repeat;
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/share_btn.png) center / contain no-repeat;
 }
 .btn-scan {
-  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/scan_btn_sm.png) center / contain no-repeat;
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/scan_btn.png) center / contain no-repeat;
+}
+.map-list {
+  position: absolute;
+  top: 18%;
+  bottom: 12%;
+  left: 5%;
+  right: 5%;
+  padding: 10px;
+  overflow: auto;
+}
+.area:before {
+  content: "";
+  padding-top: 56%;
+  display: block;
+}
+.area {
+  width: 42%;
+  margin: .5% 4%;
+  /*background-color: red;*/
+  float: left;
+  background-size: 200% auto;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/area_choose_bg.png);
+  filter: grayscale(1);
+}
+.area.active {
+  filter: grayscale(0);
+}
+.area:nth-child(1) {background-position: 100% 1%}
+.area:nth-child(2) {background-position: 100% 12%}
+.area:nth-child(3) {background-position: 100% 23%}
+.area:nth-child(4) {background-position: 100% 34%}
+.area:nth-child(5) {background-position: 100% 45%}
+.area:nth-child(6) {background-position: 100% 56%}
+.area:nth-child(7) {background-position: 100% 67%}
+.area:nth-child(8) {background-position: 100% 78%}
+.area:nth-child(9) {background-position: 100% 89%}
+.area:nth-child(10) {background-position: 100% 100%}
+
+.btn-view {
+  position: absolute;
+  bottom: 1%;
+  left: 6%;
+  right: 6%;
+  height: 8%;
+  display: block;
+  background-size: cover;
+  background-position: center;
+  background-image: url(https://sum.kdcer.com/test/wx-sw-scan/img/check.png);
 }

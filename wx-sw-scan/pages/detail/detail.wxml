@@ -1,2 +1,26 @@
-<!--pages/detail/detail.wxml-->
-<text>pages/detail/detail.wxml</text>
+<view class="body">
+  <view class="top-btn">
+    <navigator class="btn btn-card" url="../card/card"></navigator>
+    <navigator class="btn btn-map" url="../map/map"></navigator>
+    <view class="btn btn-scan" catchtap="scan"></view>
+    <view class="btn btn-rule" catchtap="rule"></view>
+    <button class="btn btn-share" open-type="share"></button>
+  </view>
+  <swiper class="main">
+    <block wx:for="{{maps}}" wx:for-item="area">
+      <swiper-item class="item">
+        <!--<view class="slide">-->
+          <image src="https://sum.kdcer.com/test/wx-sw-scan/img/pic/{{index+1}}.jpg"></image>
+          <view class="name">{{area.name}}</view>
+        <!--</view>-->
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+<view class="modal rule {{ruleShow?'in':''}}">
+  <view class="bg modal-bg" catchtap="ruleHide"></view>
+  <view class="modal-box">
+    <image src="https://sum.kdcer.com/test/wx-sw-scan/img/rule_2.png"></image>
+    <button class="btn-close" catchtap="ruleHide"></button>
+  </view>
+</view>

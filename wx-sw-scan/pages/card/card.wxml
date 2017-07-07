@@ -1,2 +1,42 @@
-<!--pages/card/card.wxml-->
-<text>pages/card/card.wxml</text>
+<view class="body">
+  <view class="top-btn">
+    <view class="btn btn-rule" catchtap="rule"></view>
+    <button class="btn btn-share" open-type="share"></button>
+    <view class="btn btn-scan" catchtap="scan"></view>
+  </view>
+  <view class="main">
+    <view class="header">
+      <text>国家码：{{info.country}}</text>
+      <text>护照编号：{{id}}</text>
+    </view>
+    <view class="info">
+      <view class="image" style="background-image: url({{info.avatarUrl}})"></view>
+      <view class="content">
+        <text>昵称：{{info.nickName}}</text>
+        <text>性别：{{(info.gender ? '男' : '女') || '未知'}}</text>
+        <text>地区：{{info.city + ' ' + info.province}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="map-list">
+    <block wx:for="{{maps}}" wx:for-item="area">
+      <navigator url="../detail/detail?tab={{index}}" class="area {{area.active?'active':''}}" data-id="{{index}}"></navigator>
+    </block>
+  </view>
+  <view class="prize">
+    <view class="bg">{{prize_result}}</view>
+    <canvas canvas-id="prize" catchtouchmove="wipe"></canvas>
+    <view class="cover" style="{{coverHide?'display:none':''}}">
+      <text>{{prize_tip}}</text>
+      <button class="btn-start" catchtap="startPrize">开始抽奖</button>
+    </view>
+  </view>
+  <view catchtap="myPrize" class="btn-prize"></view>
+</view>
+<view class="modal rule {{ruleShow?'in':''}}">
+  <view class="bg modal-bg" catchtap="ruleHide"></view>
+  <view class="modal-box">
+    <image src="https://sum.kdcer.com/test/wx-sw-scan/img/rule_2.png"></image>
+    <button class="btn-close" catchtap="ruleHide"></button>
+  </view>
+</view>

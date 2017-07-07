@@ -1,7 +1,13 @@
 <!--logs.wxml-->
 <view class="body">
   <view class="top-btn">
-    <view class="btn btn-share" open-type="share"></view>
+    <button class="btn btn-share" open-type="share"></button>
     <view class="btn btn-scan" catchtap="scan"></view>
   </view>
+  <view class="map-list">
+    <block wx:for="{{maps}}" wx:for-item="area">
+      <navigator url="../detail/detail?tab={{index}}" class="area {{area.active?'active':''}}" data-id="{{index}}"></navigator>
+    </block>
+  </view>
+  <navigator url="../card/card" class="btn-view"></navigator>
 </view>

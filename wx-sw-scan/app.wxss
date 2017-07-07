@@ -1,9 +1,60 @@
 /**app.wxss**/
 .body,
-.bg {
+.bg,
+.cover {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 } 
+.body {
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, 
+        "Droid Sans","wenquanyi micro hei","Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+}
+
+.modal {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  opacity: 0;
+  z-index: -1;
+  overflow: hidden;
+  transition: .3s;
+}
+.modal-bg {
+  opacity: 0;
+  transition: opacity .2s;
+  background: rgba(0,0,0,.8);
+}
+.modal.in {
+  opacity: 1;
+  z-index: 10;
+}
+.modal.in .modal-bg {
+  opacity: 1;
+}
+.modal-box {
+  position: relative;
+}
+
+
+.rule .modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+.rule image {
+  width: 576rpx;
+  height: 770rpx;
+}
+.btn-close {
+  position: absolute;
+  bottom: -30rpx;
+  left: 50%;
+  margin-left: -60rpx;
+  width: 120rpx;
+  height: 120rpx;
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/close_btn.png) center / cover;
+}
