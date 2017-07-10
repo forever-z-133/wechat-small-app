@@ -6,7 +6,7 @@
 * 难点：初步摸索
 * 文件夹：[wx-qpal-news](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-qpal-news)
 
-<img src="qrcode/gh_4d3e57eb2e07_258.jpg">
+<img src="qrcode/gh_4d3e57eb2e07_258.jpg" width="300">
 
 -----
 ### 吉买盛DM小程序
@@ -20,4 +20,5 @@
 * 完成时间：2017.07.07
 * 难点：中奖逻辑，canvas 操作
 * 文件夹：[wx-sw-scan](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-sw-scan)
-* 无预览。审核中。暂未上线。
+
+<img src="qrcode/148793464858567676.jpg" width="300">

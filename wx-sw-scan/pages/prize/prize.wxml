@@ -1,0 +1,16 @@
+<view class="body">
+  <view class="top-btn">
+    <navigator class="btn btn-card" url="../card/card"></navigator>
+    <navigator class="btn btn-map" url="../map/map"></navigator>
+  </view>
+  <view class="shake">
+    <text class="h1">摇一摇</text>
+    <text class="h4">摇晃手机进行抽奖！</text>
+  </view>
+  <view class="modal {{prize_word?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box cover">
+      <text class="prize_word">{{prize_word}}</text>
+    </view>
+  </view>
+</view>

@@ -1,6 +1,7 @@
 <!--logs.wxml-->
 <view class="body">
   <view class="top-btn">
+    <view class="btn btn-prize" catchtap="prize"><text>开幕式抽奖</text></view>
     <button class="btn btn-share" open-type="share"></button>
     <view class="btn btn-scan" catchtap="scan"></view>
   </view>

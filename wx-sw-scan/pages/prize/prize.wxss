@@ -1,0 +1,69 @@
+.body {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/card_bg.jpg) center / cover;
+}
+.top-btn {
+  display: flex;
+  justify-content: center;
+  padding: 5px 10px 0;
+}
+.btn {
+  position: relative;
+}
+.btn:before {
+  content: "";
+  padding-top: 50%;
+  display: block;
+}
+.btn {
+  width: 30%;
+  margin: 0 1%;
+}
+button:after {
+  display: none;
+}
+.btn-card {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/card_btn-sm.png) center / contain no-repeat;
+}
+.btn-map {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/map_btn-sm.png) center / contain no-repeat;
+}
+.btn-rule {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/rule_btn_sm.png) center / contain no-repeat;
+}
+.btn-share {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/share_btn_sm.png) center / contain no-repeat;
+}
+.btn-scan {
+  background: url(https://sum.kdcer.com/test/wx-sw-scan/img/scan_btn_sm.png) center / contain no-repeat;
+}
+
+
+.shake {
+  flex: 1;
+  height: calc(100vh - 100rpx);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.result_bg {
+  background: rgba(0,0,0,.7);
+}
+.modal-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.prize_word {
+  color: #fff;
+  opacity: 0;
+  font-size: 2em;
+  transform: scale(0);
+  transition: .5s cubic-bezier(.38,-0.14,.83,1.55);
+}
+.modal.in .prize_word {
+  opacity: 1;
+  transform: scale(1);
+}

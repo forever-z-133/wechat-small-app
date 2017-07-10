@@ -49,6 +49,8 @@ Page({
         tips += prize[i] + '\n';
       }
     }
+    var shakes = wx.getStorageSync('shake_prize');
+    if (shakes) tips += shakes + '\n';
     if (tips.length > 0) {
       tips = '恭喜您已获得：\n' + tips;
     } else {

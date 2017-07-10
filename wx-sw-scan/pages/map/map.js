@@ -52,4 +52,9 @@ Page({
       maps: this.data.maps
     })
   },
+  prize: function(){
+    wx.redirectTo({
+      url: '../prize/prize',
+    })
+  }
 })

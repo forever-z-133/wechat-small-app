@@ -38,7 +38,7 @@
   opacity: 1;
 }
 .modal-box {
-  position: relative;
+  transform: translate3d(0,0,0);
 }
 
 
@@ -60,4 +60,35 @@
   width: 120rpx;
   height: 120rpx;
   background: url(https://sum.kdcer.com/test/wx-sw-scan/img/close_btn.png) center / cover;
+}
+.h1,.h2,.h3,.h4,.h5,.h6 {
+  display: block;
+  font-family: Georgia,"Times New Roman",Times,Kai,"Kaiti SC",KaiTi,BiauKai,FontAwesome,serif;
+  /*font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;*/
+  /*font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;*/
+  /*font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;*/
+  /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+  /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
+  /*font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;*/
+}
+.h1, .h2 {
+  font-weight: bold;
+}
+.h1 {
+  font-size: 2em;
+}
+.h2 {
+  font-size: 1.8em;
+}
+.h3 {
+  font-size: 1.6em;
+}
+.h4 {
+  font-size: 1.4em;
+}
+.h5 {
+  font-size: 1.2em;
+}
+.h6 {
+  font-size: .8em;
 }
