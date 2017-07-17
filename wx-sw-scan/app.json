@@ -1,9 +1,9 @@
 {
   "pages":[
+    "pages/card/card",
     "pages/index/index",
     "pages/map/map",
     "pages/prize/prize",
-    "pages/card/card",
     "pages/detail/detail"
   ],
   "window":{

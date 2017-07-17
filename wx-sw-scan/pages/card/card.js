@@ -11,16 +11,12 @@ Page({
     coverHide: false,
   },
   onLoad: function (options) {
-    // 地图数据
-    this.setData({
-      maps: app.getMaps()
-    });
-
     // 用户数据
     var that = this
     app.getUserInfo(function (userInfo) {
       that.setData({
-        info: userInfo
+        info: userInfo,
+        maps: app.getMaps() // 地图数据
       })
     })
 

@@ -19,7 +19,7 @@
     </view>
   </view>
   <view class="map-list">
-    <block wx:for="{{maps}}" wx:for-item="area">
+    <block wx:for="{{maps}}" wx:for-item="area" wx:key="*this">
       <navigator url="../detail/detail?tab={{index}}" class="area {{area.active?'active':''}}" data-id="{{index}}"></navigator>
     </block>
   </view>
