@@ -29,6 +29,21 @@ Page({
     // this.ctx.fillRect(0, 0, 400, 90);
     // // this.ctx.clearRect(10, 10, 10, 10)
     // this.ctx.draw();
+
+
+    wx.setTopBarText({
+      text: 'hello, world!',
+      success: function () {
+        wx.showToast({
+          title: '成功',
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      complete: function(e){
+        console.log(e)
+      }
+    })
   },
   onShareAppMessage: function () {
     return {

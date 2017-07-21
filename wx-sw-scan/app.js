@@ -83,28 +83,28 @@ if (!wx.getStorageSync('maps')) {
   wx.setStorageSync('maps', maps);
 }
 
-wx.login({
-  success: function (r) {
-    console.log('login:', r);
-    if (r.code) {
-      wx.getUserInfo({
-        withCredentials: true,
-        success: function (res) {
-          console.log('getUserInfo', res);
-          wx.request({
-            url: 'https://sum.kdcer.com/onLogin',
-            data: {
-              code: r.code,
-              encryptedData: res.encryptedData,
-              iv: res.iv,
-              rawData: res.rawData,
-              signature: res.signature
-            }
-          })
-        }
-      })
-    } else {
-      console.log('获取用户登录态失败！' + r.errMsg)
-    }
-  }
-});
+// wx.login({
+//   success: function (r) {
+//     console.log('login:', r);
+//     if (r.code) {
+//       wx.getUserInfo({
+//         withCredentials: true,
+//         success: function (res) {
+//           console.log('getUserInfo', res);
+//           wx.request({
+//             url: 'https://sum.kdcer.com/onLogin',
+//             data: {
+//               code: r.code,
+//               encryptedData: res.encryptedData,
+//               iv: res.iv,
+//               rawData: res.rawData,
+//               signature: res.signature
+//             }
+//           })
+//         }
+//       })
+//     } else {
+//       console.log('获取用户登录态失败！' + r.errMsg)
+//     }
+//   }
+// });
