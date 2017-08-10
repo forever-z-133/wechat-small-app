@@ -4,7 +4,7 @@
     <view class="top-nav">
       <view class="logo" bindtap="DayOrNight"></view>
       <view class="top-btns">
-        <view class="btn btn-rule" bindtap="rule">
+        <view class="btn btn-rule" bindtap="showRule">
           <text>规则</text>
           <image src="/img/btn-mask.png"></image>
         </view>
@@ -32,29 +32,41 @@
     </view>
     <view class="map">
       <view class="body-mask"></view>
-      <swiper class="swiper" circular="{{true}}" current="{{nowSwiper || 0}}" bindchange="swiperChange">
-        <block wx:for="{{[[0,2,3,2,1,5,6,7,8,9],[0],[0]]}}" wx:key="index" wx:for-item="part">
+      <swiper class="swiper" current="{{nowSwiper || 0}}" bindchange="swiperChange">
+        <block wx:for="{{maps}}" wx:key="index" wx:for-item="part">
           <swiper-item class="part">
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
-                <view class="item imgRadio text {{item.active? 'hasSign':''}}">
-                  <image src="" class="item-img"></image>
-                  <text class="item-name">xxx{{item}}</text>
+                <view class="item imgRadio {{item.active? 'hasSign':''}}" bindtap="clickItem">
+                  <image src="/img/main-title.png" class="item-img"></image>
+                  <text class="item-name text">xxx{{item}}</text>
                 </view>
               </block>
-              <view class="modudu-box">
-                <image src="" class="modudu"></image>
-              </view>
             </view>
           </swiper-item>
         </block>
       </swiper>
+      <view class="modudu-box">
+        <image src="" class="modudu"></image>
+      </view>
       <image src="/img/main-title.png" class="main-title"></image>
+      <image src="/img/arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
+      <image src="/img/arrow.png" class="swiper-right {{nowSwiper>1?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
     </view>
     <view class="more-prize">
       <view class="progress">
-        <view class="progress-bar" style="width:{{progress}}%"></view>
-        <view class="progress-text">{{progress}}</view>
+        <view class="progress-bar" style="width:{{25/30*100}}%">
+          <view class="progress-text">{{25}}</view>
+        </view>
+      </view>
+      <view class="more-prize-box">
+        <block wx:for="{{[10, 20, 30]}}" wx:key="*this">
+          <view class="prize-box {{index==0 ? 'open' :''}}" data-index="{{item}}" data-open="{{true}}" bindtap="clickBox">
+            <view class="box"></view>
+            <view class="box-tip"></view>
+            <text class="box-num">{{item}}</text>
+          </view>
+        </block>
       </view>
     </view>
     <view class="bottom">
@@ -62,6 +74,16 @@
         <text>点击查看我的奖励</text>
         <image src="/img/btn-mask.png"></image>
       </navigator>
+    </view>
+  </view>
+  <view class="modal {{rule_show?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box rule-box">
+      <image src="https://sum.kdcer.com/test/img/rule.png" class="rule-img"></image>
+      <view class="btn btn-close-rule" bindtap="closeRule">
+        <text>唔晓得啦</text>
+        <image src="/img/btn-mask.png"></image>
+      </view>
     </view>
   </view>
 </view>
