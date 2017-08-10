@@ -1,11 +1,14 @@
 {
-  "pages":[
-    "pages/index/index"
+  "pages": [
+    "pages/scan/index/index",
+    "pages/index/index",
+    "pages/scan/prize/prize",
+    "pages/shake/index/index"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "上海购物节 - 玩转购物地",
+    "navigationBarTextStyle": "white"
   }
 }

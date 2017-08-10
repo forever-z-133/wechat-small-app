@@ -1,0 +1,35 @@
+
+.body.isNight {
+  color: #7153e2;
+  background: #313179;
+}
+.body.isNight:before {
+  background-position: 0 75%;
+}
+
+.isNight .body-mask {
+  background-position: 0 90%;
+}
+
+.isNight .btn-rule,
+.isNight .btn-share,
+.isNight .btn-scan {
+  background-color: #6e4ac7; 
+}
+
+.isNight .user-box {
+  border-color: #b2acc9;
+}
+.isNight .user-img {
+  border-color: #7253e2;
+}
+.isNight .user-info-box {
+  color: #fff;
+}
+.isNight .user-info-box text {
+  color: #ffa6cd;
+}
+
+.isNight .item-name:before {
+  background: #805fea;
+}

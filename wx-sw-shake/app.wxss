@@ -1,10 +1,73 @@
 /**app.wxss**/
-.container {
-  height: 100%;
+.body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+.header {
+  flex-shrink: 0;
+}
+.main {
+  flex-grow: 1;
+}
+.flex-tabs {
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
-} 
+  text-align: center;
+}
+.flex-tabs > .tab {
+  flex-grow: 1;
+}
+image {
+  width: 100%;
+  height: auto;
+}
+button {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  font: inherit;
+}
+swiper {
+  height: 100%;
+}
+
+.imgRadio {
+  position: relative;
+}
+.imgRadio:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.imgRadio > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.text {
+  word-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    display: box;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+}

@@ -1,0 +1,67 @@
+<!--index.wxml-->
+<view class="body {{isNight ? 'isNight' : 'isDay'}}">
+  <view class="main">
+    <view class="top-nav">
+      <view class="logo" bindtap="DayOrNight"></view>
+      <view class="top-btns">
+        <view class="btn btn-rule" bindtap="rule">
+          <text>规则</text>
+          <image src="/img/btn-mask.png"></image>
+        </view>
+        <view class="btn btn-share" bindtap="share">
+          <text>分享</text>
+          <image src="/img/btn-mask.png"></image>
+        </view>
+        <view class="btn btn-scan" bindtap="scan">
+          <text>扫码</text>
+          <image src="/img/btn-mask.png"></image>
+        </view>
+      </view>
+    </view>
+    <view class="user-box">
+      <view class="user-img-box imgRadio">
+        <image src="{{user.img}}" class="user-img"></image>
+      </view>
+      <view class="user-info-box">
+        <view class="country"><text>国家码：</text>{{'00000000'}}</view>
+        <view class="idcard"><text>护照编码：</text>{{'00000000'}}</view>
+        <view class="username text"><text>姓名：</text>{{'0000000000000000000000'}}</view>
+        <view class="usersex"><text>性别：</text>{{'未知'}}</view>
+        <view class="province"><text>地区：</text>{{'00000000'}}</view>
+      </view>
+    </view>
+    <view class="map">
+      <view class="body-mask"></view>
+      <swiper class="swiper" circular="{{true}}" current="{{nowSwiper || 0}}" bindchange="swiperChange">
+        <block wx:for="{{[[0,2,3,2,1,5,6,7,8,9],[0],[0]]}}" wx:key="index" wx:for-item="part">
+          <swiper-item class="part">
+            <view class="list">
+              <block wx:for="{{part}}" wx:key="index">
+                <view class="item imgRadio text {{item.active? 'hasSign':''}}">
+                  <image src="" class="item-img"></image>
+                  <text class="item-name">xxx{{item}}</text>
+                </view>
+              </block>
+              <view class="modudu-box">
+                <image src="" class="modudu"></image>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+      <image src="/img/main-title.png" class="main-title"></image>
+    </view>
+    <view class="more-prize">
+      <view class="progress">
+        <view class="progress-bar" style="width:{{progress}}%"></view>
+        <view class="progress-text">{{progress}}</view>
+      </view>
+    </view>
+    <view class="bottom">
+      <navigator url="../prize/prize" class="btn btn-prize">
+        <text>点击查看我的奖励</text>
+        <image src="/img/btn-mask.png"></image>
+      </navigator>
+    </view>
+  </view>
+</view>

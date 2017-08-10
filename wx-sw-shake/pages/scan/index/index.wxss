@@ -1,0 +1,198 @@
+/* index.wxss */
+.body {
+  color: #FE667E;
+  background: #f8c6a9;
+  transition: .6s;
+}
+.body:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(transparent, #fbde9b, transparent 40%, transparent 60%, #6e2e78, transparent);
+  background-size: 100% 400%;
+  background-position: 0 0;
+  transition: 1s;
+}
+.main {
+  margin: 20rpx 20rpx;
+}
+
+
+.btn {
+  position: relative;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  padding: .3em 1em .4em;
+  text-shadow: -1px -1px 0 #000;
+  background-position: center;
+  background-size: 100% 100%;
+  border-radius: 15rpx;
+  overflow: hidden;
+  font-size: .9em;
+}
+ .btn > image {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+}
+.logo {
+  width: 120rpx;
+  margin: -10rpx 0;
+  background: pink;
+}
+.top-btns {
+  display: flex;
+}
+.btn-rule,
+.btn-share,
+.btn-scan {
+  margin: 0 0 0 20rpx;
+  background-color: #FE676D;
+  transition: .4s .2s;
+  /* background-image: linear-gradient(#FE676D, #B20F46); */
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 0;
+  padding: 20rpx;
+  border: 2px dashed;
+  border-radius: 10rpx;
+  line-height: 1.5em;
+  font-size: 0.9em;
+  transition: .8s;
+}
+.user-img-box {
+  width: 25%;
+  margin-left: 20rpx;
+  margin-right: 40rpx;
+  flex-shrink: 0;
+}
+.user-img {
+  border: 2px solid #ff677b;
+  border-radius: 100%;
+  transition: .8s;
+  box-sizing: border-box;
+}
+.user-info-box {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  color: #000;
+  transition: .8s;
+}
+.user-info-box text {
+  color: #ff4d6e;
+  transition: .8s;
+}
+.username {
+  padding-right: 6em;
+}
+.usersex {
+  position: absolute;
+  right: 20rpx;
+  bottom: 1.5em;
+}
+
+.map {
+  position: relative;
+  height: 500rpx;
+  padding-bottom: 95rpx;
+  margin: -10rpx auto 20rpx;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 680rpx;
+  margin: 0 auto;
+}
+.item {
+  width: 150rpx;
+  margin: 10rpx 10rpx;
+  border: 2px solid;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.item-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+  text-align: center;
+  padding: .3em .3em;
+  line-height: 1;
+  font-size: .8em;
+}
+.item-name:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FE667E;
+  opacity: .3;
+  transition: .8s;
+}
+.modudu-box {
+  float: left;
+  width: 320rpx;
+  height: 150rpx;
+  margin: 10rpx 10rpx;
+  background: pink;
+}
+
+.body-mask {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(transparent, #f5ac6c 33.3333%, transparent, #2a1346);
+  background-size: 100% 300%;
+  background-position: 0% 0;
+  -webkit-mask-image: url(https://sum.kdcer.com/test/img/bg-mask.png);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-position: 0 0%;
+  -webkit-mask-repeat: no-repeat;
+  transition: .6s;
+}
+.main-title {
+  width: 360rpx;
+  height: 47rpx;
+  display: block;
+  margin: 25rpx auto 0;
+}
+
+.progress {
+  height: 10rpx;
+  background: grey;
+}
+
+.btn-prize {
+  width: 50%;
+  padding: .7em 1em .8em;
+  margin: 20rpx auto 20rpx;
+  background: #ffbb2f;
+}
+
+@import 'night.wxss';
