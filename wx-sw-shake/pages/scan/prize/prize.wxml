@@ -1,2 +1,44 @@
 <!--prize.wxml-->
-<text>prize.wxml</text>
+<view class="body">
+  <view class="bg body-bg"></view>
+  <scroll-view class="main">
+    <view class="list-box">
+      <block wx:for="{{prize}}" wx:key="{{*this}}">
+        <view class="item">
+          <view class="image">
+            <image src="{{item.ImgUrl=='Test'?'':item.ImgUrl}}"></image>
+          </view>
+          <view class="content">
+            <view class="title text">{{item.GiftName||''}}</view>
+            <view class="address text">{{item.Address||''}}</view>
+            <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
+          </view>
+          <view class="other">
+            <view class="btn-red" data-src="{{item.QrCode}}" bindtap="detail">兑换</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="list-box list-grey">
+      <block wx:for="{{prize_grey}}" wx:key="{{*this}}">
+        <view class="item">
+          <view class="image">
+            <image src="{{item.ImgUrl}}"></image>
+          </view>
+          <view class="content">
+            <view class="title text">{{item.GiftName||''}}</view>
+            <view class="address text">{{item.Address||''}}</view>
+            <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
+          </view>
+          <view class="other">
+            <view class="btn-take" wx:if="{{item.Take}}"></view>
+            <view class="btn-time" wx:else>已过期</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+  <view class="no-one" wx:if="{{no_one}}">
+    <text>您还没有奖品，加油哟</text>
+  </view>
+</view>

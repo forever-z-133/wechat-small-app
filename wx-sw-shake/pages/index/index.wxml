@@ -1,7 +1,3 @@
 <!--index.wxml-->
 <view class="body">
-<form bindsubmit="submit" report-submit>
-  <input name="name" />
-  <button form-type="submit">提交</button>
-</form>
 </view>

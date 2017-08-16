@@ -1,14 +1,17 @@
 {
   "pages": [
-    "pages/scan/index/index",
     "pages/index/index",
+    "pages/scan/index/index",
     "pages/scan/prize/prize",
-    "pages/shake/index/index"
+    "pages/shake/index/index",
+    "pages/video/index/index",
+    "pages/before/index",
+    "pages/after/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#000",
+    "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "上海购物节 - 玩转购物地",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   }
 }

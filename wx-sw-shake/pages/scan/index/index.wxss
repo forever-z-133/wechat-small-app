@@ -33,7 +33,7 @@
   text-shadow: -1px -1px 0 #000;
   background-position: center;
   background-size: 100% 100%;
-  border-radius: 15rpx;
+  border-radius: 10rpx;
   overflow: hidden;
   font-size: 0.9em;
 }
@@ -62,11 +62,16 @@
   display: flex;
 }
 
-.btn-rule, .btn-share, .btn-scan {
+.btn-rule, .btn-share {
   margin: 0 0 0 20rpx;
-  background-color: #fe676d;
+  background-color: #ef648c;
   transition: 0.4s 0.2s;
+  box-shadow: 0 0 2px rgba(0,0,0,.2);
   /* background-image: linear-gradient(#FE676D, #B20F46); */
+}
+.btn-rule text, .btn-share text, .btn-scan text {
+  position: relative;
+  z-index: 1;
 }
 
 .user-box {
@@ -211,7 +216,7 @@
   width: 150rpx;
   height: 350rpx; 
   /* margin: -10rpx -10rpx; */
-  background-image: url(https://sum.kdcer.com/test/img/modudu-eat.png);
+  /* background-image: url(https://sum.kdcer.com/test/img/modudu-eat.png); */
   background-size: auto 400%;
   background-position: 50% 0;
   background-repeat: no-repeat;
@@ -238,7 +243,7 @@
   background-image: linear-gradient(transparent, #f5ac6c 33.3333%, transparent, #2a1346);
   background-size: 100% 300%;
   background-position: 0% 0;
-  -webkit-mask-image: url(https://sum.kdcer.com/test/img/bg-mask.png);
+  -webkit-mask-image: url(https://sum.kdcer.com/test/img/scan/bg-mask.png);
   -webkit-mask-size: 100% 100%;
   -webkit-mask-position: 0 0%;
   -webkit-mask-repeat: no-repeat;
@@ -280,7 +285,7 @@
 .box {
   width: 80rpx;
   height: 80rpx;
-  background-image: url(https://sum.kdcer.com/test/img/prize-box.png);
+  /* background-image: url(https://sum.kdcer.com/test/img/prize-box.png); */
   background-size: 200% 100%;
   background-position: 100% 0;
 }
@@ -295,7 +300,7 @@
   margin-left: -40rpx;
   width: 150rpx;
   height: 180rpx;
-  background: url(https://sum.kdcer.com/test/img/box-tip.png);
+  /* background: url(https://sum.kdcer.com/test/img/box-tip.png); */
   background-size: 100% 100%;
   filter: drop-shadow(0 0 5px rgba(0,0,0,.3));
   transform-origin: center bottom;

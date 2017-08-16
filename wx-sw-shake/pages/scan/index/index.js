@@ -1,18 +1,25 @@
 // index.js
+var baseUrl = 'https://sum.kdcer.com/test/img/scan/'
+var app = new getApp();
+
 Page({
   data: {
+    baseUrl: baseUrl,
     isNight: false,
     rule_show: false,
     nowSwiper: 0,
     progress: 0,
     maps: [[0, 2, 3, 2, 1, 5, 6, 7, 8, 9], [0], [0]],
     prize: [[10, false], [20, false], [30, false]],
-    user: {
-      img: '',
-    }
+    user: {},
   },
   onLoad: function (options) {
-
+    app.Login(function(r, user) {
+      console.log(r, user)
+      this.setData({
+        user: user,
+      });
+    }.bind(this))
   },
   onShow: function () {
 

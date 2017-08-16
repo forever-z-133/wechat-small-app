@@ -1,1 +1,67 @@
 /* prize.wxss */
+.body-bg {
+  background-size: 420rpx 360rpx,100% 100%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%, 50% 50%;
+  background-image: url(https://sum.kdcer.com/test/img/scan/bg-logo.png),linear-gradient(30deg, #e6819a, #feeb86);
+}
+.no-one {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.list-box {
+  position: relative;
+  padding: 20rpx 20rpx 0;
+}
+.item {
+  padding: 20rpx  20rpx;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-size: 40rpx;
+}
+.image {
+  flex-shrink: 0;
+  margin-right: 20rpx;
+  border: 1px solid #f02149;
+}
+.image image {
+  width: 120rpx;
+  border-radius: 10rpx;
+  height: 120rpx;
+}
+.content {
+  flex-grow: 1;
+}
+.other {
+  flex-shrink: 0;
+}
+.time {
+  color: #e71f5f;
+}
+.btn-red {
+  width: 180rpx;
+  height: 90rpx;
+  line-height: 70rpx;
+  text-align: center;
+  color: #fff;
+  background: url(https://sum.kdcer.com/test/img/scan/btn-red.png) center / 100% 100%;
+}
+
+.item {
+  background: rgba(255, 255, 255, .6);
+}
+.list-grey .item {
+  background: rgba(255, 255, 255, .2);
+}
+.list-grey .image {
+  border-color: #8f8f8f;
+}

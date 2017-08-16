@@ -1,2 +1,188 @@
-<!--shake.wxml-->
-<text>shake.wxml</text>
+<!--index.wxml-->
+ <view class="body" catchtap="shakeTest"> 
+<!-- <view class="body"> -->
+  <!-- 加载中 -->
+  <view class="page load {{page.load?'':'hidden'}}">
+    <progress percent="{{imgLoadProgress}}" />
+  </view>
+  <!-- 7天倒计时 -->
+  <view class="page before  {{page.before?'':'hidden'}}">
+    <image src="{{before}}" class="bg"></image>
+  </view>
+  <!-- 背景 -->
+  <view class="page bg  {{page.bg?'':'hidden'}}">
+    <image src="{{baseUrl}}bg2.jpg" class="bg"></image>
+  </view>
+  <!-- 欢迎主页面 -->
+  <view class="page welcome {{page.welcome ?'':'hidden'}} {{doorOpen?'open':''}}">
+    <view class="bg door">
+      <view class="door-left">
+        <view class="post" style="background-image: url({{baseUrl}}post.jpg)"></view>
+        <view class="door-bg bg" style="background-image: url({{baseUrl}}door-left.png)"></view>
+        <image src="{{baseUrl}}mark1.png" class="mark"></image>
+        <view class="tip">上海购物节</view>
+      </view>
+      <view class="door-right">
+        <view class="post" style="background-image: url({{baseUrl}}post.jpg)"></view>
+        <view class="door-bg bg" style="background-image: url({{baseUrl}}door-right.png)"></view>
+        <image src="{{baseUrl}}mark2.png" class="mark"></image>
+        <view class="tip">全城摇一摇</view>
+      </view>
+      <view class="bg door-cover" style="background-image: url({{baseUrl}}door.png)"></view>
+    </view>
+    <view class="timecount">
+      <block wx:for="{{timecount}}" wx:key="index">
+        <view class="t{{index}} num{{item}}" style="background-image:url({{baseUrl}}number.png)"></view>
+      </block>
+    </view>
+    <view class="station-name">全城摇一摇<text>shake the whole town</text></view>
+    <view class="btn btn-rule" style="background-image:url({{baseUrl}}rule-btn.png)" bindtap="showRule"></view>
+    <view class="logo" wx:if="{{canStart}}" bindtap="start" style="background-image:url({{baseUrl}}logo.png)"></view>
+  </view>
+  <!-- 规则 -->
+  <view class="modal rule {{page.rule?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="modudu" style="background-image:url({{baseUrl}}modudu2.png)"></view>
+      <view class="tip-box">
+        <image src="{{baseUrl}}rule.png"></image>
+        <view class="btn btn-red" bindtap="closeRule">我晓得啦</view>
+        <text>最终解释权归上海购物节组委会所有的嗷</text>
+      </view>
+    </view>
+  </view>
+  <!-- 开始摇 -->
+  <view class="modal start {{page.start?'in':''}}">
+    <image src="{{imgBaseUrl}}0/0.jpg" class="bg"></image>
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="shake-count">{{beforeShake}}</view>
+      <view class="shake-text">赶紧摇一摇</view>
+      <view class="shake-image">
+        <image src="{{baseUrl}}shake.png"></image>
+      </view>
+    </view>
+  </view>
+  <!-- 结果 -->
+  <view class="page finish  {{page.finish?'':'hidden'}}">
+    <image src="{{baseUrl + 'end.jpg'}}" class="bg"></image>
+    <view class="bg bling" style="background-image: url({{baseUrl}}light.png)"></view>
+  </view>
+  <!-- 火车与烟花 canvas -->
+  <view class="page train {{page.train?'':'hidden'}}">
+    <canvas canvas-id="imgs" class="bg" style="width:100%; height:100%" />
+  </view>
+  <!-- 验证 -->
+  <view class="modal justify {{page.justify?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="modudu">
+        <view class="wrong" style="background-image: url({{baseUrl}}modudu4.png)" wx:if="{{judge_error}}"></view>
+        <view class="right" style="background-image: url({{baseUrl}}modudu5.png)" wx:else>
+          <view class="other" style="background-image: url({{baseUrl}}word-box.png)">
+            <text>答对验证码抽奖啦！</text>
+          </view>
+        </view>
+      </view>
+      <view class="tip-box">
+        <view class="judge-box">
+          <view class="question">
+            <image src="{{code_question}}"></image>
+          </view>
+          <view class="answers">
+            <block wx:for="{{code_answers}}" wx:key="item.name">
+              <image src="{{item.url}}" class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
+            </block>
+          </view>
+        </view>
+        <form bindsubmit="justify" report-submit>
+          <button class="btn btn-red" form-type="submit">确定</button>
+        </form>
+      </view>
+    </view>
+  </view>
+  <!-- 宝箱 -->
+  <view class="modal prize {{page.prize?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box {{prizeOpen?'open':''}}">
+      <form bindsubmit="getPrize" report-submit>
+        <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+        <button form-type="submit">
+          <view class="box" style="background-image: url({{baseUrl}}{{prizeOpen?'box-open.png':'box-close.png'}})" bindtap="getPrize">
+            <view class="finger"></view>
+          </view>
+        </button>
+      </form>>
+    </view>
+  </view>
+  <!-- 中奖 -->
+  <view class="modal good {{page.good?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
+      <view class="tip-box">
+        <image src="{{baseUrl}}good.png"></image>
+        <text>哎哟喂！恭喜您中奖啦！</text>
+        <view class="btn btn-red" bindtap="page_result">去领奖</view>
+      </view>
+    </view>
+  </view>
+  <!-- 中奖2 -->
+  <view class="modal good2 {{page.good2?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
+      <view class="tip-box">
+        <image src="{{baseUrl}}good.png"></image>
+        <text>哎哟喂！恭喜您中奖啦！</text>
+        <navigator url="/pages/scan/prize/prize" class="btn btn-red">去领奖</navigator>
+        <!-- <view class="btn btn-red" bindtap="page_result"></view> -->
+      </view>
+    </view>
+  </view>
+  <!-- 未中奖 -->
+  <view class="modal bad {{page.bad ?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
+      <view class="tip-box">
+        <image src="{{baseUrl}}good.png"></image>
+        <text>大概运道不够好，么中奖。</text>
+        <!-- <view class="btn btn-red">好吧</view> -->
+      </view>
+    </view>
+  </view>
+  <!-- 奖品详情 -->
+  <view class="modal result {{page.result ?'in':''}}">
+    <view class="bg modal-bg"></view>
+    <view class="modal-box">
+      <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
+      <view class="tip-box">
+        <view class="qrcode" style="background-image: url({{prize.QRCode}})">
+          <view class="take" wx:if="{{prize.Take}}" style="background-image: url({{baseUrl}}exchange.png)"></view>
+        </view>
+        <view class="word"><view>奖品名称：</view><text>{{prize.GiftName}}</text></view>
+        <view class="word"><view>领奖时间：</view><text>{{prize.Time}}</text></view>
+        <view class="word"><view>领奖地点：</view><text>{{prize.Address}}</text></view>
+        <view class="btn btn-red">太棒了</view>
+      </view>
+    </view>
+  </view>
+  <!-- 提示页 -->
+  <view class="modal tip {{page.tip?'in':''}}">{{tipText}}</view>
+</view>
+
+
+<view class="resource-load" wx:if="imgCanLoad">
+  <block wx:for="{{imgs}}" wx:key="index">
+    <block wx:for="{{item[0]}}" wx:key="*i" wx:for-item="every" wx:for-index="i">
+      <view class="classname">{{imgBaseUrl + index + '/' + every + item[1]}}</view>
+      <image src="{{imgBaseUrl + index + '/' + every + item[1]}}" data-src="{{item}}" data-index="{{index}}" bindload="imgLoad"></image>
+    </block>
+  </block>
+</view>
+
+<view class="resource-load">
+  <audio src="{{baseUrl}}train.wav" id="train" loop binderror="error"></audio>
+  <audio src="{{baseUrl}}yao.mp3" id="shake" binderror="error"></audio>
+</view>
