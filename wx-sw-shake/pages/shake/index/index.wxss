@@ -8,6 +8,34 @@
 progress {
   width: 50%;
 }
+
+.progress {
+  width: 50%;
+  height: 100rpx;
+  background-size: auto 30rpx;
+  background-position: 0 40rpx;
+  background-repeat: repeat-x;
+  overflow: hidden;
+}
+.progress-bar {
+  position: relative;
+  height: 100%;
+}
+.progress-train {
+  position: absolute;
+  top: 0;
+  right: -50rpx;
+  width: 300rpx;
+  height: 40rpx;
+  background-size: 100% 100%;
+}
+.progress-text {
+  font-size: 30rpx;
+  margin-top:-30rpx;
+  text-align:center;
+}
+
+
 .welcome {
   background: #494b4d;
 }
@@ -106,6 +134,17 @@ progress {
   right: 25%;
   height: 10%;
   background-size: 100% 100%;
+  animation: rule 4s infinite linear;
+}
+@keyframes rule {
+  0% {transform: scale3d(1, 1, 1);}
+  7% {transform: scale3d(1.25, 0.75, 1);}
+  10% {transform: scale3d(0.75, 1.25, 1);}
+  12.5% {transform: scale3d(1.15, 0.85, 1);}
+  16% {transform: scale3d(.95, 1.05, 1);}
+  19% {transform: scale3d(1.05, .95, 1);}
+  25% {transform: scale3d(1, 1, 1);}
+  100% {transform: scale3d(1, 1, 1);}
 }
 .logo {
   position: absolute;
@@ -461,6 +500,10 @@ progress {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
+}
+.bad .tip-box {
+  padding-top: 100rpx;
+  padding-bottom: 100rpx;
 }
 .bad {
   text-align: center;

@@ -3,7 +3,13 @@
 <!-- <view class="body"> -->
   <!-- 加载中 -->
   <view class="page load {{page.load?'':'hidden'}}">
-    <progress percent="{{imgLoadProgress}}" />
+    <view class="progress" style="background-image:url({{baseUrl}}way.png)">
+      <view class="progress-bar" style="width:{{imgLoadProgress}}%">
+        <image src="{{baseUrl}}train.png" class="progress-train"></image>
+      </view>
+      <view class="progress-text">{{imgLoadProgress}}% 加载中</view>
+    </view>
+    <!-- <progress percent="{{imgLoadProgress}}" /> -->
   </view>
   <!-- 7天倒计时 -->
   <view class="page before  {{page.before?'':'hidden'}}">
@@ -147,7 +153,7 @@
       <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
       <view class="tip-box">
         <image src="{{baseUrl}}good.png"></image>
-        <text>大概运道不够好，么中奖。</text>
+        <text>还差那么一丢丢，没中奖。</text>
         <!-- <view class="btn btn-red">好吧</view> -->
       </view>
     </view>
@@ -183,6 +189,7 @@
 </view>
 
 <view class="resource-load">
+  <audio src="{{baseUrl}}bgm.mp3" id="bgm" loop binderror="error"></audio>
   <audio src="{{baseUrl}}train.wav" id="train" loop binderror="error"></audio>
   <audio src="{{baseUrl}}yao.mp3" id="shake" binderror="error"></audio>
 </view>

@@ -64,7 +64,7 @@
 
 .btn-rule, .btn-share {
   margin: 0 0 0 20rpx;
-  background-color: #ef648c;
+  /* background-color: #ef648c; */
   transition: 0.4s 0.2s;
   box-shadow: 0 0 2px rgba(0,0,0,.2);
   /* background-image: linear-gradient(#FE676D, #B20F46); */

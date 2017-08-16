@@ -2,12 +2,14 @@
 var app = getApp();
 
 // 各种标量
-var baseUrl = 'https://sum.kdcer.com/test/img/shake/';
-var imgBaseUrl = 'https://sum.kdcer.com/test/sw_shake/';
+var baseUrl = 'https://cdn.kdcer.com/test/img/shake/';
 var ctx = null;
 var winW = 0, winH = 0;
 var imgTotal = 0;
-var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']]
+// var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake/';
+// var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']];
+var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake2/';
+var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
 var resource = [];
 var startDate = new Date(2017, 8, 9, 20, 0, 0);
 var id = 'ozlgTuNQqLo1xe2QaUdvZt81tsgA';
@@ -81,6 +83,7 @@ var page = Page({
   onShow: function () {
     if (!audio) {
       audio = {
+        bgm: wx.createAudioContext('bgm'),
         train: wx.createAudioContext('train'),
         shake: wx.createAudioContext('shake'),
       }
@@ -130,6 +133,8 @@ var page = Page({
         bg: false,
       }
     })
+
+    // this.data.page.bad = true;
 
     app.Login(function (r1, user) {
       console.log('入口判断', r1);
@@ -186,6 +191,7 @@ var page = Page({
         });
       }
       direct && this.page_welcome();
+      audio.bgm.play();
       // 其他判断在 app.js 中已跳页进行
     }.bind(this));
 
@@ -360,8 +366,11 @@ var page = Page({
     if (!imgs[i]) return;
     this.count = this.count ? ++this.count : 1;
     if (j < imgs[i][0]) {
+      var url = imgBaseUrl;
+      // console.log(url + i + '/' + j + imgs[i][1])
+      // if (j % 2 == 1) { this.load(i, ++j); return; }
       wx.downloadFile({
-        url: imgBaseUrl + i + '/' + j + imgs[i][1],
+        url: url + i + '/' + j + imgs[i][1],
         success: function (res) {
           // console.log(i, j)
           resource[i][j] = res.tempFilePath;
@@ -443,6 +452,7 @@ var page = Page({
         shakeMax = 5;
         tick = smooth(run, 100, true);
         this.startShake();
+        audio.bgm.pause();
         audio.train.play();
       }
     }.bind(this), 1000);
@@ -624,6 +634,7 @@ function run(e) {
 // 绘制一张图片
 function Draw(img, specail) {
   // console.log(img, ctx)
+  if (!img) return;
   if (!ctx) return;
   ctx.clearRect(0, 0, winW, winH);
   if (!specail) {

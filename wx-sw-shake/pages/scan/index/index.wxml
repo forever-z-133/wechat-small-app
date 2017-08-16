@@ -5,15 +5,15 @@
       <view class="logo" bindtap="DayOrNight"></view>
       <view class="top-btns">
         <view class="btn btn-rule" bindtap="showRule">
-          <image src="{{baseUrl}}{{'btn-mask2.png'}}"></image>
+          <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
           <text>规则</text>
         </view>
         <view class="btn btn-share" bindtap="share">
-          <image src="{{baseUrl}}{{isNight?'btn-mask2.png':'btn-mask.png'}}"></image>
+          <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
           <text>分享</text>
         </view>
         <view class="btn btn-scan" bindtap="scan">
-          <image src="{{baseUrl}}{{isNight?'btn-mask2.png':'btn-red.png'}}"></image>
+          <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
           <text>扫码</text>
         </view>
       </view>
@@ -75,6 +75,7 @@
       </navigator>
     </view>
   </view>
+  <!-- 规则页 -->
   <view class="modal {{rule_show?'in':''}}">
     <view class="bg modal-bg"></view>
     <view class="modal-box rule-box">

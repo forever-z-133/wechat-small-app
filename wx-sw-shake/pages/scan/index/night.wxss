@@ -11,11 +11,11 @@
   background-position: 0 90%;
 }
 
-.isNight .btn-rule,
+/* .isNight .btn-rule,
 .isNight .btn-share,
 .isNight .btn-scan {
   background-color: #6e4ac7; 
-}
+} */
 
 .isNight .user-box {
   border-color: #b2acc9;
