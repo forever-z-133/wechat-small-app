@@ -46,7 +46,7 @@
           </swiper-item>
         </block>
       </swiper>
-      <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{nowSwiper}}.png)">
+      <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{nowSwiper}}s.png)">
       </view>
       <image src="{{baseUrl}}main-title.png" class="main-title"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
@@ -75,15 +75,83 @@
       </navigator>
     </view>
   </view>
-  <!-- 规则页 -->
-  <view class="modal {{rule_show?'in':''}}">
-    <view class="bg modal-bg"></view>
-    <view class="modal-box rule-box">
-      <image src="{{baseUrl}}rule.png" class="rule-img"></image>
-      <view class="btn btn-close-rule" bindtap="closeRule">
-        <text>唔晓得啦</text>
-        <image src="{{baseUrl}}btn-mask.png"></image>
+</view>
+
+<!-- 规则页 -->
+<view class="modal rule {{modal.rule?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box rule-box">
+    <image src="{{baseUrl}}rule.png" class="rule-img"></image>
+    <view class="btn btn-close-rule" bindtap="closeRule">
+      <text>唔晓得啦</text>
+      <image src="{{baseUrl}}btn-mask.png"></image>
+    </view>
+  </view>
+</view>
+
+<!-- 验证页 -->
+<view class="modal justify {{modal.justify?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box">
+    <view class="modudu" style="background-image: url({{baseUrl}}modudu5.png)">
+      <view class="other" style="background-image: url({{baseUrl}}word-box.png)">
+        <text>答对验证码签到啦！</text>
       </view>
+    </view>
+    <view class="tip-box">
+      <view class="judge-box">
+        <view class="question">
+          <image src="{{code_question}}"></image>
+        </view>
+        <view class="answers">
+          <block wx:for="{{code_answers}}" wx:key="item.name">
+            <image src="{{item.url}}" class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
+          </block>
+        </view>
+      </view>
+      <view class="btn-red" bindtap="justify">确定</view>
+    </view>
+  </view>
+</view>
+
+
+<!-- 宝箱 -->
+<view class="modal prize {{modal.prize?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box {{prizeOpen?'open':''}}">
+    <form bindsubmit="getPrize" report-submit>
+      <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+      <button form-type="submit">
+          <view class="box" style="background-image: url({{baseUrl}}{{prizeOpen?'box-open.png':'box-close.png'}})" bindtap="getPrize">
+            <view class="finger"></view>
+          </view>
+        </button>
+    </form>>
+  </view>
+</view>
+
+<!-- 中奖 -->
+<view class="modal good {{modal.good?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box">
+    <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
+    <view class="tip-box">
+      <image src="{{baseUrl}}good.png"></image>
+      <text>哎哟喂！恭喜您中奖啦！</text>
+      <view class="btn btn-red" bindtap="page_result">去领奖</view>
+    </view>
+  </view>
+</view>
+
+<!-- 未中奖 -->
+<view class="modal bad {{modal.bad ?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box">
+    <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
+    <view class="tip-box">
+      <image src="{{baseUrl}}good.png"></image>
+      <text>还差那么一丢丢，没中奖。</text>
+      <!-- <view class="btn btn-red">好吧</view> -->
     </view>
   </view>
 </view>

@@ -261,6 +261,16 @@ progress {
   height: 30%;
   background: url(https://sum.kdcer.com/test/img/shake/modudu22.png) center / 100% 100%;
 } */
+.btn-red {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 2.5em;
+  font-weight: bold;
+  border-radius: 10rpx;
+  background: linear-gradient(to left, #a10b08, #bb0a06, #a10b09);
+  box-shadow: 0 0 0 1px #e48903;
+}
 .rule .btn-red {
   margin: 20rpx auto;
 }
@@ -323,6 +333,46 @@ progress {
   transform: translate(-50%,-50%);
 }
 
+.question image {
+  width: 500rpx;
+  height: 75px;
+}
+.answers {
+  margin: 10rpx auto;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+}
+.answers image {
+  width: 110rpx;
+  height: 110rpx;
+  margin: 10rpx 10rpx;
+}
+.answers image.active {
+  box-shadow: 0 0 0 1px red;
+}
+
+.modudu .right,
+.modudu .wrong {
+  width: 100%;
+  height: 100%;
+}
+.modudu .other {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250rpx;
+  height: 200rpx;
+  padding: 0 30rpx 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: 100% 100%;
+  color: #ab0a07;
+  font-size: 40rpx;
+  box-sizing: border-box;
+}
 
 .prize .modal-box {
   height: 100%;

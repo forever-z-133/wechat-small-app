@@ -105,33 +105,13 @@ swiper {
   -webkit-box-orient: vertical;
 }
 
-.modal-box {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-}
+
 .modal .modudu {
   margin-bottom: -250rpx;
   height: 550rpx;
   background-size: auto 100%;
   background-position: center;
   background-repeat: no-repeat;
-}
-.modal .modudu .other {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 250rpx;
-  height: 200rpx;
-  padding: 0 30rpx 20rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-size: 100% 100%;
-  color: #ab0a07;
-  font-size: 40rpx;
-  box-sizing: border-box;
 }
 .modal .modudu > view {
   background: inherit;
@@ -144,37 +124,4 @@ swiper {
   border-radius: 10rpx;
   padding: 50rpx;
   box-sizing: border-box;
-}
-
-
-.question image {
-  width: 500rpx;
-  height: 75px;
-}
-.answers {
-  margin: 10rpx auto;
-  text-align: center;
-  overflow: hidden;
-  display: flex;
-}
-.answers image {
-  width: 110rpx;
-  height: 110rpx;
-  margin: 10rpx 10rpx;
-}
-.answers image.active {
-  box-shadow: 0 0 0 1px red;
-}
-
-
-.btn-red {
-  display: block;
-  color: #fff;
-  text-align: center;
-  line-height: 2.5em;
-  font-size: 30rpx;
-  font-weight: bold;
-  border-radius: 10rpx;
-  background: linear-gradient(to left, #a10b08, #bb0a06, #a10b09);
-  box-shadow: 0 0 0 1px #e48903;
 }

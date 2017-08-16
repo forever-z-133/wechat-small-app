@@ -75,14 +75,14 @@ App({
               success: function (r2) {
                 // console.log('getUserInfo', r2);
                 that.globalData.userInfo = r2.userInfo
-                // var data = {
-                //   code: r1.code,
-                //   encryptedData: r2.encryptedData,
-                //   iv: r2.iv,
-                //   rawData: r2.rawData,
-                //   signature: r2.signature
-                // }
-                var user = JSON.parse(r2.rawData);
+                var data = {
+                  code: r1.code,
+                  encryptedData: r2.encryptedData,
+                  iv: r2.iv,
+                  rawData: r2.rawData,
+                  signature: r2.signature
+                }
+                var user = JSON.parse(data.rawData);
                 // console.log(user);
                 var userInfo = {
                   Nickname: user.nickName,
@@ -95,6 +95,7 @@ App({
                 }
                 that.globalData.code = r1.code;
                 that.globalData.post_user = JSON.stringify(userInfo);
+                console.log(r1.code, userInfo);
                 // console.log(userInfo);
                 // console.log(JSON.stringify(data));
                 // typeof cb == "function" && cb(that.globalData.userInfo)
@@ -103,6 +104,8 @@ App({
                   data: {
                     code: r1.code,
                     userJson: JSON.stringify(userInfo),
+                    appidStr: 'wxdef1d6fbcabb2b9c',
+                    appsercetStr: 'e8978957586474f713222dc4d57a370b',
                   },
                   success: function (r3) {
                     // wx.hideLoading();
