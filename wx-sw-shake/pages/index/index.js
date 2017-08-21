@@ -18,7 +18,7 @@ Page({
     //   var time = app.convertTime(r.Time);
     //   var offset = endTime - time;
     //   console.log('时间', new Date(offset).getDate(), '天');
-    //   if (offset > 0) {
+    //   if (!r.data.OverState) {
     //     // if (r.BonusState) {  // 当天已中奖
     //     //   wx.redirectTo({
     //     //     url: '../scan/prize/prize',

@@ -5,6 +5,28 @@ var app = new getApp();
 var id = app.globalData.id;
 var cl = '';
 var isNight = null;
+var formId = null;
+var main_data = null;
+
+var shareArr = [
+  {
+    title: '玩转购物地吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃',
+    path: 'pages/index/index?type=0',
+    imageUrl: 'https://sum.kdcer.com/test/test.png'
+  }, {
+    title: '玩转购物地玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩',
+    path: 'pages/index/index?type=1',
+  }, {
+    title: '玩转购物地购购购购购购购购购购购购购购购购购购购购',
+    path: 'pages/index/index?type=2',
+  }, {
+    title: '人品爆发！中奖了！',
+    path: 'pages/index/index',
+  }, {
+    title: '玩转购物地，转遍大上海',
+    path: 'pages/index/index',
+  }
+];
 
 Page({
   data: {
@@ -15,56 +37,93 @@ Page({
       prize: false,
       good: false,
       bad: false,
+      more: false,
+      prize2: false,
     },
     baseUrl: baseUrl,
     isNight: false,
     nowSwiper: 0,
     progress: 0,
-    maps: [[0, 2, 3, 2, 1, 5, 6, 7, 8, 9], [0], [0]],
+    maps_day: [[], [], []],
+    maps_night: [[], [], []],
     prize: [[10, false], [20, false], [30, false]],
     code_question: '',
     code_answers: [],
+
     user: {},
   },
   onLoad: function (opt) {
-    this.data.modal = {
-      rule: false,
-      detail: false,
-      justify: false,
-      prize: false,
-      good: false,
-      bad: false,
-    }
-
+    console.log(opt);
     app.Login(function (r, user) {
       console.log(r, user)
 
       id = app.globalData.id;
-      user.id = id.slice(-8);
+      // user.id = id.slice(-8);
 
       if (opt.cl) {
-        cl = opt.cl
-        this.data.modal.justify = true;
+        cl = opt.cl;
         this.getImgCode();
       }
 
       this.start();
-
-      this.setData({
-        user: user,
-        modal: this.data.modal,
-      });
     }.bind(this))
   },
   start: function () {
+    wx.showLoading({
+      title: 'loading...',
+      mask: true,
+    });
     wx.request({
-      url: apiUrl + 'GetChannelList',
+      url: apiUrl + 'GetList',
       data: {
         Unionid: id
       },
       success: function (r) {
-        console.log('列表', r);
-      },
+        console.log('列表', r.data);
+        wx.hideLoading();
+        main_data = r.data;
+
+        if (!r.data.State) {
+          wx.showToast({
+            title: '可能系统除了问题',
+            mask: true,
+            duration: 99999,
+          });
+          return;
+        }
+
+        var user = app.globalData.user;
+        user.id = r.data.UserPassCard;
+
+        isNight = r.data.DayState;
+
+        var day = [], night = [];
+        for (var i in r.data.list) {
+          var one = r.data.list[i];
+          if (one.LotteryType == 0) {
+            if (!day[one.PlayType]) day[one.PlayType] = [];
+            day[one.PlayType].push(one);
+          } else {
+            if (!night[one.PlayType]) night[one.PlayType] = [];
+            night[one.PlayType].push(one);
+          }
+        }
+
+        if (r.data.GetCollectCount > 0) {
+          this.data.modal.more = true;
+        } else if (cl) {
+          this.data.modal.justify = true;
+        }
+
+        // console.log(day,night)
+        this.setData({
+          user: user,
+          modal: this.data.modal,
+          progress: r.data.count,
+          maps_day: day,
+          maps_night: night,
+        });
+      }.bind(this),
       error: function (err) {
         wx.showToast({
           title: '系统出错了',
@@ -78,38 +137,9 @@ Page({
 
   },
   // ------------------- 分享
-  share: function () {
-    wx.showShareMenu({
-      withShareTicket: true
-    });
-  },
   onShareAppMessage: function () {
-    if (this.data.nowSwiper == 0) {
-      return {
-        title: '玩转购物地吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃',
-        path: 'pages/index/index?type=0',
-      }
-    } else if (this.data.nowSwiper == 1) {
-      return {
-        title: '玩转购物地玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩',
-        path: 'pages/index/index?type=1',
-      }
-    } else if (this.data.nowSwiper == 2) {
-      return {
-        title: '玩转购物地购购购购购购购购购购购购购购购购购购购购',
-        path: 'pages/index/index?type=2',
-      }
-    } else if (this.data.modal.good) {
-      return {
-        title: '人品爆发！中奖了！',
-        path: 'pages/index/index',
-      }
-    } else {
-      return {
-        title: '玩转购物地，转遍大上海',
-        path: 'pages/index/index',
-      }
-    }
+    var random = (Math.random() * 5) >> 0;
+    return shareArr[random];
   },
   // ------------------- 切换白天黑夜
   DayOrNight: function () {
@@ -135,27 +165,33 @@ Page({
   // ------------------- 扫码
   scan: function () {
     var that = this;
-    if (this.data.isNight !== isNight) {
-      wx.showModal({
-        title: '操作',
-        content: '',
-      })
-    }
+    // if (this.data.isNight !== isNight) {
+    //   wx.showModal({
+    //     title: '操作无效',
+    //     content: '本活动白天和晚上的签到任务是分开进行的哟',
+    //   });
+    //   return;
+    // }
     wx.scanCode({
       onlyFromCamera: true,
       success: function (res) {
         var cll = app.QueryString('cl', res.result);
+        // console.log(cll)
         if (typeof cll == undefined) {
           wx.showModal({
             content: '该码无非活动所需参数，请找工作人员确认此码是否有效。',
           });
         } else {
           cl = cll;
+          wx.showLoading({
+            title: '验证码正在飞奔而来的路上',
+            mask: true,
+          });
           this.getImgCode();
           this.data.modal.justify = true;
           this.setData({ modal: this.data.modal });
         }
-      }
+      }.bind(this),
     });
   },
 
@@ -193,7 +229,10 @@ Page({
 
   // ------------------- 积满 10 个抽奖
   page_prize2: function () {
-
+    this.data.modal.justify = false;
+    this.data.modal.more = false;
+    this.data.modal.prize2 = true;
+    this.setData({ modal: this.data.modal });
   },
   getPrize2: function () {
     wx.showLoading({
@@ -205,12 +244,42 @@ Page({
       data: {
         Unionid: id,
         cl: cl,
-        formId: e.detail.formId,
+        formId: formId,
       },
       success: function (r) {
+        console.log('集签抽奖', r.data);
         wx.hideLoading();
-        console.log('抽奖', r.data);
-      },
+        if (r.data.State) {
+          that.good();
+          this.setData({
+            prize: r.data.Bonus,
+          });
+        } else {
+          var tip = '';
+          switch (r.data.ErrorMessage) {
+            case 911: tip = '您没有签到，无法抽奖'; break;
+            case 912: tip = '您在非正规时间端内抽奖，比如白天抽到了夜晚的奖品'; break;
+            case 913: tip = '已超过当天抽奖次数'; break;
+            case 897: tip = '验证码错误，也可能是系统错误'; break;
+            case 898: tip = '系统错误'; break;
+            case 899: tip = '身份错误'; break;
+            case 900: tip = '您已中奖'; this.good(); break;
+            case 901: tip = '已超过抽奖次数'; break;
+            case 902: tip = '奖品已发完'; break;
+            case 903: tip = '中奖数量已达上限'; break;
+            case 904: tip = '今天已中奖，明天可以再来'; break;
+            case 998: tip = '您没有签够指定数目的购物地哟，请查看规则'; break;
+            case 999: tip = this.bad(); return;
+          }
+          wx.showModal({
+            title: '抽奖失败',
+            content: tip || '系统错误',
+            mask: true,
+          });
+        }
+        this.data.modal.prize2 = false;
+        this.setData({ modal: this.data.modal });
+      }.bind(this),
       error: function () {
         wx.hideLoading();
       },
@@ -218,11 +287,22 @@ Page({
   },
 
   // ------------------- 签到和抽奖
-  signUp: function (formId) {
+  click_get_prize: function (e) {
+    formId = e.detail.formId;
+    var t = e.target.dataset.type;
+    if (t == 'collect') {
+      this.getPrize2();
+    } else {
+      this.signUp();
+    }
+  },
+  signUp: function () {
     wx.showLoading({
       title: '签到登记中...',
       mask: true,
     });
+    this.data.modal.justify = false;
+    // console.log(id, cl)
     wx.request({
       url: apiUrl + 'GetSignUp',
       data: {
@@ -236,7 +316,26 @@ Page({
           wx.showToast({
             title: '签到成功',
           });
-          this.page_prize();
+          this.getPrize();
+
+          var n = r.data.Sign.LotteryType;
+          var i = r.data.Sign.PlayType;
+          var d = n ? this.data.maps_night : this.data.maps_day;
+          for (var s in d) {
+            for (var j in d[s]) {
+              if (r.data.Sign.Guid == d[s][j].Guid) {
+                d[s][j].Light = true; break;
+              }
+            }
+          }
+          console.log('0为夜:' + n, '签到地的类:' + i);
+          this.setData({
+            isNight: n,
+            nowSwiper: i,
+            maps_night: this.data.maps_night,
+            maps_day: this.data.maps_day,
+            progress: Math.min(30, ++this.data.progress),
+          });
         } else {
           var tip = '';
           switch (r.data.ErrorMessage) {
@@ -248,26 +347,28 @@ Page({
           }
           wx.showModal({
             title: '签到失败',
-            content: tip,
+            content: tip || '系统错误',
             mask: true,
           });
-          this.getImgCode();
-          this.data.modal.justify = false;
-          this.setData({ modal: this.data.modal });
         }
+        this.data.modal.prize = false;
+        this.setData({ modal: this.data.modal });
       }.bind(this),
       error: function () {
         wx.hideLoading();
         wx.showToast({
-          title: '签到失败，请关闭页面重新尝试吧',
+          title: '签到失败，可能是系统问题，请关闭页面重新尝试吧',
           duration: 2500,
           mask: true,
         });
+        this.data.modal.prize = false;
+        this.setData({ modal: this.data.modal });
       }.bind(this),
     });
   },
   page_prize: function () {
     this.data.modal.justify = false;
+    this.data.modal.more = false;
     this.data.modal.prize = true;
     this.setData({ modal: this.data.modal });
   },
@@ -277,12 +378,13 @@ Page({
       title: '奖品翻滚中...',
       mask: true,
     });
+    // console.log(id, cl, formId)
     wx.request({
       url: apiUrl + 'GetSignLotteryBehavior',
       data: {
         Unionid: id,
         cl: cl,
-        formId: e.detail.formId,
+        formId: formId,
       },
       success: function (r) {
         console.log('抽奖', r.data);
@@ -290,7 +392,7 @@ Page({
         if (r.data.State) {
           that.good();
           this.setData({
-            prize: r.data.Bonus,
+            prize: r.data.Bonuses[0],
           });
         } else {
           var tip = '';
@@ -298,33 +400,40 @@ Page({
             case 911: tip = '您没有签到，无法抽奖'; break;
             case 912: tip = '您在非正规时间端内抽奖，比如白天抽到了夜晚的奖品'; break;
             case 913: tip = '已超过当天抽奖次数'; break;
-            case 897: tip = '验证码错误，'; break;
+            case 897: tip = '验证码错误，也可能是系统错误'; break;
             case 898: tip = '系统错误'; break;
             case 899: tip = '身份错误'; break;
-            case 900: tip = '您已中奖'; break;
+            case 900: tip = '您已中奖'; this.good(); break;
             case 901: tip = '已超过抽奖次数'; break;
             case 902: tip = '奖品已发完'; break;
             case 903: tip = '中奖数量已达上限'; break;
-            case 904: tip = '今天已中奖，明天再来'; break;
+            case 904: tip = '今天已中奖，明天可以再来'; break;
             case 999: tip = this.bad(); return;
           }
           wx.showModal({
             title: '抽奖失败',
-            content: tip,
+            content: tip || '系统错误',
             mask: true,
           });
         }
-      },
+        this.data.modal.prize = false;
+        this.setData({ modal: this.data.modal });
+      }.bind(this),
       error: function () {
-        that.good();
         wx.hideLoading();
+        wx.showToast({
+          title: '抽奖失败，可能是系统问题，请关闭页面重新尝试吧',
+          duration: 2500,
+          mask: true,
+        });
+        this.data.modal.prize = false;
+        this.setData({ modal: this.data.modal });
       },
     });
   },
 
   // ------------------- 中奖与未中奖
   good: function () {
-    console.log('xx')
     this.data.modal.prize = false;
     this.data.modal.good = true;
     this.setData({ modal: this.data.modal });
@@ -354,7 +463,6 @@ Page({
     var index = e.target.dataset.index;
     this.myAnswer = mine;
     var a = this.data.code_answers;
-    // console.log(this.myAnswer, this.rightAnswer)
     for (var i in a) {
       if (i == index) a[i].active = true;
       else a[i].active = false;
@@ -370,9 +478,10 @@ Page({
         mask: true,
       });
     }
+    // console.log(this.myAnswer, this.rightAnswer);
     var that = this;
     if (this.myAnswer == this.rightAnswer) { // 答对
-      this.signUp();
+      this.page_prize();
     } else {  // 答错
       this.getImgCode();
       wx.showModal({
@@ -390,6 +499,7 @@ Page({
         Unionid: id,
       },
       success: function (r) {
+        wx.hideLoading();
         console.log('验证', r.data);
         var answer = that.outOrder(r.data.answerPic);
         that.rightAnswer = r.data.Right;
@@ -399,6 +509,7 @@ Page({
         });
       },
       error: function (err) {
+        wx.hideLoading();
         wx.showToast({
           title: '接口报错' + JSON.stringify(err),
           mask: true,

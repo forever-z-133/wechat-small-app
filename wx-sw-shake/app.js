@@ -75,6 +75,7 @@ App({
               withCredentials: true,
               success: function (r2) {
                 // console.log('getUserInfo', r2);
+                that.globalData.user = r2.userInfo;
                 that.globalData.userInfo = r2.userInfo
                 // var data = {
                 //   code: r1.code,

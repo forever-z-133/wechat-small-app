@@ -1,7 +1,7 @@
 <!--prize.wxml-->
 <view class="body">
   <view class="bg body-bg"></view>
-  <scroll-view class="main">
+  <scroll-view class="main" bindscrolltolower="load">
     <view class="list-box">
       <block wx:for="{{prize}}" wx:key="{{*this}}">
         <view class="item">
@@ -14,7 +14,7 @@
             <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
           </view>
           <view class="other">
-            <view class="btn-red" data-src="{{item.QrCode}}" bindtap="detail">兑换</view>
+            <view class="btn-get" data-index="{{index}}" bindtap="detail">兑换</view>
           </view>
         </view>
       </block>
@@ -40,5 +40,23 @@
   </scroll-view>
   <view class="no-one" wx:if="{{no_one}}">
     <text>您还没有奖品，加油哟</text>
+  </view>
+</view>
+
+<!-- 奖品详情页 -->
+<view class="modal result {{detail?'in':''}}">
+  <view class="bg" style="background: url({{baseUrl}}prize-bg.jpg) center / 100% 100%"></view>
+  <view class="modal-box">
+    <view class="qrcode">
+      <image src="{{detail.QrCode}}"></image>
+      <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{detail.Take}}"></image>
+    </view>
+    <view class="title text">{{detail.GiftName || '奖品名称'}}</view>
+    <view class="word text">兑换时间：<text>{{detail.Time || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换地点：<text>{{detail.Address || '上海购物节活动组委会'}}</text></view>
+    <view class="btn btn-ok" bindtap="result_ok">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
   </view>
 </view>

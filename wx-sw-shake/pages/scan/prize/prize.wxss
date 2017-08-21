@@ -47,7 +47,7 @@
 .time {
   color: #e71f5f;
 }
-.btn-red {
+.btn-get {
   width: 180rpx;
   height: 90rpx;
   line-height: 70rpx;
@@ -64,4 +64,67 @@
 }
 .list-grey .image {
   border-color: #8f8f8f;
+}
+
+
+.btn {
+  position: relative;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.3em 1em 0.4em;
+  text-shadow: -1px -1px 0 #000;
+  background-position: center;
+  background-size: 100% 100%;
+  border-radius: 10rpx;
+  overflow: hidden;
+  font-size: 0.9em;
+}
+
+.btn > image {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.btn > text {
+  position: relative;
+  z-index: 1;
+}
+
+
+.result {
+  color: #ff6724;
+  font-size: 30rpx;
+}
+.result .modal-box {
+  width: 500rpx;
+  height: 500rpx;
+  margin-top: 50rpx;
+}
+.result .qrcode {
+  width: 300rpx;
+  height: 300rpx;
+  margin: 0 auto 20rpx;
+  border: 5rpx solid #f7c5ae;
+  border-radius: 10rpx;
+}
+.result .title {
+  font-size: 1.2em;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.result text {
+  color: #333;
+}
+.result .btn {
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  width: 5em;
+  transform: translate(-50%, 0);
+  padding: 0.8em 2em 1.2em;
 }

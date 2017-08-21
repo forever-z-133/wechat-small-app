@@ -12,6 +12,12 @@
   height: 700rpx;
 }
 
+.modal-img-bg {
+  background-size: 90% auto;
+  background-position: 50% 40%;
+  background-repeat: no-repeat;
+}
+
 .body:before {
   content: "";
   position: absolute;
@@ -193,7 +199,7 @@
   transition: 0.4s;
 }
 
-.item.hasSign {
+.item.hasSign:after {
   opacity: 0;
 }
 
@@ -350,6 +356,7 @@
 .progress-bar {
   position: relative;
   width: 33.333%;
+  min-width:10rpx;
   height: 100%;
   background: linear-gradient(#ff9c81 10%, #fcddca 40%, #af8954 50%, #ffbb4e);
   border-radius: 10rpx;
@@ -365,7 +372,7 @@
 
 .btn-prize {
   width: 50%;
-  padding: 0.7em 1em 0.8em;
+  padding: 0.6em 1em 0.9em;
   margin: 20rpx auto 20rpx;
   /* background: #ffbb2f; */
 }
@@ -381,20 +388,13 @@
   transform: translate(-50%,-50%);
   text-align: center;
 }
-.btn-close-rule {
-  background: #ff3258;
+ .btn-close-rule {
   margin: 30rpx auto 0;
-  padding: .5em 1em .6em;
+  padding: .6em 1.5em .9em;
   display: inline-block;
-}
+} 
 
 
-.prize .modal-box,
-.good .modal-box,
-.bad .modal-box {
-  width: 100%;
-  height: 100%;
-}
 .modal .light {
   position: absolute;
   top: 50%;
@@ -407,10 +407,7 @@
   animation: rotate .5s infinite linear;
 }
 .getPrize-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  margin: 0 auto 30rpx;
   width: 300rpx;
   height: 300rpx;
   background-size: contain;
@@ -460,15 +457,60 @@
 
 .good .btn-orange,
 .bad .btn-orange {
-  position: absolute;
-  top: 70%; left: 50%;
   width: 10em;
-  transform: translate(-50%,-50%);
   padding:.8em 1em 1.1em;
+}
+
+
+.more-box {
+  width:550rpx;
+  height:600rpx;
+}
+.more-box > image {
+  height: 150rpx;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.more-box .btn {
+  position: absolute;
+  top: 120%; left: 50%;
+  transform: translate(-50%,-50%)
 }
 
 
 @import 'night.wxss';
 
-
-
+.result {
+  color: #ff6724;
+  font-size: 30rpx;
+}
+.result .modal-box {
+  width: 500rpx;
+  height: 500rpx;
+  margin-top: 50rpx;
+}
+.result .qrcode {
+  width: 300rpx;
+  height: 300rpx;
+  margin: 0 auto 20rpx;
+  border: 5rpx solid #f7c5ae;
+  border-radius: 10rpx;
+}
+.result .title {
+  font-size: 1.2em;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.result text {
+  color: #333;
+}
+.result .btn {
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  width: 5em;
+  padding: .6rm 1em .8em;
+  transform: translate(-50%, 0);
+}

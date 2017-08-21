@@ -37,14 +37,28 @@
       <view class="wrap-bg">
         <view class="body-mask"></view>
       </view>
-      <swiper class="swiper" current="{{nowSwiper}}" bindchange="swiperChange">
-        <block wx:for="{{maps}}" wx:key="index" wx:for-item="part">
+      <swiper class="swiper" wx:if="{{isNight==false}}" current="{{nowSwiper}}" bindchange="swiperChange">
+        <block wx:for="{{maps_day}}" wx:key="index" wx:for-item="part">
           <swiper-item class="part">
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
-                <view class="item imgRadio {{item.active? 'hasSign':''}}" bindtap="clickItem">
-                  <image src="{{baseUrl}}main-title{{nowSwiper}}.png" class="item-img"></image>
-                  <text class="item-name text">xxx{{item}}</text>
+                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="clickItem">
+                  <image src="{{item.Url ? baseUrl+item.Url:''}}" class="item-img"></image>
+                  <text class="item-name text">{{item.Name}}</text>
+                </view>
+              </block>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+      <swiper class="swiper" wx:if="{{isNight==true}}" current="{{nowSwiper}}" bindchange="swiperChange">
+        <block wx:for="{{maps_night}}" wx:key="index" wx:for-item="part">
+          <swiper-item class="part">
+            <view class="list">
+              <block wx:for="{{part}}" wx:key="index">
+                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="clickItem">
+                  <image src="{{item.Url ? baseUrl+item.Url:''}}" class="item-img"></image>
+                  <text class="item-name text">{{item.Name}}</text>
                 </view>
               </block>
             </view>
@@ -59,8 +73,8 @@
     </view>
     <view class="more-prize">
       <view class="progress">
-        <view class="progress-bar" style="width:{{25/30*100}}%">
-          <view class="progress-text">{{25}}</view>
+        <view class="progress-bar" style="width:{{progress/30*100}}%">
+          <view class="progress-text">{{progress}}</view>
         </view>
       </view>
       <view class="more-prize-box">
@@ -88,8 +102,8 @@
   <view class="modal-box rule-box">
     <image src="{{baseUrl}}rule.png" class="rule-img"></image>
     <view class="btn btn-close-rule" bindtap="closeRule">
+      <image src="{{baseUrl}}btn-red.png"></image>
       <text>唔晓得啦</text>
-      <image src="{{baseUrl}}btn-mask.png"></image>
     </view>
   </view>
 </view>
@@ -124,9 +138,9 @@
 <view class="modal prize {{modal.prize?'in':''}}">
   <view class="bg modal-bg"></view>
   <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
-  <form bindsubmit="getPrize" report-submit class="modal-box">
+  <form bindsubmit="click_get_prize" report-submit class="modal-box">
     <button form-type="submit">
-      <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)" bindtap="getPrize">
+      <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
         <view class="finger"></view>
         <view class="tip">签到成功可抽奖</view>
       </view>
@@ -142,10 +156,10 @@
     <view class="getPrize-box" style="background-image: url({{baseUrl}}box-open.png)">
       <view class="tip">恭喜您中奖啦</view>
     </view>
-  </view>
-  <view class="btn btn-orange" bindtap="result">
-    <image src="{{baseUrl}}btn-orange.png"></image>
-    <text>点击查看详情</text>
+    <view class="btn btn-orange" bindtap="result">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>点击查看详情</text>
+    </view>
   </view>
 </view>
 
@@ -157,7 +171,55 @@
     <view class="getPrize-box " style="background-image: url({{baseUrl}}box-close.png) ">
       <view class="tip ">很遗憾！<text>没有中奖</text></view>
     </view>
-    <view class="btn btn-scan" bindtap="bad_ok">
+    <view class="btn btn-orange" bindtap="bad_ok">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
+  </view>
+</view>
+
+
+<!-- 集签条件满足提示 -->
+<view class="modal more {{modal.more?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="bg modal-img-bg" style="background-image: url({{baseUrl}}modal-bg.png)"></view>
+  <view class="modal-box more-box">
+    <image src="{{baseUrl}}more.png" class="more-img"></image>
+    <view class="btn btn-close-rule" bindtap="page_prize2">
+      <image src="{{baseUrl}}btn-purple.png"></image>
+      <text>抽奖</text>
+    </view>
+  </view>
+</view>
+
+
+<!-- 宝箱 -->
+<view class="modal prize2 {{modal.prize2?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+  <form bindsubmit="click_get_prize" data-type="collect" report-submit class="modal-box">
+    <button form-type="submit">
+      <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
+        <view class="finger"></view>
+        <view class="tip">签到成功可抽奖</view>
+      </view>
+    </button>
+  </form>
+</view>
+
+
+<!-- 奖品详情页 -->
+<view class="modal result {{modal.result?'in':''}}">
+  <view class="bg" style="background: url({{baseUrl}}prize-bg.jpg) center / 100% 100%"></view>
+  <view class="modal-box">
+    <view class="qrcode">
+      <image src="{{prize.QrCode}}"></image>
+      <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{prize.Take}}"></image>
+    </view>
+    <view class="title text">{{prize.GiftName || '奖品名称'}}</view>
+    <view class="word text">兑换时间：<text>{{prize.Time || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换地点：<text>{{prize.Address || '上海购物节活动组委会'}}</text></view>
+    <view class="btn btn-ok" bindtap="result_ok">
       <image src="{{baseUrl}}btn-orange.png"></image>
       <text>返回</text>
     </view>
