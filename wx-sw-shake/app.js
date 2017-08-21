@@ -71,6 +71,7 @@ App({
           // console.log('login:', r1);
           if (r1.code) {
             wx.getUserInfo({
+              lang: 'zh_CN',
               withCredentials: true,
               success: function (r2) {
                 // console.log('getUserInfo', r2);
@@ -106,7 +107,7 @@ App({
                   },
                   success: function (r3) {
                     // wx.hideLoading();
-                    // console.log('/onLogin/', r3);
+                    // console.log('/onLogin/', r3.data);
                     that.globalData.main_data = r3.data;
                     that.globalData.id = r3.data.Unionid;
                     typeof cb == "function" && cb(r3.data, that.globalData.userInfo);

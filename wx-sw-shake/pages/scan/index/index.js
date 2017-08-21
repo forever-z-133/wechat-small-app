@@ -1,9 +1,10 @@
 // index.js
 var baseUrl = 'https://sum.kdcer.com/test/img/scan/';
-var apiUrl = 'https://sum.kdcer.com/api/OpenShop/'
+var apiUrl = 'https://sum.kdcer.com/api/swShop/';
 var app = new getApp();
 var id = app.globalData.id;
 var cl = '';
+var isNight = null;
 
 Page({
   data: {
@@ -39,6 +40,7 @@ Page({
       console.log(r, user)
 
       id = app.globalData.id;
+      user.id = id.slice(-8);
 
       if (opt.cl) {
         cl = opt.cl
@@ -46,26 +48,77 @@ Page({
         this.getImgCode();
       }
 
+      this.start();
+
       this.setData({
         user: user,
         modal: this.data.modal,
       });
     }.bind(this))
   },
+  start: function () {
+    wx.request({
+      url: apiUrl + 'GetChannelList',
+      data: {
+        Unionid: id
+      },
+      success: function (r) {
+        console.log('列表', r);
+      },
+      error: function (err) {
+        wx.showToast({
+          title: '系统出错了',
+          mask: true,
+          duration: 999999
+        });
+      },
+    });
+  },
   onShow: function () {
 
   },
-  onPullDownRefresh: function () {
-
+  // ------------------- 分享
+  share: function () {
+    wx.showShareMenu({
+      withShareTicket: true
+    });
   },
   onShareAppMessage: function () {
-
+    if (this.data.nowSwiper == 0) {
+      return {
+        title: '玩转购物地吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃',
+        path: 'pages/index/index?type=0',
+      }
+    } else if (this.data.nowSwiper == 1) {
+      return {
+        title: '玩转购物地玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩',
+        path: 'pages/index/index?type=1',
+      }
+    } else if (this.data.nowSwiper == 2) {
+      return {
+        title: '玩转购物地购购购购购购购购购购购购购购购购购购购购',
+        path: 'pages/index/index?type=2',
+      }
+    } else if (this.data.modal.good) {
+      return {
+        title: '人品爆发！中奖了！',
+        path: 'pages/index/index',
+      }
+    } else {
+      return {
+        title: '玩转购物地，转遍大上海',
+        path: 'pages/index/index',
+      }
+    }
   },
+  // ------------------- 切换白天黑夜
   DayOrNight: function () {
     this.setData({
       isNight: !this.data.isNight
     })
   },
+
+  // ------------------- 规则页
   showRule: function (close) {
     this.data.modal.rule = true;
     this.setData({
@@ -78,8 +131,33 @@ Page({
       modal: this.data.modal,
     });
   },
-  scan: function () { },
-  share: function () { },
+
+  // ------------------- 扫码
+  scan: function () {
+    var that = this;
+    if (this.data.isNight !== isNight) {
+      wx.showModal({
+        title: '操作',
+        content: '',
+      })
+    }
+    wx.scanCode({
+      onlyFromCamera: true,
+      success: function (res) {
+        var cll = app.QueryString('cl', res.result);
+        if (typeof cll == undefined) {
+          wx.showModal({
+            content: '该码无非活动所需参数，请找工作人员确认此码是否有效。',
+          });
+        } else {
+          cl = cll;
+          this.getImgCode();
+          this.data.modal.justify = true;
+          this.setData({ modal: this.data.modal });
+        }
+      }
+    });
+  },
 
   // ------------------- 轮播图
   swiperChange: function (e) {
@@ -114,7 +192,7 @@ Page({
   },
 
   // ------------------- 积满 10 个抽奖
-  page_prize2: function() {
+  page_prize2: function () {
 
   },
   getPrize2: function () {
@@ -140,7 +218,7 @@ Page({
   },
 
   // ------------------- 签到和抽奖
-  signUp: function(formId) {
+  signUp: function (formId) {
     wx.showLoading({
       title: '签到登记中...',
       mask: true,
@@ -149,11 +227,34 @@ Page({
       url: apiUrl + 'GetSignUp',
       data: {
         Unionid: id,
+        cl: cl,
       },
-      success: function(r) {
-        wx.hideLoading();
+      success: function (r) {
         console.log('签到', r.data);
-        this.page_prize();
+        wx.hideLoading();
+        if (r.data.State) {
+          wx.showToast({
+            title: '签到成功',
+          });
+          this.page_prize();
+        } else {
+          var tip = '';
+          switch (r.data.ErrorMessage) {
+            case 905: tip = '没有此渠道二维码，请和工作人员确认此二维码是否有效'; break;
+            case 906: tip = '这里您已经签到过了，去签其他地方吧'; break;
+            case 907: tip = '签到活动尚未开始'; break;
+            case 908: tip = '今天签到活动尚未开始'; break;
+            case 909: tip = '今天签到活动结束了，请继续关注上海购物节的后续活动'; break;
+          }
+          wx.showModal({
+            title: '签到失败',
+            content: tip,
+            mask: true,
+          });
+          this.getImgCode();
+          this.data.modal.justify = false;
+          this.setData({ modal: this.data.modal });
+        }
       }.bind(this),
       error: function () {
         wx.hideLoading();
@@ -171,6 +272,7 @@ Page({
     this.setData({ modal: this.data.modal });
   },
   getPrize: function (e) {
+    var that = this
     wx.showLoading({
       title: '奖品翻滚中...',
       mask: true,
@@ -183,24 +285,66 @@ Page({
         formId: e.detail.formId,
       },
       success: function (r) {
-        wx.hideLoading();
         console.log('抽奖', r.data);
+        wx.hideLoading();
+        if (r.data.State) {
+          that.good();
+          this.setData({
+            prize: r.data.Bonus,
+          });
+        } else {
+          var tip = '';
+          switch (r.data.ErrorMessage) {
+            case 911: tip = '您没有签到，无法抽奖'; break;
+            case 912: tip = '您在非正规时间端内抽奖，比如白天抽到了夜晚的奖品'; break;
+            case 913: tip = '已超过当天抽奖次数'; break;
+            case 897: tip = '验证码错误，'; break;
+            case 898: tip = '系统错误'; break;
+            case 899: tip = '身份错误'; break;
+            case 900: tip = '您已中奖'; break;
+            case 901: tip = '已超过抽奖次数'; break;
+            case 902: tip = '奖品已发完'; break;
+            case 903: tip = '中奖数量已达上限'; break;
+            case 904: tip = '今天已中奖，明天再来'; break;
+            case 999: tip = this.bad(); return;
+          }
+          wx.showModal({
+            title: '抽奖失败',
+            content: tip,
+            mask: true,
+          });
+        }
       },
       error: function () {
+        that.good();
         wx.hideLoading();
       },
     });
   },
 
   // ------------------- 中奖与未中奖
-  good: function() {
+  good: function () {
+    console.log('xx')
     this.data.modal.prize = false;
     this.data.modal.good = true;
+    this.setData({ modal: this.data.modal });
+  },
+  result: function () {
+    this.data.modal.good = false;
+    this.data.modal.result = true;
+    this.setData({ modal: this.data.modal });
+  },
+  result_ok: function () {
+    this.data.modal.result = false;
     this.setData({ modal: this.data.modal });
   },
   bad: function () {
     this.data.modal.prize = false;
     this.data.modal.bad = true;
+    this.setData({ modal: this.data.modal });
+  },
+  bad_ok: function () {
+    this.data.modal.bad = false;
     this.setData({ modal: this.data.modal });
   },
 
@@ -241,7 +385,7 @@ Page({
   getImgCode: function () {
     var that = this;
     wx.request({
-      url: apiUrl + 'GetRndCode',
+      url: 'https://sum.kdcer.com/api/OpenShop/GetRndCode',
       data: {
         Unionid: id,
       },
@@ -253,7 +397,6 @@ Page({
           code_question: r.data.quest,
           code_answers: answer,
         });
-        console.log(that.data)
       },
       error: function (err) {
         wx.showToast({

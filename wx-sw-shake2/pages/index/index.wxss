@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(#ccc, #333)
 }
 progress {
   width: 50%;
@@ -20,6 +21,7 @@ progress {
 .progress-bar {
   position: relative;
   height: 100%;
+  transition: width .2s linear;
 }
 .progress-train {
   position: absolute;

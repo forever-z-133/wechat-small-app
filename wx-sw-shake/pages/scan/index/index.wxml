@@ -1,17 +1,20 @@
 <!--index.wxml-->
 <view class="body {{isNight ? 'isNight' : 'isDay'}}">
+  <view class="wrap-bg">
+    <image src="{{baseUrl}}{{isNight?'bg-logo3.png':'bg-logo2.png'}}" class="bg-logo"></image>
+  </view>
   <view class="main">
     <view class="top-nav">
-      <view class="logo" bindtap="DayOrNight"></view>
+      <view class="logo" style="background-image:url({{baseUrl}}{{isNight?'main-logo2.png':'main-logo.png'}})" bindtap="DayOrNight"></view>
       <view class="top-btns">
         <view class="btn btn-rule" bindtap="showRule">
           <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
           <text>规则</text>
         </view>
-        <view class="btn btn-share" bindtap="share">
+        <button class="btn btn-share" open-type="share">
           <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
           <text>分享</text>
-        </view>
+        </button>
         <view class="btn btn-scan" bindtap="scan">
           <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
           <text>扫码</text>
@@ -24,21 +27,23 @@
       </view>
       <view class="user-info-box">
         <view class="country"><text>国家码：</text>{{'9148352'}}</view>
-        <view class="idcard"><text>护照编码：</text>{{'00000000'}}</view>
+        <view class="idcard"><text>护照编码：</text>{{user.id}}</view>
         <view class="username text"><text>姓名：</text>{{user.nickName}}</view>
-        <view class="usersex"><text>性别：</text>{{user.gender==2?'女':(user.gender?'未知':'男')}}</view>
-        <view class="province"><text>地区：</text>{{user.city + ' ' + user.country}}</view>
+        <view class="usersex"><text>性别：</text>{{user.gender==2?'女':(user.gender?'男':'未知')}}</view>
+        <view class="province"><text>地区：</text>{{((user.city||'') + '' + (user.province||'')) || '未知位置'}}</view>
       </view>
     </view>
     <view class="map">
-      <view class="body-mask"></view>
-      <swiper class="swiper" current="{{nowSwiper || 0}}" bindchange="swiperChange">
+      <view class="wrap-bg">
+        <view class="body-mask"></view>
+      </view>
+      <swiper class="swiper" current="{{nowSwiper}}" bindchange="swiperChange">
         <block wx:for="{{maps}}" wx:key="index" wx:for-item="part">
           <swiper-item class="part">
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
                 <view class="item imgRadio {{item.active? 'hasSign':''}}" bindtap="clickItem">
-                  <image src="{{baseUrl}}main-title.png" class="item-img"></image>
+                  <image src="{{baseUrl}}main-title{{nowSwiper}}.png" class="item-img"></image>
                   <text class="item-name text">xxx{{item}}</text>
                 </view>
               </block>
@@ -48,7 +53,7 @@
       </swiper>
       <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{nowSwiper}}s.png)">
       </view>
-      <image src="{{baseUrl}}main-title.png" class="main-title"></image>
+      <image src="{{baseUrl}}main-title{{nowSwiper}}.png" class="main-title"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-right {{nowSwiper>1?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
     </view>
@@ -70,8 +75,8 @@
     </view>
     <view class="bottom">
       <navigator url="../prize/prize" class="btn btn-prize">
+        <image src="{{baseUrl}}{{isNight?'btn-big-purple.png':'btn-big-yellow.png'}}"></image>
         <text>点击查看我的奖励</text>
-        <image src="{{baseUrl}}btn-mask.png"></image>
       </navigator>
     </view>
   </view>
@@ -118,40 +123,43 @@
 <!-- 宝箱 -->
 <view class="modal prize {{modal.prize?'in':''}}">
   <view class="bg modal-bg"></view>
-  <view class="modal-box {{prizeOpen?'open':''}}">
-    <form bindsubmit="getPrize" report-submit>
-      <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
-      <button form-type="submit">
-          <view class="box" style="background-image: url({{baseUrl}}{{prizeOpen?'box-open.png':'box-close.png'}})" bindtap="getPrize">
-            <view class="finger"></view>
-          </view>
-        </button>
-    </form>>
-  </view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+  <form bindsubmit="getPrize" report-submit class="modal-box">
+    <button form-type="submit">
+      <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)" bindtap="getPrize">
+        <view class="finger"></view>
+        <view class="tip">签到成功可抽奖</view>
+      </view>
+    </button>
+  </form>
 </view>
 
 <!-- 中奖 -->
 <view class="modal good {{modal.good?'in':''}}">
   <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
   <view class="modal-box">
-    <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
-    <view class="tip-box">
-      <image src="{{baseUrl}}good.png"></image>
-      <text>哎哟喂！恭喜您中奖啦！</text>
-      <view class="btn btn-red" bindtap="page_result">去领奖</view>
+    <view class="getPrize-box" style="background-image: url({{baseUrl}}box-open.png)">
+      <view class="tip">恭喜您中奖啦</view>
     </view>
+  </view>
+  <view class="btn btn-orange" bindtap="result">
+    <image src="{{baseUrl}}btn-orange.png"></image>
+    <text>点击查看详情</text>
   </view>
 </view>
 
 <!-- 未中奖 -->
-<view class="modal bad {{modal.bad ?'in':''}}">
+<view class=" modal bad {{modal.bad ? 'in': ''}} ">
   <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png); opacity:0.4 "></view>
   <view class="modal-box">
-    <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
-    <view class="tip-box">
-      <image src="{{baseUrl}}good.png"></image>
-      <text>还差那么一丢丢，没中奖。</text>
-      <!-- <view class="btn btn-red">好吧</view> -->
+    <view class="getPrize-box " style="background-image: url({{baseUrl}}box-close.png) ">
+      <view class="tip ">很遗憾！<text>没有中奖</text></view>
+    </view>
+    <view class="btn btn-scan" bindtap="bad_ok">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
     </view>
   </view>
 </view>

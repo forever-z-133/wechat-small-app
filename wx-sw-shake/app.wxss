@@ -63,10 +63,12 @@ image {
   display: block;
 }
 button {
+  position: static;
   padding: 0;
   margin: 0;
   line-height: 1;
   font: inherit;
+  background: none;
 }
 swiper {
   height: 100%;

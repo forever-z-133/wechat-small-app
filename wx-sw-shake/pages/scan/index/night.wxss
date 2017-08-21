@@ -33,3 +33,7 @@
 .isNight .item-name:before {
   background: #805fea;
 }
+
+.isNight .progress-bar {
+  background-image: linear-gradient(#cfcafc 10%, #c3b0ff 40%, #9e88ff 50%, #7a16ff)
+}
