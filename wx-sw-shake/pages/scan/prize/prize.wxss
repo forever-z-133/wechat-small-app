@@ -40,6 +40,7 @@
 }
 .content {
   flex-grow: 1;
+  font-size: 30rpx;
 }
 .other {
   flex-shrink: 0;
@@ -58,6 +59,7 @@
 
 .item {
   background: rgba(255, 255, 255, .6);
+  margin-bottom:20rpx;
 }
 .list-grey .item {
   background: rgba(255, 255, 255, .2);
@@ -117,7 +119,7 @@
   font-weight: bold;
   margin-bottom: 10rpx;
 }
-.result text {
+.result .word text {
   color: #333;
 }
 .result .btn {

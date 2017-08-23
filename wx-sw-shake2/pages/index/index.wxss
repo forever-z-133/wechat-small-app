@@ -292,14 +292,26 @@ progress {
 }
 .shake-count {
   font-size: 120rpx;
-  width: 120rpx;
+  /* width: 120rpx; */
   height: 120rpx;
   line-height: 120rpx;
   padding: 30rpx;
   font-weight: bold;
-  border: 1px solid;
+  /* border: 1px solid; */
   border-radius: 100%;
   margin: 0 auto;
+}
+.shake-count:before {
+  content: "";
+}
+.shake-count.active:before {
+  animation: shake_count 2s linear;
+}
+@keyframes shake_count {
+  0% {content: "Ready"}
+  50% {content: "GO"}
+  100% {content: "GO"}
+  /* 100% {filter: blur(10px)} */
 }
 .shake-text {
   font-size: 60rpx;
@@ -315,6 +327,10 @@ progress {
 }
 .shake-image image {
   height: 100%;
+  animation: shake_hand .5s infinite linear;
+}
+@keyframes shake_hand {
+  50% {transform: rotate(15deg);}
 }
 
 .bling {

@@ -12,7 +12,6 @@ var shareArr = [
   {
     title: '玩转购物地吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃',
     path: 'pages/index/index?type=0',
-    imageUrl: 'https://sum.kdcer.com/test/test.png'
   }, {
     title: '玩转购物地玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩玩',
     path: 'pages/index/index?type=1',
@@ -46,33 +45,29 @@ Page({
     progress: 0,
     maps_day: [[], [], []],
     maps_night: [[], [], []],
-    prize: [[10, false], [20, false], [30, false]],
+    prize: [10, 20, 30],
+    prize_open: -1,
     code_question: '',
     code_answers: [],
-
+    need_count: 10,
     user: {},
+    bonus: null,
+    modudu: [],
   },
   onLoad: function (opt) {
-    console.log(opt);
     app.Login(function (r, user) {
       console.log(r, user)
 
       id = app.globalData.id;
-      // user.id = id.slice(-8);
 
       if (opt.cl) {
         cl = opt.cl;
-        this.getImgCode();
       }
 
       this.start();
     }.bind(this))
   },
   start: function () {
-    wx.showLoading({
-      title: 'loading...',
-      mask: true,
-    });
     wx.request({
       url: apiUrl + 'GetList',
       data: {
@@ -85,7 +80,7 @@ Page({
 
         if (!r.data.State) {
           wx.showToast({
-            title: '可能系统除了问题',
+            title: '可能系统出了问题',
             mask: true,
             duration: 99999,
           });
@@ -108,20 +103,27 @@ Page({
             night[one.PlayType].push(one);
           }
         }
-
+        
         if (r.data.GetCollectCount > 0) {
           this.data.modal.more = true;
         } else if (cl) {
+          this.getImgCode();
           this.data.modal.justify = true;
         }
 
-        // console.log(day,night)
+        var modudu = [];
+        for (var i=1; i<=3; i++) {
+          modudu.push(baseUrl + 'modudu' + i + 's.png');
+        }
+
         this.setData({
           user: user,
           modal: this.data.modal,
           progress: r.data.count,
+          need_count: 10 - r.data.count % 10,
           maps_day: day,
           maps_night: night,
+          modudu: modudu,
         });
       }.bind(this),
       error: function (err) {
@@ -165,16 +167,10 @@ Page({
   // ------------------- 扫码
   scan: function () {
     var that = this;
-    // if (this.data.isNight !== isNight) {
-    //   wx.showModal({
-    //     title: '操作无效',
-    //     content: '本活动白天和晚上的签到任务是分开进行的哟',
-    //   });
-    //   return;
-    // }
     wx.scanCode({
       onlyFromCamera: true,
       success: function (res) {
+        wx.hideLoading();
         var cll = app.QueryString('cl', res.result);
         // console.log(cll)
         if (typeof cll == undefined) {
@@ -184,7 +180,7 @@ Page({
         } else {
           cl = cll;
           wx.showLoading({
-            title: '验证码正在飞奔而来的路上',
+            title: '获取验证码...',
             mask: true,
           });
           this.getImgCode();
@@ -200,11 +196,13 @@ Page({
     this.setData({
       nowSwiper: e.detail.current
     })
+    console.log(this.data.nowSwiper);
   },
   swiperTo: function (e) {
     var direction = parseInt(e.target.dataset.type, 10)
     var i = this.data.nowSwiper + direction;
-    i = Math.max(0, Math.min(2, i));
+    var max = this.data.isNight ? this.data.maps_day.length : this.data.maps_night.length;
+    i = Math.max(0, Math.min(max, i));
     this.setData({
       nowSwiper: i
     })
@@ -217,20 +215,17 @@ Page({
 
   // ------------------- 点击宝箱
   clickBox: function (e) {
-    var isOpen = e.currentTarget.dataset.open;
     var i = e.currentTarget.dataset.index;
-    if (!isOpen) {
-      this.setData({
-
-      })
-    }
-    console.log(isOpen, typeof isOpen)
+    var o = this.data.prize_open == i ? -1 : i;
+    this.setData({ prize_open: o });
   },
 
   // ------------------- 积满 10 个抽奖
   page_prize2: function () {
     this.data.modal.justify = false;
     this.data.modal.more = false;
+    this.data.modal.bad = false;
+    this.data.modal.result = false;
     this.data.modal.prize2 = true;
     this.setData({ modal: this.data.modal });
   },
@@ -250,9 +245,10 @@ Page({
         console.log('集签抽奖', r.data);
         wx.hideLoading();
         if (r.data.State) {
-          that.good();
+          cl = null;
+          this.good();
           this.setData({
-            prize: r.data.Bonus,
+            bonus: r.data.Bonuses[0],
           });
         } else {
           var tip = '';
@@ -269,7 +265,7 @@ Page({
             case 903: tip = '中奖数量已达上限'; break;
             case 904: tip = '今天已中奖，明天可以再来'; break;
             case 998: tip = '您没有签够指定数目的购物地哟，请查看规则'; break;
-            case 999: tip = this.bad(); return;
+            case 999: tip = '未中奖'; this.bad(); return;
           }
           wx.showModal({
             title: '抽奖失败',
@@ -277,6 +273,7 @@ Page({
             mask: true,
           });
         }
+        this.data.modal.more = false;
         this.data.modal.prize2 = false;
         this.setData({ modal: this.data.modal });
       }.bind(this),
@@ -328,7 +325,7 @@ Page({
               }
             }
           }
-          console.log('0为夜:' + n, '签到地的类:' + i);
+          console.log('0为白天:' + n, '签到地的类:' + i);
           this.setData({
             isNight: n,
             nowSwiper: i,
@@ -373,12 +370,7 @@ Page({
     this.setData({ modal: this.data.modal });
   },
   getPrize: function (e) {
-    var that = this
-    wx.showLoading({
-      title: '奖品翻滚中...',
-      mask: true,
-    });
-    // console.log(id, cl, formId)
+    var that = this;
     wx.request({
       url: apiUrl + 'GetSignLotteryBehavior',
       data: {
@@ -388,11 +380,12 @@ Page({
       },
       success: function (r) {
         console.log('抽奖', r.data);
-        wx.hideLoading();
+        // wx.hideLoading();
         if (r.data.State) {
+          cl = null;
           that.good();
           this.setData({
-            prize: r.data.Bonuses[0],
+            bonus: r.data.Bonuses[0],
           });
         } else {
           var tip = '';
@@ -420,7 +413,7 @@ Page({
         this.setData({ modal: this.data.modal });
       }.bind(this),
       error: function () {
-        wx.hideLoading();
+        // wx.hideLoading();
         wx.showToast({
           title: '抽奖失败，可能是系统问题，请关闭页面重新尝试吧',
           duration: 2500,
@@ -444,6 +437,9 @@ Page({
     this.setData({ modal: this.data.modal });
   },
   result_ok: function () {
+    if (this.data.progress && this.data.progress % 10 == 0) {
+      this.data.modal.more = true;
+    }
     this.data.modal.result = false;
     this.setData({ modal: this.data.modal });
   },
@@ -453,6 +449,9 @@ Page({
     this.setData({ modal: this.data.modal });
   },
   bad_ok: function () {
+    if (this.data.progress && this.data.progress % 10 == 0) {
+      this.data.modal.more = true;
+    }
     this.data.modal.bad = false;
     this.setData({ modal: this.data.modal });
   },

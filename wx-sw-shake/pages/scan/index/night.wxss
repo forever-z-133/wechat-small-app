@@ -3,13 +3,24 @@
   color: #7153e2;
   background: #313179;
 }
-.body.isNight:before {
-  background-position: 0 75%;
+.body-bg:after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  background: linear-gradient(#303179, #663366);
+  background-size:100% 100%;
+  opacity: 0;
+  transition: .6s;
+}
+.isNight .body-bg:after {
+  /* background-position: 0 75%; */
+  opacity: 1;
 }
 
-.isNight .body-mask {
+/* .isNight .body-mask {
   background-position: 0 90%;
-}
+} */
 
 /* .isNight .btn-rule,
 .isNight .btn-share,

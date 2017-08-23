@@ -39,9 +39,11 @@ Page({
     //       });
     //     }
     //   } else {   // 玩转购物地
-    wx.redirectTo({
-      url: '../scan/index/index' + (opt.cl ? ('?cl=' + opt.cl) : ''),
-    });
+    setTimeout(function () {
+      wx.redirectTo({
+        url: '../scan/index/index' + (opt.cl ? ('?cl=' + opt.cl) : ''),
+      });
+    }, 200);
     // wx.redirectTo({
     //   url: '../scan/index/index/',
     // });

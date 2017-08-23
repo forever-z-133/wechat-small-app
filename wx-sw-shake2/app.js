@@ -1,4 +1,9 @@
 //app.js
+var code = null;
+var user = null;
+var post_user = null;
+
+
 App({
   globalData: {
     userInfo: null,
@@ -45,84 +50,60 @@ App({
   },
 
   Login: function (cb) {
-    var that = this
-    // if (this.globalData.userInfo) {
-    //   console.log(that.globalData.code, that.globalData.post_user)
-    //   wx.request({
-    //     url: 'https://sum.kdcer.com/api/OpenShop/CodeToSession',
-    //     data: {
-    //       code: that.globalData.code,
-    //       userJson: that.globalData.post_user,
-    //     },
-    //     success: function (r3) {
-    //       // console.log('/onLogin/', r3.data);
-    //       that.globalData.main_data = r3.data;
-    //       that.globalData.id = r3.data.Unionid;
-    //       typeof cb == "function" && cb(r3.data, that.globalData.userInfo);
-    //     }
-    //   })
-    //   // typeof cb == "function" && cb(that.globalData.main_data, this.globalData.userInfo)
-    // } else {
-      // wx.showLoading({
-      //   // title: '数据',
-      // })
-      wx.login({
-        success: function (r1) {
-          // console.log('login:', r1);
-          if (r1.code) {
-            wx.getUserInfo({
-              withCredentials: true,
-              success: function (r2) {
-                // console.log('getUserInfo', r2);
-                that.globalData.userInfo = r2.userInfo
-                var data = {
-                  code: r1.code,
-                  encryptedData: r2.encryptedData,
-                  iv: r2.iv,
-                  rawData: r2.rawData,
-                  signature: r2.signature
-                }
-                var user = JSON.parse(data.rawData);
-                // console.log(user);
-                var userInfo = {
-                  Nickname: user.nickName,
-                  Gender: user.gender,
-                  City: user.city,
-                  Country: user.country,
-                  Province: user.province,
-                  Language: user.language,
-                  HeadImgUrl: user.avatarUrl,
-                }
-                that.globalData.code = r1.code;
-                that.globalData.post_user = JSON.stringify(userInfo);
-                console.log(r1.code, userInfo);
-                // console.log(userInfo);
-                // console.log(JSON.stringify(data));
-                // typeof cb == "function" && cb(that.globalData.userInfo)
-                wx.request({
-                  url: 'https://sum.kdcer.com/api/OpenShop/CodeToSession',
-                  data: {
-                    code: r1.code,
-                    userJson: JSON.stringify(userInfo),
-                    appidStr: 'wxdef1d6fbcabb2b9c',
-                    appsercetStr: 'e8978957586474f713222dc4d57a370b',
-                  },
-                  success: function (r3) {
-                    // wx.hideLoading();
-                    // console.log('/onLogin/', r3);
-                    that.globalData.main_data = r3.data;
-                    that.globalData.id = r3.data.Unionid;
-                    typeof cb == "function" && cb(r3.data, that.globalData.userInfo);
-                  }
-                })
-              }
-            })
-          } else {
-            console.log('获取用户登录态失败！' + r.errMsg)
-          }
+    var that = this;
+    wx.showLoading({
+      title: 'loading...',
+    });
+    code = null;
+    wx.login({
+      success: function (r1) {
+        // console.log('login:', r1);
+        if (!r1.code) {
+          wx.showModal({
+            title: '系统错误：未获取到 code',
+            content: JSON.stringify(r1),
+          });
+          return;
         }
-      });
-    // }
+        code = r1.code;
+        wx.getUserInfo({
+          lang: 'zh_CN',
+          withCredentials: true,
+          success: function (r2) {
+            // console.log('getUserInfo', r2);
+            that.globalData.user = r2.userInfo;
+            that.globalData.userInfo = r2.userInfo;
+
+            user = JSON.parse(r2.rawData);
+            var userInfo = {
+              Nickname: user.nickName,
+              Gender: user.gender,
+              City: user.city,
+              Country: user.country,
+              Province: user.province,
+              Language: user.language,
+              HeadImgUrl: user.avatarUrl,
+            }
+            post_user = JSON.stringify(userInfo)
+
+            wx.request({
+              url: 'https://sum.kdcer.com/api/OpenShop/CodeToSession',
+              data: {
+                code: r1.code,
+                userJson: JSON.stringify(userInfo),
+                appidStr: 'wxdef1d6fbcabb2b9c',
+                appsercetStr: 'e8978957586474f713222dc4d57a370b',
+              },
+              success: function (r3) {
+                // console.log('/onLogin/', r3.data);
+                that.globalData.id = r3.data.Unionid;
+                typeof cb == "function" && cb(r3.data, user);
+              }
+            });
+          }
+        });
+      }
+    });
   },
   Scan: function (cb) {
     var that = this

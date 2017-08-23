@@ -59,7 +59,7 @@ var page = Page({
     canStart: false,
     doorOpen: false,
     timecount: [0, 0, 0, 0, 0, 0],
-    beforeShake: ' ',
+    beforeShake: false,
     code_question: '',
     code_answers: {},
     judge_error: '',
@@ -75,23 +75,7 @@ var page = Page({
       path: 'pages/index/index',
     }
   },
-  // onLoad: function () {
-  // },
-  // error: function(err) {
-  //   console.log(err)
-  // },
-  onShow: function () {
-    if (!audio) {
-      audio = {
-        bgm: wx.createAudioContext('bgm'),
-        train: wx.createAudioContext('train'),
-        shake: wx.createAudioContext('shake'),
-      }
-    }
-    // audio.train.play()
-    // console.log(audio.train)
-    
-    var that = this;
+  onLoad: function () {
     // 获取屏幕宽高
     app.getScreenInfo(function (window) {
       winW = window.width;
@@ -103,8 +87,25 @@ var page = Page({
       title: '全城摇一摇'
     });
 
-    if (this.data.page.prize) return;
-
+    // 音频初始化
+    if (!audio) {
+      audio = {
+        bgm: wx.createAudioContext('bgm'),
+        train: wx.createAudioContext('train'),
+        ready: wx.createAudioContext('ready'),
+        shake: wx.createAudioContext('shake'),
+        good: wx.createAudioContext('good'),
+        bad: wx.createAudioContext('bad'),
+        clock: wx.createAudioContext('clock'),
+        result: wx.createAudioContext('result'),
+        finish: wx.createAudioContext('finish'),
+      };
+    }
+  },
+  error: function(err) {
+    console.log(err)
+  },
+  reset: function () {
     imgTotal = 0;
     speed = 0; item = 0;
     shakeMax = 5;
@@ -114,30 +115,29 @@ var page = Page({
     for (var i in imgs) {
       imgTotal += imgs[i][0];
     }
-    this.setData({
-      page: {
-        load: true,
-        timecount: false,
-        welcome: false,
-        rule: false,
-        start: false,
-        train: false,
-        finish: false,
-        justify: false,
-        prize: false,
-        good: false,
-        good2: false,
-        bad: false,
-        result: false,
-        tip: false,
-        bg: false,
-      }
-    })
+  },
+  onShow: function () {
+    var that = this;
+    this.reset();
 
-    // this.data.page.bad = true;
+    this.setData({
+      canStart: false,
+      doorOpen: false,
+      timecount: [0, 0, 0, 0, 0, 0],
+      beforeShake: false,
+      code_question: '',
+      code_answers: {},
+      judge_error: '',
+      prizeOpen: false,
+      baseUrl: baseUrl,
+      imgBaseUrl: imgBaseUrl,
+      imgLoadProgress: 0,
+      imgs: [],
+    });
 
     app.Login(function (r1, user) {
       console.log('入口判断', r1);
+      wx.hideLoading();
       id = r1.Unionid;
       // console.log(resource);
       var direct = false;
@@ -147,7 +147,7 @@ var page = Page({
         var now = app.convertTime(r1.Time);
         this.time(startDate, now);
       }
-      if (r1.BonusState) {
+      if (r1.BonusState) { // 已中奖
         this.data.page.welcome = true;
         this.data.page.good2 = true;
         this.setData({
@@ -166,23 +166,15 @@ var page = Page({
             title: 'debug 状态中',
           });
           direct = false;
-          // this.data.page.load = true;
-          // this.data.page.welcome = false;
-          // this.setData({
-          //   page: this.data.page
-          // })
         }
-        // this.page_welcome();
         var total = 0;
         for (var i in resource) {
           total += resource[i].length;
         }
         console.log(total, imgTotal)
         if (total >= imgTotal) {
-          // 各种初始化
           this.page_welcome();
         } else {
-          // resource = [];
           this.needImage2();
           main_start = this.page_welcome;
         }
@@ -192,38 +184,8 @@ var page = Page({
       }
       direct && this.page_welcome();
       audio.bgm.play();
-      // 其他判断在 app.js 中已跳页进行
     }.bind(this));
-
-    this.hasLoad = true;
   },
-  // onShow: function() {
-  //   if (!this.hasLoad) this.onLoad();
-  //   console.log('show')
-  // },
-  // onUnload: function() {
-  //   tick && tick.stop();
-  //   this.stopShake();
-  //   this.setData({
-  //     page: {
-  //       load: true,
-  //       timecount: false,
-  //       welcome: false,
-  //       rule: false,
-  //       start: false,
-  //       train: false,
-  //       finish: false,
-  //       justify: false,
-  //       prize: false,
-  //       good: false,
-  //       good2: false,
-  //       bad: false,
-  //       result: false,
-  //       tip: false,
-  //       bg: false,
-  //     }
-  //   })
-  // },
   showRule: function () {
     this.data.page.rule = true;
     this.setData({ page: this.data.page });
@@ -358,6 +320,8 @@ var page = Page({
       },
     });
   },
+
+  // --------------------------------- 图片加载 No.2
   needImage2: function () {
     resource = [[], [], [], [], []];
     this.load(0, 0);
@@ -367,12 +331,9 @@ var page = Page({
     this.count = this.count ? ++this.count : 1;
     if (j < imgs[i][0]) {
       var url = imgBaseUrl;
-      // console.log(url + i + '/' + j + imgs[i][1])
-      // if (j % 2 == 1) { this.load(i, ++j); return; }
       wx.downloadFile({
         url: url + i + '/' + j + imgs[i][1],
         success: function (res) {
-          // console.log(i, j)
           resource[i][j] = res.tempFilePath;
           var progress = parseInt(this.count / imgTotal * 100, 10)
           this.setData({
@@ -389,12 +350,9 @@ var page = Page({
     }
   },
 
+  // ---------------------------------- 图片加载 No.1
   needImage: function (cb) {
-    // 去加载大量图片
-    this.setData({
-      imgs: imgs,
-    });
-    // 整理资源路径，形成 resource 数组
+    this.setData({ imgs: imgs });
     let count = 0, that = this;
     for (let i = 0, l = imgs.length; i < l; i++) {
       let one = imgs[i];
@@ -419,8 +377,8 @@ var page = Page({
     main_start && main_start();
   },
 
+  // ---------------------------------- 显示页面
   page_welcome: function () {
-    // 显示首页
     this.data.page.load = false;
     this.data.page.welcome = true;
     this.setData({
@@ -430,36 +388,37 @@ var page = Page({
   page_start: function () {
     this.data.page.welcome = false;
     this.data.page.start = true;
+    audio.clock.pause();
+    audio.bgm.pause();
+    audio.ready.play();
     this.setData({
+      beforeShake: true,
       page: this.data.page
     });
-    // smooth(run, 50, 1);
-    var count = 3;
-    var T = setInterval(function () {
-      this.setData({
-        beforeShake: count,
-      });
-      if (--count < 0) {
-        clearInterval(T);
-        canClick = true;
-        this.data.page.start = false;
-        this.data.page.train = true;
-        this.setData({
-          page: this.data.page
-        });
-        ctx = wx.createCanvasContext('imgs');
-        // console.log(ctx);
-        speed = 0;
-        item = 0;
-        shakeMax = 5;
-        tick = smooth(run, 100, true);
-        this.startShake();
-        audio.bgm.pause();
-        audio.train.play();
-      }
-    }.bind(this), 1000);
+    setTimeout(function () {
+      audio.ready.pause();
+      this.page_train();
+    }.bind(this), 2000);
+  },
+  page_train: function () {
+    canClick = true;
+    this.data.page.start = false;
+    this.data.page.train = true;
+    this.setData({
+      beforeShake: false,
+      page: this.data.page,
+    });
+    ctx = wx.createCanvasContext('imgs');
+    speed = 0;
+    item = 0;
+    shakeMax = 5;
+    tick = smooth(run, 100, true);
+    this.startShake();
+    audio.bgm.pause();
+    audio.train.play();
   },
   page_finish: function () {
+    audio.finish.play();
     this.getImgCode();
     this.data.page.load = false;
     this.data.page.finish = true;
@@ -475,6 +434,8 @@ var page = Page({
     }.bind(this), 1800);
   },
   page_prize: function () {
+    audio.finish.pause();
+    audio.result.play();
     this.data.page.justify = false;
     this.data.page.prize = true;
     this.setData({
@@ -482,6 +443,9 @@ var page = Page({
     });
   },
   page_result: function () {
+    audio.bad.pause();
+    audio.good.pause();
+    audio.result.play();
     this.data.page.prize = false;
     this.data.page.result = true;
     this.setData({
@@ -489,6 +453,8 @@ var page = Page({
     });
   },
   page_good: function () {
+    audio.result.pause();
+    audio.good.play();
     this.data.page.prize = false;
     this.data.page.good = true;
     this.setData({
@@ -496,12 +462,22 @@ var page = Page({
     });
   },
   page_bad: function () {
+    audio.result.pause();
+    audio.bad.play();
     this.data.page.prize = false;
     this.data.page.bad = true;
     this.setData({
       page: this.data.page,
     });
   },
+  result_ok: function() {
+    wx.showModal({
+      title: '每位用户只能中奖一次哟',
+      content: '请在领奖时间内前往领奖地点凭此二维码领取精美礼品。',
+    });
+  },
+
+
   // 图形验证码
   getImgCode: function () {
     var that = this;

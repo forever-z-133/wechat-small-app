@@ -62,7 +62,8 @@
     <image src="{{imgBaseUrl}}0/0.jpg" class="bg"></image>
     <view class="bg modal-bg"></view>
     <view class="modal-box">
-      <view class="shake-count">{{beforeShake}}</view>
+       <!-- <view class="shake-count">{{beforeShake}}</view>  -->
+       <view class="shake-count {{beforeShake?'active':''}}"></view> 
       <view class="shake-text">赶紧摇一摇</view>
       <view class="shake-image">
         <image src="{{baseUrl}}shake.png"></image>
@@ -141,7 +142,7 @@
       <view class="tip-box">
         <image src="{{baseUrl}}good.png"></image>
         <text>哎哟喂！恭喜您中奖啦！</text>
-        <navigator url="/pages/scan/prize/prize" class="btn btn-red">去领奖</navigator>
+        <navigator url="/pages/scan/prize/prize" class="btn btn-red">去个人奖品中心（合并后有）</navigator>
         <!-- <view class="btn btn-red" bindtap="page_result"></view> -->
       </view>
     </view>
@@ -152,7 +153,7 @@
     <view class="modal-box">
       <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
       <view class="tip-box">
-        <image src="{{baseUrl}}good.png"></image>
+        <!-- <image src="{{baseUrl}}good.png"></image> -->
         <text>还差那么一丢丢，没中奖。</text>
         <!-- <view class="btn btn-red">好吧</view> -->
       </view>
@@ -170,7 +171,7 @@
         <view class="word"><view>奖品名称：</view><text>{{prize.GiftName}}</text></view>
         <view class="word"><view>领奖时间：</view><text>{{prize.Time}}</text></view>
         <view class="word"><view>领奖地点：</view><text>{{prize.Address}}</text></view>
-        <view class="btn btn-red">太棒了</view>
+        <view class="btn btn-red" bindtap="result_ok">太棒了</view>
       </view>
     </view>
   </view>
@@ -189,7 +190,13 @@
 </view>
 
 <view class="resource-load">
-  <audio src="{{baseUrl}}bgm.mp3" id="bgm" loop binderror="error"></audio>
-  <audio src="{{baseUrl}}train.wav" id="train" loop binderror="error"></audio>
-  <audio src="{{baseUrl}}yao.mp3" id="shake" binderror="error"></audio>
+  <audio src="{{baseUrl}}media/bgm.mp3" id="bgm" loop binderror="error"></audio>
+  <audio src="{{baseUrl}}media/train.wav" id="train" loop binderror="error"></audio>
+  <audio src="{{baseUrl}}media/ready.wav" id="ready" binderror="error"></audio>
+  <audio src="{{baseUrl}}media/yao.mp3" id="shake" binderror="error"></audio>
+  <audio src="{{baseUrl}}media/good.mp3" id="good" binderror="error"></audio>
+  <audio src="{{baseUrl}}media/bad.mp3" id="bad" binderror="error"></audio>
+  <audio src="{{baseUrl}}media/didadida.mp3" id="clock" loop binderror="error"></audio>
+  <audio src="{{baseUrl}}media/wonderful.mp3" id="result" binderror="error"></audio>
+  <audio src="{{baseUrl}}media/finish.mp3" id="finish" binderror="error"></audio>
 </view>

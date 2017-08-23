@@ -1,6 +1,7 @@
 <!--index.wxml-->
 <view class="body {{isNight ? 'isNight' : 'isDay'}}">
-  <view class="wrap-bg">
+  <view class="bg wrap-bg">
+    <view class="body-bg"></view>
     <image src="{{baseUrl}}{{isNight?'bg-logo3.png':'bg-logo2.png'}}" class="bg-logo"></image>
   </view>
   <view class="main">
@@ -35,16 +36,18 @@
     </view>
     <view class="map">
       <view class="wrap-bg">
-        <view class="body-mask"></view>
+        <view class="body-mask" style="background-image:url({{baseUrl}}{{isNight?'list-bg2.png':'list-bg1.png'}})"></view>
       </view>
       <swiper class="swiper" wx:if="{{isNight==false}}" current="{{nowSwiper}}" bindchange="swiperChange">
         <block wx:for="{{maps_day}}" wx:key="index" wx:for-item="part">
           <swiper-item class="part">
+            <!-- <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{1+index}}s.png)"></view>
+            <image class="main-title" src="{{baseUrl}}main-title{{index+1}}.png"></image> -->
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
                 <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="clickItem">
-                  <image src="{{item.Url ? baseUrl+item.Url:''}}" class="item-img"></image>
-                  <text class="item-name text">{{item.Name}}</text>
+                  <image src="{{item.Url?item.Url:baseUrl+'default.jpg'}}" class="item-img"></image>
+                  <!-- <text class="item-name text">{{item.Name}}</text> -->
                 </view>
               </block>
             </view>
@@ -54,20 +57,21 @@
       <swiper class="swiper" wx:if="{{isNight==true}}" current="{{nowSwiper}}" bindchange="swiperChange">
         <block wx:for="{{maps_night}}" wx:key="index" wx:for-item="part">
           <swiper-item class="part">
+            <!-- <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{1+index}}s.png)"></view>
+            <image class="main-title" src="{{baseUrl}}main-title{{index+1}}.png"></image> -->
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
                 <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="clickItem">
-                  <image src="{{item.Url ? baseUrl+item.Url:''}}" class="item-img"></image>
-                  <text class="item-name text">{{item.Name}}</text>
+                  <image src="{{item.Url?item.Url:baseUrl+'default.jpg'}}" class="item-img"></image>
+                  <!-- <text class="item-name text">{{item.Name}}</text> -->
                 </view>
               </block>
             </view>
           </swiper-item>
         </block>
       </swiper>
-      <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{nowSwiper}}s.png)">
-      </view>
-      <image src="{{baseUrl}}main-title{{nowSwiper}}.png" class="main-title"></image>
+       <view class="modudu-box" style="background-image: url({{modudu[nowSwiper]}})"></view>
+      <image src="{{baseUrl}}main-title{{nowSwiper+1}}.png" class="main-title"></image> 
       <image src="{{baseUrl}}arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-right {{nowSwiper>1?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
     </view>
@@ -78,10 +82,13 @@
         </view>
       </view>
       <view class="more-prize-box">
-        <block wx:for="{{[10, 20, 30]}}" wx:key="*this">
-          <view class="prize-box {{index==0 ? 'open' :''}}" data-index="{{item}}" data-open="{{true}}" bindtap="clickBox">
+        <block wx:for="{{prize}}" wx:key="*this">
+          <view class="prize-box {{item<=progress?'open':''}}" data-index="{{index}}" bindtap="clickBox">
             <view class="box" style="background-image: url({{baseUrl}}prize-box.png)"></view>
-            <view class="box-tip" style="background-image: url({{baseUrl}}box-tip.png)"></view>
+            <view wx:if="{{progress<=30}}" class="box-tip {{index==prize_open?'showTip':''}}" style="background-image: url({{baseUrl}}box-tip.png)">
+              <text wx:if="{{progress==30}}">您已使用三次额外抽奖机会，真厉害</text>
+              <text>您还需要签到{{10-progress%10}}次获得额外抽奖机会哟</text>
+            </view>
             <text class="box-num">{{item}}</text>
           </view>
         </block>
@@ -201,7 +208,7 @@
     <button form-type="submit">
       <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
         <view class="finger"></view>
-        <view class="tip">签到成功可抽奖</view>
+        <view class="tip">集签10次可抽奖</view>
       </view>
     </button>
   </form>
@@ -213,12 +220,12 @@
   <view class="bg" style="background: url({{baseUrl}}prize-bg.jpg) center / 100% 100%"></view>
   <view class="modal-box">
     <view class="qrcode">
-      <image src="{{prize.QrCode}}"></image>
-      <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{prize.Take}}"></image>
+      <image src="{{bonus.QRCode}}"></image>
+      <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{bonus.Take}}"></image>
     </view>
-    <view class="title text">{{prize.GiftName || '奖品名称'}}</view>
-    <view class="word text">兑换时间：<text>{{prize.Time || '0000.00.00'}}</text></view>
-    <view class="word text2">兑换地点：<text>{{prize.Address || '上海购物节活动组委会'}}</text></view>
+    <view class="title text">{{bonus.GiftName || '奖品名称'}}</view>
+    <view class="word text">兑换时间：<text>{{bonus.Time || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换地点：<text>{{bonus.Address || '上海购物节活动组委会'}}</text></view>
     <view class="btn btn-ok" bindtap="result_ok">
       <image src="{{baseUrl}}btn-orange.png"></image>
       <text>返回</text>

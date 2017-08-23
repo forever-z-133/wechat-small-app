@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .page > view {
   position: absolute;
@@ -69,6 +69,9 @@ button {
   line-height: 1;
   font: inherit;
   background: none;
+}
+button:after {
+  border: none;
 }
 swiper {
   height: 100%;
