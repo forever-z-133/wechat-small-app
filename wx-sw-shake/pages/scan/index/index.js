@@ -57,16 +57,26 @@ Page({
     detail: [],
   },
   onLoad: function (opt) {
+    if (opt.cl) {
+      cl = opt.cl;
+    }
+    // app.Login(function (r, user) {
+    //   console.log(r, user)
+
+    //   id = app.globalData.id;
+
+    //   if (opt.cl) {
+    //     cl = opt.cl;
+    //   }
+
+    // }.bind(this))
     app.Login(function (r, user) {
       console.log(r, user)
 
       id = app.globalData.id;
 
-      if (opt.cl) {
-        cl = opt.cl;
-      }
-
       this.start();
+
     }.bind(this))
   },
   start: function () {
@@ -138,6 +148,7 @@ Page({
         });
       }.bind(this),
       error: function (err) {
+        console.log(err);
         wx.showToast({
           title: '系统出错了',
           mask: true,
@@ -147,15 +158,16 @@ Page({
     });
   },
   onShow: function () {
-    var detail = [];
-    for (var i=0; i<10; i++) {
-      detail.push({
-        url: baseUrl + 'default.jpg',
-        name: '上海环球港迪士尼全城摇一摇',
-        address: '普陀区金沙江路内环高架路交叉口，上海市普陀区中山北路3302号',
-      });
-    }
-    this.setData({ detail: detail });
+
+    // var detail = [];
+    // for (var i=0; i<10; i++) {
+    //   detail.push({
+    //     url: baseUrl + 'default.jpg',
+    //     name: '上海环球港迪士尼全城摇一摇',
+    //     address: '普陀区金沙江路内环高架路交叉口，上海市普陀区中山北路3302号',
+    //   });
+    // }
+    // this.setData({ detail: detail });
   },
   // ------------------- 分享
   onShareAppMessage: function () {
@@ -258,11 +270,12 @@ Page({
     this.data.modal.prize2 = true;
     this.setData({ modal: this.data.modal });
   },
-  getPrize2: function () {
+  getPrize2: function (e) {
     wx.showLoading({
       title: '勤奋的奖励马上就到...',
       mask: true,
     });
+    formId = e.detail.formId;
     wx.request({
       url: apiUrl + 'GetCollectLotteryBehavior',
       data: {
@@ -275,6 +288,8 @@ Page({
         wx.hideLoading();
         if (r.data.State) {
           cl = null;
+          formId = null;
+          // this.data.modal.prize2 = true;
           this.good();
           this.setData({
             bonus: r.data.Bonuses[0],
@@ -294,7 +309,7 @@ Page({
             case 903: tip = '中奖数量已达上限'; break;
             case 904: tip = '今天已中奖，明天可以再来'; break;
             case 998: tip = '您没有签够指定数目的购物地哟，请查看规则'; break;
-            case 999: tip = '未中奖'; this.bad(); return;
+            case 999: this.bad(); break;
           }
           wx.showModal({
             title: '抽奖失败',
@@ -303,7 +318,6 @@ Page({
           });
         }
         this.data.modal.more = false;
-        this.data.modal.prize2 = false;
         this.setData({ modal: this.data.modal });
       }.bind(this),
       error: function () {
@@ -317,7 +331,8 @@ Page({
     formId = e.detail.formId;
     var t = e.target.dataset.type;
     if (t == 'collect') {
-      this.getPrize2();
+      this.good();
+      // this.getPrize2();
     } else {
       this.signUp();
     }
@@ -360,7 +375,6 @@ Page({
             nowSwiper: i,
             maps_night: this.data.maps_night,
             maps_day: this.data.maps_day,
-            progress: Math.min(30, ++this.data.progress),
           });
         } else {
           var tip = '';
@@ -409,6 +423,7 @@ Page({
       },
       success: function (r) {
         console.log('抽奖', r.data);
+        var progress = Math.min(30, ++this.data.progress);
         // wx.hideLoading();
         if (r.data.State) {
           cl = null;
@@ -425,19 +440,27 @@ Page({
             case 897: tip = '验证码错误，也可能是系统错误'; break;
             case 898: tip = '系统错误'; break;
             case 899: tip = '身份错误'; break;
-            case 900: tip = '您已中奖'; this.good(); break;
+            case 900: tip = '您已中奖'; break;
             case 901: tip = '已超过抽奖次数'; break;
             case 902: tip = '奖品已发完'; break;
             case 903: tip = '中奖数量已达上限'; break;
             case 904: tip = '今天已中奖，明天可以再来'; break;
-            case 999: tip = this.bad(); return;
+            case 999: this.bad(); break;
           }
-          wx.showModal({
+          tip && wx.showModal({
             title: '抽奖失败',
             content: tip || '系统错误',
             mask: true,
           });
         }
+        // this.data.modal.prize2 = true;
+        // if (progress % 10 < 1) {
+        //   this.data.modal.more = true;
+        // }
+        this.setData({
+          // modal: this.data.modal,
+          progress: progress,
+        });
         // this.data.modal.prize = false;
         // this.setData({ modal: this.data.modal });
       }.bind(this),
@@ -522,14 +545,17 @@ Page({
   },
   getImgCode: function () {
     var that = this;
+    // wx.showLoading({
+    //   title: '验证码准备中...',
+    // });
     wx.request({
       url: 'https://sum.kdcer.com/api/OpenShop/GetRndCode',
       data: {
         Unionid: id,
       },
       success: function (r) {
-        wx.hideLoading();
         console.log('验证', r.data);
+        wx.hideLoading();
         var answer = that.outOrder(r.data.answerPic);
         that.rightAnswer = r.data.Right;
         that.setData({

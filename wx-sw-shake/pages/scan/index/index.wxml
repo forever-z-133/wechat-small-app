@@ -88,7 +88,8 @@
             <view wx:if="{{progress<=30}}" class="box-tip {{index==prize_open?'showTip':''}}" style="background-image: url({{baseUrl}}box-tip.png)">
               <text wx:if="{{progress==30}}">您已使用三次额外抽奖机会，真厉害</text>
               <!-- <text>您还需要签到{{10-progress%10}}次获得额外抽奖机会哟</text> -->
-              <text>您还需要签到{{index*10+10-progress}}次获得额外抽奖机会哟</text>
+              <text wx:if="{{(index*10+10-progress)<0}}">您已中奖</text>
+              <text wx:if="{{(index*10+10-progress)>=0}}">您还需要签到{{index*10+10-progress}}次获得额外抽奖机会哟</text>
             </view>
             <text class="box-num">{{item}}</text>
           </view>
@@ -203,9 +204,14 @@
   <view class="modal-box more-box">
     <image src="{{baseUrl}}more.png" class="more-img"></image>
     <!-- <view class="btn btn-close-rule" bindtap="page_prize2"> -->
-    <view class="btn btn-close-rule" bindtap="getPrize2">
+    <!-- <view class="btn btn-close-rule" bindtap="getPrize2"> -->
+    <view class="btn btn-close-rule">
       <image src="{{baseUrl}}btn-purple.png"></image>
-      <text>抽奖</text>
+      <form bindsubmit="getPrize2" report-submit>
+        <button form-type="submit">
+          <text>抽奖</text>
+      </button>
+      </form>
     </view>
   </view>
 </view>
@@ -215,14 +221,20 @@
 <view class="modal prize2 {{modal.prize2?'in':''}}">
   <view class="bg modal-bg"></view>
   <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
-  <form bindsubmit="click_get_prize" data-type="collect" report-submit class="modal-box">
+  <!-- <form bindsubmit="click_get_prize" data-type="collect" report-submit class="modal-box">
     <button form-type="submit">
       <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
         <view class="finger"></view>
         <view class="tip">集签10次可抽奖</view>
       </view>
     </button>
-  </form>
+  </form> -->
+  <view class="modal-box">
+    <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)" bindtap="prize2_ok">
+      <view class="finger"></view>
+      <view class="tip">集签10次可抽奖</view>
+    </view>
+  </view>
 </view>
 
 
@@ -253,15 +265,15 @@
       <view class="list-box">
         <block wx:for="{{isNight?maps_night:maps_day}}" wx:key="unique" wx:for-item="part">
           <block wx:for="{{part}}" wx:key="unique">
-          <view class="detail-item">
-            <view class="image">
-              <image src="{{item.Url}}"></image>
+            <view class="detail-item">
+              <view class="image">
+                <image src="{{item.Url}}"></image>
+              </view>
+              <view class="content">
+                <view class="title text">{{item.Name}}</view>
+                <view class="word text2">{{item.Address}}</view>
+              </view>
             </view>
-            <view class="content">
-              <view class="title text">{{item.Name}}</view>
-              <view class="word text2">{{item.Address}}</view>
-            </view>
-          </view>
           </block>
         </block>
       </view>

@@ -67,6 +67,7 @@ button {
   margin: 0;
   line-height: 1;
   font: inherit;
+  color: inherit;
   background: none;
 }
 button:after {
