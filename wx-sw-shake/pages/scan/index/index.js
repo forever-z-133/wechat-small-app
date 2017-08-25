@@ -30,6 +30,7 @@ var shareArr = [
 Page({
   data: {
     modal: {
+      loading: true,
       rule: false,
       detail: false,
       justify: false,
@@ -53,6 +54,7 @@ Page({
     user: {},
     bonus: null,
     modudu: [],
+    detail: [],
   },
   onLoad: function (opt) {
     app.Login(function (r, user) {
@@ -78,6 +80,8 @@ Page({
         wx.hideLoading();
         main_data = r.data;
 
+        this.data.modal.loading = false;
+
         if (!r.data.State) {
           wx.showToast({
             title: '可能系统出了问题',
@@ -97,12 +101,19 @@ Page({
           var one = r.data.list[i];
           if (one.LotteryType == 0) {
             if (!day[one.PlayType]) day[one.PlayType] = [];
+            // if (one.PlayType = 3) {}
             day[one.PlayType].push(one);
-          } else {
+          } else if (one.LotteryType == 1) {
             if (!night[one.PlayType]) night[one.PlayType] = [];
+            night[one.PlayType].push(one);
+          } else {
+            if (!day[one.PlayType]) day[one.PlayType] = [];
+            if (!night[one.PlayType]) night[one.PlayType] = [];
+            day[one.PlayType].push(one);
             night[one.PlayType].push(one);
           }
         }
+        // console.log(day, night)
         
         if (r.data.GetCollectCount > 0) {
           this.data.modal.more = true;
@@ -113,7 +124,7 @@ Page({
 
         var modudu = [];
         for (var i=1; i<=3; i++) {
-          modudu.push(baseUrl + 'modudu' + i + 's.png');
+          modudu.push(baseUrl + 'modudu' + i + 't.png');
         }
 
         this.setData({
@@ -136,7 +147,15 @@ Page({
     });
   },
   onShow: function () {
-
+    var detail = [];
+    for (var i=0; i<10; i++) {
+      detail.push({
+        url: baseUrl + 'default.jpg',
+        name: '上海环球港迪士尼全城摇一摇',
+        address: '普陀区金沙江路内环高架路交叉口，上海市普陀区中山北路3302号',
+      });
+    }
+    this.setData({ detail: detail });
   },
   // ------------------- 分享
   onShareAppMessage: function () {
@@ -146,8 +165,9 @@ Page({
   // ------------------- 切换白天黑夜
   DayOrNight: function () {
     this.setData({
+      nowSwiper: 0,
       isNight: !this.data.isNight
-    })
+    });
   },
 
   // ------------------- 规则页
@@ -162,6 +182,16 @@ Page({
     this.setData({
       modal: this.data.modal,
     });
+  },
+
+  // ------------------- 详情页
+  open_detail: function () {
+    this.data.modal.detail = true;
+    this.setData({ modal: this.data.modal });
+  },
+  close_detail: function () {
+    this.data.modal.detail = false;
+    this.setData({ modal: this.data.modal });
   },
 
   // ------------------- 扫码
@@ -195,8 +225,7 @@ Page({
   swiperChange: function (e) {
     this.setData({
       nowSwiper: e.detail.current
-    })
-    console.log(this.data.nowSwiper);
+    });
   },
   swiperTo: function (e) {
     var direction = parseInt(e.target.dataset.type, 10)
@@ -231,7 +260,7 @@ Page({
   },
   getPrize2: function () {
     wx.showLoading({
-      title: '你很棒棒哟...',
+      title: '勤奋的奖励马上就到...',
       mask: true,
     });
     wx.request({
@@ -383,7 +412,7 @@ Page({
         // wx.hideLoading();
         if (r.data.State) {
           cl = null;
-          that.good();
+          this.page_prize();
           this.setData({
             bonus: r.data.Bonuses[0],
           });
@@ -409,8 +438,8 @@ Page({
             mask: true,
           });
         }
-        this.data.modal.prize = false;
-        this.setData({ modal: this.data.modal });
+        // this.data.modal.prize = false;
+        // this.setData({ modal: this.data.modal });
       }.bind(this),
       error: function () {
         // wx.hideLoading();
@@ -480,7 +509,8 @@ Page({
     // console.log(this.myAnswer, this.rightAnswer);
     var that = this;
     if (this.myAnswer == this.rightAnswer) { // 答对
-      this.page_prize();
+      this.click_get_prize(e);
+      // this.page_prize();
     } else {  // 答错
       this.getImgCode();
       wx.showModal({

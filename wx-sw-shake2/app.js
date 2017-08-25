@@ -105,27 +105,6 @@ App({
       }
     });
   },
-  Scan: function (cb) {
-    var that = this
-    wx.scanCode({
-      success: function (res) {
-        console.log(res)
-        if (/ok/.test(res.errMsg)) {
-          var url = res.result
-          var opt = that.QueryString('sd', url);
-          console.log(opt)
-          // var path = res.path
-          typeof cb == 'function' && cb(res)
-        } else if (/cancel/.test(res.errMsg)) {
-
-        } else {
-          wx.showToast({
-            title: '调取扫一扫功能失败',
-          })
-        }
-      }
-    })
-  },
 
   // 字符串寻找键值对
   QueryString: function (name, str) {

@@ -8,12 +8,13 @@ var winW = 0, winH = 0;
 var imgTotal = 0;
 // var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake/';
 // var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']];
-var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake2/';
+var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
 var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
 var resource = [];
 var startDate = new Date(2017, 8, 9, 20, 0, 0);
 var id = 'ozlgTuNQqLo1xe2QaUdvZt81tsgA';
 var main_start = null;
+var left = 0;
 
 var audio = null;
 
@@ -55,11 +56,13 @@ var page = Page({
       result: false,
       tip: false,
       bg: false,
+      shake2: false,
     },
     canStart: false,
     doorOpen: false,
     timecount: [0, 0, 0, 0, 0, 0],
     beforeShake: false,
+    beforeShake2: false,
     code_question: '',
     code_answers: {},
     judge_error: '',
@@ -68,6 +71,7 @@ var page = Page({
     imgBaseUrl: imgBaseUrl,
     imgLoadProgress: 0,
     imgs: [],
+    left: 0,
   },
   onShareAppMessage: function () {
     return {
@@ -110,6 +114,7 @@ var page = Page({
     speed = 0; item = 0;
     shakeMax = 5;
     shakeTimer = null;
+    shakeTimer2 = null;
     canClick = false;
     tick && tick.stop();
     for (var i in imgs) {
@@ -121,10 +126,29 @@ var page = Page({
     this.reset();
 
     this.setData({
+      page: {
+        load: true,
+        timecount: false,
+        welcome: false,
+        rule: false,
+        start: false,
+        train: false,
+        finish: false,
+        justify: false,
+        prize: false,
+        good: false,
+        good2: false,
+        bad: false,
+        result: false,
+        tip: false,
+        bg: false,
+        shake2: false,
+      },
       canStart: false,
       doorOpen: false,
       timecount: [0, 0, 0, 0, 0, 0],
       beforeShake: false,
+      beforeShake2: false,
       code_question: '',
       code_answers: {},
       judge_error: '',
@@ -133,6 +157,8 @@ var page = Page({
       imgBaseUrl: imgBaseUrl,
       imgLoadProgress: 0,
       imgs: [],
+      reload: false,
+      left: 0,
     });
 
     app.Login(function (r1, user) {
@@ -141,6 +167,7 @@ var page = Page({
       id = r1.Unionid;
       // console.log(resource);
       var direct = false;
+      left = r1.HistoryState;
       if (r1.HourState) {  // 当天倒计时
         direct = true;
         // this.page_welcome();
@@ -155,7 +182,7 @@ var page = Page({
         });
         return;
       }
-      if (r1.HistoryState) { // 已抽未中奖
+      if (r1.HistoryState < 1) { // 已抽未中奖
         this.page_welcome();
         this.page_bad();
         return;
@@ -180,11 +207,17 @@ var page = Page({
         }
         this.setData({
           canStart: true,
+          left: left,
         });
       }
       direct && this.page_welcome();
       audio.bgm.play();
     }.bind(this));
+  },
+  reload: function() {
+    wx.reLaunch({
+      url: '/pages/index/index',
+    });
   },
   showRule: function () {
     this.data.page.rule = true;
@@ -292,7 +325,7 @@ var page = Page({
             case 901: tip = '您抽过了'; break;
             case 899: tip = '您的身份丢失，重新再来'; break;
             case 898: tip = '系统错误'; break;
-            case 999: that.page_bad(); return;
+            case 999: that.page_bad('reload'); return;
             case 904: tip = '您已中奖'; that.page_result(); return;
             case 900: tip = '您已中奖'; that.page_result(); return;
           };
@@ -396,12 +429,20 @@ var page = Page({
       page: this.data.page
     });
     setTimeout(function () {
-      audio.ready.pause();
-      this.page_train();
+      this.setData({ beforeShake2: true })
+    }.bind(this), 1400);
+    setTimeout(function () {
+      // audio.ready.pause();
+      // this.page_train();
+      canClick = true;
+      this.startShake();
+      this.setData({
+        beforeShake: false,
+        beforeShake2: false,
+      });
     }.bind(this), 2000);
   },
   page_train: function () {
-    canClick = true;
     this.data.page.start = false;
     this.data.page.train = true;
     this.setData({
@@ -413,7 +454,6 @@ var page = Page({
     item = 0;
     shakeMax = 5;
     tick = smooth(run, 100, true);
-    this.startShake();
     audio.bgm.pause();
     audio.train.play();
   },
@@ -461,13 +501,15 @@ var page = Page({
       page: this.data.page,
     });
   },
-  page_bad: function () {
+  page_bad: function (re) {
     audio.result.pause();
     audio.bad.play();
     this.data.page.prize = false;
     this.data.page.bad = true;
     this.setData({
+      left: Math.max(--this.data.left, 0),
       page: this.data.page,
+      reload: re ? true : false,
     });
   },
   result_ok: function() {
@@ -525,7 +567,7 @@ var page = Page({
     this.shake = Shake(function () {
       if (!canClick) return;
       this.one();
-    }.bind(this), 60, 200);
+    }.bind(this), 50, 200);
   },
   stopShake: function () {
     this.shake && this.shake.stop();
@@ -534,11 +576,13 @@ var page = Page({
 
   // 摇地铁效果
   one: function () {
+    if (!this.data.page.train) {
+      this.page_train(); return;
+    }
     shakeMax--;
     audio.shake.pause();
     audio.shake.seek(0);
     audio.shake.play();
-    clearInterval(shakeTimer);
     // shakeTimerFlag = false;
     if (shakeMax > 0) {
       // audio.bgm.volume = 1;
@@ -549,13 +593,25 @@ var page = Page({
       tick.stop();
       tick = smooth(this.end1, 50, true);
     }
-    console.log(speed);
+    clearInterval(shakeTimer);
     shakeTimer = setInterval(function () {
       // if (!shakeTimerFlag) return;
       // shakeTimerFlag = true;
       speed = Math.max(0, --speed);
       // audio.bgm.volume = 0.3;
-    }, 500)
+    }, 500);
+
+    clearTimeout(shakeTimer2);
+    this.data.page.shake2 = false;
+    this.setData({ page: this.data.page });
+    shakeTimer2 = setTimeout(function () {
+      if (speed < 1) {
+        this.data.page.shake2 = true;
+        this.setData({ page: this.data.page });
+        console.log(this.data.page, shake2)
+      }
+    }.bind(this), 2000);
+    console.log(this.data.page.shake2)
   },
   end1: function () {
     this.stopShake();
@@ -599,6 +655,7 @@ function throttle(method, context) {
 var shakeMax = 5;
 var shakeTimer = null;
 var shakeTimerFlag = false;
+var shakeTimer2 = null; // 不摇显示继续摇
 
 // 每个动画帧的运算
 var speed = 0, item = 0;

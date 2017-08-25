@@ -17,6 +17,10 @@ progress {
   background-position: 0 40rpx;
   background-repeat: repeat-x;
   overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 .progress-bar {
   position: relative;
@@ -302,16 +306,19 @@ progress {
   margin: 0 auto;
 }
 .shake-count:before {
-  content: "";
+  content: " ";
 }
 .shake-count.active:before {
+  content: "Ready";
   animation: shake_count 2s linear;
 }
+.shake-count.active2:before {
+  content: "GO";
+}
 @keyframes shake_count {
-  0% {content: "Ready"}
-  50% {content: "GO"}
-  100% {content: "GO"}
-  /* 100% {filter: blur(10px)} */
+  from {content: "Ready"}
+  70% {content: "GO"}
+  to {content: "GO"}
 }
 .shake-text {
   font-size: 60rpx;
@@ -367,7 +374,7 @@ progress {
   margin: 10rpx 10rpx;
 }
 .answers image.active {
-  box-shadow: 0 0 0 1px red;
+  box-shadow: 0 0 0 3px red;
 }
 
 .modudu .right,
@@ -388,7 +395,7 @@ progress {
   text-align: center;
   background-size: 100% 100%;
   color: #ab0a07;
-  font-size: 40rpx;
+  font-size: 35rpx;
   box-sizing: border-box;
 }
 

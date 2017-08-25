@@ -40,13 +40,12 @@
   color: #fff;
   font-weight: bold;
   text-align: center;
-  padding: 0.3em 1em 0.4em;
+  padding: 0.4em 1em 0.7em;
   text-shadow: -1px -1px 0 #000;
   background-position: center;
   background-size: 100% 100%;
   border-radius: 10rpx;
   overflow: hidden;
-  font-size: 0.9em;
 }
 
 .btn > image {
@@ -527,4 +526,86 @@
   width: 5em;
   padding: .6em 1em .9em;
   transform: translate(-50%, 0);
+}
+
+
+.detail .modal-box {
+  width: 76%;
+  height: 90%;
+  margin-top: 1%;
+}
+.detail .close {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  width: 100rpx;
+  height: 100rpx;
+}
+.detail-list {
+  height: calc(100% - 80rpx);
+  padding-top: 30rpx;
+  box-sizing: border-box;
+}
+.detail .bottom {
+  position: relative;
+  height: 80rpx;
+  font-size: 20rpx;
+  text-align: center;
+  color: #3924e7;
+  padding-top: 55rpx;
+  margin: 0 20rpx;
+  box-sizing: border-box;
+}
+.detail .up {
+  position: absolute;
+  top: 5rpx;
+  left: 50%;
+  margin-left: -35rpx;
+  width: 70rpx;
+  height: 50rpx;
+}
+.detail .kdc-logo {
+  position: absolute;
+  top: 5rpx;
+  right: 0;
+  width: 70rpx;
+  height: 70rpx;
+}
+.detail-item {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 20rpx 0;
+}
+.detail-item:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  margin-left: -100rpx;
+  height: 5rpx;
+  width: 300rpx;
+  background: radial-gradient(#f869ff, transparent);
+}
+.detail-item image {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 100%;
+  border: 2px solid #f654fe;
+}
+.detail-item .content {
+  flex-grow: 1;
+  margin-left: 15rpx;
+  overflow:hidden;
+}
+.detail-item .title {
+  color: #673dec;
+  font-weight: bold;
+  font-size: 35rpx;
+  margin-bottom: 10rpx;
+}
+.detail-item .word {
+  font-size: 30rpx;
 }

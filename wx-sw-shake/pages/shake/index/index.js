@@ -8,12 +8,13 @@ var winW = 0, winH = 0;
 var imgTotal = 0;
 // var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake/';
 // var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']];
-var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake2/';
+var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
 var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
 var resource = [];
 var startDate = new Date(2017, 8, 9, 20, 0, 0);
 var id = 'ozlgTuNQqLo1xe2QaUdvZt81tsgA';
 var main_start = null;
+var left = 0;
 
 var audio = null;
 
@@ -55,11 +56,13 @@ var page = Page({
       result: false,
       tip: false,
       bg: false,
+      shake2: false,
     },
     canStart: false,
     doorOpen: false,
     timecount: [0, 0, 0, 0, 0, 0],
-    beforeShake: ' ',
+    beforeShake: false,
+    beforeShake2: false,
     code_question: '',
     code_answers: {},
     judge_error: '',
@@ -68,6 +71,7 @@ var page = Page({
     imgBaseUrl: imgBaseUrl,
     imgLoadProgress: 0,
     imgs: [],
+    left: 0,
   },
   onShareAppMessage: function () {
     return {
@@ -75,23 +79,7 @@ var page = Page({
       path: 'pages/index/index',
     }
   },
-  // onLoad: function () {
-  // },
-  // error: function(err) {
-  //   console.log(err)
-  // },
-  onShow: function () {
-    if (!audio) {
-      audio = {
-        bgm: wx.createAudioContext('bgm'),
-        train: wx.createAudioContext('train'),
-        shake: wx.createAudioContext('shake'),
-      }
-    }
-    // audio.train.play()
-    // console.log(audio.train)
-    
-    var that = this;
+  onLoad: function () {
     // 获取屏幕宽高
     app.getScreenInfo(function (window) {
       winW = window.width;
@@ -100,20 +88,43 @@ var page = Page({
 
     // 改变标题名称
     wx.setNavigationBarTitle({
-      title: '玩转购物地'
+      title: '全城摇一摇'
     });
 
-    if (this.data.page.prize) return;
-
+    // 音频初始化
+    if (!audio) {
+      audio = {
+        bgm: wx.createAudioContext('bgm'),
+        train: wx.createAudioContext('train'),
+        ready: wx.createAudioContext('ready'),
+        shake: wx.createAudioContext('shake'),
+        good: wx.createAudioContext('good'),
+        bad: wx.createAudioContext('bad'),
+        clock: wx.createAudioContext('clock'),
+        result: wx.createAudioContext('result'),
+        finish: wx.createAudioContext('finish'),
+      };
+    }
+  },
+  error: function(err) {
+    console.log(err)
+  },
+  reset: function () {
     imgTotal = 0;
     speed = 0; item = 0;
     shakeMax = 5;
     shakeTimer = null;
+    shakeTimer2 = null;
     canClick = false;
     tick && tick.stop();
     for (var i in imgs) {
       imgTotal += imgs[i][0];
     }
+  },
+  onShow: function () {
+    var that = this;
+    this.reset();
+
     this.setData({
       page: {
         load: true,
@@ -131,23 +142,39 @@ var page = Page({
         result: false,
         tip: false,
         bg: false,
-      }
-    })
-
-    // this.data.page.bad = true;
+        shake2: false,
+      },
+      canStart: false,
+      doorOpen: false,
+      timecount: [0, 0, 0, 0, 0, 0],
+      beforeShake: false,
+      beforeShake2: false,
+      code_question: '',
+      code_answers: {},
+      judge_error: '',
+      prizeOpen: false,
+      baseUrl: baseUrl,
+      imgBaseUrl: imgBaseUrl,
+      imgLoadProgress: 0,
+      imgs: [],
+      reload: false,
+      left: 0,
+    });
 
     app.Login(function (r1, user) {
       console.log('入口判断', r1);
+      wx.hideLoading();
       id = r1.Unionid;
       // console.log(resource);
       var direct = false;
+      left = r1.HistoryState;
       if (r1.HourState) {  // 当天倒计时
         direct = true;
         // this.page_welcome();
         var now = app.convertTime(r1.Time);
         this.time(startDate, now);
       }
-      if (r1.BonusState) {
+      if (r1.BonusState) { // 已中奖
         this.data.page.welcome = true;
         this.data.page.good2 = true;
         this.setData({
@@ -155,7 +182,7 @@ var page = Page({
         });
         return;
       }
-      if (r1.HistoryState) { // 已抽未中奖
+      if (r1.HistoryState < 1) { // 已抽未中奖
         this.page_welcome();
         this.page_bad();
         return;
@@ -166,64 +193,32 @@ var page = Page({
             title: 'debug 状态中',
           });
           direct = false;
-          // this.data.page.load = true;
-          // this.data.page.welcome = false;
-          // this.setData({
-          //   page: this.data.page
-          // })
         }
-        // this.page_welcome();
         var total = 0;
         for (var i in resource) {
           total += resource[i].length;
         }
         console.log(total, imgTotal)
         if (total >= imgTotal) {
-          // 各种初始化
           this.page_welcome();
         } else {
-          // resource = [];
           this.needImage2();
           main_start = this.page_welcome;
         }
         this.setData({
           canStart: true,
+          left: left,
         });
       }
       direct && this.page_welcome();
       audio.bgm.play();
-      // 其他判断在 app.js 中已跳页进行
     }.bind(this));
-
-    this.hasLoad = true;
   },
-  // onShow: function() {
-  //   if (!this.hasLoad) this.onLoad();
-  //   console.log('show')
-  // },
-  // onUnload: function() {
-  //   tick && tick.stop();
-  //   this.stopShake();
-  //   this.setData({
-  //     page: {
-  //       load: true,
-  //       timecount: false,
-  //       welcome: false,
-  //       rule: false,
-  //       start: false,
-  //       train: false,
-  //       finish: false,
-  //       justify: false,
-  //       prize: false,
-  //       good: false,
-  //       good2: false,
-  //       bad: false,
-  //       result: false,
-  //       tip: false,
-  //       bg: false,
-  //     }
-  //   })
-  // },
+  reload: function() {
+    wx.reLaunch({
+      url: '/pages/index/index',
+    });
+  },
   showRule: function () {
     this.data.page.rule = true;
     this.setData({ page: this.data.page });
@@ -330,7 +325,7 @@ var page = Page({
             case 901: tip = '您抽过了'; break;
             case 899: tip = '您的身份丢失，重新再来'; break;
             case 898: tip = '系统错误'; break;
-            case 999: that.page_bad(); return;
+            case 999: that.page_bad('reload'); return;
             case 904: tip = '您已中奖'; that.page_result(); return;
             case 900: tip = '您已中奖'; that.page_result(); return;
           };
@@ -358,6 +353,8 @@ var page = Page({
       },
     });
   },
+
+  // --------------------------------- 图片加载 No.2
   needImage2: function () {
     resource = [[], [], [], [], []];
     this.load(0, 0);
@@ -367,15 +364,13 @@ var page = Page({
     this.count = this.count ? ++this.count : 1;
     if (j < imgs[i][0]) {
       var url = imgBaseUrl;
-      // console.log(url + i + '/' + j + imgs[i][1])
-      // if (j % 2 == 1) { this.load(i, ++j); return; }
       wx.downloadFile({
         url: url + i + '/' + j + imgs[i][1],
         success: function (res) {
-          // console.log(i, j)
           resource[i][j] = res.tempFilePath;
+          var progress = parseInt(this.count / imgTotal * 100, 10)
           this.setData({
-            imgLoadProgress: parseInt(this.count / imgTotal * 100, 10)
+            imgLoadProgress: Math.min(progress, 100),
           });
           if (this.count >= imgTotal) {
             this.imgLoaded();
@@ -388,12 +383,9 @@ var page = Page({
     }
   },
 
+  // ---------------------------------- 图片加载 No.1
   needImage: function (cb) {
-    // 去加载大量图片
-    this.setData({
-      imgs: imgs,
-    });
-    // 整理资源路径，形成 resource 数组
+    this.setData({ imgs: imgs });
     let count = 0, that = this;
     for (let i = 0, l = imgs.length; i < l; i++) {
       let one = imgs[i];
@@ -406,8 +398,9 @@ var page = Page({
   },
   imgLoad: function () {
     this.count = this.count ? ++this.count : 1;
+    var progress = parseInt(this.count / imgTotal * 100, 10)
     this.setData({
-      imgLoadProgress: parseInt(this.count / imgTotal * 100, 10)
+      imgLoadProgress: Math.min(progress, 100),
     });
     if (this.count >= imgTotal) {
       this.imgLoaded();
@@ -417,8 +410,8 @@ var page = Page({
     main_start && main_start();
   },
 
+  // ---------------------------------- 显示页面
   page_welcome: function () {
-    // 显示首页
     this.data.page.load = false;
     this.data.page.welcome = true;
     this.setData({
@@ -428,36 +421,44 @@ var page = Page({
   page_start: function () {
     this.data.page.welcome = false;
     this.data.page.start = true;
+    audio.clock.pause();
+    audio.bgm.pause();
+    audio.ready.play();
     this.setData({
+      beforeShake: true,
       page: this.data.page
     });
-    // smooth(run, 50, 1);
-    var count = 3;
-    var T = setInterval(function () {
+    setTimeout(function () {
+      this.setData({ beforeShake2: true })
+    }.bind(this), 1400);
+    setTimeout(function () {
+      // audio.ready.pause();
+      // this.page_train();
+      canClick = true;
+      this.startShake();
       this.setData({
-        beforeShake: count,
+        beforeShake: false,
+        beforeShake2: false,
       });
-      if (--count < 0) {
-        clearInterval(T);
-        canClick = true;
-        this.data.page.start = false;
-        this.data.page.train = true;
-        this.setData({
-          page: this.data.page
-        });
-        ctx = wx.createCanvasContext('imgs');
-        // console.log(ctx);
-        speed = 0;
-        item = 0;
-        shakeMax = 5;
-        tick = smooth(run, 100, true);
-        this.startShake();
-        audio.bgm.pause();
-        audio.train.play();
-      }
-    }.bind(this), 1000);
+    }.bind(this), 2000);
+  },
+  page_train: function () {
+    this.data.page.start = false;
+    this.data.page.train = true;
+    this.setData({
+      beforeShake: false,
+      page: this.data.page,
+    });
+    ctx = wx.createCanvasContext('imgs');
+    speed = 0;
+    item = 0;
+    shakeMax = 5;
+    tick = smooth(run, 100, true);
+    audio.bgm.pause();
+    audio.train.play();
   },
   page_finish: function () {
+    audio.finish.play();
     this.getImgCode();
     this.data.page.load = false;
     this.data.page.finish = true;
@@ -473,6 +474,8 @@ var page = Page({
     }.bind(this), 1800);
   },
   page_prize: function () {
+    audio.finish.pause();
+    audio.result.play();
     this.data.page.justify = false;
     this.data.page.prize = true;
     this.setData({
@@ -480,6 +483,9 @@ var page = Page({
     });
   },
   page_result: function () {
+    audio.bad.pause();
+    audio.good.pause();
+    audio.result.play();
     this.data.page.prize = false;
     this.data.page.result = true;
     this.setData({
@@ -487,19 +493,33 @@ var page = Page({
     });
   },
   page_good: function () {
+    audio.result.pause();
+    audio.good.play();
     this.data.page.prize = false;
     this.data.page.good = true;
     this.setData({
       page: this.data.page,
     });
   },
-  page_bad: function () {
+  page_bad: function (re) {
+    audio.result.pause();
+    audio.bad.play();
     this.data.page.prize = false;
     this.data.page.bad = true;
     this.setData({
+      left: Math.max(--this.data.left, 0),
       page: this.data.page,
+      reload: re ? true : false,
     });
   },
+  result_ok: function() {
+    wx.showModal({
+      title: '每位用户只能中奖一次哟',
+      content: '请在领奖时间内前往领奖地点凭此二维码领取精美礼品。',
+    });
+  },
+
+
   // 图形验证码
   getImgCode: function () {
     var that = this;
@@ -547,7 +567,7 @@ var page = Page({
     this.shake = Shake(function () {
       if (!canClick) return;
       this.one();
-    }.bind(this), 60, 200);
+    }.bind(this), 50, 200);
   },
   stopShake: function () {
     this.shake && this.shake.stop();
@@ -556,11 +576,13 @@ var page = Page({
 
   // 摇地铁效果
   one: function () {
+    if (!this.data.page.train) {
+      this.page_train(); return;
+    }
     shakeMax--;
     audio.shake.pause();
     audio.shake.seek(0);
     audio.shake.play();
-    clearInterval(shakeTimer);
     // shakeTimerFlag = false;
     if (shakeMax > 0) {
       // audio.bgm.volume = 1;
@@ -571,13 +593,25 @@ var page = Page({
       tick.stop();
       tick = smooth(this.end1, 50, true);
     }
-    console.log(speed);
+    clearInterval(shakeTimer);
     shakeTimer = setInterval(function () {
       // if (!shakeTimerFlag) return;
       // shakeTimerFlag = true;
       speed = Math.max(0, --speed);
       // audio.bgm.volume = 0.3;
-    }, 500)
+    }, 500);
+
+    clearTimeout(shakeTimer2);
+    this.data.page.shake2 = false;
+    this.setData({ page: this.data.page });
+    shakeTimer2 = setTimeout(function () {
+      if (speed < 1) {
+        this.data.page.shake2 = true;
+        this.setData({ page: this.data.page });
+        console.log(this.data.page, shake2)
+      }
+    }.bind(this), 2000);
+    console.log(this.data.page.shake2)
   },
   end1: function () {
     this.stopShake();
@@ -621,6 +655,7 @@ function throttle(method, context) {
 var shakeMax = 5;
 var shakeTimer = null;
 var shakeTimerFlag = false;
+var shakeTimer2 = null; // 不摇显示继续摇
 
 // 每个动画帧的运算
 var speed = 0, item = 0;

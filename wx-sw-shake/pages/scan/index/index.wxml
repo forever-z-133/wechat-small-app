@@ -31,7 +31,7 @@
         <view class="idcard"><text>护照编码：</text>{{user.id}}</view>
         <view class="username text"><text>姓名：</text>{{user.nickName}}</view>
         <view class="usersex"><text>性别：</text>{{user.gender==2?'女':(user.gender?'男':'未知')}}</view>
-        <view class="province"><text>地区：</text>{{((user.city||'') + '' + (user.province||'')) || '未知位置'}}</view>
+        <view class="province"><text>地区：</text>{{((user.province||'') + '' + (user.city||'')) || '未知位置'}}</view>
       </view>
     </view>
     <view class="map">
@@ -45,7 +45,7 @@
             <image class="main-title" src="{{baseUrl}}main-title{{index+1}}.png"></image> -->
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
-                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="clickItem">
+                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="open_detail">
                   <image src="{{item.Url?item.Url:baseUrl+'default.jpg'}}" class="item-img"></image>
                   <!-- <text class="item-name text">{{item.Name}}</text> -->
                 </view>
@@ -61,7 +61,7 @@
             <image class="main-title" src="{{baseUrl}}main-title{{index+1}}.png"></image> -->
             <view class="list">
               <block wx:for="{{part}}" wx:key="index">
-                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="clickItem">
+                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="open_detail">
                   <image src="{{item.Url?item.Url:baseUrl+'default.jpg'}}" class="item-img"></image>
                   <!-- <text class="item-name text">{{item.Name}}</text> -->
                 </view>
@@ -70,8 +70,8 @@
           </swiper-item>
         </block>
       </swiper>
-       <view class="modudu-box" style="background-image: url({{modudu[nowSwiper]}})"></view>
-      <image src="{{baseUrl}}main-title{{nowSwiper+1}}.png" class="main-title"></image> 
+      <view class="modudu-box" style="background-image: url({{modudu[nowSwiper]}})"></view>
+      <image src="{{nowSwiper>2?'':baseUrl+'main-title'+(1+nowSwiper)+'.png'}}" class="main-title"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-right {{nowSwiper>1?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
     </view>
@@ -87,7 +87,8 @@
             <view class="box" style="background-image: url({{baseUrl}}prize-box.png)"></view>
             <view wx:if="{{progress<=30}}" class="box-tip {{index==prize_open?'showTip':''}}" style="background-image: url({{baseUrl}}box-tip.png)">
               <text wx:if="{{progress==30}}">您已使用三次额外抽奖机会，真厉害</text>
-              <text>您还需要签到{{10-progress%10}}次获得额外抽奖机会哟</text>
+              <!-- <text>您还需要签到{{10-progress%10}}次获得额外抽奖机会哟</text> -->
+              <text>您还需要签到{{index*10+10-progress}}次获得额外抽奖机会哟</text>
             </view>
             <text class="box-num">{{item}}</text>
           </view>
@@ -125,34 +126,43 @@
       </view>
     </view>
     <view class="tip-box">
-      <view class="judge-box">
-        <view class="question">
-          <image src="{{code_question}}"></image>
+      <form bindsubmit="justify" data-type="{{modal.prize2?'collect':''}}" report-submit>
+        <view class="judge-box">
+          <view class="question">
+            <image src="{{code_question}}"></image>
+          </view>
+          <view class="answers">
+            <block wx:for="{{code_answers}}" wx:key="item.name">
+              <image src="{{item.url}}" class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
+            </block>
+          </view>
         </view>
-        <view class="answers">
-          <block wx:for="{{code_answers}}" wx:key="item.name">
-            <image src="{{item.url}}" class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
-          </block>
-        </view>
-      </view>
-      <view class="btn-red" bindtap="justify">确定</view>
+        <button form-type="submit">
+          <view class="btn-red">确定</view>
+          <!-- <view class="btn-red" bindtap="justify">确定</view> -->
+        </button>
+      </form>
     </view>
   </view>
 </view>
-
 
 <!-- 宝箱 -->
 <view class="modal prize {{modal.prize?'in':''}}">
   <view class="bg modal-bg"></view>
   <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
-  <form bindsubmit="click_get_prize" report-submit class="modal-box">
+  <!-- <form bindsubmit="click_get_prize" report-submit class="modal-box">
     <button form-type="submit">
       <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
         <view class="finger"></view>
         <view class="tip">签到成功可抽奖</view>
       </view>
     </button>
-  </form>
+  </form> -->
+  <view class="modal-box">
+    <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)" bindtap="good">
+      <view class="finger"></view>
+    </view>
+  </view>
 </view>
 
 <!-- 中奖 -->
@@ -192,7 +202,8 @@
   <view class="bg modal-img-bg" style="background-image: url({{baseUrl}}modal-bg.png)"></view>
   <view class="modal-box more-box">
     <image src="{{baseUrl}}more.png" class="more-img"></image>
-    <view class="btn btn-close-rule" bindtap="page_prize2">
+    <!-- <view class="btn btn-close-rule" bindtap="page_prize2"> -->
+    <view class="btn btn-close-rule" bindtap="getPrize2">
       <image src="{{baseUrl}}btn-purple.png"></image>
       <text>抽奖</text>
     </view>
@@ -224,7 +235,7 @@
       <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{bonus.Take}}"></image>
     </view>
     <view class="title text">{{bonus.GiftName || '奖品名称'}}</view>
-    <view class="word text">兑换时间：<text>{{bonus.Time || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换时间：<text>{{bonus.Time || '0000.00.00'}}</text></view>
     <view class="word text2">兑换地点：<text>{{bonus.Address || '上海购物节活动组委会'}}</text></view>
     <view class="btn btn-ok" bindtap="result_ok">
       <image src="{{baseUrl}}btn-orange.png"></image>
@@ -232,3 +243,36 @@
     </view>
   </view>
 </view>
+
+<!-- 详情页 -->
+<view class="modal detail {{modal.detail?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="bg" style="background:url({{baseUrl}}detail-bg.png) center / 100% 100%"></view>
+  <view class="modal-box">
+    <scroll-view class="detail-list" scroll-y>
+      <view class="list-box">
+        <block wx:for="{{isNight?maps_night:maps_day}}" wx:key="unique" wx:for-item="part">
+          <block wx:for="{{part}}" wx:key="unique">
+          <view class="detail-item">
+            <view class="image">
+              <image src="{{item.Url}}"></image>
+            </view>
+            <view class="content">
+              <view class="title text">{{item.Name}}</view>
+              <view class="word text2">{{item.Address}}</view>
+            </view>
+          </view>
+          </block>
+        </block>
+      </view>
+    </scroll-view>
+    <view class="bottom">
+      <text>详细活动请见“上海消费总动员”官方微信</text>
+      <image src="{{baseUrl}}kdc-logo.png" class="kdc-logo"></image>
+      <image src="{{baseUrl}}up.png" class="up"></image>
+    </view>
+  </view>
+  <image src="{{baseUrl}}close-detail.png" class="close" bindtap="close_detail"></image>
+</view>
+
+<image src="{{baseUrl}}main-bg.jpg" class="bg" style="z-index:100" wx:if="{{modal.loading}}"></image>

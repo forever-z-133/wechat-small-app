@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(#ccc, #333)
 }
 progress {
   width: 50%;
@@ -16,10 +17,15 @@ progress {
   background-position: 0 40rpx;
   background-repeat: repeat-x;
   overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 .progress-bar {
   position: relative;
   height: 100%;
+  transition: width .2s linear;
 }
 .progress-train {
   position: absolute;
@@ -261,6 +267,16 @@ progress {
   height: 30%;
   background: url(https://sum.kdcer.com/test/img/shake/modudu22.png) center / 100% 100%;
 } */
+.btn-red {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 2.5em;
+  font-weight: bold;
+  border-radius: 10rpx;
+  background: linear-gradient(to left, #a10b08, #bb0a06, #a10b09);
+  box-shadow: 0 0 0 1px #e48903;
+}
 .rule .btn-red {
   margin: 20rpx auto;
 }
@@ -280,14 +296,29 @@ progress {
 }
 .shake-count {
   font-size: 120rpx;
-  width: 120rpx;
+  /* width: 120rpx; */
   height: 120rpx;
   line-height: 120rpx;
   padding: 30rpx;
   font-weight: bold;
-  border: 1px solid;
+  /* border: 1px solid; */
   border-radius: 100%;
   margin: 0 auto;
+}
+.shake-count:before {
+  content: " ";
+}
+.shake-count.active:before {
+  content: "Ready";
+  animation: shake_count 2s linear;
+}
+.shake-count.active2:before {
+  content: "GO";
+}
+@keyframes shake_count {
+  from {content: "Ready"}
+  70% {content: "GO"}
+  to {content: "GO"}
 }
 .shake-text {
   font-size: 60rpx;
@@ -303,6 +334,10 @@ progress {
 }
 .shake-image image {
   height: 100%;
+  animation: shake_hand .5s infinite linear;
+}
+@keyframes shake_hand {
+  50% {transform: rotate(15deg);}
 }
 
 .bling {
@@ -323,6 +358,46 @@ progress {
   transform: translate(-50%,-50%);
 }
 
+.question image {
+  width: 500rpx;
+  height: 75px;
+}
+.answers {
+  margin: 10rpx auto;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+}
+.answers image {
+  width: 110rpx;
+  height: 110rpx;
+  margin: 10rpx 10rpx;
+}
+.answers image.active {
+  box-shadow: 0 0 0 3px red;
+}
+
+.modudu .right,
+.modudu .wrong {
+  width: 100%;
+  height: 100%;
+}
+.modudu .other {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250rpx;
+  height: 200rpx;
+  padding: 0 30rpx 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: 100% 100%;
+  color: #ab0a07;
+  font-size: 35rpx;
+  box-sizing: border-box;
+}
 
 .prize .modal-box {
   height: 100%;
