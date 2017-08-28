@@ -8,15 +8,17 @@ var winW = 0, winH = 0;
 var imgTotal = 0;
 // var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake/';
 // var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']];
-var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
-var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
+// var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
+// var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
+var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake4/';
+var imgs = [[7, '.jpg'], [7, '.jpg'], [7, '.jpg'], [7, '.jpg'], [6, '.png']];
 var resource = [];
 var startDate = new Date(2017, 8, 9, 20, 0, 0);
 var id = 'ozlgTuNQqLo1xe2QaUdvZt81tsgA';
 var main_start = null;
 var left = 0;
 
-var audio = null;
+var audio = null; 
 
 // 兼容 requestAnimationFrame
 if (typeof requestAnimationFrame == 'undefined') {
@@ -189,9 +191,9 @@ var page = Page({
       }
       if (r1.State) { // 可开始
         if (r1.HourState) {
-          wx.showToast({
-            title: 'debug 状态中',
-          });
+          // wx.showToast({
+          //   title: 'debug 状态中',
+          // });
           direct = false;
         }
         var total = 0;

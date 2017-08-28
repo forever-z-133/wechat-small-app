@@ -8,8 +8,10 @@ var winW = 0, winH = 0;
 var imgTotal = 0;
 // var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake/';
 // var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']];
-var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
-var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
+// var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
+// var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
+var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake4/';
+var imgs = [[7, '.jpg'], [7, '.jpg'], [7, '.jpg'], [7, '.jpg'], [6, '.png']];
 var resource = [];
 var startDate = new Date(2017, 8, 9, 20, 0, 0);
 var id = 'ozlgTuNQqLo1xe2QaUdvZt81tsgA';
@@ -208,6 +210,15 @@ var page = Page({
         this.setData({
           canStart: true,
           left: left,
+        });
+      } else {
+        wx.showToast({
+          title: '不在活动时间内',
+          duration: 999999,
+        });
+        this.data.page.laod = false;
+        this.setData({
+          page: this.data.page,
         });
       }
       direct && this.page_welcome();
