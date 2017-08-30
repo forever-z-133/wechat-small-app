@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/scan/prize/prize",
-    "pages/scan/index/index",
     "pages/shake/index/index",
+    "pages/index/index",
+    "pages/scan/index/index",
+    "pages/scan/prize/prize",
     "pages/video/index/index",
     "pages/before/index",
     "pages/after/index"

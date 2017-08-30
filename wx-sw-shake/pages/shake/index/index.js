@@ -3,21 +3,32 @@ var app = getApp();
 
 // 各种标量
 var baseUrl = 'https://cdn.kdcer.com/test/img/shake/';
-var ctx = null;
-var winW = 0, winH = 0;
-var imgTotal = 0;
-// var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake/';
-// var imgs = [[26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [26, '.jpg'], [11, '.png']];
-// var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake3/';
-// var imgs = [[13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [13, '.jpg'], [6, '.png']];
+var ctx = null;   // canvas 对象
+var winW = 0, winH = 0; // 屏幕宽高
+
+// 图片资源相关的
+var imgTotal = 0; // 图片总数，用于判断加载完成
 var imgBaseUrl = 'https://cdn.kdcer.com/test/sw_shake4/';
 var imgs = [[7, '.jpg'], [7, '.jpg'], [7, '.jpg'], [7, '.jpg'], [6, '.png']];
-var resource = [];
-var startDate = new Date(2017, 8, 9, 20, 0, 0);
-var id = 'ozlgTuNQqLo1xe2QaUdvZt81tsgA';
+var resource = [];  // 图片总集，用于 canvas 绘制更方便获取
+
+// 活动开始时间
+var startDate = new Date(2017, 8, 8, 20, 0, 0);
+
+// Unionid
+var id = '';
+var formId = null;
+
+// 初始回调
 var main_start = null;
+
+// 剩余可玩次数
 var left = 0;
 
+// 能否点击加速
+var canClick = false;
+
+// 音频集合
 var audio = null; 
 
 // 兼容 requestAnimationFrame
@@ -37,9 +48,8 @@ if (typeof cancelAnimationFrame == 'undefined') {
   };
 }
 
-// 能否点击加速
-var canClick = false;
-
+// -----------------------------
+// --------------------  正式开始
 var page = Page({
   data: {
     page: {
@@ -60,20 +70,18 @@ var page = Page({
       bg: false,
       shake2: false,
     },
-    canStart: false,
-    doorOpen: false,
-    timecount: [0, 0, 0, 0, 0, 0],
-    beforeShake: false,
-    beforeShake2: false,
-    code_question: '',
-    code_answers: {},
-    judge_error: '',
-    prizeOpen: false,
-    baseUrl: baseUrl,
+    canStart: false,  // Go 按钮，开始游戏
+    doorOpen: false,  // 开门动
+    timecount: [0, 0, 0, 0, 0, 0],  // 倒计时
+    beforeShake: false,   // Ready
+    beforeShake2: false,  // GO
+    code_question: '',    // 验证码问题
+    code_answers: {},     // 验证码答案
+    baseUrl: baseUrl,   // 文件默认路径
     imgBaseUrl: imgBaseUrl,
-    imgLoadProgress: 0,
-    imgs: [],
-    left: 0,
+    imgLoadProgress: 0,  // load-text
+    imgs: [],    // 使用 bindload 加载时会用
+    left: 0,    // 剩余可玩次数
   },
   onShareAppMessage: function () {
     return {
@@ -108,20 +116,23 @@ var page = Page({
       };
     }
   },
+  // 音频获取失败
   error: function(err) {
     console.log(err)
   },
+  // 重置数据
   reset: function () {
-    imgTotal = 0;
-    speed = 0; item = 0;
-    shakeMax = 5;
-    shakeTimer = null;
-    shakeTimer2 = null;
-    canClick = false;
-    tick && tick.stop();
+    imgTotal = 0; // 图片总量
     for (var i in imgs) {
       imgTotal += imgs[i][0];
     }
+    speed = 0;  // 火车速度
+    item = 0;   // 当前帧
+    shakeMax = 5;  // 要扫5次
+    shakeTimer = null;  //  
+    shakeTimer2 = null; // 摇一摇停止时
+    canClick = false;  // 判断能不能摇
+    tick && tick.stop();  // 动画暂停
   },
   onShow: function () {
     var that = this;
@@ -146,37 +157,50 @@ var page = Page({
         bg: false,
         shake2: false,
       },
-      canStart: false,
-      doorOpen: false,
-      timecount: [0, 0, 0, 0, 0, 0],
-      beforeShake: false,
-      beforeShake2: false,
-      code_question: '',
-      code_answers: {},
-      judge_error: '',
-      prizeOpen: false,
-      baseUrl: baseUrl,
+      canStart: false,  // Go 按钮，开始游戏
+      doorOpen: false,  // 开门动
+      timecount: [0, 0, 0, 0, 0, 0],  // 倒计时
+      beforeShake: false,   // Ready
+      beforeShake2: false,  // GO
+      code_question: '',    // 验证码问题
+      code_answers: {},     // 验证码答案
+      baseUrl: baseUrl,   // 文件默认路径
       imgBaseUrl: imgBaseUrl,
-      imgLoadProgress: 0,
-      imgs: [],
-      reload: false,
-      left: 0,
+      imgLoadProgress: 0,  // load-text
+      imgs: [],    // 使用 bindload 加载时会用
+      left: 0,    // 剩余可玩次数
     });
 
     app.Login(function (r1, user) {
+      // 旁支功能
       console.log('入口判断', r1);
-      wx.hideLoading();
+      wx.hideLoading(); // 初始化加载
+      audio.bgm.play(); // 背景音乐
+
+      // Unionid
       id = r1.Unionid;
-      // console.log(resource);
-      var direct = false;
+
+      // 剩余可玩次数
       left = r1.HistoryState;
-      if (r1.HourState) {  // 当天倒计时
-        direct = true;
-        // this.page_welcome();
+      
+      // 是直接显示还是加载后显示
+      var direct = false;
+
+      // 现在已加载序列帧资源
+      var total = 0;
+      for (var i in resource) {
+        total += resource[i].length;
+      }
+
+      // 当天倒计时
+      if (r1.HourState) {
+        direct = true;  // 倒计时的话直接显示
         var now = app.convertTime(r1.Time);
         this.time(startDate, now);
       }
-      if (r1.BonusState) { // 已中奖
+
+      // 已中奖
+      if (r1.BonusState) {
         this.data.page.welcome = true;
         this.data.page.good2 = true;
         this.setData({
@@ -184,23 +208,20 @@ var page = Page({
         });
         return;
       }
-      if (r1.HistoryState < 1) { // 已抽未中奖
+
+      // 已抽超过次数，未中奖
+      if (r1.HistoryState < 1) {
         this.page_welcome();
         this.page_bad();
         return;
       }
-      if (r1.State) { // 可开始
-        if (r1.HourState) {
-          // wx.showToast({
-          //   title: 'debug 状态中',
-          // });
-          direct = false;
-        }
-        var total = 0;
-        for (var i in resource) {
-          total += resource[i].length;
-        }
-        console.log(total, imgTotal)
+
+      // 可开始
+      if (r1.State) {
+        // 兼容 debug 状态
+        if (r1.HourState) direct = false;
+
+        // 如果资源未加载完，走 needImage
         if (total >= imgTotal) {
           this.page_welcome();
         } else {
@@ -213,7 +234,6 @@ var page = Page({
         });
       }
       direct && this.page_welcome();
-      audio.bgm.play();
     }.bind(this));
   },
   reload: function() {
@@ -290,7 +310,9 @@ var page = Page({
     }
     var that = this;
     if (this.myAnswer == this.rightAnswer) { // 答对
-      this.page_prize();
+      formId = e.detail.formId;
+      this.getPrize(e);
+      // this.page_prize();
     } else {  // 答错
       this.getImgCode();
       wx.showModal({
@@ -309,16 +331,18 @@ var page = Page({
       url: 'https://sum.kdcer.com/api/OpenShop/GetLotteryBehavior',
       data: {
         Unionid: id,
-        formId: e.detail.formId,
+        formId: e.detail.formId || formId,
       },
       success: function (r) {
         console.log('抽奖', r);
         wx.hideLoading();
+        formId = null;
         if (r.data.State) {  // 中奖
           that.setData({
             prize: r.data.Bonuses[0],
           });
-          that.page_good();
+          that.page_prize();
+          // that.page_good();
         } else {
           var tip = '';
           switch (r.data.ErrorMessage) {
@@ -327,23 +351,15 @@ var page = Page({
             case 901: tip = '您抽过了'; break;
             case 899: tip = '您的身份丢失，重新再来'; break;
             case 898: tip = '系统错误'; break;
-            case 999: that.page_bad('reload'); return;
-            case 904: tip = '您已中奖'; that.page_result(); return;
-            case 900: tip = '您已中奖'; that.page_result(); return;
+            case 999: that.page_bad('reload'); break;
+            case 904: that.page_result(); break;
+            case 900: that.page_result(); break;
           };
-          wx.showToast({
+          tip && wx.showToast({
             title: tip,
             duration: 999999,
             mask: true,
           });
-          // wx.showModal({
-          //   content: tip + '\n刷新页面？',
-          //   success: function () {
-          //     wx.reLaunch({
-          //       url: '/pages/shake/index/index',
-          //     });
-          //   }
-          // });
         }
       },
       error: function () {
@@ -569,7 +585,7 @@ var page = Page({
     this.shake = Shake(function () {
       if (!canClick) return;
       this.one();
-    }.bind(this), 50, 200);
+    }.bind(this), 40, 150);
   },
   stopShake: function () {
     this.shake && this.shake.stop();

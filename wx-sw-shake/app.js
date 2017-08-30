@@ -12,6 +12,7 @@ App({
     id: '',
   },
 
+  // 获取用户信息（废弃）
   getUserInfo: function (cb) {
     var that = this
     if (this.globalData.userInfo) {
@@ -24,16 +25,16 @@ App({
           that.globalData.userInfo = res.userInfo
           typeof cb == "function" && cb(that.globalData.userInfo)
         }
-      })
+      });
     }
   },
 
+  // 获取屏幕宽高
   getScreenInfo: function (cb) {
     var that = this
     if (this.globalData.window) {
       typeof cb == "function" && cb(this.globalData.window)
     } else {
-      //调用登录接口
       var res = wx.getSystemInfoSync()
       that.globalData.window = {
         width: res.windowWidth,
@@ -43,6 +44,7 @@ App({
     }
   },
 
+  // 入口接口（包括传入身份与code，初始判断等）
   Login: function (cb) {
     var that = this
     wx.showLoading({

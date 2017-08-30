@@ -1,13 +1,12 @@
-// index.js
 var baseUrl = 'https://sum.kdcer.com/test/img/scan/';
 var apiUrl = 'https://sum.kdcer.com/api/swShop/';
 var app = new getApp();
-var id = app.globalData.id;
-var cl = '';
-var isNight = null;
-var formId = null;
-var main_data = null;
+var id = null; // Unionid
+var cl = '';  // 扫码传入的渠道参数
+var isNight = null; // 是否为晚上
+var formId = null;  // formId 用于模板消息
 
+// 转发参数
 var shareArr = [
   {
     title: '玩转购物地吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃',
@@ -27,6 +26,8 @@ var shareArr = [
   }
 ];
 
+/* 正式开始
+******************/
 Page({
   data: {
     modal: {
@@ -37,6 +38,7 @@ Page({
       prize: false,
       good: false,
       bad: false,
+      bad2: false,
       more: false,
       prize2: false,
     },
@@ -44,8 +46,8 @@ Page({
     isNight: false,
     nowSwiper: 0,
     progress: 0,
-    maps_day: [[], [], []],
-    maps_night: [[], [], []],
+    maps_day: [],
+    maps_night: [],
     prize: [10, 20, 30],
     prize_open: -1,
     code_question: '',
@@ -57,29 +59,24 @@ Page({
     detail: [],
   },
   onLoad: function (opt) {
+    // 获取扫码时的渠道参数
     if (opt.cl) {
       cl = opt.cl;
     }
-    // app.Login(function (r, user) {
-    //   console.log(r, user)
 
-    //   id = app.globalData.id;
+    // 入口判断，传递 code，获取 Unionid
+    app.Login(function (r,user) {
+      console.log(r. user);
+      
+      // Unionid
+      id = app.globalData.id; 
 
-    //   if (opt.cl) {
-    //     cl = opt.cl;
-    //   }
-
-    // }.bind(this))
-    app.Login(function (r, user) {
-      console.log(r, user)
-
-      id = app.globalData.id;
-
+      // 不便在 onShow 中，因为扫码后也会触发 onShow
       this.start();
-
     }.bind(this))
   },
   start: function () {
+    // 初始获取基础信息
     wx.request({
       url: apiUrl + 'GetList',
       data: {
@@ -88,10 +85,8 @@ Page({
       success: function (r) {
         console.log('列表', r.data);
         wx.hideLoading();
-        main_data = r.data;
 
-        this.data.modal.loading = false;
-
+        // 如果 State == false，出了问题
         if (!r.data.State) {
           wx.showToast({
             title: '可能系统出了问题',
@@ -101,29 +96,41 @@ Page({
           return;
         }
 
+        // 绑定用户信息，并添加护照编号
         var user = app.globalData.user;
         user.id = r.data.UserPassCard;
 
+        // 现在是白天还是黑夜
         isNight = r.data.DayState;
 
+        this.data.modal.loading = false;
+
+        // 前端处理列表数据，分拆为白天黑夜，及其各自的四个列表
         var day = [], night = [];
         for (var i in r.data.list) {
           var one = r.data.list[i];
           if (one.LotteryType == 0) {
+            // 白天的
             if (!day[one.PlayType]) day[one.PlayType] = [];
-            // if (one.PlayType = 3) {}
             day[one.PlayType].push(one);
           } else if (one.LotteryType == 1) {
+            // 夜晚的
             if (!night[one.PlayType]) night[one.PlayType] = [];
             night[one.PlayType].push(one);
           } else {
+            // 两天都有的
             if (!day[one.PlayType]) day[one.PlayType] = [];
             if (!night[one.PlayType]) night[one.PlayType] = [];
+            var urls = one.Url.split(',');
+            one.Url = urls[0];
+            var two = {};
+            for (var i in one) two[i] = one[i];
+            two.Url = urls[1];
             day[one.PlayType].push(one);
-            night[one.PlayType].push(one);
+            night[two.PlayType].push(two);
           }
         }
-        // console.log(day, night)
+        console.log(day, night)
         
         if (r.data.GetCollectCount > 0) {
           this.data.modal.more = true;
@@ -158,16 +165,8 @@ Page({
     });
   },
   onShow: function () {
-
-    // var detail = [];
-    // for (var i=0; i<10; i++) {
-    //   detail.push({
-    //     url: baseUrl + 'default.jpg',
-    //     name: '上海环球港迪士尼全城摇一摇',
-    //     address: '普陀区金沙江路内环高架路交叉口，上海市普陀区中山北路3302号',
-    //   });
-    // }
-    // this.setData({ detail: detail });
+    // 是否为集签
+    this.collected = true;
   },
   // ------------------- 分享
   onShareAppMessage: function () {
@@ -209,6 +208,7 @@ Page({
   // ------------------- 扫码
   scan: function () {
     var that = this;
+    this.collected = true;
     wx.scanCode({
       onlyFromCamera: true,
       success: function (res) {
@@ -266,6 +266,7 @@ Page({
     this.data.modal.justify = false;
     this.data.modal.more = false;
     this.data.modal.bad = false;
+    this.data.modal.bad2 = false;
     this.data.modal.result = false;
     this.data.modal.prize2 = true;
     this.setData({ modal: this.data.modal });
@@ -286,6 +287,8 @@ Page({
       success: function (r) {
         console.log('集签抽奖', r.data);
         wx.hideLoading();
+        this.data.modal.more = false;
+        this.setData({ modal: this.data.modal });
         if (r.data.State) {
           cl = null;
           formId = null;
@@ -309,16 +312,14 @@ Page({
             case 903: tip = '中奖数量已达上限'; break;
             case 904: tip = '今天已中奖，明天可以再来'; break;
             case 998: tip = '您没有签够指定数目的购物地哟，请查看规则'; break;
-            case 999: this.bad(); break;
+            case 999: this.bad2(); break;
           }
-          wx.showModal({
+          tip && wx.showModal({
             title: '抽奖失败',
             content: tip || '系统错误',
             mask: true,
           });
         }
-        this.data.modal.more = false;
-        this.setData({ modal: this.data.modal });
       }.bind(this),
       error: function () {
         wx.hideLoading();
@@ -352,6 +353,7 @@ Page({
       },
       success: function (r) {
         console.log('签到', r.data);
+        this.collected = true;
         wx.hideLoading();
         if (r.data.State) {
           wx.showToast({
@@ -362,10 +364,11 @@ Page({
           var n = r.data.Sign.LotteryType;
           var i = r.data.Sign.PlayType;
           var d = n ? this.data.maps_night : this.data.maps_day;
+          if (d >= 3) d = this.data.maps_night.concat(this.data.maps_day);
           for (var s in d) {
             for (var j in d[s]) {
               if (r.data.Sign.Guid == d[s][j].Guid) {
-                d[s][j].Light = true; break;
+                d[s][j].Light = true; continue;
               }
             }
           }
@@ -490,7 +493,7 @@ Page({
   },
   result_ok: function () {
     if (this.data.progress && this.data.progress % 10 == 0) {
-      this.data.modal.more = true;
+      if (!this.collected) this.data.modal.more = true;
     }
     this.data.modal.result = false;
     this.setData({ modal: this.data.modal });
@@ -505,6 +508,15 @@ Page({
       this.data.modal.more = true;
     }
     this.data.modal.bad = false;
+    this.setData({ modal: this.data.modal });
+  },
+  bad2: function () {
+    this.data.modal.prize = false;
+    this.data.modal.bad2 = true;
+    this.setData({ modal: this.data.modal });
+  },
+  bad_ok2: function () {
+    this.data.modal.bad2 = false;
     this.setData({ modal: this.data.modal });
   },
 

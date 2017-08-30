@@ -41,6 +41,7 @@
 .content {
   flex-grow: 1;
   font-size: 30rpx;
+  overflow: hidden;
 }
 .other {
   flex-shrink: 0;

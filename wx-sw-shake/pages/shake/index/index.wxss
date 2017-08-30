@@ -336,6 +336,10 @@ progress {
   height: 100%;
   animation: shake_hand .5s infinite linear;
 }
+.shake-image cover-image {
+  height: 100%;
+  animation: shake_hand .5s infinite linear;
+}
 @keyframes shake_hand {
   50% {transform: rotate(15deg);}
 }

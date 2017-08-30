@@ -11,10 +11,6 @@
     </view>
     <!-- <progress percent="{{imgLoadProgress}}" /> -->
   </view>
-  <!-- 7天倒计时 -->
-  <view class="page before  {{page.before?'':'hidden'}}">
-    <image src="{{before}}" class="bg"></image>
-  </view>
   <!-- 背景 -->
   <view class="page bg  {{page.bg?'':'hidden'}}">
     <image src="{{baseUrl}}bg2.jpg" class="bg"></image>
@@ -62,8 +58,8 @@
     <image src="{{imgBaseUrl}}0/0.jpg" class="bg"></image>
     <view class="bg modal-bg"></view>
     <view class="modal-box">
-       <!-- <view class="shake-count">{{beforeShake}}</view>  -->
-       <view class="shake-count {{beforeShake?'active':''}} {{beforeShake2?'active2':''}}"></view> 
+      <!-- <view class="shake-count">{{beforeShake}}</view>  -->
+      <view class="shake-count {{beforeShake?'active':''}} {{beforeShake2?'active2':''}}"></view> 
       <view class="shake-text">赶紧摇一摇</view>
       <view class="shake-image">
         <image src="{{baseUrl}}shake.png"></image>
@@ -123,15 +119,18 @@
   <!-- 宝箱 -->
   <view class="modal prize {{page.prize?'in':''}}">
     <view class="bg modal-bg"></view>
+    <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
     <view class="modal-box {{prizeOpen?'open':''}}">
-      <form bindsubmit="getPrize" report-submit>
-        <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+      <!-- <form bindsubmit="getPrize" report-submit>
         <button form-type="submit">
           <view class="box" style="background-image: url({{baseUrl}}{{prizeOpen?'box-open.png':'box-close.png'}})">
             <view class="finger"></view>
           </view>
         </button>
-      </form>>
+      </form> -->
+      <view class="box" style="background-image: url({{baseUrl}}{{prizeOpen?'box-open.png':'box-close.png'}})" bindtap="page_good">
+        <view class="finger"></view>
+      </view>
     </view>
   </view>
   <!-- 中奖 -->
@@ -154,7 +153,7 @@
       <view class="tip-box">
         <image src="{{baseUrl}}good.png"></image>
         <text>哎哟喂！恭喜您中奖啦！</text>
-        <navigator url="/pages/scan/prize/prize" class="btn btn-red">去个人奖品中心（合并后有）</navigator>
+        <navigator url="/pages/scan/prize/prize" class="btn btn-red">去个人奖品中心</navigator>
         <!-- <view class="btn btn-red" bindtap="page_result"></view> -->
       </view>
     </view>
@@ -181,8 +180,8 @@
           <view class="take" wx:if="{{prize.Take}}" style="background-image: url({{baseUrl}}exchange.png)"></view>
         </view>
         <view class="word"><view>奖品名称：</view><text>{{prize.GiftName}}</text></view>
-        <view class="word"><view>领奖时间：</view><text>{{prize.Time}}</text></view>
-        <view class="word"><view>领奖地点：</view><text>{{prize.Address}}</text></view>
+        <view class="word"><view>领奖时间：</view><text>{{prize.GiftTime}}</text></view>
+        <view class="word"><view>领奖地点：</view><text>{{prize.GiftAddress}}</text></view>
         <view class="btn btn-red" bindtap="result_ok">太棒了</view>
       </view>
     </view>
@@ -192,14 +191,14 @@
 </view>
 
 
-<view class="resource-load" wx:if="imgCanLoad">
+<!-- <view class="resource-load" wx:if="imgCanLoad">
   <block wx:for="{{imgs}}" wx:key="index">
     <block wx:for="{{item[0]}}" wx:key="*i" wx:for-item="every" wx:for-index="i">
       <view class="classname">{{imgBaseUrl + index + '/' + every + item[1]}}</view>
       <image src="{{imgBaseUrl + index + '/' + every + item[1]}}" data-src="{{item}}" data-index="{{index}}" bindload="imgLoad"></image>
     </block>
   </block>
-</view>
+</view> -->
 
 <view class="resource-load">
   <audio src="{{baseUrl}}media/bgm.mp3" id="bgm" loop binderror="error"></audio>

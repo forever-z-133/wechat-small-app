@@ -197,26 +197,6 @@
 </view>
 
 
-<!-- 集签条件满足提示 -->
-<view class="modal more {{modal.more?'in':''}}">
-  <view class="bg modal-bg"></view>
-  <view class="bg modal-img-bg" style="background-image: url({{baseUrl}}modal-bg.png)"></view>
-  <view class="modal-box more-box">
-    <image src="{{baseUrl}}more.png" class="more-img"></image>
-    <!-- <view class="btn btn-close-rule" bindtap="page_prize2"> -->
-    <!-- <view class="btn btn-close-rule" bindtap="getPrize2"> -->
-    <view class="btn btn-close-rule">
-      <image src="{{baseUrl}}btn-purple.png"></image>
-      <form bindsubmit="getPrize2" report-submit>
-        <button form-type="submit">
-          <text>抽奖</text>
-      </button>
-      </form>
-    </view>
-  </view>
-</view>
-
-
 <!-- 宝箱 -->
 <view class="modal prize2 {{modal.prize2?'in':''}}">
   <view class="bg modal-bg"></view>
@@ -288,3 +268,38 @@
 </view>
 
 <image src="{{baseUrl}}main-bg.jpg" class="bg" style="z-index:100" wx:if="{{modal.loading}}"></image>
+
+
+<!-- 集签条件满足提示 -->
+<view class="modal more {{modal.more?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="bg modal-img-bg" style="background-image: url({{baseUrl}}modal-bg.png)"></view>
+  <view class="modal-box more-box">
+    <image src="{{baseUrl}}more.png" class="more-img"></image>
+    <!-- <view class="btn btn-close-rule" bindtap="page_prize2"> -->
+    <!-- <view class="btn btn-close-rule" bindtap="getPrize2"> -->
+    <view class="btn btn-close-rule">
+      <image src="{{baseUrl}}btn-purple.png"></image>
+      <form bindsubmit="getPrize2" report-submit>
+        <button form-type="submit">
+          <text>抽奖</text>
+      </button>
+      </form>
+    </view>
+  </view>
+</view>
+
+<!-- 未中奖 -->
+<view class=" modal bad2 {{modal.bad2 ? 'in': ''}} ">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png); opacity:0.4 "></view>
+  <view class="modal-box">
+    <view class="getPrize-box " style="background-image: url({{baseUrl}}box-close.png) ">
+      <view class="tip ">很遗憾！<text>没有中奖</text></view>
+    </view>
+    <view class="btn btn-orange" bindtap="bad_ok2">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
+  </view>
+</view>
