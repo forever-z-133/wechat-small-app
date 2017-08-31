@@ -5,6 +5,7 @@ var id = null; // Unionid
 var cl = '';  // 扫码传入的渠道参数
 var isNight = null; // 是否为晚上
 var formId = null;  // formId 用于模板消息
+var audio = null;
 
 // 转发参数
 var shareArr = [
@@ -164,9 +165,23 @@ Page({
       },
     });
   },
+  error: function(err) {
+    console.log(err);
+  },
   onShow: function () {
     // 是否为集签
     this.collected = true;
+
+    // 音频初始化
+    // if (!audio) {
+    //   audio = {
+    //     bgm: wx.createAudioContext('bgm'),
+    //   };
+    // }
+    audio = {
+      bgm: wx.createAudioContext('bgm'),
+    };
+    audio.bgm.play();
   },
   // ------------------- 分享
   onShareAppMessage: function () {
@@ -242,11 +257,11 @@ Page({
   swiperTo: function (e) {
     var direction = parseInt(e.target.dataset.type, 10)
     var i = this.data.nowSwiper + direction;
-    var max = this.data.isNight ? this.data.maps_day.length : this.data.maps_night.length;
+    var max = this.data.isNight ? this.data.maps_day.length-1 : this.data.maps_night.length-1;
     i = Math.max(0, Math.min(max, i));
     this.setData({
       nowSwiper: i
-    })
+    });
   },
 
   // ------------------- 点击商家
@@ -380,16 +395,16 @@ Page({
             maps_day: this.data.maps_day,
           });
         } else {
-          var tip = '';
+          var tip = '', title = '';
           switch (r.data.ErrorMessage) {
             case 905: tip = '没有此渠道二维码，请和工作人员确认此二维码是否有效'; break;
-            case 906: tip = '这里您已经签到过了，去签其他地方吧'; break;
+            case 906: title = '此码已签到'; tip = '此码你已经签过了哟，别贪心，快去下一家'; break;
             case 907: tip = '签到活动尚未开始'; break;
             case 908: tip = '今天签到活动尚未开始'; break;
             case 909: tip = '今天签到活动结束了，请继续关注上海购物节的后续活动'; break;
           }
           wx.showModal({
-            title: '签到失败',
+            title: title || '签到失败',
             content: tip || '系统错误',
             mask: true,
           });

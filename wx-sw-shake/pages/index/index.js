@@ -9,7 +9,9 @@ Page({
   },
   onLoad: function (opt) {
     console.log('全局传参', opt);
-    cl = opt.cl || '';
+    cl = opt.cl || opt.q || '';
+    cl = decodeURIComponent(cl);
+    cl = app.QueryString('cl',cl);
   },
   onShow: function (opt) {
 

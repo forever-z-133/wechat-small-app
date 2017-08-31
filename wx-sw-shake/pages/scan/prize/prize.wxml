@@ -6,12 +6,13 @@
       <block wx:for="{{prize}}" wx:key="{{*this}}">
         <view class="item">
           <view class="image">
-            <image src="{{item.ImgUrl=='Test'?'':item.ImgUrl}}"></image>
+            <image src="{{item.ImgUrl || item.QrCode}}"></image>
           </view>
           <view class="content">
             <view class="title text">{{item.GiftName||''}}</view>
             <view class="address text">{{item.Address||''}}</view>
             <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
+            <view class="from text">{{item.LotteryName||''}}</view>
           </view>
           <view class="other">
             <view class="btn-get" data-index="{{index}}" bindtap="detail">兑换</view>
@@ -29,6 +30,7 @@
             <view class="title text">{{item.GiftName||''}}</view>
             <view class="address text">{{item.Address||''}}</view>
             <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
+            <view class="from text">{{item.LotteryName||''}}</view>
           </view>
           <view class="other">
             <view class="btn-take" wx:if="{{item.Take}}"></view>
@@ -52,8 +54,9 @@
       <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{detail.Take}}"></image>
     </view>
     <view class="title text">{{detail.GiftName || '奖品名称'}}</view>
-    <view class="word text">兑换时间：<text>{{detail.Time || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换时间：<text>{{detail.Time || '0000.00.00'}}</text></view>
     <view class="word text2">兑换地点：<text>{{detail.Address || '上海购物节活动组委会'}}</text></view>
+    <view class="word text">奖品渠道：<text>{{detail.LotteryName || ''}}</text></view>
     <view class="btn btn-ok" bindtap="result_ok">
       <image src="{{baseUrl}}btn-orange.png"></image>
       <text>返回</text>

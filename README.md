@@ -20,5 +20,12 @@
 * 完成时间：2017.07.07
 * 难点：中奖逻辑，canvas 操作
 * 文件夹：[wx-sw-scan](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-sw-scan)
+* 无预览。2016年的项目，已下线。
 
-<img src="qrcode/148793464858567676.jpg" width="300">
+-----
+### 上海购物节开幕式，坐着地铁来看你
+* 完成时间：2017.08.31
+* 难点：图片预加载，canvas 序列帧效果，囊括2个子项目，对接线下活动
+* 文件夹：[wx-sw-shake](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-sw-shake)
+* 无预览。尚未上线，且有活动时间限制。
+

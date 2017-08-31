@@ -27,26 +27,36 @@
   align-items: center;
   overflow: hidden;
   font-size: 40rpx;
+  border-radius: 10rpx;
 }
 .image {
   flex-shrink: 0;
   margin-right: 20rpx;
   border: 1px solid #f02149;
+  border-radius: 10rpx;
 }
 .image image {
   width: 120rpx;
   border-radius: 10rpx;
   height: 120rpx;
 }
+.item .title {
+  font-weight: bold;
+  margin-bottom: .1em;
+}
 .content {
   flex-grow: 1;
   font-size: 30rpx;
+  line-height: 1.6;
   overflow: hidden;
 }
 .other {
   flex-shrink: 0;
 }
-.time {
+.address, .time, .from {
+  font-size: .6em;
+}
+.time, .from {
   color: #e71f5f;
 }
 .btn-get {
@@ -100,7 +110,7 @@
 
 .result {
   color: #ff6724;
-  font-size: 30rpx;
+  font-size: 29rpx;
 }
 .result .modal-box {
   width: 500rpx;
@@ -108,8 +118,8 @@
   margin-top: 50rpx;
 }
 .result .qrcode {
-  width: 300rpx;
-  height: 300rpx;
+  width: 220rpx;
+  height: 220rpx;
   margin: 0 auto 20rpx;
   border: 5rpx solid #f7c5ae;
   border-radius: 10rpx;

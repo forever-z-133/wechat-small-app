@@ -129,14 +129,14 @@ swiper {
   right: 0;
   width: 250rpx;
   height: 200rpx;
-  padding: 0 30rpx 20rpx;
+  padding: 0 30rpx 30rpx;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-size: 100% 100%;
   color: #ab0a07;
-  font-size: 40rpx;
+  font-size: 36rpx;
   box-sizing: border-box;
 }
 .modal .modudu > view {

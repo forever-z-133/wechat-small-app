@@ -101,7 +101,7 @@
 .user-img-box {
   width: 25%;
   margin-left: 20rpx;
-  margin-right: 40rpx;
+  margin-right: 30rpx;
   flex-shrink: 0;
 }
 
@@ -282,7 +282,7 @@
 .more-prize {
   position: relative;
   z-index: 2;
-  padding: 40rpx 0 30rpx;
+  padding: 30rpx 0 20rpx;
   margin:0 120rpx 10rpx 70rpx;
   box-sizing: border-box;
 }
@@ -496,7 +496,7 @@
 
 .result {
   color: #ff6724;
-  font-size: 30rpx;
+  font-size: 29rpx;
 }
 .result .modal-box {
   width: 500rpx;
@@ -504,8 +504,8 @@
   margin-top: 50rpx;
 }
 .result .qrcode {
-  width: 300rpx;
-  height: 300rpx;
+  width: 220rpx;
+  height: 220rpx;
   margin: 0 auto 20rpx;
   border: 5rpx solid #f7c5ae;
   border-radius: 10rpx;
@@ -593,6 +593,7 @@
   width: 150rpx;
   height: 150rpx;
   border-radius: 100%;
+  flex-shrink: 0;
   border: 2px solid #f654fe;
 }
 .detail-item .content {

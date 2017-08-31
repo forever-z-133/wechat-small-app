@@ -102,6 +102,7 @@ App({
 
   // 字符串寻找键值对
   QueryString: function (name, str) {
+    var str = decodeURIComponent(str);
     var reg = new RegExp('(^|\\?|&)' + name + '=([^&]*)(&|$)');
     var r = str.match(reg);
     return r != null ? decodeURIComponent(r[2]) : null;
