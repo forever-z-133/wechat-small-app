@@ -73,7 +73,7 @@
       <view class="modudu-box" style="background-image: url({{modudu[nowSwiper]}})"></view>
       <image src="{{nowSwiper>2?'':baseUrl+'main-title'+(1+nowSwiper)+'.png'}}" class="main-title"></image>
       <image src="{{baseUrl}}arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
-      <image src="{{baseUrl}}arrow.png" class="swiper-right {{nowSwiper>1?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
+      <image src="{{baseUrl}}arrow.png" class="swiper-right {{nowSwiper>(isNight?maps_night.length-2:maps_day.length-2)?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
     </view>
     <view class="more-prize">
       <view class="progress">

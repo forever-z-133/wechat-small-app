@@ -14,7 +14,7 @@ Page({
     cl = app.QueryString('cl',cl);
   },
   onShow: function (opt) {
-
+    var that = this;
     app.Login(function (r) {
       if (!r.OverState) {
         if (r.HourState || r.State) {  // 开幕式
@@ -22,8 +22,9 @@ Page({
             url: '../shake/index/index',
           });
         } else if (r.Pic) { // 7 天倒计时
-          this.setData({
-            pic: r.Pic,
+          wx.hideLoading();
+          that.setData({
+            pic: 'http://cdn.kdcer.com/'+ r.Pic,
           });
         } else {  // 7 天以前
           wx.showToast({

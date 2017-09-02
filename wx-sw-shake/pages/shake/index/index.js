@@ -268,14 +268,14 @@ var page = Page({
         r[4] = parseInt(d.getSeconds() / 10, 10);
         r[5] = parseInt(d.getSeconds() % 10, 10);
         // if (d.getTime() > 0) {
-        that.setData({
-          timecount: r
-        });
+          that.setData({
+            timecount: r
+          });
         // } else {
-        // clearInterval(T);
-        // wx.reLaunch({
-        //   url: '/pages/shake/index/index',
-        // })
+        //   clearInterval(T);
+        //   wx.reLaunch({
+        //     url: '/pages/shake/index/index',
+        //   })
         // }
       }, 1000);
     }
@@ -446,9 +446,9 @@ var page = Page({
       beforeShake: true,
       page: this.data.page
     });
-    setTimeout(function () {
-      this.setData({ beforeShake2: true })
-    }.bind(this), 1400);
+    // setTimeout(function () {
+    //   this.setData({ beforeShake2: true })
+    // }.bind(this), 1400);
     setTimeout(function () {
       // audio.ready.pause();
       // this.page_train();
@@ -620,16 +620,16 @@ var page = Page({
     }, 500);
 
     clearTimeout(shakeTimer2);
-    this.data.page.shake2 = false;
+    // this.data.page.shake2 = false;
     this.setData({ page: this.data.page });
-    shakeTimer2 = setTimeout(function () {
-      if (speed < 1) {
-        this.data.page.shake2 = true;
-        this.setData({ page: this.data.page });
-        console.log(this.data.page, shake2)
-      }
-    }.bind(this), 2000);
-    console.log(this.data.page.shake2)
+    // shakeTimer2 = setTimeout(function () {
+    //   if (speed < 1) {
+    //     this.data.page.shake2 = true;
+    //     this.setData({ page: this.data.page });
+    //     console.log(this.data.page, shake2)
+    //   }
+    // }.bind(this), 1000);
+    // console.log(this.data.page.shake2)
   },
   end1: function () {
     this.stopShake();

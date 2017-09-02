@@ -67,7 +67,7 @@ Page({
 
     // 入口判断，传递 code，获取 Unionid
     app.Login(function (r,user) {
-      console.log(r. user);
+      console.log('入口', r, user);
       
       // Unionid
       id = app.globalData.id; 
@@ -376,12 +376,13 @@ Page({
           });
           this.getPrize();
 
-          var n = r.data.Sign.LotteryType;
-          var i = r.data.Sign.PlayType;
+          var n = r.data.Sign.LotteryType;  // 白天黑夜
+          var i = r.data.Sign.PlayType;     // 购0玩1吃2其他
           var d = n ? this.data.maps_night : this.data.maps_day;
           if (d >= 3) d = this.data.maps_night.concat(this.data.maps_day);
-          for (var s in d) {
-            for (var j in d[s]) {
+          console.log(n ,i ,d);
+          for (var s in d) {  // 拆成购玩吃
+            for (var j in d[s]) { // 获得单个购物地
               if (r.data.Sign.Guid == d[s][j].Guid) {
                 d[s][j].Light = true; continue;
               }

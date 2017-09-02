@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/shake/index/index",
     "pages/scan/index/index",
+    "pages/shake/index/index",
     "pages/scan/prize/prize",
     "pages/video/index/index",
     "pages/before/index",

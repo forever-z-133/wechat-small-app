@@ -12,7 +12,7 @@
             <view class="title text">{{item.GiftName||''}}</view>
             <view class="address text">{{item.Address||''}}</view>
             <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
-            <view class="from text">{{item.LotteryName||''}}</view>
+            <view class="from text">获得渠道：{{item.LotteryName||''}}</view>
           </view>
           <view class="other">
             <view class="btn-get" data-index="{{index}}" bindtap="detail">兑换</view>
@@ -30,7 +30,7 @@
             <view class="title text">{{item.GiftName||''}}</view>
             <view class="address text">{{item.Address||''}}</view>
             <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
-            <view class="from text">{{item.LotteryName||''}}</view>
+            <view class="from text">获得渠道：{{item.LotteryName||''}}</view>
           </view>
           <view class="other">
             <view class="btn-take" wx:if="{{item.Take}}"></view>
