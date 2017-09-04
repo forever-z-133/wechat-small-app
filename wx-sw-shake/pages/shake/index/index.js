@@ -68,7 +68,7 @@ var page = Page({
       result: false,
       tip: false,
       bg: false,
-      shake2: false,
+      // shake2: false,
     },
     canStart: false,  // Go 按钮，开始游戏
     doorOpen: false,  // 开门动
@@ -102,7 +102,7 @@ var page = Page({
     });
 
     // 音频初始化
-    if (!audio) {
+    // if (!audio) {
       audio = {
         bgm: wx.createAudioContext('bgm'),
         train: wx.createAudioContext('train'),
@@ -114,7 +114,7 @@ var page = Page({
         result: wx.createAudioContext('result'),
         finish: wx.createAudioContext('finish'),
       };
-    }
+    // }
   },
   // 音频获取失败
   error: function(err) {
@@ -155,7 +155,7 @@ var page = Page({
         result: false,
         tip: false,
         bg: false,
-        shake2: false,
+        // shake2: false,
       },
       canStart: false,  // Go 按钮，开始游戏
       doorOpen: false,  // 开门动
@@ -197,6 +197,7 @@ var page = Page({
         direct = true;  // 倒计时的话直接显示
         var now = app.convertTime(r1.Time);
         this.time(startDate, now);
+        
       }
 
       // 已中奖
@@ -213,6 +214,9 @@ var page = Page({
       if (r1.HistoryState < 1) {
         this.page_welcome();
         this.page_bad();
+        wx.showModal({
+          content: '您的抽奖次数已用完',
+        });
         return;
       }
 
@@ -585,7 +589,7 @@ var page = Page({
     this.shake = Shake(function () {
       if (!canClick) return;
       this.one();
-    }.bind(this), 40, 150);
+    }.bind(this), 50, 200);
   },
   stopShake: function () {
     this.shake && this.shake.stop();

@@ -74,17 +74,16 @@
   <!-- 火车与烟花 canvas -->
   <view class="page train {{page.train?'':'hidden'}}">
     <canvas canvas-id="imgs" class="bg" style="width:100%; height:100%">
-      <cover-view class="modal start {{page.shake2?'in':''}}" bindtap="shakeTest">
+      <!--<cover-view class="modal start {{page.shake2?'in':''}}" bindtap="shakeTest">
         <cover-view class="bg modal-bg"></cover-view>
         <cover-view class="modal-box">
-          <!-- <cover-view class="shake-count">{{beforeShake}}</cover-view>  -->
           <cover-view class="shake-count {{beforeShake?'active':''}} {{beforeShake2?'active2':''}}"></cover-view> 
           <cover-view class="shake-text">继续摇</cover-view>
           <cover-view class="shake-image">
             <cover-image src="shake.png"></cover-image>
           </cover-view>
         </cover-view>
-      </cover-view>
+      </cover-view>-->
     </canvas>
   </view>
   <!-- 验证 -->
@@ -165,7 +164,7 @@
       <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
       <view class="tip-box">
         <!-- <image src="{{baseUrl}}good.png"></image> -->
-        <text>还差那么一丢丢，没中奖。<view>你还有 {{left}} 次机会哟~</view></text>
+        <text>还差那么一丢丢，没中奖。<text wx:if="{{left}}">你还有 {{left}} 次机会哟~</text></text>
          <view class="btn btn-red" wx:if="{{reload}}" bindtap="reload">好吧</view> 
       </view>
     </view>
