@@ -16,6 +16,7 @@ Page({
   onShow: function (opt) {
     var that = this;
     app.Login(function (r) {
+      console.log(r);
       if (!r.OverState) {
         if (r.HourState || r.State) {  // 开幕式
           wx.redirectTo({

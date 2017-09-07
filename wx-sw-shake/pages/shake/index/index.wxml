@@ -68,7 +68,7 @@
   </view>
   <!-- 结果 -->
   <view class="page finish  {{page.finish?'':'hidden'}}">
-    <image src="{{baseUrl + 'end2.jpg'}}" class="bg"></image>
+    <image src="{{baseUrl + 'finish3.png'}}" class="bg"></image>
     <view class="bg bling" style="background-image: url({{baseUrl}}light.png)"></view>
   </view>
   <!-- 火车与烟花 canvas -->

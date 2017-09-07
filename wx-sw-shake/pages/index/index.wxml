@@ -1,4 +1,4 @@
 <!--index.wxml-->
 <view class="body">
-  <image src="{{pic}}" class="bg"></image>
+  <image src="{{pic || ''}}" class="bg"></image>
 </view>

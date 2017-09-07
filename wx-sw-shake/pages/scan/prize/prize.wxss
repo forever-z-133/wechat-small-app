@@ -141,3 +141,16 @@
   transform: translate(-50%, 0);
   padding: 0.8em 2em 1.2em;
 }
+
+.list-loading {
+  text-align: center;
+  line-height: 3em;
+  font-size: 24rpx;
+  margin-bottom: 1em;
+}
+.list-loading::before {
+  content: "加载中...";
+}
+.list-loading.empty::before {
+  content: "没有更多了";
+}

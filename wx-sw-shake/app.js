@@ -1,4 +1,6 @@
 //app.js
+var fundebug = require('./utils/fundebug.0.0.3.min.js')
+fundebug.apikey = "eb849e5aea686764790042d8ea72bf02c3bcb55aeba53e0a11640beb4bc19b57";
 
 var code = null;
 var user = null;

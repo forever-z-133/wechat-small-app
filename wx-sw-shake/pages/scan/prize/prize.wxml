@@ -1,12 +1,13 @@
 <!--prize.wxml-->
 <view class="body">
   <view class="bg body-bg"></view>
-  <scroll-view class="main" bindscrolltolower="load">
+  <scroll-view class="main" style="height:100%;" scroll-y bindscroll="scroll" lower-threshold="50" bindscrolltolower="load">
     <view class="list-box">
       <block wx:for="{{prize}}" wx:key="{{*this}}">
         <view class="item">
           <view class="image">
-            <image src="{{item.ImgUrl || item.QrCode}}"></image>
+            <!-- <image src="{{item.ImgUrl || item.QrCode}}"></image> -->
+            <image src='{{baseUrl}}888.jpg'></image>
           </view>
           <view class="content">
             <view class="title text">{{item.GiftName||''}}</view>
@@ -24,7 +25,8 @@
       <block wx:for="{{prize_grey}}" wx:key="{{*this}}">
         <view class="item">
           <view class="image">
-            <image src="{{item.ImgUrl}}"></image>
+            <!-- <image src="{{item.ImgUrl}}"></image> -->
+            <image src='{{baseUrl}}888.jpg'></image>
           </view>
           <view class="content">
             <view class="title text">{{item.GiftName||''}}</view>
@@ -39,6 +41,7 @@
         </view>
       </block>
     </view>
+    <view class="list-loading {{empty?'empty':''}}"></view>
   </scroll-view>
   <view class="no-one" wx:if="{{no_one}}">
     <text>您还没有奖品，加油哟</text>

@@ -249,6 +249,7 @@
             <view class="detail-item">
               <view class="image">
                 <image src="{{item.Url}}"></image>
+                <image src="{{baseUrl}}pass.png" class="bg" wx:if="{{item.Light}}"></image>
               </view>
               <view class="content">
                 <view class="title text">{{item.Name}}</view>

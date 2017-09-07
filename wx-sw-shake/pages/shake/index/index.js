@@ -14,6 +14,8 @@ var resource = [];  // 图片总集，用于 canvas 绘制更方便获取
 
 // 活动开始时间
 var startDate = new Date(2017, 8, 8, 20, 0, 0);
+// 抽奖停止时间
+var endDate = new Date(2017, 8, 8, 21, 0, 0);
 
 // Unionid
 var id = '';
@@ -197,7 +199,7 @@ var page = Page({
         direct = true;  // 倒计时的话直接显示
         var now = app.convertTime(r1.Time);
         this.time(startDate, now);
-        
+        this.needImage2();
       }
 
       // 已中奖
@@ -236,8 +238,15 @@ var page = Page({
           canStart: true,
           left: left,
         });
+      } else {
+        this.page_welcome();
       }
       direct && this.page_welcome();
+
+      // // 判断活动时间已到
+      // this.setData({
+      //   canStart: endDate - (Date.now()) > 0,
+      // });
     }.bind(this));
   },
   reload: function() {
@@ -264,23 +273,26 @@ var page = Page({
       var that = this;
       var T = setInterval(function () {
         d = new Date(d.setSeconds(d.getSeconds() - 1));
-        // console.log(d);
+        // console.log(d, d.getTime(),new Date(2017,8,8,21,0,0).getTime());
+        // console.log(nowTime, )
         r[0] = parseInt(d.getHours() / 10, 10);
         r[1] = parseInt(d.getHours() % 10, 10);
         r[2] = parseInt(d.getMinutes() / 10, 10);
         r[3] = parseInt(d.getMinutes() % 10, 10);
         r[4] = parseInt(d.getSeconds() / 10, 10);
         r[5] = parseInt(d.getSeconds() % 10, 10);
-        // if (d.getTime() > 0) {
+        if (d.getTime() > -1 * 8 * 60 * 60 * 1000) {
           that.setData({
             timecount: r
           });
-        // } else {
-        //   clearInterval(T);
-        //   wx.reLaunch({
-        //     url: '/pages/shake/index/index',
-        //   })
-        // }
+        } else if (nowTime - (new Date(2017,8,8,21,0,0).getTime()) < 0) {
+          clearInterval(T);
+          that.setData({
+            canStart: true,
+          });
+        } else {
+          clearInterval(T);
+        }
       }, 1000);
     }
   },
@@ -355,6 +367,7 @@ var page = Page({
             case 901: tip = '您抽过了'; break;
             case 899: tip = '您的身份丢失，重新再来'; break;
             case 898: tip = '系统错误'; break;
+            case 998: tip = r.data.ErrorStr; break;
             case 999: that.page_bad('reload'); break;
             case 904: that.page_result(); break;
             case 900: that.page_result(); break;

@@ -110,6 +110,7 @@ Page({
         var day = [], night = [];
         for (var i in r.data.list) {
           var one = r.data.list[i];
+          if (one.LotteryType == 3) continue;
           if (one.LotteryType == 0) {
             // 白天的
             if (!day[one.PlayType]) day[one.PlayType] = [];
@@ -279,11 +280,13 @@ Page({
   // ------------------- 积满 10 个抽奖
   page_prize2: function () {
     this.data.modal.justify = false;
-    this.data.modal.more = false;
     this.data.modal.bad = false;
     this.data.modal.bad2 = false;
     this.data.modal.result = false;
+    this.data.modal.more = false;
     this.data.modal.prize2 = true;
+    // this.data.modal.more = true;
+    // this.data.modal.prize2 = false;
     this.setData({ modal: this.data.modal });
   },
   getPrize2: function (e) {
@@ -443,10 +446,16 @@ Page({
       success: function (r) {
         console.log('抽奖', r.data);
         var progress = Math.min(30, ++this.data.progress);
+        console.log(progress)
         // wx.hideLoading();
         if (r.data.State) {
           cl = null;
-          this.page_prize();
+          // if (progress > 2) {
+          if (progress %10 == 0) {
+            this.page_prize2();
+          } else {
+            this.page_prize();
+          }
           this.setData({
             bonus: r.data.Bonuses[0],
           });
@@ -533,6 +542,11 @@ Page({
   },
   bad_ok2: function () {
     this.data.modal.bad2 = false;
+    this.setData({ modal: this.data.modal });
+  },
+  prize2_ok: function(){
+    this.data.modal.prize2 = false;
+    this.data.modal.more = true;
     this.setData({ modal: this.data.modal });
   },
 

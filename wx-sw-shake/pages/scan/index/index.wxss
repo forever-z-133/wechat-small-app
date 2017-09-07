@@ -596,6 +596,9 @@
   flex-shrink: 0;
   border: 2px solid #f654fe;
 }
+.detail-item .bg {
+  filter: drop-shadow(0 0 10rpx #fff);
+}
 .detail-item .content {
   flex-grow: 1;
   margin-left: 15rpx;
