@@ -154,3 +154,6 @@
 .list-loading.empty::before {
   content: "没有更多了";
 }
+.list-grey .other .btn-get {
+  filter: grayscale(1);
+}

@@ -7,7 +7,8 @@
         <view class="item">
           <view class="image">
             <!-- <image src="{{item.ImgUrl || item.QrCode}}"></image> -->
-            <image src='{{baseUrl}}888.jpg'></image>
+            <!-- <image src='{{baseUrl}}888.jpg'></image> -->
+            <image src='{{baseUrl}}icon.png'></image>
           </view>
           <view class="content">
             <view class="title text">{{item.GiftName||''}}</view>
@@ -26,7 +27,8 @@
         <view class="item">
           <view class="image">
             <!-- <image src="{{item.ImgUrl}}"></image> -->
-            <image src='{{baseUrl}}888.jpg'></image>
+            <!-- <image src='{{baseUrl}}888.jpg'></image> -->
+            <image src='{{baseUrl}}icon.png'></image>
           </view>
           <view class="content">
             <view class="title text">{{item.GiftName||''}}</view>
@@ -35,8 +37,8 @@
             <view class="from text">获得渠道：{{item.LotteryName||''}}</view>
           </view>
           <view class="other">
-            <view class="btn-take" wx:if="{{item.Take}}"></view>
-            <view class="btn-time" wx:else>已过期</view>
+            <view class="btn-take btn-get" wx:if="{{item.Take}}">已兑换</view>
+            <view class="btn-time btn-get" wx:else>已过期</view>
           </view>
         </view>
       </block>

@@ -49,14 +49,14 @@ Page({
         console.log('奖品查看', r.data);
         wx.hideLoading();
         var length = this.data.prize.length + r.data.Red.length + this.data.prize_grey.length + r.data.Gray.length;
-        var isEmpty = (r.data.Red.length + r.data.Gray.length) < 1;
+        var isEmpty = (r.data.Red.length) < 1;
         this.setData({
           prize: this.data.prize.concat(r.data.Red),
-          prize_grey: this.data.prize_grey.concat(r.data.Gray),
+          prize_grey: r.data.Gray,
           no_one: length < 1,
           empty: isEmpty,
         });
-        this.load();
+        !isEmpty && this.load();
       },
       error: function (err) {
         wx.hideLoading();
