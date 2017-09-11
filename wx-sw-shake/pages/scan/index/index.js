@@ -61,14 +61,41 @@ Page({
   },
   onLoad: function (opt) {
     // 获取扫码时的渠道参数
-    if (opt.cl) {
-      cl = opt.cl;
-    }
+    console.log('全局传参', opt);
+    cl = opt.cl || opt.q || '';
+    cl = decodeURIComponent(cl);
+    cl = app.QueryString('cl',cl);
+    // if (opt.cl) {
+    //   cl = opt.cl;
+    // }
 
     // 入口判断，传递 code，获取 Unionid
     app.Login(function (r,user) {
       console.log('入口', r, user);
-      
+
+      if (!r.OverState) {
+        if (r.HourState || r.State) {  // 开幕式
+          wx.redirectTo({
+            url: '../shake/index/index',
+          });
+        } else if (r.Pic) { // 7 天倒计时
+          wx.hideLoading();
+          that.setData({
+            pic: 'http://cdn.kdcer.com/' + r.Pic,
+          });
+          wx.setStorageSync('pic', 'http://cdn.kdcer.com/' + r.Pic);
+          wx.redirectTo({
+            url: '../before/index',
+          });
+        } else {  // 7 天以前
+          wx.showToast({
+            title: '系统错误',
+            duration: 999999,
+          });
+        }
+        return;
+      }
+
       // Unionid
       id = app.globalData.id; 
 

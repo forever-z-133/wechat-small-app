@@ -1,0 +1,70 @@
+<!--prize.wxml-->
+<view class="body">
+  <view class="bg body-bg"></view>
+  <scroll-view class="main" style="height:100%;" scroll-y bindscroll="scroll" lower-threshold="50" bindscrolltolower="load">
+    <view class="list-box">
+      <block wx:for="{{prize}}" wx:key="{{*this}}">
+        <view class="item">
+          <view class="image">
+            <!-- <image src="{{item.ImgUrl || item.QrCode}}"></image> -->
+            <!-- <image src='{{baseUrl}}888.jpg'></image> -->
+            <image src='{{baseUrl}}icon.png'></image>
+          </view>
+          <view class="content">
+            <view class="title text">{{item.GiftName||''}}</view>
+            <view class="address text">{{item.Address||''}}</view>
+            <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
+            <view class="from text">获得渠道：{{item.LotteryName||''}}</view>
+          </view>
+          <view class="other">
+            <view class="btn-get" data-index="{{index}}" bindtap="detail">兑换</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="list-box list-grey">
+      <block wx:for="{{prize_grey}}" wx:key="{{*this}}">
+        <view class="item">
+          <view class="image">
+            <!-- <image src="{{item.ImgUrl}}"></image> -->
+            <!-- <image src='{{baseUrl}}888.jpg'></image> -->
+            <image src='{{baseUrl}}icon.png'></image>
+          </view>
+          <view class="content">
+            <view class="title text">{{item.GiftName||''}}</view>
+            <view class="address text">{{item.Address||''}}</view>
+            <view class="time text">{{item.Time?'获得时间'+item.Time:''}}</view>
+            <view class="from text">获得渠道：{{item.LotteryName||''}}</view>
+          </view>
+          <view class="other">
+            <view class="btn-take btn-get" wx:if="{{item.Take}}">已兑换</view>
+            <view class="btn-time btn-get" wx:else>已过期</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="list-loading {{empty?'empty':''}}"></view>
+  </scroll-view>
+  <view class="no-one" wx:if="{{no_one}}">
+    <text>您还没有奖品，加油哟</text>
+  </view>
+</view>
+
+<!-- 奖品详情页 -->
+<view class="modal result {{detail?'in':''}}">
+  <view class="bg" style="background: url({{baseUrl}}prize-bg.jpg) center / 100% 100%"></view>
+  <view class="modal-box">
+    <view class="qrcode">
+      <image src="{{detail.QrCode}}"></image>
+      <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{detail.Take}}"></image>
+    </view>
+    <view class="title text">{{detail.GiftName || '奖品名称'}}</view>
+    <view class="word text2">兑换时间：<text>{{detail.Time || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换地点：<text>{{detail.Address || '上海购物节活动组委会'}}</text></view>
+    <view class="word text">奖品渠道：<text>{{detail.LotteryName || ''}}</text></view>
+    <view class="btn btn-ok" bindtap="result_ok">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
+  </view>
+</view>

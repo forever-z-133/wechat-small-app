@@ -243,7 +243,7 @@
   <view class="bg" style="background:url({{baseUrl}}detail-bg.png) center / 100% 100%"></view>
   <view class="modal-box">
     <scroll-view class="detail-list" scroll-y>
-      <view class="list-box">
+      <!-- <view class="list-box"> -->
         <block wx:for="{{isNight?maps_night:maps_day}}" wx:key="unique" wx:for-item="part">
           <block wx:for="{{part}}" wx:key="unique">
             <view class="detail-item">
@@ -256,9 +256,10 @@
                 <view class="word text2">{{item.Address}}</view>
               </view>
             </view>
+            <view class="other"></view>
           </block>
         </block>
-      </view>
+      <!-- </view> -->
     </scroll-view>
     <view class="bottom">
       <text>详细活动请见“上海消费总动员”官方微信</text>

@@ -1,4 +1,313 @@
 <!--index.wxml-->
-<view class="body">
-  <image src="{{pic || ''}}" class="bg"></image>
+<view class="body {{isNight ? 'isNight' : 'isDay'}}">
+  <view class="bg wrap-bg">
+    <view class="body-bg"></view>
+    <image src="{{baseUrl}}{{isNight?'bg-logo3.png':'bg-logo2.png'}}" class="bg-logo"></image>
+  </view>
+  <view class="main">
+    <view class="top-nav">
+      <view class="logo" style="background-image:url({{baseUrl}}{{isNight?'main-logo2.png':'main-logo.png'}})" bindtap="DayOrNight"></view>
+      <view class="top-btns">
+        <view class="btn btn-rule" bindtap="showRule">
+          <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
+          <text>规则</text>
+        </view>
+        <button class="btn btn-share" open-type="share">
+          <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
+          <text>分享</text>
+        </button>
+        <view class="btn btn-scan" bindtap="scan">
+          <image src="{{baseUrl}}{{isNight?'btn-purple.png':'btn-red.png'}}"></image>
+          <text>扫码</text>
+        </view>
+      </view>
+    </view>
+    <view class="user-box">
+      <view class="user-img-box imgRadio">
+        <image src="{{user.avatarUrl}}" class="user-img"></image>
+      </view>
+      <view class="user-info-box">
+        <view class="country"><text>国家码：</text>{{'9148352'}}</view>
+        <view class="idcard"><text>护照编码：</text>{{user.id}}</view>
+        <view class="username text"><text>姓名：</text>{{user.nickName}}</view>
+        <!-- <view class="usersex"><text>性别：</text>{{user.gender==2?'女':(user.gender?'男':'未知')}}</view> -->
+        <view class="province"><text>地区：</text>{{((user.province||'') + '' + (user.city||'')) || '未知位置'}}</view>
+      </view>
+    </view>
+    <view class="map">
+      <view class="wrap-bg">
+        <view class="body-mask" style="background-image:url({{baseUrl}}{{isNight?'list-bg2.png':'list-bg1.png'}})"></view>
+      </view>
+      <swiper class="swiper" wx:if="{{isNight==false}}" current="{{nowSwiper}}" bindchange="swiperChange">
+        <block wx:for="{{maps_day}}" wx:key="index" wx:for-item="part">
+          <swiper-item class="part">
+            <!-- <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{1+index}}s.png)"></view>
+            <image class="main-title" src="{{baseUrl}}main-title{{index+1}}.png"></image> -->
+            <view class="list">
+              <block wx:for="{{part}}" wx:key="index">
+                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="open_detail">
+                  <image src="{{item.Url?item.Url:baseUrl+'default.jpg'}}" class="item-img"></image>
+                  <!-- <text class="item-name text">{{item.Name}}</text> -->
+                </view>
+              </block>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+      <swiper class="swiper" wx:if="{{isNight==true}}" current="{{nowSwiper}}" bindchange="swiperChange">
+        <block wx:for="{{maps_night}}" wx:key="index" wx:for-item="part">
+          <swiper-item class="part">
+            <!-- <view class="modudu-box" style="background-image: url({{baseUrl}}modudu{{1+index}}s.png)"></view>
+            <image class="main-title" src="{{baseUrl}}main-title{{index+1}}.png"></image> -->
+            <view class="list">
+              <block wx:for="{{part}}" wx:key="index">
+                <view class="item imgRadio {{item.Light? 'hasSign':''}}" bindtap="open_detail">
+                  <image src="{{item.Url?item.Url:baseUrl+'default.jpg'}}" class="item-img"></image>
+                  <!-- <text class="item-name text">{{item.Name}}</text> -->
+                </view>
+              </block>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+      <view class="modudu-box" style="background-image: url({{modudu[nowSwiper]}})"></view>
+      <image src="{{nowSwiper>2?'':baseUrl+'main-title'+(1+nowSwiper)+'.png'}}" class="main-title"></image>
+      <image src="{{baseUrl}}arrow.png" class="swiper-left {{nowSwiper<1?'disable':''}}" data-type="-1" bindtap="swiperTo"></image>
+      <image src="{{baseUrl}}arrow.png" class="swiper-right {{nowSwiper>(isNight?maps_night.length-2:maps_day.length-2)?'disable':''}}" data-type="1" bindtap="swiperTo"></image>
+    </view>
+    <view class="more-prize">
+      <view class="progress">
+        <view class="progress-bar" style="width:{{progress/30*100}}%">
+          <view class="progress-text">{{progress}}</view>
+        </view>
+      </view>
+      <view class="more-prize-box">
+        <block wx:for="{{prize}}" wx:key="*this">
+          <view class="prize-box {{item<=progress?'open':''}}" data-index="{{index}}" bindtap="clickBox">
+            <view class="box" style="background-image: url({{baseUrl}}prize-box.png)"></view>
+            <view wx:if="{{progress<=30}}" class="box-tip {{index==prize_open?'showTip':''}}" style="background-image: url({{baseUrl}}box-tip.png)">
+              <text wx:if="{{progress==30}}">您已使用三次额外抽奖机会，真厉害</text>
+              <!-- <text>您还需要签到{{10-progress%10}}次获得额外抽奖机会哟</text> -->
+              <text wx:if="{{(index*10+10-progress)<0}}">您已中奖</text>
+              <text wx:if="{{(index*10+10-progress)>=0}}">您还需要签到{{index*10+10-progress}}次获得额外抽奖机会哟</text>
+            </view>
+            <text class="box-num">{{item}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="bottom">
+      <navigator url="../prize/prize" class="btn btn-prize">
+        <image src="{{baseUrl}}{{isNight?'btn-big-purple.png':'btn-big-yellow.png'}}"></image>
+        <text>点击查看我的奖励</text>
+      </navigator>
+    </view>
+  </view>
+</view>
+
+<!-- 规则页 -->
+<view class="modal rule {{modal.rule?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box rule-box">
+    <image src="{{baseUrl}}rule.png" class="rule-img"></image>
+    <view class="btn btn-close-rule" bindtap="closeRule">
+      <image src="{{baseUrl}}btn-red.png"></image>
+      <text>唔晓得啦</text>
+    </view>
+  </view>
+</view>
+
+<!-- 验证页 -->
+<view class="modal justify {{modal.justify?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="modal-box">
+    <view class="modudu" style="background-image: url({{baseUrl}}modudu5.png)">
+      <view class="other" style="background-image: url({{baseUrl}}word-box.png)">
+        <text>答对验证码签到啦！</text>
+      </view>
+    </view>
+    <view class="tip-box">
+      <form bindsubmit="justify" data-type="{{modal.prize2?'collect':''}}" report-submit>
+        <view class="judge-box">
+          <view class="question">
+            <image src="{{code_question}}"></image>
+          </view>
+          <view class="answers">
+            <block wx:for="{{code_answers}}" wx:key="item.name">
+              <image src="{{item.url}}" class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
+            </block>
+          </view>
+        </view>
+        <button form-type="submit">
+          <view class="btn-red">确定</view>
+          <!-- <view class="btn-red" bindtap="justify">确定</view> -->
+        </button>
+      </form>
+    </view>
+  </view>
+</view>
+
+<!-- 宝箱 -->
+<view class="modal prize {{modal.prize?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+  <!-- <form bindsubmit="click_get_prize" report-submit class="modal-box">
+    <button form-type="submit">
+      <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
+        <view class="finger"></view>
+        <view class="tip">签到成功可抽奖</view>
+      </view>
+    </button>
+  </form> -->
+  <view class="modal-box">
+    <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)" bindtap="good">
+      <view class="finger"></view>
+    </view>
+  </view>
+</view>
+
+<!-- 中奖 -->
+<view class="modal good {{modal.good?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+  <view class="modal-box">
+    <view class="getPrize-box" style="background-image: url({{baseUrl}}box-open.png)">
+      <view class="tip">恭喜您中奖啦</view>
+    </view>
+    <view class="btn btn-orange" bindtap="result">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>点击查看详情</text>
+    </view>
+  </view>
+</view>
+
+<!-- 未中奖 -->
+<view class=" modal bad {{modal.bad ? 'in': ''}} ">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png); opacity:0.4 "></view>
+  <view class="modal-box">
+    <view class="getPrize-box " style="background-image: url({{baseUrl}}box-close.png) ">
+      <view class="tip ">很遗憾！<text>没有中奖</text></view>
+    </view>
+    <view class="btn btn-orange" bindtap="bad_ok">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
+  </view>
+</view>
+
+
+<!-- 宝箱 -->
+<view class="modal prize2 {{modal.prize2?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png)"></view>
+  <!-- <form bindsubmit="click_get_prize" data-type="collect" report-submit class="modal-box">
+    <button form-type="submit">
+      <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)">
+        <view class="finger"></view>
+        <view class="tip">集签10次可抽奖</view>
+      </view>
+    </button>
+  </form> -->
+  <view class="modal-box">
+    <view class="getPrize-box" style="background-image: url({{baseUrl}}box-close.png)" bindtap="prize2_ok">
+      <view class="finger"></view>
+      <view class="tip">集签10次可抽奖</view>
+    </view>
+  </view>
+</view>
+
+
+<!-- 奖品详情页 -->
+<view class="modal result {{modal.result?'in':''}}">
+  <view class="bg" style="background: url({{baseUrl}}prize-bg.jpg) center / 100% 100%"></view>
+  <view class="modal-box">
+    <view class="qrcode">
+      <image src="{{bonus.QRCode}}"></image>
+      <image src="{{baseUrl}}exchange.png" class="bg" wx:if="{{bonus.Take}}"></image>
+    </view>
+    <view class="title text">{{bonus.GiftName || '奖品名称'}}</view>
+    <view class="word text2">兑换时间：<text>{{bonus.Time || bonus.GiftTime || '0000.00.00'}}</text></view>
+    <view class="word text2">兑换地点：<text>{{bonus.Address || bonus.GiftAddress || '上海购物节活动组委会'}}</text></view>
+    <view class="word text2">奖品渠道：<text>{{bonus.LotteryName || ''}}</text></view>
+    <view class="btn btn-ok" bindtap="result_ok">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
+  </view>
+</view>
+
+<!-- 详情页 -->
+<view class="modal detail {{modal.detail?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="bg" style="background:url({{baseUrl}}detail-bg.png) center / 100% 100%"></view>
+  <view class="modal-box">
+    <scroll-view class="detail-list" scroll-y>
+      <!-- <view class="list-box"> -->
+        <block wx:for="{{isNight?maps_night:maps_day}}" wx:key="unique" wx:for-item="part">
+          <block wx:for="{{part}}" wx:key="unique">
+            <view class="detail-item">
+              <view class="image">
+                <image src="{{item.Url}}"></image>
+                <image src="{{baseUrl}}pass.png" class="bg" wx:if="{{item.Light}}"></image>
+              </view>
+              <view class="content">
+                <view class="title text">{{item.Name}}</view>
+                <view class="word text2">{{item.Address}}</view>
+              </view>
+            </view>
+            <view class="other"></view>
+          </block>
+        </block>
+      <!-- </view> -->
+    </scroll-view>
+    <view class="bottom">
+      <text>详细活动请见“上海消费总动员”官方微信</text>
+      <!-- <image src="{{baseUrl}}kdc-logo.png" class="kdc-logo"></image> -->
+      <image src="{{baseUrl}}up.png" class="up"></image>
+    </view>
+  </view>
+  <image src="{{baseUrl}}close-detail.png" class="close" bindtap="close_detail"></image>
+</view>
+
+<image src="{{baseUrl}}main-bg.jpg" class="bg" style="z-index:100" wx:if="{{modal.loading}}"></image>
+
+
+<!-- 集签条件满足提示 -->
+<view class="modal more {{modal.more?'in':''}}">
+  <view class="bg modal-bg"></view>
+  <view class="bg modal-img-bg" style="background-image: url({{baseUrl}}modal-bg.png)"></view>
+  <view class="modal-box more-box">
+    <image src="{{baseUrl}}more.png" class="more-img"></image>
+    <!-- <view class="btn btn-close-rule" bindtap="page_prize2"> -->
+    <!-- <view class="btn btn-close-rule" bindtap="getPrize2"> -->
+    <view class="btn btn-close-rule">
+      <image src="{{baseUrl}}btn-purple.png"></image>
+      <form bindsubmit="getPrize2" report-submit>
+        <button form-type="submit">
+          <text>抽奖</text>
+      </button>
+      </form>
+    </view>
+  </view>
+</view>
+
+<!-- 未中奖 -->
+<view class=" modal bad2 {{modal.bad2 ? 'in': ''}} ">
+  <view class="bg modal-bg"></view>
+  <view class="light" style="background-image: url({{baseUrl}}bling.png); opacity:0.4 "></view>
+  <view class="modal-box">
+    <view class="getPrize-box " style="background-image: url({{baseUrl}}box-close.png) ">
+      <view class="tip ">很遗憾！<text>没有中奖</text></view>
+    </view>
+    <view class="btn btn-orange" bindtap="bad_ok2">
+      <image src="{{baseUrl}}btn-orange.png"></image>
+      <text>返回</text>
+    </view>
+  
+  </view>
+</view>
+
+<view class="resource-load">
+  <audio src="{{baseUrl}}bgm.mp3" id="bgm" loop binderror="error"></audio>
 </view>

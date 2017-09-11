@@ -1,65 +1,40 @@
 // index.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    pic: ''
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
   
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
   
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
+  onShareAppMessage: function () {
+    return {
+      title: '哦哟！2017上海购物节摇一摇超级福利来哉！',
+      path: 'pages/index/index',
+    }
+  },
   onShow: function () {
-  
-  },
+    var pic = wx.getStorageSync('pic');
+    if (pic) {
+      this.setData({
+        pic: pic,
+      });
+    } else {
+      wx.showToast({
+        title: '活动已结束',
+        duration: 9999999,
+      })
+    }
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
   
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
   
   },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
   
   }

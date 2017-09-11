@@ -101,7 +101,14 @@ App({
                 // console.log('/onLogin/', r3.data);
                 that.globalData.id = r3.data.Unionid;
                 typeof cb == "function" && cb(r3.data, user);
-              }
+              },
+              fail: function(err){
+                wx.showToast({
+                  title: '系统错误',
+                  mask: true,
+                  duration: 9999999,
+                });
+              },
             });
           },
           // fail: function() {
