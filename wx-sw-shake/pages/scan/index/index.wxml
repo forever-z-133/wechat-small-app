@@ -109,7 +109,7 @@
 <view class="modal rule {{modal.rule?'in':''}}">
   <view class="bg modal-bg"></view>
   <view class="modal-box rule-box">
-    <image src="{{baseUrl}}rule.png" class="rule-img"></image>
+    <image src="{{baseUrl}}rule3.png" class="rule-img"></image>
     <view class="btn btn-close-rule" bindtap="closeRule">
       <image src="{{baseUrl}}btn-red.png"></image>
       <text>唔晓得啦</text>

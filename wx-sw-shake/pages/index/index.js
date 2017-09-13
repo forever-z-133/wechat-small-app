@@ -64,11 +64,35 @@ Page({
     console.log('全局传参', opt);
     cl = opt.cl || opt.q || '';
     cl = decodeURIComponent(cl);
+    var rout = app.QueryString('ex', cl);
     cl = app.QueryString('cl',cl);
     // if (opt.cl) {
     //   cl = opt.cl;
     // }
 
+    // 用户设备信息到后台
+    var info = {};
+    try {
+      var res = wx.getSystemInfoSync();
+      info.brand = res.brand; // 手机品牌
+      info.model = res.model; // 手机型号
+      info.system = res.system; // 操作系统版本
+      info.version = res.version; // 微信版本号
+      info.platform = res.platform; // 客户端平台
+    } catch (err) { }
+
+    // 后端保存渠道信息和用户设备信息
+    // wx.request({
+    //   url: '',
+    //   data: {
+    //     ex: '',
+    //   },
+    //   success: function (r) {
+
+    //   },
+    // })
+
+    // 开始
     this.data.modal.loading = false;
     this.setData({
       modal: this.data.modal,
