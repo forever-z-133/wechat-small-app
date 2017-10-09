@@ -65,7 +65,7 @@ Page({
     cl = opt.cl || opt.q || '';
     cl = decodeURIComponent(cl);
     var ex = app.QueryString('ex', cl);
-    cl = app.QueryString('cl',cl);
+    cl = app.QueryString('cl', cl);
 
     // 开始
     this.data.modal.loading = false;
@@ -74,8 +74,15 @@ Page({
     });
 
     // 入口判断，传递 code，获取 Unionid
-    app.Login(function (r,user) {
+    app.Login(function (r, user) {
       console.log('入口', r, user);
+
+      var finishTime = new Date(2017, 9, 9, 0, 0, 0);
+      if (new Date() > finishTime) {
+        this.setData({
+          finish_bg: r.Pic,
+        });
+      }
 
       if (r.ErrorMessage == 898) {
         wx.showToast({
@@ -87,7 +94,7 @@ Page({
       }
 
       // Unionid
-      id = app.globalData.id; 
+      id = app.globalData.id;
 
       // 用户设备信息到后台
       try {
@@ -206,7 +213,7 @@ Page({
           }
         }
         console.log(day, night)
-        
+
         if (r.data.GetCollectCount > 0) {
           this.data.modal.more = true;
         } else if (cl) {
@@ -215,7 +222,7 @@ Page({
         }
 
         var modudu = [];
-        for (var i=1; i<=3; i++) {
+        for (var i = 1; i <= 3; i++) {
           modudu.push(baseUrl + 'modudu' + i + 't.png');
         }
 
@@ -239,7 +246,7 @@ Page({
       },
     });
   },
-  error: function(err) {
+  error: function (err) {
     console.log(err);
   },
   onShow: function () {
@@ -331,7 +338,7 @@ Page({
   swiperTo: function (e) {
     var direction = parseInt(e.target.dataset.type, 10)
     var i = this.data.nowSwiper + direction;
-    var max = this.data.isNight ? this.data.maps_day.length-1 : this.data.maps_night.length-1;
+    var max = this.data.isNight ? this.data.maps_day.length - 1 : this.data.maps_night.length - 1;
     i = Math.max(0, Math.min(max, i));
     this.setData({
       nowSwiper: i
@@ -456,7 +463,7 @@ Page({
           var i = r.data.Sign.PlayType;     // 购0玩1吃2其他
           var d = n ? this.data.maps_night : this.data.maps_day;
           if (d >= 3) d = this.data.maps_night.concat(this.data.maps_day);
-          console.log(n ,i ,d);
+          console.log(n, i, d);
           for (var s in d) {  // 拆成购玩吃
             for (var j in d[s]) { // 获得单个购物地
               if (r.data.Sign.Guid == d[s][j].Guid) {
@@ -524,7 +531,7 @@ Page({
         if (r.data.State) {
           cl = null;
           // if (progress > 2) {
-          if (progress %10 == 0) {
+          if (progress % 10 == 0) {
             this.page_prize2();
           } else {
             this.page_prize();
@@ -617,7 +624,7 @@ Page({
     this.data.modal.bad2 = false;
     this.setData({ modal: this.data.modal });
   },
-  prize2_ok: function(){
+  prize2_ok: function () {
     this.data.modal.prize2 = false;
     this.data.modal.more = true;
     this.setData({ modal: this.data.modal });

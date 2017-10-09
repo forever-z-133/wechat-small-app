@@ -308,6 +308,10 @@
   </view>
 </view>
 
+<view class='bg finish_bg' wx-if="{{finish_bg}}">
+  <image src="{{'https://sum.kdcer.com/'+finish_bg}}"></image>
+</view>
+
 <view class="resource-load">
   <audio src="{{baseUrl}}bgm.mp3" id="bgm" loop binderror="error"></audio>
 </view>

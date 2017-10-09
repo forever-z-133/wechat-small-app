@@ -625,3 +625,8 @@
   transform: translateX(20px);
   background: radial-gradient(#f869ff, transparent); 
 }
+
+.finish_bg {
+  z-index: 99999;
+  background: #fff;
+}
