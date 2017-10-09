@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/card/card",
     "pages/index/index",
+    "pages/card/card",
     "pages/map/map",
     "pages/prize/prize",
     "pages/detail/detail"
