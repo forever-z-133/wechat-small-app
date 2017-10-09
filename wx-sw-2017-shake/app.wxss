@@ -1,0 +1,186 @@
+/**app.wxss**/
+.body, .modal, .bg, .page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+   overflow: hidden; 
+}
+.page > view {
+  position: absolute;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+}
+.resource-load {
+  position: absolute;
+  left: -9999px;
+  padding: 10rpx;
+  word-wrap: break-word;
+}
+image.bg, canvas.bg {
+  width: 100%;
+  height: 100%;
+}
+.hidden {
+  display: none !important;
+}
+.modal {
+  opacity: 0;
+  z-index: -1;
+  overflow: hidden;
+  transition: .3s;
+}
+.modal.in {
+  opacity: 1;
+  z-index: 10;
+}
+.modal-bg {
+  background: rgba(0, 0, 0, .6);
+}
+.modal-box {
+  position: relative;
+}
+.header {
+  flex-shrink: 0;
+}
+.main {
+  flex-grow: 1;
+}
+.flex-tabs {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.flex-tabs > .tab {
+  flex-grow: 1;
+}
+image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+button {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  font: inherit;
+  color: inherit;
+  background: none;
+}
+button:after {
+  display: none;
+  border: none;
+}
+swiper {
+  height: 100%;
+}
+
+.imgRadio {
+  position: relative;
+}
+.imgRadio:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.imgRadio > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.text {
+  word-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: box;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.modal-box {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.modal .modudu {
+  margin-bottom: -250rpx;
+  height: 550rpx;
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.modal .modudu .other {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 250rpx;
+  height: 200rpx;
+  padding: 0 30rpx 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: 100% 100%;
+  color: #ab0a07;
+  font-size: 36rpx;
+  box-sizing: border-box;
+}
+.modal .modudu > view {
+  background: inherit;
+}
+.modal .tip-box {
+  position: relative;
+  width: 600rpx;
+  background: #feebd0;
+  box-shadow: 0 0 0 3px #a40000;
+  border-radius: 10rpx;
+  padding: 50rpx;
+  box-sizing: border-box;
+}
+
+
+.question image {
+  width: 500rpx;
+  height: 75px;
+}
+.answers {
+  margin: 10rpx auto;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+}
+.answers image {
+  width: 110rpx;
+  height: 110rpx;
+  margin: 10rpx 10rpx;
+}
+.answers image.active {
+  box-shadow: 0 0 0 3px red;
+}
+
+
+.btn-red {
+  display: block;
+  color: #fff;
+  text-align: center;
+  line-height: 2.5em;
+  font-size: 30rpx;
+  font-weight: bold;
+  border-radius: 10rpx;
+  background: linear-gradient(to left, #a10b08, #bb0a06, #a10b09);
+  box-shadow: 0 0 0 1px #e48903;
+}
