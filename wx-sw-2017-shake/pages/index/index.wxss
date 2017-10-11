@@ -371,6 +371,7 @@ progress {
 .question image {
   width: 500rpx;
   height: 75px;
+  background: #fff;
 }
 .answers {
   margin: 10rpx auto;
@@ -382,6 +383,7 @@ progress {
   width: 110rpx;
   height: 110rpx;
   margin: 10rpx 10rpx;
+  background: #fff;
 }
 .answers image.active {
   box-shadow: 0 0 0 3px red;

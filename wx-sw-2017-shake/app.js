@@ -7,6 +7,7 @@ var code = null;
 var user = null;
 var post_user = null;
 
+var debug = true;
 
 App({
   globalData: {
@@ -14,19 +15,19 @@ App({
     main_data: null,
     id: '',
   },
+  debug: debug,
 
-  // 获取用户信息（废弃）
+  // 获取用户信息
   getUserInfo: function (cb) {
-    var that = this
+    var that = this;
     if (this.globalData.userInfo) {
-      typeof cb == "function" && cb(this.globalData.userInfo)
+      typeof cb == "function" && cb(this.globalData.userInfo);
     } else {
-      //调用登录接口
       wx.getUserInfo({
         withCredentials: false,
         success: function (res) {
-          that.globalData.userInfo = res.userInfo
-          typeof cb == "function" && cb(that.globalData.userInfo)
+          that.globalData.userInfo = res.userInfo;
+          typeof cb == "function" && cb(that.globalData.userInfo);
         }
       });
     }
@@ -72,65 +73,24 @@ App({
             // console.log('getUserInfo', r2);
             that.globalData.user = r2.userInfo;
             that.globalData.userInfo = r2.userInfo;
-            // console.log(r2)
-            // console.log(r1.code);
 
-            user = JSON.parse(r2.rawData);
-            var userInfo = {
-              Nickname: user.nickName,
-              Gender: user.gender,
-              City: user.city,
-              Country: user.country,
-              Province: user.province,
-              Language: user.language,
-              HeadImgUrl: user.avatarUrl,
+            if (debug) {
+              that.globalData.id = '2398123471';
+              typeof cb == "function" && cb({}, user);
+            } else {
+              wx.hideLoading();
+              wx.showModal({
+                content: '非 debug 模式，活动已下线，无法预览。',
+              });
             }
-            post_user = JSON.stringify(userInfo)
-
-            wx.request({
-              url: (isTest ? testUrl : apiUrl ) + '/CodeToSession',
-              data: {
-                code: r1.code,
-                iv: r2.iv,
-                encryptedDataStr: r2.encryptedData,
-                userJson: JSON.stringify(userInfo),
-              },
-              success: function (r3) {
-                // console.log('/onLogin/', r3.data);
-                that.globalData.id = r3.data.Unionid;
-                typeof cb == "function" && cb(r3.data, user);
-              },
-              fail: function(err){
-                wx.showToast({
-                  title: '系统错误',
-                  mask: true,
-                  duration: 9999999,
-                });
-              },
+          },
+          fail: function() {
+            wx.hideLoading();
+            wx.showModal({
+              title: '操作有误',
+              content: '请务必开启授权！\n 微信底部菜单点击【发现】>【小程序】> 长按或左滑【玩转购物地】>【删除】，然后重新进入，允许微信授权。\n 我们不想失去你，你也不想失去十万份礼包吧。',
             });
           },
-          // fail: function() {
-            // wx.hideLoading();
-            // wx.showModal({
-            //   title: '操作有误',
-            //   content: '请务必开启授权！\n 微信底部菜单点击【发现】>【小程序】> 长按或左滑【玩转购物地】>【删除】，然后重新进入，允许微信授权。\n 我们不想失去你，你也不想失去十万份礼包吧。',
-              // success: function(res) {
-              //   wx.getUserInfo({
-              //     lang: 'zh_CN',
-              //     withCredentials: true,
-              //     success: function (r2) {
-              //       wx.showLoading({
-              //         title: '',
-              //         duration: 99999999,
-              //       });
-              //     },
-              //   });
-              //   // if (res.confirm) {
-              //   // } else if (res.cancel) {
-              //   // }
-              // }
-            // })
-          // },
         });
       },
       fail: function () {

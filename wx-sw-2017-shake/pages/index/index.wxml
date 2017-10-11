@@ -1,7 +1,5 @@
-<!--index.wxml-->
 <view class="body" catchtap="shakeTest"> 
-<!-- <view class="body"> -->
-  <!-- 加载中 -->
+  <!-- loading -->
   <view class="page load {{page.load?'':'hidden'}}">
     <view class="progress">
       <view class="progress-bar" style="width:{{imgLoadProgress}}%">
@@ -10,7 +8,7 @@
       <view class="progress-text">{{imgLoadProgress}}% 加载中</view>
     </view>
   </view>
-  <!-- 欢迎主页面 -->
+  <!-- 欢迎页 -->
   <view class="page welcome {{page.welcome ?'':'hidden'}} {{doorOpen?'open':''}}">
     <view class="bg door">
       <view class="door-item door-left">
@@ -32,6 +30,7 @@
     </view>
     <view class="station-name">全城摇一摇<text>shake the whole town</text></view>
     <view class="btn btn-rule" style="background-image:url({{baseUrl}}rule-btn.png)" bindtap="showRule"></view>
+    <!-- 游戏启动开关 -->
     <view class="logo" wx:if="{{canStart}}" bindtap="start" style="background-image:url({{baseUrl}}logo.png)"></view>
   </view>
   <!-- 规则 -->
@@ -51,8 +50,7 @@
     <image src="{{imgBaseUrl}}0/0.jpg" class="bg"></image>
     <view class="bg modal-bg"></view>
     <view class="modal-box">
-      <!-- <view class="shake-count">{{beforeShake}}</view>  -->
-      <view class="shake-count {{beforeShake?'active':''}} {{beforeShake2?'active2':''}}"></view> 
+      <view class="shake-count">{{ready_go}}</view> 
       <view class="shake-text">赶紧摇一摇</view>
       <view class="shake-image">
         <image src="{{baseUrl}}shake.png"></image>
@@ -66,39 +64,25 @@
   </view>
   <!-- 火车与烟花 canvas -->
   <view class="page train {{page.train?'':'hidden'}}">
-    <canvas canvas-id="imgs" class="bg" style="width:100%; height:100%">
-      <!--<cover-view class="modal start {{page.shake2?'in':''}}" bindtap="shakeTest">
-        <cover-view class="bg modal-bg"></cover-view>
-        <cover-view class="modal-box">
-          <cover-view class="shake-count {{beforeShake?'active':''}} {{beforeShake2?'active2':''}}"></cover-view> 
-          <cover-view class="shake-text">继续摇</cover-view>
-          <cover-view class="shake-image">
-            <cover-image src="shake.png"></cover-image>
-          </cover-view>
-        </cover-view>
-      </cover-view>-->
-    </canvas>
+    <canvas canvas-id="imgs" class="bg" style="width:100%; height:100%"></canvas>
   </view>
   <!-- 验证 -->
   <view class="modal justify {{page.justify?'in':''}}">
     <view class="bg modal-bg"></view>
     <view class="modal-box">
       <view class="modudu">
-        <view class="wrong" style="background-image: url({{baseUrl}}modudu4.png)" wx:if="{{judge_error}}"></view>
-        <view class="right" style="background-image: url({{baseUrl}}modudu5.png)" wx:else>
-          <view class="other" style="background-image: url({{baseUrl}}word-box.png)">
-            <text>答对验证码抽奖啦！</text>
-          </view>
+        <view class="right" style="background-image: url({{baseUrl}}modudu5.png)">
+          <view class="other" style="background-image: url({{baseUrl}}word-box.png)"><text>答对验证码抽奖啦！</text></view>
         </view>
       </view>
       <view class="tip-box">
         <view class="judge-box">
           <view class="question">
-            <image src="{{code_question}}"></image>
+            <image></image>
           </view>
           <view class="answers">
             <block wx:for="{{code_answers}}" wx:key="item.name">
-              <image src="{{item.url}}" class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
+              <image class="{{item.active?'active':''}}" data-index="{{index}}" data-item="{{item.name}}" bindtap="answer"></image>
             </block>
           </view>
         </view>
@@ -137,26 +121,12 @@
       </view>
     </view>
   </view>
-  <!-- 中奖2 -->
-  <view class="modal good2 {{page.good2?'in':''}}">
-    <view class="bg modal-bg"></view>
-    <view class="modal-box">
-      <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
-      <view class="tip-box">
-        <image src="{{baseUrl}}good.png"></image>
-        <text>哎哟喂！恭喜您中奖啦！</text>
-        <navigator url="/pages/scan/prize/prize" class="btn btn-red">去个人奖品中心</navigator>
-        <!-- <view class="btn btn-red" bindtap="page_result"></view> -->
-      </view>
-    </view>
-  </view>
   <!-- 未中奖 -->
   <view class="modal bad {{page.bad ?'in':''}}">
     <view class="bg modal-bg"></view>
     <view class="modal-box">
       <view class="modudu" style="background-image: url({{baseUrl}}modudu3.png)"></view>
       <view class="tip-box">
-        <!-- <image src="{{baseUrl}}good.png"></image> -->
         <text>还差那么一丢丢，没中奖。<text wx:if="{{left}}">你还有 {{left}} 次机会哟~</text></text>
          <view class="btn btn-red" wx:if="{{reload}}" bindtap="reload">好吧</view> 
       </view>
@@ -168,12 +138,12 @@
     <view class="modal-box">
       <view class="modudu" style="background-image: url({{baseUrl}}modudu2.png)"></view>
       <view class="tip-box">
-        <view class="qrcode" style="background-image: url({{prize.QRCode}})">
-          <view class="take" wx:if="{{prize.Take}}" style="background-image: url({{baseUrl}}exchange.png)"></view>
+        <view class="qrcode" style="background-image: url({{prize.QRCode || baseUrl+'qrcode.png'}})">
+          <view class="take" wx:if="{{prize.Take || true}}" style="background-image: url({{baseUrl}}exchange.png)"></view>
         </view>
-        <view class="word"><view>奖品名称：</view><text>{{prize.GiftName}}</text></view>
-        <view class="word"><view>领奖时间：</view><text>{{prize.GiftTime}}</text></view>
-        <view class="word"><view>领奖地点：</view><text>{{prize.GiftAddress}}</text></view>
+        <view class="word"><view>奖品名称：</view><text>{{prize.GiftName || '礼品名称礼品名称'}}</text></view>
+        <view class="word"><view>领奖时间：</view><text>{{prize.GiftTime || '0000.00.00 - 0000.00.00'}}</text></view>
+        <view class="word"><view>领奖地点：</view><text>{{prize.GiftAddress || '2017年上海购物节'}}</text></view>
         <view class="btn btn-red" bindtap="result_ok">太棒了</view>
       </view>
     </view>
@@ -182,16 +152,6 @@
   <view class="modal tip {{page.tip?'in':''}}">{{tipText}}</view>
 </view>
 
-
-<!-- <view class="resource-load" wx:if="imgCanLoad">
-  <block wx:for="{{imgs}}" wx:key="index">
-    <block wx:for="{{item[0]}}" wx:key="*i" wx:for-item="every" wx:for-index="i">
-      <view class="classname">{{imgBaseUrl + index + '/' + every + item[1]}}</view>
-      <image src="{{imgBaseUrl + index + '/' + every + item[1]}}" data-src="{{item}}" data-index="{{index}}" bindload="imgLoad"></image>
-    </block>
-  </block>
-</view> -->
-
 <view class="resource-load">
   <audio src="{{baseUrl}}media/bgm.mp3" id="bgm" loop binderror="error"></audio>
   <audio src="{{baseUrl}}media/train.wav" id="train" loop binderror="error"></audio>
@@ -199,7 +159,5 @@
   <audio src="{{baseUrl}}media/yao.mp3" id="shake" binderror="error"></audio>
   <audio src="{{baseUrl}}media/good.mp3" id="good" binderror="error"></audio>
   <audio src="{{baseUrl}}media/bad.mp3" id="bad" binderror="error"></audio>
-  <audio src="{{baseUrl}}media/didadida.mp3" id="clock" loop binderror="error"></audio>
   <audio src="{{baseUrl}}media/wonderful.mp3" id="result" binderror="error"></audio>
-  <audio src="{{baseUrl}}media/finish.mp3" id="finish" binderror="error"></audio>
 </view>
