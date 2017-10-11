@@ -1,0 +1,14 @@
+<view wx-if="{{can == true}}">
+  <view class="box">
+    <icon type="success" size="100" color="{{item}}"/>
+    <view>申请成功</view>
+    <text>内容详情，可根据实际需要安排</text>
+    <button type="primary" size="default" bindtap="switch">确定</button>
+  </view>
+</view>
+<view wx-if="{{can == false}}">
+  <view class="box">
+    <icon type="warn" size="100" color="{{item}}"/>
+    <text>您没有核销权限，请联系工作人员</text>
+  </view>
+</view>

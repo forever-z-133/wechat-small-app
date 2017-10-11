@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "pages/index/index",
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "上海购物节",
+    "navigationBarTextStyle": "black"
+  }
+}

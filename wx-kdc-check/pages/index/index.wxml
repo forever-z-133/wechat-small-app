@@ -1,0 +1,30 @@
+<view class="welcome" wx-if="{{first}}">
+  <view class="title">欢迎使用坤鼎核销小程序</view>
+  <button class="btn" type="primary" size="default" bindtap="scan">扫码</button>
+</view>
+<view class="result" wx-if="{{!first}}">
+  <view class="title">{{activity.name}}</view>
+  <view class="message-box">
+    <view class="item">
+      <view class="label">核销状态</view>
+      <view class="content">
+        <text class="ok" wx-if="{{activity.ok}}">已核销</text>
+        <text class="bad" wx-if="{{!activity.ok}}">未核销</text>
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">奖品名</view>
+      <view class="content">{{activity.prize}}</view>
+    </view>
+    <view class="item">
+      <view class="label">核销时间</view>
+      <view class="content">{{activity.time}}</view>
+    </view>
+    <view class="item">
+      <view class="label">奖品内容</view>
+      <view class="content">{{activity.desc}}</view>
+    </view>
+  </view>
+  <button class="btn" type="primary" size="default" wx-if="{{!activity.ok}}" bindtap="check">点击核销</button>
+  <button class="btn" type="default" size="default" bindtap="scan">重新扫码</button>
+</view>

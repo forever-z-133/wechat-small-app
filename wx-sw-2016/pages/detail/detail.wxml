@@ -7,7 +7,7 @@
     <button class="btn btn-share" open-type="share"></button>
   </view>
   <swiper class="main" current="{{area_index}}" bindchange="areaChange">
-    <block wx:for="{{maps}}" wx:for-item="area" wx:key="*this">
+    <block wx:for="{{maps}}" wx:for-item="area" wx:key="index">
       <swiper-item class="item {{area.active?'active':''}}">
           <view class="image">
             <image src="https://sum.kdcer.com/test/wx-sw-scan/img/pic/{{index+1}}.jpg"></image>
@@ -16,10 +16,10 @@
           <view class="name">{{area.name}}</view>
           <view class="slide" catchtouchstart="swiperStart" catchtouchmove="swiperMove" catchtouchend="swiperEnd" current="0">
             <view class="slide-wrap" animation="{{animData[index]}}">
-              <block wx:for="{{area.activity}}" wx:for-item="one" wx:for-index="i" wx:key="*this">
+              <block wx:for="{{area.activity}}" wx:for-item="one" wx:for-index="i" wx:key="i">
                 <view class="one {{swiper_index===i?'active':''}}">
                   <view url="{{one.link}}">
-                    <image src="{{one.image}}"></image>
+                    <!-- <image src="{{one.image}}"></image> -->
                   </view>
                 </view>
               </block>

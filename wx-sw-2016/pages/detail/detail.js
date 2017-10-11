@@ -123,7 +123,8 @@ Page({
     let i = this.data.area_index
     let result = this.data.swiper_index
     let index = result[i] || 0
-    let max = this.data.maps[i].activity.length - 1
+    let active = this.data.maps[i].activity
+    let max = active && active.length ? active.length - 1 : 0
 
     // 页码更新
     if (this.yy > 80) {

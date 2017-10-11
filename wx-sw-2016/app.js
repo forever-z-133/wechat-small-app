@@ -10,6 +10,7 @@ App({
     } else {
       //调用登录接口
       wx.getUserInfo({
+        lang: 'zh_CN',
         withCredentials: false,
         success: function (res) {
           that.globalData.userInfo = res.userInfo

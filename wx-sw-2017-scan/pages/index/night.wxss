@@ -1,0 +1,50 @@
+
+.body.isNight {
+  color: #7153e2;
+  background: #313179;
+}
+.body-bg:after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  background: linear-gradient(#303179, #663366);
+  background-size:100% 100%;
+  opacity: 0;
+  transition: .6s;
+}
+.isNight .body-bg:after {
+  /* background-position: 0 75%; */
+  opacity: 1;
+}
+
+/* .isNight .body-mask {
+  background-position: 0 90%;
+} */
+
+/* .isNight .btn-rule,
+.isNight .btn-share,
+.isNight .btn-scan {
+  background-color: #6e4ac7; 
+} */
+
+.isNight .user-box {
+  border-color: #b2acc9;
+}
+.isNight .user-img {
+  border-color: #7253e2;
+}
+.isNight .user-info-box {
+  color: #fff;
+}
+.isNight .user-info-box text {
+  color: #ffa6cd;
+}
+
+.isNight .item-name:before {
+  background: #805fea;
+}
+
+.isNight .progress-bar {
+  background-image: linear-gradient(#cfcafc 10%, #c3b0ff 40%, #9e88ff 50%, #7a16ff)
+}

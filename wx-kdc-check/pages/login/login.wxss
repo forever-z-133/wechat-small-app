@@ -1,0 +1,23 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 50rpx 30rpx;
+}
+.box > view {
+  font-size: 40rpx;
+  margin: 80rpx auto 0;
+}
+.box > text {
+  color: #888888;
+  font-size: 28rpx;
+  margin-top: 30rpx;
+}
+.box > button {
+  width: 100%;
+  margin-top: 60rpx;
+}
+.box > button:not(:first-of-type) {
+  margin-top: 30rpx;
+}

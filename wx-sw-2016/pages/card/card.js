@@ -101,7 +101,7 @@ Page({
   /* 扫码 */
   scan: function () {
     wx.showModal({
-    	content: '为了方便预览，所需的二维码为数字 1-10 对应的 10 个二维码，可通过草料等在线工具生成。',
+    	content: '二维码为数字 1-10 对应的二维码，可通过工具自行生成。',
     	complete: function() {
     		this._scan();
     	}.bind(this),
