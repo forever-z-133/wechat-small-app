@@ -11,12 +11,12 @@ Page({
       maps: app.getMaps()
     });
   },
-  onShareAppMessage: function () {
-    return {
-      title: '上海购物节点亮地图',
-      path: '/pages/index/index',
-    }
-  },
+  // onShareAppMessage: function () {
+  //   return {
+  //     title: '上海购物节点亮地图',
+  //     path: '/pages/index/index',
+  //   }
+  // },
   scan: function () {
     var that = this;
     wx.scanCode({

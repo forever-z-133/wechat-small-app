@@ -40,12 +40,12 @@ Page({
     // }
   },
   // 转发
-  onShareAppMessage: function () {
-    return {
-      title: '上海购物节点亮地图',
-      path: '/pages/index/index',
-    }
-  },
+  // onShareAppMessage: function () {
+  //   return {
+  //     title: '上海购物节点亮地图',
+  //     path: '/pages/index/index',
+  //   }
+  // },
   /* 扫码 */
   scan: function () {
     var that = this;

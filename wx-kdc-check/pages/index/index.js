@@ -23,7 +23,8 @@ Page({
   scan: function() {
     util.wxScan(url => {
       console.log(url)
-      this.getInfo(url, function (r) {
+      //
+      this.getInfo(url, (r) => {
         // 欢迎取消
         if (this.data.first) {
           this.setData({

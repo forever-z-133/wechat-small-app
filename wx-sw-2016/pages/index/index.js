@@ -12,19 +12,19 @@ Page({
   onLoad: function () {
     this.getQrcode();
   },
-  onShareAppMessage: function () {
-    return {
-      title: '上海购物节点亮地图',
-      path: '/pages/index/index',
-      fail: function () {
-        wx.showToast({
-          title: '转发失败',
-          icon: 'cancel',
-          duration: 1000
-        })
-      }
-    }
-  },
+  // onShareAppMessage: function () {
+  //   return {
+  //     title: '上海购物节点亮地图',
+  //     path: '/pages/index/index',
+  //     fail: function () {
+  //       wx.showToast({
+  //         title: '转发失败',
+  //         icon: 'cancel',
+  //         duration: 1000
+  //       })
+  //     }
+  //   }
+  // },
 
   // 播放视频
   videoPlay: function () {

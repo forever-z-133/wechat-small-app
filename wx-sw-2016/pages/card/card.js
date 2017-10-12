@@ -45,12 +45,12 @@ Page({
       }
     })
   },
-  onShareAppMessage: function () {
-    return {
-      title: '上海购物节点亮地图',
-      path: '/pages/index/index',
-    }
-  },
+  // onShareAppMessage: function () {
+  //   return {
+  //     title: '上海购物节点亮地图',
+  //     path: '/pages/index/index',
+  //   }
+  // },
   /* 查看我的活动奖励 */
   myPrize: function () {
     var prize = app.getChoice();
@@ -101,7 +101,7 @@ Page({
   /* 扫码 */
   scan: function () {
     wx.showModal({
-    	content: '二维码为数字 1-10 对应的二维码，可通过工具自行生成。',
+    	content: '二维码为数字 1-10 对应的二维码。',
     	complete: function() {
     		this._scan();
     	}.bind(this),
