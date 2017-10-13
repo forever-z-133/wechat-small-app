@@ -2,7 +2,7 @@
 var app = getApp();
 
 // 各种标量
-var baseUrl = '../../img/';
+var baseUrl = 'https://sum.kdcer.com/test/img/test-shake/';
 var ctx = null;   // canvas 对象
 var winW, winH; // 屏幕宽高
 
@@ -140,6 +140,8 @@ var page = Page({
       audio.bgm.play(); // 背景音乐
 
       if (app.debug) {
+        resource = wx.getStorageSync('resource', resource)
+        console.log(resource)
         if (resource) {  // 如果图片已加载，直接显示
           this.page_welcome();
         } else {
@@ -183,6 +185,7 @@ var page = Page({
     }
   },
   imgLoaded: function () {
+    wx.setStorageSync('resource', resource)
     main_start && main_start();
   },
   reload: function () {
