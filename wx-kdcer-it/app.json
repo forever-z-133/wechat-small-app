@@ -1,0 +1,11 @@
+{
+  "pages":[
+    "pages/IT/index"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "坤鼎文化",
+    "navigationBarTextStyle":"black"
+  }
+}
