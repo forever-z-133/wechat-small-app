@@ -4,6 +4,16 @@
 
 ---
 
+### 公司技术部官网
+* 完成时间：2017.11.08
+* 难点：`<web-view>` 的试坑，具体可见 [博客](https://github.com/foreverZ133/blogs/issues/20)
+* 文件夹：[wx-sw-2017-scan](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdcer-it)
+* 为 **坤鼎KDC** 技术部官网
+
+<img src="qrcode/gh_8687b8e7c295_344.jpg" width="300">
+
+---
+
 ### 2017上海购物节 - 玩转购物地
 * 完成时间：未完成
 * 难点：白天黑夜两版样式，较复杂轮播操作，复杂的签到抽奖逻辑

@@ -1,1 +1,1 @@
-<web-view src="https://sum.kdcer.com/wechat/mDstp/?guid={{webId}}"></web-view>  
+<web-view src="https://sum.kdcer.com/wechat/mDstp/#wechat_redirect?guid={{webId}}"></web-view>
