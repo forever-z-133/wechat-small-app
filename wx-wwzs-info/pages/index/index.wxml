@@ -1,0 +1,63 @@
+<!--index.wxml-->
+<view class='header'>
+  <view class='image ratio rect'>
+    <image class='logo' src='{{basePath}}icon.jpg'></image>
+  </view>
+  <view class='content'>
+    <view class='title name'>
+      <text>万物至上宠物纪念馆</text>
+    </view>
+    <view class='desc type'>
+      <text>生活服务</text>
+      <text>宠物服务</text>
+    </view>
+  </view>
+</view>
+
+<view class='main'>
+ <view class='item line'>
+  <navigator class='item-head address' href="/" bindtap='map'>
+    <view class='icon label icon-address'>地址：</view>
+    <view class='desc'>湖北省武汉市东西湖区海口二路</view>
+    <view class='icon icon-arrow'></view>
+  </navigator>
+ </view>
+ <view class='item line time'>
+  <view class='item-head'>
+    <view class='icon label icon-time'>工作时间：</view>
+    <view class='desc'>9:00-18:00</view>
+  </view>
+ </view>
+ <navigator class='item line phone' href="/" bindtap='phone'>
+  <view class='item-head'>
+    <view class='icon label icon-phone'>客服电话：</view>
+    <view class='desc'>135 5453 0068</view>
+    <view class='icon icon-arrow'></view>
+  </view>
+ </navigator>
+ <view class='item line video'>
+  <view class='item-head'>
+    <view class='icon label icon-video'></view>
+    <view class='desc'>门店视频</view>
+  </view>
+  <view class='item-body'>
+    <video class='video' src='http://ugcws.video.gtimg.com/flv/76/178/o0566ftlmop.mp4?sdtfrom=v1010&guid=418fab5ec4ca05e175227e32096df566&vkey=EA4E4A3BF0D289BF5440D25EB9A961D2078B8B6EB927D81F2C52A96CABB00B1C50E8B6FCAA43BD411D4534F5ECBDFC0D93ECA132E594F3C544FC7275242073608D6C0E17A40BDF27B89CDED250D487E54003357DB7230882588C6852B864C8B56ED4DBFE089C42503C16974B91F7F00C6403C55A4C3AF9EB' autoplay controls loop></video>
+  </view>
+ </view>
+ <view class='item line gallery'>
+  <view class='item-head'>
+    <view class='icon label icon-gallery'></view>
+    <view class='desc'>门店照片</view>
+    <view class='btn-more' bindtap='more' wx:if="{{!showAll}}">展开全部</view>
+  </view>
+  <view class='item-body'>
+    <view class='gallery-list'>
+      <block wx:for="{{gallery}}">
+        <view class="item gallery-item ratio rect" style='background-image: url({{item}})' data-index='{{index}}' bindtap='preview' wx:if="{{index<3 || (index>2 && showAll) }}">
+          <!-- <image src="{{item}}"></image> -->
+        </view>
+      </block>
+    </view>
+  </view>
+ </view>
+</view>

@@ -4,10 +4,18 @@
 
 ---
 
+### 万物至上门店小程序
+* 完成时间：2017.11.17
+* 难点：仿制微信门店小程序，无难点
+* 文件夹：[wx-wwzs-info](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-wwzs-info)
+* 万物至上宠物纪念馆，致力于宠物丧善服务，由于门店小程序选错分类改不了，就让我帮忙做个仿制版的。尚未发布，无预览。
+
+---
+
 ### 公司技术部官网
 * 完成时间：2017.11.08
 * 难点：`<web-view>` 的试坑，具体可见 [博客](https://github.com/foreverZ133/blogs/issues/20)
-* 文件夹：[wx-sw-2017-scan](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdcer-it)
+* 文件夹：[wx-kdcer-it](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdcer-it)
 * 为 **坤鼎KDC** 技术部官网
 
 <img src="qrcode/gh_8687b8e7c295_344.jpg" width="300">

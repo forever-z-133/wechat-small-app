@@ -1,0 +1,103 @@
+/**index.wxss**/
+page {
+  box-sizing: border-box;
+}
+.header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 50rpx 5rpx;
+  margin: 0 30rpx;
+  border-bottom: 2rpx dashed #eee;
+}
+.content {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.title {
+  font-size: 1.4em;
+  margin-bottom: .1em;
+}
+.type {
+  color: #ccc;
+  font-size: .9em;
+}
+.type text::after {
+  content: "·";
+  margin: 0 .2em;
+}
+.type text:last-child:after {
+  opacity: 0;
+}
+.image {
+  width: 120rpx;
+  order: 99;
+}
+.image image {
+  border-radius: 100%;
+  background-color: #ccc; 
+}
+.main {
+  padding: 20rpx 0 100rpx;
+}
+.item-head {
+  display: flex;
+  align-items: center;
+  padding: 25rpx 30rpx;
+}
+.icon {
+  flex-shrink: 0;
+}
+.item-body {
+  padding: 5rpx 30rpx 20rpx;
+}
+
+.gallery-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -5rpx -5rpx;
+}
+.gallery-item {
+  width: calc(33.3333% - 10rpx);
+  margin: 5rpx 5rpx;
+  background-color: #ccc;
+}
+
+.item .label {
+  /* font-size: .8em; */
+  width: 1em;
+  height: 1em;
+  background-position: 50% 0;
+  background-size: auto 500%;
+  text-indent: -99em;
+  margin-right: .2em;
+  flex-shrink: 0;
+  background-image: url(http://petwwzs.com/icons.png);
+}
+.item .icon-address {background-position: 50% 0}
+.item .icon-time {background-position: 50% 25%}
+.item .icon-phone {background-position: 50% 50%}
+.item .icon-video {background-position: 50% 75%}
+.item .icon-gallery {background-position: 50% 100%}
+.item .desc {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.icon-arrow::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  font-size: .8em;
+  display: block;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAiBAMAAAHedgQlAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAhUExURUxpcc7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozu8z/2EAAAAKdFJOUwAJvxfSqz/zerVbvCjaAAAAqklEQVQY043Oq24CYRRF4Q9KevnVpKlCjR6FqEJhaqp4BFzTKl6ihqcYpheS/ZQVM3QSQkm3OGetHLEPFLSKIU/MtgpbyhrPa0qrtP099HyEZmXa0dRM4QvMcroPoMkKTerfeZPamNu+ZhewTAtX+UO/B91gkiwwz0cvFebZn4q3VHC9Hxrfx/Ld8CweklEe/y+HzTlZJul6vE/yuTiHXXUB70bkZURej/gDPwBPpgVw3HoAAAAASUVORK5CYII=) center / contain no-repeat;
+}
+
+video {
+  width: 100%;
+}
+
+
+.btn-more {
+  font-size: .9em;
+  color: #337ab7;
+}
