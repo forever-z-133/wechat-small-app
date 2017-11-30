@@ -12,6 +12,7 @@ Page({
     showAll: false,
   },
   onLoad: function () {
+    this.videoContext = wx.createVideoContext('myVideo')
     this.setData({ gallery: gallery });
   },
   preview: function(e) {

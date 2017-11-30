@@ -41,7 +41,11 @@
     <view class='desc'>门店视频</view>
   </view>
   <view class='item-body'>
-    <video class='video' src='http://ugcws.video.gtimg.com/flv/76/178/o0566ftlmop.mp4?sdtfrom=v1010&guid=418fab5ec4ca05e175227e32096df566&vkey=EA4E4A3BF0D289BF5440D25EB9A961D2078B8B6EB927D81F2C52A96CABB00B1C50E8B6FCAA43BD411D4534F5ECBDFC0D93ECA132E594F3C544FC7275242073608D6C0E17A40BDF27B89CDED250D487E54003357DB7230882588C6852B864C8B56ED4DBFE089C42503C16974B91F7F00C6403C55A4C3AF9EB' autoplay controls loop></video>
+    <!-- <video class='video' src='http://ugcws.video.gtimg.com/flv/76/178/o0566ftlmop.mp4?sdtfrom=v1010&guid=418fab5ec4ca05e175227e32096df566&vkey=EA4E4A3BF0D289BF5440D25EB9A961D2078B8B6EB927D81F2C52A96CABB00B1C50E8B6FCAA43BD411D4534F5ECBDFC0D93ECA132E594F3C544FC7275242073608D6C0E17A40BDF27B89CDED250D487E54003357DB7230882588C6852B864C8B56ED4DBFE089C42503C16974B91F7F00C6403C55A4C3AF9EB' autoplay controls loop></video> -->
+    <!-- <video src='http://222.73.132.142/vlive.qqvideo.tc.qq.com/AlNi_pvPERGhwTFLSP5ey6zM2tQ7qD32AS8lhV3cYUWA/m0025546jr4.p212.1.mp4?&type=mp4&vkey=9E4606CD20B2678B522257EDD2563FD0723CEC58A2C02B0BB64A0E5F7D59450EDE271B5AD939FDD6C53CE4A6B1BA5C709B9340A5846C215098C858D935653453CEA803818B6012224E3F1CD05B50BAC73A89552BB53D260FD39FD1AFCD2247DE4687A14C4012F1437860842052CE771C75AE642CCD622EE4' class='video' autoplay controls loop></video> -->
+    <!-- <video src='http://petwwzs.com/naruto.mp4' id='myVideo' class='video' autoplay controls loop></video> -->
+    <!-- <video src='http://petwwzs.com/video.mp4' id='myVideo' class='video' autoplay controls loop></video> -->
+    <video src='http://sum.kdcer.com/test/yy-wwzs-video.mp4' id='myVideo' class='video' autoplay controls loop></video>
   </view>
  </view>
  <view class='item line gallery'>
