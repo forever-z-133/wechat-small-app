@@ -1,0 +1,4 @@
+<view class='body'>
+  <view class='toContent' bindtap="toContent">内容</view>
+  <view class='toIT' bindtap="toIT">技术</view>
+</view>

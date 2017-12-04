@@ -1,0 +1,24 @@
+.body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url(http://sum.kdcer.com/wechat/imgs/choice.png) center / 100% 100%;
+}
+.toContent {
+  position: absolute;
+  top:17%;
+  left:39%;
+  width:14%;
+  height:18%;
+  text-indent: -999em;
+}
+.toIT {
+  position: absolute;
+  bottom:14%;
+  right:33%;
+  width:14%;
+  height:18%;
+  text-indent: -999em;
+}
