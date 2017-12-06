@@ -4,11 +4,21 @@
 
 ---
 
+### 核销服务小程序
+* 完成时间：2017.12.07
+* 难点：工具类，全靠接口，无难点
+* 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdc-check)
+* 提供核销卡券奖品等核销服务的小程序，坤鼎KDC公司出品
+
+<img src="qrcode/gh_d7d2f256176d_344.jpg" width="300">
+
+---
+
 ### 万物至上门店小程序
 * 完成时间：2017.11.17
 * 难点：仿制微信门店小程序，无难点
 * 文件夹：[wx-wwzs-info](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-wwzs-info)
-* 万物至上宠物纪念馆，致力于宠物丧善服务，由于门店小程序选错分类改不了，就让我帮忙做个仿制版的。尚未发布，无预览。
+* 万物至上宠物纪念馆，致力于宠物丧善服务，由于门店小程序选错分类改不了，就让我帮忙做个仿制版的。无预览。
 
 ---
 
@@ -16,7 +26,7 @@
 * 完成时间：2017.11.08
 * 难点：`<web-view>` 的试坑，具体可见 [博客](https://github.com/foreverZ133/blogs/issues/20)
 * 文件夹：[wx-kdcer-it](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdcer-it)
-* 为 **坤鼎KDC** 技术部官网
+* 为 **坤鼎KDC** 官网，包括技术与创意两个部门
 
 <img src="qrcode/gh_8687b8e7c295_344.jpg" width="300">
 

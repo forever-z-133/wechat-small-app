@@ -25,6 +25,7 @@ App({
         success: res => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
           this.globalData.code = res.code;
+          console.log('登录', res);
           callback && callback(res.code);
         },
         fail: err => {
@@ -40,15 +41,16 @@ App({
   //----------------- 获取用户信息
   userInfo: function (callback) {
     if (this.globalData.userInfo) {
-      callback && callback(res.userInfo)
+      callback && callback(this.globalData.userInfo)
     } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         lang: 'zh_CN',
         withCredentials: true,
         success: res => {
+          console.log('身份', res);
           this.globalData.userInfo = res.userInfo
-          callback && callback(this.globalData.code);
+          callback && callback(res);
         }
       })
     }
