@@ -15,9 +15,8 @@ const formatNumber = n => {
 }
 
 function QueryString(name, str) {
-  var str = decodeURIComponent(str);
   var reg = new RegExp('(^|\\?|&)' + name + '=([^&]*)(&|$)');
-  var r = str.match(reg);
+  var r = decodeURIComponent(str).match(reg);
   return r != null ? decodeURIComponent(r[2]) : null;
 }
 
@@ -53,4 +52,22 @@ module.exports = {
   QueryString,
   convertTime,
   wxScan,
+  convertDate: function (datestr) {
+    return new Date(parseInt(datestr.replace("/Date(", "").replace(")/", ""), 10));
+  },
+  parseDate: function (date, pattern, needZero) {
+    var str = pattern;
+    str = str.replace(/y{4}/i, date.getFullYear());
+    str = str.replace(/m{2}/i, (date.getMonth() + 1));
+    str = str.replace(/d{2}/i, date.getDate());
+    str = str.replace(/h{2}/i, date.getHours());
+    str = str.replace(/n{2}/i, date.getMinutes());
+    str = str.replace(/s{2}/i, date.getSeconds());
+    return str;
+  },
+  addZero: function (num, len) {
+    var len = num.toString().length || 2;
+    while (len < n) { num = '0' + num; len++ }
+    return num + '';
+  },
 }

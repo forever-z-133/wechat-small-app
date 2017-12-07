@@ -18,9 +18,9 @@ App({
   },
   //----------------- 登录
   login: function (callback) {
-    if (this.globalData.code) {
-      callback && callback(this.globalData.code);
-    } else {
+    // if (this.globalData.code) {
+    //   callback && callback(this.globalData.code);
+    // } else {
       wx.login({
         success: res => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
@@ -36,13 +36,13 @@ App({
           })
         }
       })
-    }
+    // }
   },
   //----------------- 获取用户信息
   userInfo: function (callback) {
-    if (this.globalData.userInfo) {
-      callback && callback(this.globalData.userInfo)
-    } else {
+    // if (this.globalData.userInfo) {
+    //   callback && callback(this.globalData.userInfo)
+    // } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         lang: 'zh_CN',
@@ -53,6 +53,6 @@ App({
           callback && callback(res);
         }
       })
-    }
-  }
+    // }
+  },
 })

@@ -25,6 +25,6 @@
       <view class="content">{{activity.desc}}</view>
     </view>
   </view>
-  <button class="btn" type="primary" size="default" wx-if="{{!activity.ok}}" bindtap="check">点击核销</button>
+  <button class="btn" type="primary" size="default" wx-if="{{!activity.ok}}" bindtap="onCheck">点击核销</button>
   <button class="btn" type="default" size="default" bindtap="scan">重新扫码</button>
 </view>

@@ -6,7 +6,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "坤鼎核销小程序",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   }
