@@ -1,0 +1,25 @@
+/**app.wxss**/
+page {
+  font-size: 30rpx;
+}
+image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.ratio {
+  position: relative
+}
+.ratio::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.ratio > image,
+.ratio > video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

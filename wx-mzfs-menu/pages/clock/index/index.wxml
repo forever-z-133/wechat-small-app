@@ -1,0 +1,32 @@
+<view class="list-box">
+  <block wx:for="{{cols}}" wx:key="*this">
+    <view class='list list{{item}}'>
+      <block wx:for="{{list[item]}}" wx:key="*this">
+        <view class='item'>
+          <view class='image'>
+            <image src=''></image>
+          </view>
+          <view class='content'>
+            <view class='desc'>简介简介简介简介</view>
+            <view class='relative'>借鉴的菜单名称</view>
+            <view class='user'>
+              <view class='user-image ratio rect'>
+                <image src=''></image>
+              </view>
+              <view class='user-content'>
+                <view class='user-name'>默认用户</view>
+                <view class='push-time'>0000.00.00</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </block>
+</view>
+<block wx:if="{{ended}}">
+  <view class='load'><text>加载中...</text></view>
+</block>
+<block wx:if="{{!ended}}">
+  <view class='end'><text>到底了</text></view>
+</block>

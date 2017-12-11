@@ -1,0 +1,62 @@
+/* pages/clock/index/index.wxss */
+
+
+.list-box {
+  display: flex;
+  padding: 20rpx 10rpx 0;
+  margin-top: 20rpx;
+  background: #f7f7f7;
+}
+.list {
+  flex-shrink: 0;
+  width: calc(50% - 20rpx);
+  margin: 0 10rpx;
+}
+.item {
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+.load, .end {
+  text-align: center;
+  font-size: .8em;
+  color: #999;
+  padding: 20rpx 10rpx;
+}
+
+.relative, .user {
+  color: #999;
+  font-size: .9em;
+}
+.relative {
+  line-height: 1.2em;
+}
+.relative::before {
+  content: "";
+  position: relative;
+  top: -1rpx;
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5rpx;
+  background: grey;
+}
+.user {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  line-height: 1.2;
+}
+.user-image {
+  flex-shrink: 0;
+  width: 2em;
+  border-radius: 100%;
+  border: 1px solid #999;
+  margin-right: 10rpx;
+}
+.push-time {
+  font-size: .9em;
+}
+.user-content {
+  flex-grow: 1;
+}
