@@ -30,3 +30,26 @@
 <block wx:if="{{!ended}}">
   <view class='end'><text>到底了</text></view>
 </block>
+
+<!-- 底部菜单 + 底部上传 -->
+<view class='footer'>
+  <view class='upload {{footer=="upload"?"in":""}}'>
+    <text>上传我的辅食作品</text>
+  </view>
+  <view class='menus {{footer=="menus"?"in":""}}'>
+    <view class='flex-box'>
+      <view class='item active'>
+        <view class='icon icon1'></view>
+        <view class='text'>打卡</view>
+      </view>
+      <view class='item'>
+        <view class='icon icon2'></view>
+        <view class='text'>食谱</view>
+      </view>
+      <view class='item'>
+        <view class='icon icon3'></view>
+        <view class='text'>我的</view>
+      </view>
+    </view>
+  </view>
+</view>

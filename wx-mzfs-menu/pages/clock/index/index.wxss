@@ -12,7 +12,7 @@
   width: calc(50% - 20rpx);
   margin: 0 10rpx;
 }
-.item {
+.list .item {
   background: #fff;
   margin-bottom: 20rpx;
 }
@@ -23,6 +23,7 @@
   padding: 20rpx 10rpx;
 }
 
+/* ----------------------------------------------------------- 列表项 */
 .relative, .user {
   color: #999;
   font-size: .9em;
@@ -60,3 +61,75 @@
 .user-content {
   flex-grow: 1;
 }
+
+/* ----------------------------------------------------------- 底部出现 */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.upload, .menus {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: grey;
+  transition: transform .4s;
+}
+.upload.in, .menus.in {
+  transform: translate3d(0,-99rpx,0);
+}
+/* ----------------------------------------------------------- 底部上传 */
+.upload {
+  line-height: 100rpx;
+  background: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ----------------------------------------------------------- 底部菜单 */
+.menus .item {
+  height: 100rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10rpx;
+  box-sizing: border-box;
+}
+.menus .active {
+  color: orange;
+}
+.menus .icon {
+  width: 50rpx;
+  height: 50rpx;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.menus .text {
+  font-size: .8em;
+  /* font-size: 20rpx; */
+  /* line-height: 20rpx; */
+}
+/* .menus .icon1 {
+  background-image: url();
+}
+.menus .active .icon1 {
+  background-image: url();
+}
+.menus .icon2 {
+  background-image: url();
+}
+.menus .active .icon2 {
+  background-image: url();
+}
+.menus .icon3 {
+  background-image: url();
+}
+.menus .active .icon3 {
+  background-image: url();
+} */
