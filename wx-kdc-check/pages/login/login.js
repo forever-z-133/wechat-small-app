@@ -66,9 +66,17 @@ Page({
     }
   },
   showOrNot: function (ifShow) {
+    if (ifShow) {
+      this.switch();
+      wx.showToast({
+        title: '审核成功',
+      })
+    } else {
+      this.setData({ can: ifShow })
+    }
     // let value = wx.getStorageSync('key');
     // if (value) {  // 第一次
-      this.setData({ can: ifShow })
+    // this.setData({ can: ifShow })
     // } else if (ifShow) {
     //   wx.setStorageSync('key', true)
     //   this.switch()

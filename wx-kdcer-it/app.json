@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/server/index",
     "pages/choice/index",
     "pages/IT/index",
     "pages/content/index"

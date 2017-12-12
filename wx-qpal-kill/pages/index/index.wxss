@@ -1,0 +1,142 @@
+/**index.wxss**/
+.drop {
+  animation: drop-shake 5s infinite linear;
+}
+@keyframes drop-shake {
+  25% {transform: rotate(-5deg)}
+  75% {transform: rotate(5deg)}
+}
+
+
+.btn-rule {
+  left: 50%;
+  top: 140rpx;
+  margin-left: -95rpx;
+  width: 190rpx;
+  height: 190rpx;
+  transform-origin: 95rpx -140rpx;
+  animation-duration: 10s;
+}
+.btn-mine {
+  top: 70rpx;
+  left: 20rpx;
+  width: 125rpx;
+  height: 135rpx;
+  animation: none;
+}
+.btn-start {
+  bottom: 20%;
+  left: 50%;
+  width: 450rpx;
+  height: 130rpx;
+  margin-left: -225rpx;
+  animation: btn-start 3s infinite linear;
+}
+.btn-start:after {
+  content: "";
+  position: absolute;
+  bottom: -180rpx;
+  left: 50%;
+  width: 400rpx;
+  height: 40rpx;
+  margin-left: -200rpx;
+  background: radial-gradient(rgba(0,0,0,.4), rgba(0,0,0,0) 75%);
+  animation: btn-start-shadow 3s infinite linear;
+}
+@keyframes btn-start {
+  50% {transform: translateY(-10rpx)}
+}
+@keyframes btn-start-shadow {
+  50% {transform: scale(.8) translateY(10rpx)}
+}
+.line {
+  top: 450rpx;
+  left: 0;
+  width: 750rpx;
+  height: 415rpx;
+}
+.main-title {
+  top: 350rpx;
+  left: 50%;
+  margin-left: -275rpx;
+  width: 550rpx;
+  height: 250rpx;
+  /* animation: main-title 1s infinite; */
+}
+@keyframes main-title {
+  50% {transform: scale(1.01)}
+}
+.main-title::before {
+  content: "";
+  position: absolute;
+  top: -30rpx;
+  left: 100rpx;
+  width: 100rpx;
+  height: 100rpx;
+  display: block;
+  background: radial-gradient(rgba(255,255,255,.7), rgba(255,255,255,0) 75%);
+  filter: drop-shadow(230rpx 10rpx #fff) drop-shadow(-90rpx 190rpx #fff) drop-shadow(150rpx 40rpx rgba(255,255,255,.5));
+  animation: light-shine 3s infinite linear;
+}
+.main-title::after {
+  content: "";
+  position: absolute;
+  top: -10rpx;
+  left: 20rpx;
+  width: 50rpx;
+  height: 50rpx;
+  display: block;
+  background: radial-gradient(rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
+  filter: drop-shadow(230rpx 0rpx #fff) drop-shadow(-50rpx 190rpx #fff) drop-shadow(150rpx 50rpx rgba(255,255,255,.5));
+  animation: light-shine 3s infinite linear -.5s;
+}
+@keyframes light-shine {
+  50% {opacity: .2}
+}
+.member {
+  left: 0;
+  bottom: -20rpx;
+  width: 245rpx;
+  height: 265rpx;
+  animation: member 2s linear;
+  /* animation: member 2s linear, running 2s infinite linear 2s; */
+  /* animation: member-run 2s infinite linear; */
+}
+@keyframes member {
+  0% { transform: translate(-100%, 0) }
+  20% { transform: translate(-60%, 0) rotate(5deg) }
+  60% { transform: translate(-30%, 0) rotate(-5deg) }
+  100% { transform: translate(0, 0) }
+}
+@keyframes member-run {
+  0% { transform: scale(1,1) translate(-100%, 0) }
+  50% { transform: scale(1,1) translate(750rpx, 0) }
+  50.001% { transform: translate(750rpx, 0) scale(-1,1) }
+  100% { transform: translate(-100%, 0) scale(-1,1) }
+}
+
+
+.rule {
+  font-size: 28rpx;
+}
+.rule-bg {
+  margin-bottom: 30rpx;
+}
+.rule-bg > image {
+  top: auto;
+  bottom: 0;
+}
+.btn-close {
+  position: absolute;
+  top: 90rpx;
+  right: 40rpx;
+  width: 90rpx;
+  height: 90rpx;
+  transform-origin: 45rpx -90rpx;
+}
+.btn-close > image {
+   animation: btn-close 5s infinite linear; 
+}
+@keyframes btn-close {
+  100% {transform: rotate(360deg)}
+}

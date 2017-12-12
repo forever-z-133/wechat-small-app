@@ -1,0 +1,32 @@
+<!--index.wxml-->
+<view class='body'>
+  <view class='page welcome  {{page.rule?"":"hide"}}'>
+    <view class='bg'><image src='/img/bg.jpg'></image></view>
+    <view class='line'><image src='/img/line.png'></image></view>
+    <view class='btn-rule drop' bindtap='pageRule'><image src='/img/btn-rule.png'></image></view>
+    <view class='btn-mine drop'><image src='/img/{{hasPrize?"tree2.png":"tree1.png"}}'></image></view>
+    <view class='main-title'><image src='/img/title.png'></image></view>
+    <view class='btn-start'><image src='/img/btn-start.png'></image></view>
+    <view class='member'><image src='/img/member.png'></image></view>
+  </view>
+  <view class='modal rule {{page.rule?"in":""}}'>
+    <view class='modal-bg bg' bindtap='pageRule'></view>
+    <view class='modal-box full'>
+      <view class='bg rule-bg'><image src='/img/rule-bg.png'></image></view>
+      <view class='btn btn-close drop' bindtap='pageRule'><image src='/img/btn-close.png'></image></view>
+    </view>
+  </view>
+  <view class='modal start in {{page.start?"in":""}}'>
+    <view class='modal-bg bg' bindtap='pageRule'></view>
+    <view class='modal-box full'>
+      <view class='bg'><image src='/img/panel.png'></image></view>
+      <view class='time-btns'>
+        <view class='time-item'>10:00</view>
+        <view class='time-item'>20:00</view>
+      </view>
+      <view class='product'>
+        <view class='image'><image src='/img/prize.jpg'></image></view>
+      </view>
+    </view>
+  </view>
+</view>

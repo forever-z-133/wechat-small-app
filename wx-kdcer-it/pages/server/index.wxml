@@ -1,0 +1,7 @@
+<!--pages/server/index.wxml-->
+<text>pages/server/index.wxml</text>
+<button open-type="contact">客服按钮</button>
+
+<form bindsubmit='sumit' report-submit>
+  <button form-type='submit'>提交</button>
+</form>
