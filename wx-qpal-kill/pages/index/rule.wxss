@@ -1,0 +1,32 @@
+
+.rule .modal-box {
+  padding: 30rpx 40rpx;
+  border: 2rpx solid #fbf9e9;
+  border-radius: 10rpx;
+  background: linear-gradient(#faf8ec,#ede7c4);
+  box-sizing: border-box;
+}
+.rule-word {
+  width: 575rpx;
+  height: 850rpx;
+}
+.rule-tip {
+  color: #694425;
+  font-size: 20rpx;
+  text-align: center;
+  margin-top: 25rpx;
+}
+.rule-server {
+  position: fixed;
+  left: 50%;
+  bottom: 2em;
+  transform: translate(-50%,0);
+  color: #fff;
+  font-size: 22rpx;
+}
+.btn-server {
+  color: #fff !important;
+  text-decoration: underline;
+  margin-left: 5rpx;
+  display: inline-block;
+}

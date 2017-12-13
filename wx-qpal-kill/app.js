@@ -7,20 +7,20 @@ App({
         this.globalData.noUser = settings.authSetting['scope.userInfo']
       }
     })
-    // 登录与授权
-    this.login(code => {
-      this.getInfo(res => {
-        // console.log(code)
-        // console.log(res.encryptedData)
-        // console.log(res.iv)
-        // console.log(res.rawData)
-        // console.log(res.signature)
-        // console.log(res.userInfo)
-        if (this.afterLogin) {
-          this.afterLogin(res);
-        }
-      })
-    })
+    // // 登录与授权
+    // this.login(code => {
+    //   this.getInfo(res => {
+    //     // console.log(code)
+    //     // console.log(res.encryptedData)
+    //     // console.log(res.iv)
+    //     // console.log(res.rawData)
+    //     // console.log(res.signature)
+    //     // console.log(res.userInfo)
+    //     if (this.afterLogin) {
+    //       this.afterLogin(code, res);
+    //     }
+    //   })
+    // })
   },
   // 登录
   login: function (callback) {

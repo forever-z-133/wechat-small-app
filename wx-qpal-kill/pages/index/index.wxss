@@ -1,98 +1,6 @@
 /**index.wxss**/
-.drop {
-  animation: drop-shake 5s infinite linear;
-}
-@keyframes drop-shake {
-  25% {transform: rotate(-5deg)}
-  75% {transform: rotate(5deg)}
-}
+@import 'common.wxss';
 
-
-.btn-rule {
-  left: 50%;
-  top: 140rpx;
-  margin-left: -95rpx;
-  width: 190rpx;
-  height: 190rpx;
-  transform-origin: 95rpx -140rpx;
-  animation-duration: 10s;
-}
-.btn-mine {
-  top: 70rpx;
-  left: 20rpx;
-  width: 125rpx;
-  height: 135rpx;
-  animation: none;
-}
-.btn-start {
-  bottom: 20%;
-  left: 50%;
-  width: 450rpx;
-  height: 130rpx;
-  margin-left: -225rpx;
-  animation: btn-start 3s infinite linear;
-}
-.btn-start:after {
-  content: "";
-  position: absolute;
-  bottom: -180rpx;
-  left: 50%;
-  width: 400rpx;
-  height: 40rpx;
-  margin-left: -200rpx;
-  background: radial-gradient(rgba(0,0,0,.4), rgba(0,0,0,0) 75%);
-  animation: btn-start-shadow 3s infinite linear;
-}
-@keyframes btn-start {
-  50% {transform: translateY(-10rpx)}
-}
-@keyframes btn-start-shadow {
-  50% {transform: scale(.8) translateY(10rpx)}
-}
-.line {
-  top: 450rpx;
-  left: 0;
-  width: 750rpx;
-  height: 415rpx;
-}
-.main-title {
-  top: 350rpx;
-  left: 50%;
-  margin-left: -275rpx;
-  width: 550rpx;
-  height: 250rpx;
-  /* animation: main-title 1s infinite; */
-}
-@keyframes main-title {
-  50% {transform: scale(1.01)}
-}
-.main-title::before {
-  content: "";
-  position: absolute;
-  top: -30rpx;
-  left: 100rpx;
-  width: 100rpx;
-  height: 100rpx;
-  display: block;
-  background: radial-gradient(rgba(255,255,255,.7), rgba(255,255,255,0) 75%);
-  filter: drop-shadow(230rpx 10rpx #fff) drop-shadow(-90rpx 190rpx #fff) drop-shadow(150rpx 40rpx rgba(255,255,255,.5));
-  animation: light-shine 3s infinite linear;
-}
-.main-title::after {
-  content: "";
-  position: absolute;
-  top: -10rpx;
-  left: 20rpx;
-  width: 50rpx;
-  height: 50rpx;
-  display: block;
-  background: radial-gradient(rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
-  filter: drop-shadow(230rpx 0rpx #fff) drop-shadow(-50rpx 190rpx #fff) drop-shadow(150rpx 50rpx rgba(255,255,255,.5));
-  animation: light-shine 3s infinite linear -.5s;
-}
-@keyframes light-shine {
-  50% {opacity: .2}
-}
 .member {
   left: 0;
   bottom: -20rpx;
@@ -114,29 +22,172 @@
   50.001% { transform: translate(750rpx, 0) scale(-1,1) }
   100% { transform: translate(-100%, 0) scale(-1,1) }
 }
-
-
-.rule {
-  font-size: 28rpx;
+.btn-rule {
+  top: 110rpx;
+  right: 35rpx;
+  width: 164rpx;
+  height: 170rpx;
+  transform-origin: 82rpx -170rpx;
+  animation-duration: 10s;
 }
-.rule-bg {
-  margin-bottom: 30rpx;
+.btn-mine {
+  top: 110rpx;
+  left: 20rpx;
+  width: 135rpx;
+  height: 150rpx;
+  animation: none;
 }
-.rule-bg > image {
-  top: auto;
-  bottom: 0;
+.logo {
+  top: 120rpx;
+  left: 50%;
+  margin-left: -140rpx;
+  width: 280rpx;
+  height: 35rpx;
 }
-.btn-close {
+.main-title {
+  top: 140rpx;
+  left: 50%;
+  margin-left: -200rpx;
+  width: 400rpx;
+  height: 210rpx;
+  /* animation: main-title 1s infinite;  */
+}
+@keyframes main-title {
+  50% {transform: scale(1.01)}
+}
+.main-box {
+  top: 54%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+.date, .time {
+  color: #694425;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.date-item {
+  margin: 0 20rpx;
+}
+.date-item.active {
+  color: #fff;
+}
+.time-item {
+  margin: 30rpx 25rpx;
+  width: 250rpx;
+  font-weight: bold;
+  font-size: 48rpx;
+  line-height: 80rpx;
+  border: 4rpx solid #e6ca80;
+  border-radius: 10rpx;
+}
+.time-item {
+  color: #55371b;
+  border-color: #b08d63;
+  box-shadow: inset 0 0 10rpx rgba(62,41,17,.2);
+  background: #74552f;
+}
+.time-item.active {
+  color: #694425;
+  border-color: #e6ca80;
+  box-shadow: none;
+  background: linear-gradient(#f5dfa5, #ceae66);
+}
+.prize-view {
+  display: flex;
+  width: 600rpx;
+  margin: 0 auto 35rpx;
+  color: #e5cc88;
+}
+.prize-view .image {
+  flex-shrink: 0;
+  width: 170rpx;
+  margin-right: 30rpx;
+}
+.prize-view .content {
+  position: relative;
+  flex-grow: 0;
+  text-align: left;
+}
+.prize-view .title {
+  font-size: 36rpx;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 20rpx;
+}
+.prize-view .rest {
+  font-size: 26rpx;
+}
+.prize-view .price {
   position: absolute;
-  top: 90rpx;
-  right: 40rpx;
-  width: 90rpx;
-  height: 90rpx;
-  transform-origin: 45rpx -90rpx;
+  left: 0;
+  bottom: 0;
+  font-size: 24rpx;
+  margin-left: -.1em;
+  line-height: 1;
 }
-.btn-close > image {
-   animation: btn-close 5s infinite linear; 
+.now-price {
+  margin-right: 20rpx;
+  font-size: 48rpx;
+  color: #fff;
 }
-@keyframes btn-close {
-  100% {transform: rotate(360deg)}
+.now-price:after,
+.last-price:after {
+  content: "元";
+  font-size: 24rpx;
 }
+.timecount {
+  color: #fff;
+  font-size: 24rpx;
+  margin-bottom: 15rpx;
+}
+.btn-order,
+.btn-ordered,
+.btn-start {
+  width: 400rpx;
+  margin: 0 auto;
+  font-size: 40rpx;
+  line-height: 95rpx;
+  border: 5rpx solid #fbf9e9;
+  box-shadow: 0 7rpx 21rpx rgba(54,36,13,.6);
+  border-radius: 10rpx;
+}
+.btn-order,
+.btn-start {
+  color: #9b0c1a;
+  border-color: #fbf9e9;
+  background: linear-gradient(#fbf9e9, #ede7c6);
+}
+.btn-ordered {
+  color: #694425;
+  border-color: #83633d;
+  background: linear-gradient(#fdf1d1, #bc9b55);
+}
+.for-save {
+  left: 50%;
+  bottom: 30rpx;
+  transform: translate(-50%,0);
+}
+.for-wechat {
+  width: 1220px;
+  height: 1800px;
+}
+
+.for-save::before {
+  content: "";
+  position: relative;
+  top: -.1em;
+  width: 35rpx;
+  height: 35rpx;
+  margin-right: 10rpx;
+  display: inline-block;
+  vertical-align: middle;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAMAAAF6nstmAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAEjUExURUxpcfv49vTv6aKDVdC/qsSylPby7f36+K2Racy9pc/AqNvSxOHXyfn18c+/p6eIXenj37ynhaSFWfn39LOZc8+/p5x6SdnQsb2niP///////6OEVpx7Sv////92AGVk9P/KAJnUAACw//1TTlCB9GPTAe/6/zNt8v9gAPsxLACi///EAEHMAJPRAP/8//z97obMAEhH8vj//1pY87K/+vf92v/smP++AACr//H///+vn/9vAP/26bTrmAi3//xEP6LXJv+IIfLy/1TPAP/w+HNy9v/n6v/gbP+Sh5Cr+UV587bfXP+kXmHL/9/q/pWV+cnljfkAAPvp0QtY76fhgQbEAHSO9v/GnJjW9v/R0MvW9dDqt//SLv5wa5bgZH3aPEPB/y+dvDAAAAAddFJOUwAWhBYG86j4svke9PbxbI368/m79Ulr/pVkROlEfwJkHwAAArRJREFUOMttk2dj2jAQho/pwYbQrArbeNsQMMYEKCSMhJG99+j//xWVZJuQtu8HGz967yTdHQAQBazKkQuQFdFeGkDyugQlyAMiAI8V0wERIQXqw64FsFskC49HsunG8Y9Op4OeXZQCXmwihHQdB8abQ9XrsjTDzjZ9JSumrGVwwkplbPaEPNzgONRzdBDFFkIXygnMWxKJvwVWkmoH3W4KgJPU2sE5iY9tFHLgK8L032V5wZSC7+QY5zwyZbPnOgwBeaNCNJ5d91zBmfBQfhOxENHEQYqexnfF2zYpQYqinOC9NltNSbrzNE2jdIvUAJOhWvMOqtXqebB98epuOp3ee1x4HHKi7egOrKnELGT5/ZmJBN/xjIFkrL7TTvqEMSoU9QXhIbk6M0GYCG0cyJ/RSxgNSnDBIDXHtZ6Ts2FyrLUB0rYo2h49Lgb6Q5kQu9GgBANFyULKthuSTwjAJLHfGNUpebnVdX3Jw9ZgJNVRDV34V8fFgM06IapmdYlIK3OnlKgtq1q1/OlgT5uEYGRxcf9iOQ7d4/pMteJXOXLFQmJjNwZ/KZLMMIEyyQj8oygzGMwOrw+prhfa5YSJrq/HS8yZYRhjhEeRVNfs9wTHuWRK8VWGzJk/CqGJWFxBcC4zQabkjWH8CmRUGjPZDCyC6+aTfo69lQaDwc0AzcyFn+V4T8vjPHxqvh+qg0JNBNc5Rppyu0zxkE2LNhlBWxygL00cAbUUXTlR0tnAYouN3shbs+AMpGvUUubebGxojZpBQ6kuqEFR9AeujEe2Y1NDXULD18DRXrZ9LV9I3/iChg0StdyrnnaAGxrKOi/w/t/tKrTU1JrqtVYm62kj7CTLnTbrvkX9Mlm/OXatSWzhqt70LaHpqcDGv7c6xha5149PYvn8uEsU2Rj8V7GfP7B+fl/9AyT7iXJW/uN/AAAAAElFTkSuQmCC) center / contain;
+}
+
+@import 'rule.wxss';
+@import 'save.wxss';
+@import 'good.wxss';
+@import 'bad.wxss';

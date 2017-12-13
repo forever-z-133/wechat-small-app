@@ -1,0 +1,15 @@
+
+.save .image {
+  width: 610rpx;
+  height: 900rpx;
+  margin: 0 auto 25rpx;
+}
+.save .save-tip {
+  color: #fff;
+  font-size: 22rpx;
+  text-align: center;
+}
+.save .btn-close {
+  position: static;
+  margin: 25rpx auto 0;
+}

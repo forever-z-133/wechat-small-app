@@ -1,0 +1,49 @@
+
+
+.good .modal-box {
+  border-radius: 10rpx;
+  padding: 35rpx 35rpx;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+}
+.good .modal-box .bg {
+  z-index: -1;
+  width: 750rpx;
+  height: 1206rpx;
+  margin: auto;
+}
+.good .title {
+  width: 285rpx;
+  height: 46rpx;
+  margin: 0 auto;
+}
+.good .prize-name text {
+  margin: 25rpx 0;
+  display: block;
+}
+.good .prize-info {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+}
+.good .qrcode {
+  width: 155rpx;
+  height: 155rpx;
+  margin-right: 20rpx;
+  background: #fff;
+  flex-shrink: 0;
+}
+.good .info {
+  flex-grow: 1;
+  line-height: 1.6;
+  text-align: justify;
+}
+.addToCart,
+.hasAddToCart {
+  width: 400rpx;
+  margin: 45rpx auto 0;
+  font-size: 36rpx;
+  border-radius: 10rpx;
+  line-height: 95rpx;
+}
