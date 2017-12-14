@@ -18,11 +18,13 @@ module.exports = {
     })
   },
   //==============  请求 - 预约
-  prev: function (callback) {
+  notice: function (sid, uid, formId, callback) {
     wx.request({
-      url: baseUrl + 'CodeToSeckill',
+      url: baseUrl + 'SubscribeSeckill',
       data: {
-        code: GUID,
+        UnionId: uid,
+        ScreeningId: sid,
+        FormId: formId,
       },
       success: function (r) {
         console.log('预约', r.data);
@@ -31,12 +33,12 @@ module.exports = {
     })
   },
   //==============  请求 - 存 formId
-  save: function (formId, callback) {
+  save: function (uid, formId, callback) {
     wx.request({
-      url: baseUrl + 'CodeToSeckill',
+      url: baseUrl + 'FormSeckill',
       data: {
-        code: GUID,
-        formId: formId,
+        UnionId: uid,
+        FormId: formId,
       },
       success: function (r) {
         console.log('存 formId', r.data);
@@ -45,31 +47,45 @@ module.exports = {
     })
   },
   //==============  请求 - 抽奖
-  prize: function (callback) {
+  prize: function (sid, uid, formId, callback) {
     wx.request({
-      url: baseUrl + 'CodeToSeckill',
+      url: baseUrl + 'MerryChristmasLotteryBehavior',
       data: {
-        code: GUID,
+        UnionId: uid,
+        ScreeningId: sid,
+        FormId: formId,
       },
       success: function (r) {
         console.log('抽奖', r.data);
-        callback && callback(r);
+        // console.log(callback)
+        callback && callback(r.data);
       }
     })
   },
   //==============  请求 - 添加到卡包
-  card: function (callback, before) {
+  card: function (uid, callback) {
     wx.request({
-      url: baseUrl + 'CodeToSeckill',
+      url: baseUrl + 'AddCardSeckill',
       data: {
-        code: GUID,
+        UnionId: uid,
       },
       success: function (r) {
-        console.log('抽奖', r.data);
-        before && before(r);
+        console.log('接口-加入卡包', r.data);
+        wx.hideLoading()
+        if (!r.data.State) {
+          wx.showModal({
+            content: '您已添加过该卡券',
+            showCancel: false,
+          })
+          return;
+        }
         wx.addCard({
-          cardList: [],
+          cardList: [{
+            cardId: 'pn96buEYd5IXeMoD3FnmQ3KcP7pg',
+            cardExt: r.data.cardExt,
+          }],
           success: function (res) {
+            console.log('微信-加入卡包', res);
             callback && callback(res);
           }
         })

@@ -3,14 +3,27 @@
 .good .modal-box {
   border-radius: 10rpx;
   padding: 35rpx 35rpx;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-align: center;
   color: #fff;
 }
+.good .modal-box::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 180rpx;
+  border-radius: 100% 100% 0 0 / 40% 40% 0 0;
+  background: linear-gradient(#faf8ec,#ede7c5);
+}
 .good .modal-box .bg {
+  overflow: hidden;
+}
+.good .modal-box .bg > image {
   z-index: -1;
   width: 750rpx;
   height: 1206rpx;
+  transform: scale(2);
   margin: auto;
 }
 .good .title {
@@ -19,7 +32,7 @@
   margin: 0 auto;
 }
 .good .prize-name text {
-  margin: 25rpx 0;
+  margin: 15rpx 0;
   display: block;
 }
 .good .prize-info {
@@ -27,12 +40,26 @@
   align-items: center;
   font-size: 26rpx;
 }
-.good .qrcode {
+.good .image {
+  width: 200rpx;
+  height: 200rpx;
+  margin: 40rpx auto 20rpx;
+}
+.good .qrcode-box {
+  position: relative;
   width: 155rpx;
   height: 155rpx;
   margin-right: 20rpx;
   background: #fff;
   flex-shrink: 0;
+}
+.good .qrcode, 
+.good .exchange {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .good .info {
   flex-grow: 1;
@@ -41,9 +68,26 @@
 }
 .addToCart,
 .hasAddToCart {
+  position: relative;
+  z-index: 1;
   width: 400rpx;
-  margin: 45rpx auto 0;
+  margin: 112rpx auto 0;
   font-size: 36rpx;
   border-radius: 10rpx;
   line-height: 95rpx;
+}
+.addToCart {
+  background: #b39969;
+  color: #f1edd2;
+}
+.hasAddToCart {
+  background: #cbba93;
+  color: #866336;
+}
+.good .rule-server {
+  color: #714e2e;
+  font-weight: bold;
+}
+.good .btn-server {
+  color: #714e2e !important;
 }

@@ -1,18 +1,13 @@
 <!--index.wxml-->
-<view class='body'>
+<view class='body' bindtap='can'>
   <view class='page main  {{page.main?"":"hide"}}'>
     <view class='bg'><image src='/img/bg.jpg'></image></view>
     <view class='member'><image src='/img/member.png'></image></view>
     <view class='main-title'><image src='/img/title.png'></image></view>
     <view class='logo'><image src='/img/logo.png'></image></view>
-    <view class='btn btn-rule drop' bindtap='pageRule'>
-      <image src='/img/btn-rule.png' class='bg'></image>
-      <text class='label'>规则</text>
-    </view>
-    <view class='btn btn-mine drop' bindtap='showGood'>
-      <image src='/img/tree.png' class='bg'></image>
-      <text class='label'>奖品</text>
-    </view>
+    <form bindsubmit='saveFormId' class='saveFormId full' report-submit>
+      <button form-type='submit' class='full'> </button>
+    </form>
     <view class='main-box'>
       <view class='date'>
         <view class='date-item {{date==0?"active":""}}'>12月21日</view>
@@ -25,26 +20,43 @@
       </view>
       <view class='prize-view'>
         <view class='image ratio'>
-          <image src='/img/prize.png'></image>
+          <image src='/img/prize.png' mode='aspectFill'></image>
         </view>
         <view class='content'>
           <view class='title'>资生堂惠润柔净洗发组合</view>
-          <view class='rest'>剩余{{20}}</view>
+          <view class='rest'>剩余{{count}}</view>
           <view class='price'>
             <text class='now-price'>￥0 </text>
             <text class='last-price'>原价: 120</text>
           </view>
         </view>
       </view>
-      <view class="timecount" wx:if="{{!can}}">
+      <view class="timecount" wx:if="{{timecount > 0}}">
         <text>距离开始 {{timecount/3600>>0}} 时 {{timecount%3600/60>>0}} 分 {{timecount%60}} 秒</text>
       </view>
-      <view class='btn-start' wx:if="{{can}}">0元秒杀</view>
-      <view class='btn-order' wx:if="{{!can && !ordered}}">提醒我</view>
-      <view class='btn-ordered' wx:if="{{!can && ordered}}">提醒成功</view>
+      <form bindsubmit='prize' class='' report-submit wx:if="{{can}}">
+        <view class='btn-start {{disable?"disable":""}}'><button form-type='submit'>0元秒杀</button></view>
+      </form>
+      <form bindsubmit='notice' class='' report-submit wx:if="{{!can && !ordered}}">
+        <view class='btn-order {{disable?"disable":""}}'><button form-type='submit' loading='{{btnLoading}}'>提醒我</button></view>
+      </form>
+      <view class='{{disable?"disable":""}}' wx:if="{{!can && ordered}}">
+        <view class='btn-ordered'><button form-type='submit'>设置成功</button></view>
+      </view>
+    </view>
+    <view class='btn btn-rule drop' bindtap='pageRule'>
+      <image src='/img/btn-rule.png' class='bg'></image>
+      <text class='label'>规则</text>
+    </view>
+    <view class='btn btn-mine drop' bindtap='showGood'>
+      <image src='/img/tree.png' class='bg'></image>
+      <text class='label'>奖品</text>
     </view>
     <view class='for-save' bindtap='showSave'>分享到朋友圈</view>
   </view>
+
+
+  <!-- 规格页 -->
   <view class='modal rule {{page.rule?"in":""}}'>
     <view class='modal-bg bg' bindtap='pageRule'></view>
     <view class='modal-box'>
@@ -57,18 +69,22 @@
       <button open-type='contact' class="btn-server">咨询客服</button>
     </view>
   </view>
+
+  <!-- 保存页 -->
   <view class='modal save {{page.save?"in":""}}'>
     <view class='modal-bg bg' bindtap='closeSave'></view>
     <view class='modal-box'>
-      <image src='{{saveImg}}' class='image'></image>
+      <image src='{{saveImg}}' class='image' bindtap='previewSave'></image>
       <view class='save-tip'>图片已保存到相册，可分享给好友</view>
       <view class='btn-close' bindtap='closeSave'><image src='/img/btn-close.png'></image></view>
     </view>
   </view>
+
+  <!-- 中奖页 -->
   <view class='modal good {{page.good?"in":""}}'>
     <view class='modal-bg bg' bindtap='closeGood'></view>
     <view class='modal-box'>
-      <image src='/img/bg.jpg' class='bg'></image>
+      <view class='bg'><image src='/img/bg.jpg'></image></view>
       <image src='/img/prize-good.png' class='title'></image>
       <view class='prize-name'>
         <text>恭喜您！成功秒杀到</text>
@@ -76,13 +92,40 @@
       </view>
       <image src='/img/prize2.png' class='image'></image>
       <view class='prize-info'>
-        <image src='{{qrcode}}' class='qrcode'></image>
+        <view class='qrcode-box'>
+          <image src='{{qrcode}}' class='qrcode' bindtap='previewQrcode'></image>
+          <image src='/img/hasExchange.png' class='exchange {{take}}' wx:if='{{take}}'></image>
+        </view>
         <view class='info'>凭中奖二维码于2017年12月24日9:00-23:30至百联青浦奥特莱斯广场B102 POLO商铺前活动棚核销领取奖品吧！
 </view>
       </view>
-      <view class='addToCart' wx:if="{{!card}}">火速添加到卡包</view>
+      <view class='addToCart' wx:if="{{!card}}" bindtap='addCard'>火速添加到卡包</view>
       <view class='hasAddToCart' wx:if="{{card}}">已添加到微信卡包</view>
       <view class='btn-close' bindtap='closeGood'><image src='/img/btn-close.png'></image></view>
+    </view>
+    <view class='rule-server'>
+      <text>坤鼎传播技术支持</text>
+      <button open-type='contact' class="btn-server">咨询客服</button>
+    </view>
+  </view>
+
+  <!-- 未中奖页 -->
+  <view class='modal bad {{page.bad?"in":""}}'>
+    <view class='modal-bg bg' bindtap='closeBad'></view>
+    <view class='modal-box'>
+      <!-- <image src='/img/bg.jpg' class='bg'></image> -->
+      <view class='bg'><image src='/img/bg.jpg'></image></view>
+      <image src='/img/prize-bad.png' class='title'></image>
+      <view class='prize-name'>
+        <text>昂~没有成功耶！</text>
+        <text>圣诞老人可能在偷懒</text>
+        <text>下一场0元秒杀等你哟！</text>
+      </view>
+      <form bindsubmit='noticeNext' report-submit>
+        <view class='btn-more'><button form-type='submit'>马上预约下一场</button></view>
+      </form>
+      <!-- <view class='btn-more' bindtap='noticeNext'>马上预约下一场</view> -->
+      <view class='btn-close' bindtap='closeBad'><image src='/img/btn-close.png'></image></view>
     </view>
   </view>
 </view>

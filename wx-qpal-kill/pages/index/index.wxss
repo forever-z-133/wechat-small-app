@@ -1,6 +1,12 @@
 /**index.wxss**/
 @import 'common.wxss';
 
+.disable {
+  filter: grayscale(1);
+  pointer-events: none;
+  opacity: .5;
+}
+
 .member {
   left: 0;
   bottom: -20rpx;
@@ -164,6 +170,12 @@
   color: #694425;
   border-color: #83633d;
   background: linear-gradient(#fdf1d1, #bc9b55);
+}
+.btn-start:not(.disable) {
+  /* animation: start 1s infinite linear; */
+}
+@keyframes start {
+  50% {transform: scale(1.1)}
 }
 .for-save {
   left: 50%;

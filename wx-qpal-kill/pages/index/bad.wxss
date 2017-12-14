@@ -1,1 +1,53 @@
 
+
+
+.bad .modal-box {
+  border-radius: 10rpx;
+  padding: 35rpx 35rpx;
+  /* overflow: hidden; */
+  text-align: center;
+  color: #fff;
+}
+.bad .modal-box::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 180rpx;
+  border-radius: 100% 100% 0 0 / 40% 40% 0 0;
+  background: linear-gradient(#faf8ec,#ede7c5);
+}
+.bad .modal-box .bg {
+  overflow: hidden;
+}
+.bad .modal-box .bg image {
+  z-index: -1;
+  width: 750rpx;
+  height: 1206rpx;
+  transform: scale(2);
+  margin: auto;
+}
+.bad .title {
+  width: 195rpx;
+  height: 40rpx;
+  margin: 35rpx auto;
+}
+.bad .prize-name text {
+  color: #f2edce;
+  letter-spacing: .1em;
+  margin: 15rpx 0;
+  display: block;
+}
+.btn-more {
+  position: relative;
+  z-index: 1;
+  width: 400rpx;
+  margin: 112rpx auto 0;
+  font-size: 36rpx;
+  border-radius: 10rpx;
+  line-height: 95rpx;
+}
+.btn-more {
+  background: #b39969;
+  color: #f1edd2;
+}

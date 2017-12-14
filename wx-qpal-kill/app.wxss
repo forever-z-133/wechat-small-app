@@ -24,9 +24,9 @@ image {
 button {
   padding: 0;
   color: inherit;
-  font-size: 1em;
+  font-size: inhreit;
   font: inherit;
-  line-height: 1;
+  line-height: inhreit;
   background: none;
   overflow: visible;
 }
