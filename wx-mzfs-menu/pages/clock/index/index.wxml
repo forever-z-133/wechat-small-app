@@ -53,3 +53,22 @@
     </view>
   </view>
 </view>
+
+<view class='sources'>
+  <!-- <block wx:for='{{imgs}}' wx:key="*this">
+    <image src='{{item.img}}' data-index="{{index}}" data-src='{{item.img}}' bindload='loadImage'></image>
+  </block> -->
+  <view class="list-box">
+    <block wx:for="{{cols}}" wx:key="*this" wx:for-index='col'>
+      <view class='list list{{col}}'>
+        <block wx:for="{{tempList}}" wx:key="*this" wx:for-index='i' wx:for-item='one'>
+          <view class='item'>
+            <view class='content'>
+              <view class='desc' id="text_{{col+'_'+i}}">{{one.text}}</view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+</view>

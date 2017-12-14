@@ -171,7 +171,9 @@ Page({
     this.setData({ btnLoading: true })
     if (++thisScreen > 6) return;
     post.notice(thisScreen, UnionId, formId, res => {
+    	this.data.page.bad = false;
       this.setData({
+      	page: this.data.page,
         ordered: true,
         btnLoading: false
       })

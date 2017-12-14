@@ -122,7 +122,7 @@
         <text>下一场0元秒杀等你哟！</text>
       </view>
       <form bindsubmit='noticeNext' report-submit>
-        <view class='btn-more'><button form-type='submit'>马上预约下一场</button></view>
+        <view class='btn-more'><button form-type='submit'>下一场提醒我</button></view>
       </form>
       <!-- <view class='btn-more' bindtap='noticeNext'>马上预约下一场</view> -->
       <view class='btn-close' bindtap='closeBad'><image src='/img/btn-close.png'></image></view>
