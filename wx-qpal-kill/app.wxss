@@ -1,6 +1,7 @@
 /**app.wxss**/
 page {
   font-size: 30rpx;
+  background: #e5e5e5;
 }
 .modal, .page, .body,
 .bg, .full, .cover {
@@ -11,6 +12,7 @@ page {
   bottom: 0;
 }
 .body {
+  position: relative;
   overflow: hidden;
 }
 .page > view {

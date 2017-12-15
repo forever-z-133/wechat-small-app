@@ -28,7 +28,7 @@ module.exports = {
       },
       success: function (r) {
         console.log('预约', r.data);
-        callback && callback(r);
+        callback && callback(r.data);
       }
     })
   },
@@ -71,24 +71,47 @@ module.exports = {
       },
       success: function (r) {
         console.log('接口-加入卡包', r.data);
+
+        // var res = r.data
+        // var temp = JSON.parse(res.cardExt)
+        // var cardExt = {
+        //   code: '',
+        //   openid: '',
+        //   timestamp: temp.timestamp,
+        //   signature: temp.signature
+        // }
+        // cardExt = JSON.stringify(cardExt)
+        // cardExt = "'"+cardExt+"'";
+        // console.log('cardExt', cardExt)
+
         wx.hideLoading()
-        if (!r.data.State) {
+        callback && callback();
+        if (r.data.State == false) {
           wx.showModal({
             content: '您已添加过该卡券',
             showCancel: false,
           })
           return;
+        } else if (r.data.State == true) {
+          wx.addCard({
+            cardList: [{
+              cardId: 'pn96buA0KhY6XtFT4rRGCaLfWTGg',
+              cardExt: r.data.cardExt,
+              // cardExt: "'" + JSON.stringify(r.data.cardExt) + "'",
+              // cardExt: cardExt,
+            }],
+            success: function (res) {
+              console.log('微信-加入卡包', res);
+            },
+            fail: function(err) {
+              console.log('微信-加入卡包-错误', err);
+            }
+          })
+        } else {
+          wx.showToast({
+            title: '系统错误',
+          })
         }
-        wx.addCard({
-          cardList: [{
-            cardId: 'pn96buEYd5IXeMoD3FnmQ3KcP7pg',
-            cardExt: r.data.cardExt,
-          }],
-          success: function (res) {
-            console.log('微信-加入卡包', res);
-            callback && callback(res);
-          }
-        })
       }
     })
   }

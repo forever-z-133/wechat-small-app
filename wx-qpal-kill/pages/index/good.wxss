@@ -84,10 +84,13 @@
   background: #cbba93;
   color: #866336;
 }
-.good .rule-server {
+/* .good .rule-server {
   color: #714e2e;
   font-weight: bold;
 }
 .good .btn-server {
   color: #714e2e !important;
 }
+.good .btn-server:before {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdBAMAAAHTukqqAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAeUExURUxpcXFOLnFOLnFOLnFOLnFOLnFOLnFOLnFOLnFOLkZc7rkAAAAJdFJOUwDhN7JWjhptygZedH0AAAEQSURBVBgZBcG/axNxAAfQlx8m3haxFm67bt4WOnnbFQfJdtCh3hZw0G4Bp25RUHD7JtEkn//W99irDkrF1ISxKBUsJ7+3klMAc3hpqDYtXdJIqiKqovK8wgQTmJ+auzOUJOdC2yV/0+0kp16Vou1QtbC66/d7UHcD+PJmgMllMa5xmWX4wevHJJteNSY5FnWSayJJdonk3VYdOWKMt2e8fOczw8+B2fbDol8BDyB1A24AizFJDj1gmXuY17dgmt1Dkpy2f9bQnrskSfLpANkkSZJcx3vqJEmSaZIUSZLk1GuTFEkODZglKeqkAMska7QX4NV1egRdP/31+E/bP++Aj7DcfrsF8P7G13oAIHlqwH/4E23rLlRZXgAAAABJRU5ErkJggg==)
+} */

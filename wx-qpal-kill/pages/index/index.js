@@ -42,11 +42,20 @@ Page({
     take: false, // 是否已核销
     hasNext: true,  // 是否还有下一场
   },
-  onShow: function() {
-    this.main();
+  onLoad: function() {
+    app.getWindow(res => {
+      console
+      this.setData({
+        winW: res.windowWidth,
+        winH: res.windowHeight,
+      })
+    });
   },
-  main: function () {
-    wx.showLoading({ mask: true });
+  onShow: function() {
+    this.main(null, false);
+  },
+  main: function (callback, hasToast = true) {
+    !hasToast && wx.showLoading({ mask: true });
     // 登录与授权
     app.login(code => {
       app.getInfo(res => {
@@ -55,21 +64,24 @@ Page({
         post.entry(code, res, this.entry)
         wx.hideLoading();
         wx.stopPullDownRefresh();
+        callback && callback();
         if (thingsOk) thingsOk();
         thingsOk = this.imgsLoaded;
       })
     })
   },
-  // // 转发
-  // onShareAppMessage: function() {
-  //   return {
-
-  //   }
-  // },
-  // // 下拉刷新
-  // onPullDownRefresh: function(){
-  //   this.main();
-  // },
+  // 转发
+  onShareAppMessage: function() {
+    return {
+      title: '0元？0元！青浦奥莱圣诞0元秒杀真的来了！',
+      path: '/pages/index/index',
+      imageUrl: '/img/share-img.jpg',
+    }
+  },
+  // 下拉刷新
+  onPullDownRefresh: function(){
+    this.main();
+  },
   // 入口数据处理
   entry: function(r) {
     // 入口数据初始化
@@ -104,7 +116,7 @@ Page({
       list = list.filter(x => x.SpanTime > 0);
       console.log('下一场', list[0])
       // 如果距离开场还有五分钟，全部禁用
-      if (list[0].SpanTime < 5 * 60) {
+      if (list[0].SpanTime < 10 * 60) {
         this.data.can = true;
         this.data.disable = true;
       }
@@ -137,6 +149,15 @@ Page({
     });
     // 开启倒计时
     this.data.timecount > 0 && this.timecount();
+    // 开启置顶倒计时
+    if (this.topBarTimer == undefined) {
+      this.topBarTime();
+      this.topBarTimer = setInterval(() => {
+        this.topBarTime();
+      }, 5500);
+    } else {
+
+    }
   },
   // 倒计时
   timecount: function(){
@@ -150,16 +171,32 @@ Page({
       }
     }, 1000);
   },
+  topBarTime: function () {
+    var time = this.data.timecount, tip = '';
+    if (time < 0) tip = '奥特莱斯圣诞秒杀';
+    else tip = '距离秒杀开始还有' + (time / 3600 >> 0) + '时' + (time % 3600 / 60 >> 0) + '分' + (time % 60) + '秒',
+    wx.setTopBarText({
+      text: tip,
+      // success: res => {
+      //   console.log('设置置顶消息', res)
+      // },
+      // dail: err => {
+      //   console.log('设置置顶消息-报错', err)
+      // }
+    })
+  },
   //-------------------------- 预约
   notice: function (e) {
     var formId = e.detail.formId;
     console.log('formId', formId);
     if (!this.hasFormId(formId)) return;
-    this.setData({ btnLoading: true })
+    // this.setData({ btnLoading: true })
+    wx.showLoading({ mask: true })
     post.notice(ScreenId, UnionId, formId, res => {
+      wx.hideLoading()
       this.setData({
         ordered: true,
-        btnLoading: false
+        // btnLoading: false
       })
     })
   },
@@ -171,12 +208,19 @@ Page({
     this.setData({ btnLoading: true })
     if (++thisScreen > 6) return;
     post.notice(thisScreen, UnionId, formId, res => {
-    	this.data.page.bad = false;
-      this.setData({
-      	page: this.data.page,
-        ordered: true,
-        btnLoading: false
-      })
+      if (res.State) {
+        this.data.page.bad = false;
+        this.setData({
+          page: this.data.page,
+          ordered: true,
+          btnLoading: false
+        })
+      } else {
+        wx.showModal({
+          content: res.ErrorMessage,
+          showCancel: false,
+        })
+      }
     })
   },
   //-------------------------- 抽奖
@@ -184,22 +228,33 @@ Page({
     var formId = e.detail.formId;
     console.log('formId', formId);
     if (!this.hasFormId(formId)) return;
-    wx.showLoading({ title: '秒杀中...', mask: true })
+    // wx.showLoading({ title: '秒杀中...', mask: true })
+    wx.showLoading({ mask: true });
+    thisScreen = ScreenId;
     post.prize(ScreenId, UnionId, formId, res => {
       // wx.hideLoading()
       // console.log(res.State, res.Bonuses, res.BonusState)
-      if (res.State && res.Bonuses) {
+      this.main(() => {
+        if (!res.State) {
+          this.page('bad', true);
+        }
+      });
+      // if (res.State && res.Bonuses) {
         // this.setData({
         //   qrcode: res.Bonuses[0].Qrcode,
         //   hasPrize: true,
         // });
-        this.main();
-      } else if (!res.State) {
-        thisScreen = ScreenId;
-        this.page('bad', true);
-        this.main();
+        // this.main();
+      // } else if (!res.State) {
+      //   this.page('bad', true);
+        // if (res.BonusState == 901) {
+        //   wx.showModal({
+        //     content: res.ErrorMessage,
+        //     showCancel: false,
+        //   });
+        // }
         // this.noticeNext();
-      }
+      // }
     })
   },
   //-------------------------- 保存 formId
@@ -213,10 +268,11 @@ Page({
   },
   //-------------------------- 添加到卡包
   addCard: function () {
-    wx.showLoading()
+    wx.showLoading({ mask: true })
     if (!UnionId) return;
     post.card(UnionId, res => {
       wx.hideLoading()
+      this.main(null, false)
       this.setData({ card: res.State })
     })
   },
@@ -370,5 +426,8 @@ Page({
       }); return false;
     }
     return true;
+  },
+  prevent: function() {
+    return false;
   }
 })

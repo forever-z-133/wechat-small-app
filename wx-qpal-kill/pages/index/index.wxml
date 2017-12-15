@@ -1,5 +1,7 @@
 <!--index.wxml-->
-<view class='body' bindtap='can'>
+<!-- <view class='body' catchtouchmove='prevent'> -->
+<!-- <scroll-view catchtouchmove='scroll'></scroll-view> -->
+<view class='body' style='width:{{winW}}px;height:{{winH}}px'>
   <view class='page main  {{page.main?"":"hide"}}'>
     <view class='bg'><image src='/img/bg.jpg'></image></view>
     <view class='member'><image src='/img/member.png'></image></view>
@@ -38,7 +40,9 @@
         <view class='btn-start {{disable?"disable":""}}'><button form-type='submit'>0元秒杀</button></view>
       </form>
       <form bindsubmit='notice' class='' report-submit wx:if="{{!can && !ordered}}">
-        <view class='btn-order {{disable?"disable":""}}'><button form-type='submit' loading='{{btnLoading}}'>提醒我</button></view>
+        <view class='btn-order {{disable?"disable":""}}'>
+          <button form-type='submit' loading='{{btnLoading}}'>{{qrcode?"秒杀成功":"提醒我"}}</button>
+        </view>
       </form>
       <view class='{{disable?"disable":""}}' wx:if="{{!can && ordered}}">
         <view class='btn-ordered'><button form-type='submit'>设置成功</button></view>
@@ -96,7 +100,7 @@
           <image src='{{qrcode}}' class='qrcode' bindtap='previewQrcode'></image>
           <image src='/img/hasExchange.png' class='exchange {{take}}' wx:if='{{take}}'></image>
         </view>
-        <view class='info'>凭中奖二维码于2017年12月24日9:00-23:30至百联青浦奥特莱斯广场B102 POLO商铺前活动棚核销领取奖品吧！
+        <view class='info'>凭中奖二维码于2017年12月24日9:30-23:30至百联青浦奥特莱斯广场B102 POLO商铺前活动棚核销领取奖品吧！
 </view>
       </view>
       <view class='addToCart' wx:if="{{!card}}" bindtap='addCard'>火速添加到卡包</view>

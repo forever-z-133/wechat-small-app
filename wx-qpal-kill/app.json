@@ -4,9 +4,10 @@
     "pages/temp/index"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "青浦奥莱圣诞秒杀",
-    "navigationBarTextStyle": "black"
+    "navigationBarTitleText": "青浦奥莱圣诞0元秒杀",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   }
 }
