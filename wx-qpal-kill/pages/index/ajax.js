@@ -72,20 +72,9 @@ module.exports = {
       success: function (r) {
         console.log('接口-加入卡包', r.data);
 
-        // var res = r.data
-        // var temp = JSON.parse(res.cardExt)
-        // var cardExt = {
-        //   code: '',
-        //   openid: '',
-        //   timestamp: temp.timestamp,
-        //   signature: temp.signature
-        // }
-        // cardExt = JSON.stringify(cardExt)
-        // cardExt = "'"+cardExt+"'";
-        // console.log('cardExt', cardExt)
-
         wx.hideLoading()
-        callback && callback();
+        callback && callback(r.data);
+        if (!r.data) return;
         if (r.data.State == false) {
           wx.showModal({
             content: '您已添加过该卡券',
@@ -97,15 +86,7 @@ module.exports = {
             cardList: [{
               cardId: 'pn96buA0KhY6XtFT4rRGCaLfWTGg',
               cardExt: r.data.cardExt,
-              // cardExt: "'" + JSON.stringify(r.data.cardExt) + "'",
-              // cardExt: cardExt,
             }],
-            success: function (res) {
-              console.log('微信-加入卡包', res);
-            },
-            fail: function(err) {
-              console.log('微信-加入卡包-错误', err);
-            }
           })
         } else {
           wx.showToast({

@@ -41,6 +41,7 @@ Page({
     qrcode: null,   // 中奖二维码
     take: false, // 是否已核销
     hasNext: true,  // 是否还有下一场
+    card: false,  // 添加到卡包
   },
   onLoad: function() {
     app.getWindow(res => {
@@ -91,10 +92,13 @@ Page({
     UnionId = r.UserGuid;
     this.data.can = false;
     var list = r.ScreenList;
+    // 已存在卡包
+    this.data.card = r.AddCard;
     // 已中奖
     if (r.Bonus) {
       this.setData({
         can: false,
+        card: this.data.card,
         qrcode: r.Bonus,
         hasPrize: true,
         disable: true,
@@ -105,8 +109,6 @@ Page({
     }
     // 已预约
     this.data.ordered = r.Subscribe;
-    // 已存在卡包
-    this.data.card = r.AddCard;
     // 如果 State 有为 true 的就是正在抽奖
     this.data.can = list.some(x => x.State);
     // 是否正在抽
@@ -144,7 +146,6 @@ Page({
       count: this.data.count,
       disable: this.data.disable,
       ordered: this.data.ordered,
-      card: this.data.card,
       timecount: this.data.timecount,
     });
     // 开启倒计时
@@ -272,8 +273,12 @@ Page({
     if (!UnionId) return;
     post.card(UnionId, res => {
       wx.hideLoading()
+
+      // this.setData({
+      //   card: res.State
+      // })
+      // console.log('asda',res)
       this.main(null, false)
-      this.setData({ card: res.State })
     })
   },
   //---------------------------- 图片加载 与 canvas 绘制
