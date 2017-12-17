@@ -4,13 +4,19 @@
 
 ---
 
-### 核销服务小程序
-* 完成时间：2017.12.07
-* 难点：工具类，全靠接口，无难点
-* 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdc-check)
-* 提供核销卡券奖品等核销服务的小程序，坤鼎KDC公司出品
+### 萌煮辅食打卡小程序
+* 完成时间：未完成
+* 难点：瀑布流列表
+* 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-mzfs-menu)
+* 萌煮辅食的外包项目，中道崩殂
 
-<img src="qrcode/gh_d7d2f256176d_344.jpg" width="300">
+---
+
+### 青浦奥莱圣诞0元秒杀小程序
+* 完成时间：2017.12.16
+* 难点：生成图片与保存，复杂的状态管理，卡券的初试水
+* 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-qpal-kill)
+* 为青浦奥特莱斯的秒杀活动提供更优的小程序体验，实验了较多小程序功能，跟着学习了一些产品和行业方面的理念。
 
 ---
 
