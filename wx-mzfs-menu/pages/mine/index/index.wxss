@@ -1,1 +1,16 @@
 /* pages/mine/index/index.wxss */
+.main-header {
+  padding: 60rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: pink;
+}
+.user-image {
+  width: 4em;
+  margin-bottom: 20rpx;
+}
+.user-name {
+  font-size: 1.1em;
+}

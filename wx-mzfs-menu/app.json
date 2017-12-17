@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/mine/index/index",
     "pages/clock/index/index",
     "pages/clock/detail/detail",
-    "pages/mine/index/index",
     "pages/recipe/index/index",
     "pages/recipe/detail/detail",
     "pages/upload/index/index",
@@ -10,10 +10,9 @@
     "pages/upload/relative/relative"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "萌煮辅食",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "navigationBarTextStyle": "black"
   }
 }

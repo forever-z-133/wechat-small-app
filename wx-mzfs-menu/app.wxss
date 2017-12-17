@@ -7,6 +7,11 @@ image {
   height: 100%;
   display: block;
 }
+.sources {
+  position: absolute;
+  left: -9999em;
+  bottom: 0;
+}
 .ratio {
   position: relative
 }
@@ -31,3 +36,5 @@ image {
   flex-grow: 1;
   flex-shrink: 0;
 }
+
+@import 'common/common.wxss';

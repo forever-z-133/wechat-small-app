@@ -1,1 +1,34 @@
 /* pages/clock/detail/detail.wxss */
+page {
+  padding: 10rpx 0;
+}
+.section {
+  padding: 10rpx 30rpx;
+}
+.user {
+  line-height: 1;
+}
+.user-image {
+  width: 3em;
+}
+.user-name {
+  font-size: 1.1em;
+}
+.push-time {
+  color: #bbb;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10rpx;
+}
+.item:nth-child(1),
+.item:nth-child(2) {
+  flex-grow: 1;
+}
+.item {
+  /* flex-grow: 1; */
+  min-width: calc(33.333% - 20rpx);
+  margin: 10rpx 10rpx;
+}

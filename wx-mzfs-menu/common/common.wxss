@@ -1,0 +1,104 @@
+
+/* ----------------------------------------------------------- 底部出现 */
+.footer {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+}
+.upload, .menus {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: grey;
+  transition: transform .3s;
+}
+.upload.in, .menus.in {
+  transform: translate3d(0,-99rpx,0);
+}
+/* ----------------------------------------------------------- 底部上传 */
+.upload {
+  line-height: 100rpx;
+  background: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ----------------------------------------------------------- 底部菜单 */
+.menus .item {
+  height: 100rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10rpx;
+  box-sizing: border-box;
+}
+.menus .active {
+  color: orange;
+}
+.menus .icon {
+  width: 50rpx;
+  height: 50rpx;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.menus .text {
+  font-size: .8em;
+  /* font-size: 20rpx; */
+  /* line-height: 20rpx; */
+}
+/* .menus .icon1 {
+  background-image: url();
+}
+.menus .active .icon1 {
+  background-image: url();
+}
+.menus .icon2 {
+  background-image: url();
+}
+.menus .active .icon2 {
+  background-image: url();
+}
+.menus .icon3 {
+  background-image: url();
+}
+.menus .active .icon3 {
+  background-image: url();
+} */
+
+
+/* ----------------------------------------------------------- 用户信息 */
+.user {
+  display: flex;
+  align-items: center;
+}
+.user-image {
+  flex-shrink: 0;
+  width: 2em;
+  border-radius: 100%;
+  border: 1px solid #999;
+  margin-right: 15rpx;
+}
+.user-content {
+  flex-grow: 1;
+}
+
+/* ----------------------------------------------------------- 菜单来源 */
+.relative::before {
+  content: "";
+  position: relative;
+  top: -1rpx;
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5rpx;
+  background: grey;
+}

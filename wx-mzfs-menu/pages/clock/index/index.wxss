@@ -3,7 +3,8 @@
 
 .list-box {
   display: flex;
-  padding: 20rpx 10rpx 0;
+  flex-wrap: wrap;
+  padding: 20rpx 10rpx 100rpx;
   margin-top: 20rpx;
   background: #f7f7f7;
 }
@@ -18,17 +19,19 @@
 }
 .list .content {
   padding: 20rpx;
+}
+.list .desc {
   overflow: hidden;
+  margin-bottom: 10rpx;
   text-overflow: ellipsis;
   word-break: break-word;
   display: box;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
   -webkit-box-orient: vertical;
-  box-orient: vertical;
 }
 .load, .end {
+  width: 100%;
   text-align: center;
   font-size: .8em;
   color: #999;
@@ -43,105 +46,13 @@
 .relative {
   line-height: 1.2em;
 }
-.relative::before {
-  content: "";
-  position: relative;
-  top: -1rpx;
-  width: 1.2em;
-  height: 1.2em;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 5rpx;
-  background: grey;
-}
 .user {
-  display: flex;
-  align-items: center;
-  margin-top: 10rpx;
+  margin-top: 20rpx;
   line-height: 1.2;
 }
 .user-image {
-  flex-shrink: 0;
   width: 2em;
-  border-radius: 100%;
-  border: 1px solid #999;
-  margin-right: 10rpx;
 }
 .push-time {
   font-size: .9em;
 }
-.user-content {
-  flex-grow: 1;
-}
-
-/* ----------------------------------------------------------- 底部出现 */
-.footer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-.upload, .menus {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: grey;
-  transition: transform .4s;
-}
-.upload.in, .menus.in {
-  transform: translate3d(0,-99rpx,0);
-}
-/* ----------------------------------------------------------- 底部上传 */
-.upload {
-  line-height: 100rpx;
-  background: orange;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* ----------------------------------------------------------- 底部菜单 */
-.menus .item {
-  height: 100rpx;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10rpx;
-  box-sizing: border-box;
-}
-.menus .active {
-  color: orange;
-}
-.menus .icon {
-  width: 50rpx;
-  height: 50rpx;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-.menus .text {
-  font-size: .8em;
-  /* font-size: 20rpx; */
-  /* line-height: 20rpx; */
-}
-/* .menus .icon1 {
-  background-image: url();
-}
-.menus .active .icon1 {
-  background-image: url();
-}
-.menus .icon2 {
-  background-image: url();
-}
-.menus .active .icon2 {
-  background-image: url();
-}
-.menus .icon3 {
-  background-image: url();
-}
-.menus .active .icon3 {
-  background-image: url();
-} */

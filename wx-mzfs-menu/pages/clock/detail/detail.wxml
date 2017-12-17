@@ -1,2 +1,26 @@
 <!--pages/clock/detail/detail.wxml-->
-<text>pages/clock/detail/detail.wxml</text>
+<view class='section user'>
+  <view class='user-image ratio rect'>
+    <image src=''></image>
+  </view>
+  <view class='user-content'>
+    <view class='user-name'>默认用户</view>
+    <view class='push-time'>0000.00.00</view>
+  </view>
+</view>
+
+<view class='section detail'>
+  简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介
+</view>
+
+<view class='section gallery'>
+  <block wx:for='{{gallery}}' wx:key='*this'>
+    <view class='item ratio rect'>
+      <image src='/img/temp/5.png' mode='aspectFill' data-index='{{index}}' catchtap='preview'></image>
+    </view>
+  </block>
+</view>
+
+<view class='section'>
+  <view class='relative'>借鉴的菜单名称</view>
+</view>

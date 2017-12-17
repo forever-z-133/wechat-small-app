@@ -1,13 +1,13 @@
 <view class="list-box">
   <block wx:for="{{cols}}" wx:key="*this">
     <view class='list list{{item}}'>
-      <block wx:for="{{list[item]}}" wx:key="*this">
-        <view class='item'>
+      <block wx:for="{{list[item]}}" wx:key="unique" wx:for-index='i' wx:for-item='one'>
+        <navigator class='item' href='/pages/clock/detail/detail?id=123'>
           <view class='image'>
-            <image src=''></image>
+            <image src='{{one.img}}' style='width:{{one.width}}px;height:{{one.height}}px'></image>
           </view>
           <view class='content'>
-            <view class='desc'>简介简介简介简介</view>
+            <view class='desc'>{{one.text}}</view>
             <view class='relative'>借鉴的菜单名称</view>
             <view class='user'>
               <view class='user-image ratio rect'>
@@ -19,17 +19,17 @@
               </view>
             </view>
           </view>
-        </view>
+        </navigator>
       </block>
     </view>
   </block>
+  <block wx:if="{{ended}}">
+    <view class='load'><text>加载中...</text></view>
+  </block>
+  <block wx:if="{{!ended}}">
+    <view class='end'><text>数据就这些</text></view>
+  </block>
 </view>
-<block wx:if="{{ended}}">
-  <view class='load'><text>加载中...</text></view>
-</block>
-<block wx:if="{{!ended}}">
-  <view class='end'><text>到底了</text></view>
-</block>
 
 <!-- 底部菜单 + 底部上传 -->
 <view class='footer'>
@@ -60,11 +60,11 @@
   </block> -->
   <view class="list-box">
     <block wx:for="{{cols}}" wx:key="*this" wx:for-index='col'>
-      <view class='list list{{col}}'>
-        <block wx:for="{{tempList}}" wx:key="*this" wx:for-index='i' wx:for-item='one'>
+      <view class='list list{{col}}' wx:if='{{col==1}}'>
+        <block wx:for="{{tempList}}" wx:key="unique" wx:for-index='i' wx:for-item='one'>
           <view class='item'>
             <view class='content'>
-              <view class='desc' id="text_{{col+'_'+i}}">{{one.text}}</view>
+              <view class='desc' id="text_{{i}}">{{one.text}}</view>
             </view>
           </view>
         </block>

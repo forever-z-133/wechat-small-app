@@ -1,2 +1,19 @@
 <!--pages/mine/index/index.wxml-->
-<text>pages/mine/index/index.wxml</text>
+<view class='main-header'>
+  <view class='user-image ratio rect'>
+    <image src=''></image>
+  </view>
+  <view class='user-content'>
+    <view class='user-name'>默认用户</view>
+  </view>
+</view>
+
+<view class='main-list'>
+  <block wx:for='list' wx:key='unique'>
+    <view class='item'>
+    </view>
+  </block>
+</view>
+
+<import src="/common/footer.wxml"/>
+<template is="Footer" data="{{footer}}"/>
