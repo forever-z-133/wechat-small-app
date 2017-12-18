@@ -1,4 +1,8 @@
 /* pages/mine/index/index.wxss */
+page {
+  background: #f7f7f7;
+  padding-bottom: 100rpx;
+}
 .main-header {
   padding: 60rpx 30rpx;
   display: flex;
@@ -7,10 +11,52 @@
   align-items: center;
   background: pink;
 }
-.user-image {
+.main-header .user-image {
   width: 4em;
   margin-bottom: 20rpx;
 }
-.user-name {
+.main-header .user-name {
   font-size: 1.1em;
+}
+
+
+.main-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15rpx;
+}
+.main-list .item {
+  flex-basis: calc(50% - 30rpx);
+  margin: 15rpx;
+  background: #fff;
+}
+.main-list .content {
+  padding: 20rpx;
+}
+.main-list .desc {
+  overflow: hidden;
+  margin-bottom: 10rpx;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: box;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.relative, .user {
+  color: #999;
+  font-size: .9em;
+}
+.relative {
+  line-height: 1.2em;
+}
+.user {
+  margin-top: 20rpx;
+  line-height: 1.2;
+}
+.user-image {
+  width: 2em;
+}
+.push-time {
+  font-size: .9em;
 }

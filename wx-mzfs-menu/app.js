@@ -56,6 +56,50 @@ App({
       })
     }
   },
+  footer: function(e) {
+    var arr = ['/pages/clock/index/index', '/pages/recipe/index/index', '/pages/mine/index/index']
+    var index = e.currentTarget.dataset.index;
+    console.log(index, this.history)
+    var target = arr[index];
+    // if (this.history == undefined) this.history = index;
+    if (this.history == index) return;
+    // if (this.history == target) {
+    //   wx.navigateBack({
+    //     success: r => {
+    //       this.history = target;
+    //     }
+    //   }); return;
+    // }
+    wx.reLaunch({
+      url: target,
+      success: r => {
+        this.history = index;
+      }
+    })
+  },
+  share: function() {
+    return {
+      title: 'xxx',
+      path: '/pages/clock/index/index',
+    }
+  },
+  scroll: function (e, that) {
+    var st = e.scrollTop;
+    if (this.lastY == undefined) this.lastY = st;
+    if (st > this.lastY) { // 向下滑
+      that.data.footer == 'menus' && that.setData({ footer: 'upload' });
+    } else {
+      that.data.footer == 'upload' && that.setData({ footer: 'menus' });
+    }
+    this.lastY = st;
+  },
+  defaultImg: [
+    { img: '/img/temp/3.png', text: '内容内容内容内容内容内容内容内容内容' },
+    { img: '/img/temp/2.png', text: '内容内容内容内容内容' },
+    { img: '/img/temp/1.png', text: '内内容内容内容' },
+    { img: '/img/temp/4.png', text: '内容内内容内容内容内容内容' },
+    { img: '/img/temp/5.png', text: '内容内容内容内容内容内内容内容内容内容内容内容' },
+  ],
   globalData: {
     window: null,
     code: null,

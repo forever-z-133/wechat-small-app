@@ -9,11 +9,33 @@
 </view>
 
 <view class='main-list'>
-  <block wx:for='list' wx:key='unique'>
-    <view class='item'>
-    </view>
+  <block wx:for='{{list}}' wx:key='unique' wx:for-item='one'>
+    <navigator class='item' url='/pages/clock/detail/detail?id=123'>
+      <view class='image ratio'>
+        <image src='{{one.img}}' mode='aspectFill'></image>
+      </view>
+      <view class='content'>
+        <view class='desc'>{{one.text}}</view>
+        <view class='relative'>借鉴的菜单名称</view>
+        <view class='user'>
+          <view class='user-image ratio rect'>
+            <image src=''></image>
+          </view>
+          <view class='user-content'>
+            <view class='user-name'>默认用户</view>
+            <view class='push-time'>0000.00.00</view>
+          </view>
+        </view>
+      </view>
+    </navigator>
+  </block>
+  <block wx:if="{{ended}}">
+    <view class='load'><text>加载中...</text></view>
+  </block>
+  <block wx:if="{{!ended}}">
+    <view class='end'><text>数据就这些</text></view>
   </block>
 </view>
 
 <import src="/common/footer.wxml"/>
-<template is="Footer" data="{{footer}}"/>
+<template is="Footer" data="{{footer,footerIndex}}"/>

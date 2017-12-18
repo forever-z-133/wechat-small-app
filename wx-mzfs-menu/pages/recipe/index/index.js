@@ -1,66 +1,54 @@
 // pages/recipe/index/index.js
+var app = getApp();
+var defaultImg = app.defaultImg;
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    footer: 'menus',
+    footerIndex: 1,
+    list: null,
   },
+  // 转发分享
+  onShareAppMessage: app.share,
+  // 点击底部菜单
+  tabBar: app.footer,
+  // 触底加载
+  onPullDownRefresh: function () {
+    this.get_list();
+  },
+  // 下拉刷新
+  onReachBottom: function () {
+    this.get_list(true);
+  },
+  // 不断滚动，向下就显示上传，向上就显示菜单
+  onPageScroll: function (e) { app.scroll(e, this) },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+
+  // ---------------- 正式开始
   onLoad: function (options) {
   
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
+  get_list: function (callback, fresh) {
+    this.post_list(r => {
+      this.update_list(r);
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  post_list: function (callback) {
+    var r = defaultImg
+    callback && callback(r);
+    // wx.request({
+    //   url: '',
+    //   success: r => {
+    //     console.log('获取列表', r);
+    //     callback && callback(r);
+    //   }
+    // })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  update_list: function (r, callback) {
+    this.data.list = this.data.list.concat(r);
+    this.setData({
+      ended: r.length < 1,
+      list: this.data.list,
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })

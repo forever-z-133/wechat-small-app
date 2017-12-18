@@ -1,2 +1,6 @@
 <!--pages/recipe/index/index.wxml-->
-<text>pages/recipe/index/index.wxml</text>
+
+
+
+<import src="/common/footer.wxml"/>
+<template is="Footer" data="{{footer,footerIndex}}"/>

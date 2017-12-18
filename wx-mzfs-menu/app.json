@@ -1,13 +1,13 @@
 {
   "pages": [
+    "pages/upload/relative/relative",
+    "pages/upload/index/index",
     "pages/mine/index/index",
     "pages/clock/index/index",
     "pages/clock/detail/detail",
     "pages/recipe/index/index",
     "pages/recipe/detail/detail",
-    "pages/upload/index/index",
-    "pages/temp/index",
-    "pages/upload/relative/relative"
+    "pages/temp/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",

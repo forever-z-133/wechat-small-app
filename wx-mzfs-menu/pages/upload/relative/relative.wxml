@@ -1,2 +1,23 @@
 <!--pages/upload/relative/relative.wxml-->
-<text>pages/upload/relative/relative.wxml</text>
+<view class='top-bar'>
+  <navigator open-type='navigateBack' class='btn-back'>返回</navigator>
+  <view class='top-title'>打卡</view>
+  <view class='btn-submit'>确定</view>
+</view>
+
+<view class='list-box'>
+  <view class='list'>
+    <block wx:key='{{list}}' wx:key='*this'>
+      <navigator class='item' url='/pages/recipe/detail/detail?id=123'>
+        <view class='image ratio'>
+          <image src='{{one.img}}' mode='aspectFill'></image>
+        </view>
+        <view class='content'>
+          <view class='title text2'>标题{{one.text}}</view>
+          <view class='btn-check' wx:if='{{true}}'>选择</view>
+          <view class='btn-check-off' wx:if='{{!true}}'>取消选择</view>
+        </view>
+      </navigator>
+    </block>
+  </view>
+</view>

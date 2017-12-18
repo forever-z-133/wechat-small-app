@@ -1,1 +1,40 @@
 /* pages/upload/relative/relative.wxss */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20rpx 20rpx;
+}
+.item {
+  width: calc(100% - 20rpx);
+  margin: 10rpx 10rpx;
+  display: flex;
+}
+.image {
+  width: 240rpx;
+  margin-right: 20rpx;
+  background: #aaa;
+}
+.image::before {
+  padding-top: 75%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.title {
+  font-size: 1.3em;
+  margin-top: -.1em;
+}
+.btn-check,
+.btn-check-off {
+  width: 6em;
+  text-align: center;
+  padding: 0 30rpx;
+  line-height: 60rpx;
+  border: 1px solid #aaa;
+  border-radius: 10rpx;
+}
+.btn-check-off {
+  background: orange;
+}

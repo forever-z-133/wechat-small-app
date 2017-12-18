@@ -1,1 +1,63 @@
 /* pages/upload/index/index.wxss */
+.section {
+  margin: 30rpx 30rpx;
+}
+textarea {
+  width: 100%;
+  height: 7em;
+  margin: 0 -1rpx;
+  box-sizing: border-box;
+  padding: .3em .5em;
+  border: 1px solid #aaa;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin: 0 -10rpx;
+}
+.item {
+  position: relative;
+  width: calc(25% - 20rpx);
+  margin: 10rpx 10rpx;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+.btn-remove {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  width: 50rpx;
+  height: 50rpx;
+  background: #000;
+}
+.btn-add {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 2em;
+}
+
+.choose-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15rpx;
+  line-height: 60rpx;
+  border: 1px solid #ccc;
+  border-radius: 10rpx;
+}
+.choose-item {
+  color: orange;
+}
+.choose-item::after {
+  content: ">";
+  margin-left: 10rpx;
+  color: #aaa;
+}
+.choose-tip {
+  color: #aaa;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}

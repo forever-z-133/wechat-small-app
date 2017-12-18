@@ -1,4 +1,23 @@
 
+
+.text {
+    word-wrap: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.text2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    display: box;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+}
+
 /* ----------------------------------------------------------- 底部出现 */
 .footer {
   position: fixed;
@@ -101,4 +120,36 @@
   vertical-align: middle;
   margin-right: 5rpx;
   background: grey;
+}
+
+/* ----------------------------------------------------------- 列表到底 */
+.load, .end {
+  width: 100%;
+  text-align: center;
+  font-size: .8em;
+  color: #999;
+  padding: 20rpx 10rpx;
+}
+
+
+/* ----------------------------------------------------------- 页面顶部 */
+.top-bar {
+  display: flex;
+  padding: 0 30rpx;
+  line-height: 80rpx;
+  background: #efefef;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn-back,
+.btn-submit {
+  font-size: .8em;
+  margin: 0 -20rpx;
+  padding: 0 20rpx;
+}
+.btn-back {
+  color: #aaa;
+}
+.btn-submit {
+  color: orange;
 }

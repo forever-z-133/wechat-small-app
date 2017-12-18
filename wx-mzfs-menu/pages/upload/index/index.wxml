@@ -1,2 +1,30 @@
 <!--pages/upload/index/index.wxml-->
-<text>pages/upload/index/index.wxml</text>
+<view class='top-bar'>
+  <navigator open-type='navigateBack' class='btn-back'>返回</navigator>
+  <view class='top-title'>打卡</view>
+  <view class='btn-submit'>发布</view>
+</view>
+
+<view class='section msg'>
+  <textarea auto-focus placeholder="自动变高" />
+</view>
+<view class='section imgs'>
+  <view class='list'>
+    <block wx:for='{{imgs}}' wx:key='*this'>
+      <view class='item ratio rect'>
+        <image mode='aspectFill'></image>
+        <view class='btn-remove'></view>
+      </view>
+    </block>
+    <view class='item ratio rect'>
+      <view class='btn-add'>+</view>
+    </view>
+  </view>
+</view>
+<view class='section choose'>
+  <navigator url='/pages/upload/relative/relative' class='choose-bar'>
+    <text class='choose-label'>关联食品：</text>
+    <view class='choose-item'>something</view>
+  </navigator>
+  <view class='choose-tip'>*没有参考食谱时不需要选择哦~</view>
+</view>
