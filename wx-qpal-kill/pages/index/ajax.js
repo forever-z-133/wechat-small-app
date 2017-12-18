@@ -82,12 +82,19 @@ module.exports = {
           })
           return;
         } else if (r.data.State == true) {
-          wx.addCard({
-            cardList: [{
-              cardId: 'pn96buA0KhY6XtFT4rRGCaLfWTGg',
-              cardExt: r.data.cardExt,
-            }],
-          })
+          console.log('卡券ID', r.data.cardId)
+          // setTimeout(() => {
+            wx.addCard({
+              cardList: [{
+                cardId: r.data.cardId,
+                // cardId: "pn96buFseASpd5n1CJAz2UPcw_74",
+                cardExt: r.data.cardExt,
+              }],
+              complete: res => {
+                console.log('微信-加入卡包', res)
+              }
+            })
+          // }, 400)
         } else {
           wx.showToast({
             title: '系统错误',

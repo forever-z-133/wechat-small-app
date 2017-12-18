@@ -12,7 +12,7 @@ page {
   bottom: 0;
 }
 .body {
-  position: relative;
+  /* position: relative; */
   overflow: hidden;
 }
 .page > view {

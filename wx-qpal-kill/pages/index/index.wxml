@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <!-- <view class='body' catchtouchmove='prevent'> -->
 <!-- <scroll-view catchtouchmove='scroll'></scroll-view> -->
-<view class='body' style='width:{{winW}}px;height:{{winH}}px'>
+<view class='body'>
   <view class='page main  {{page.main?"":"hide"}}'>
     <view class='bg'><image src='/img/bg.jpg'></image></view>
     <view class='member'><image src='/img/member.png'></image></view>

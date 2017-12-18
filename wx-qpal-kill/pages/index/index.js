@@ -44,8 +44,8 @@ Page({
     card: false,  // 添加到卡包
   },
   onLoad: function() {
+    this.posting = false;
     app.getWindow(res => {
-      console
       this.setData({
         winW: res.windowWidth,
         winH: res.windowHeight,
@@ -62,7 +62,7 @@ Page({
       app.getInfo(res => {
         mainInfo = res
         userInfo = res.userInfo
-        post.entry(code, res, this.entry)
+        post.entry(code, res, this.main_entry)
         wx.hideLoading();
         wx.stopPullDownRefresh();
         callback && callback();
@@ -84,11 +84,9 @@ Page({
     this.main();
   },
   // 入口数据处理
-  entry: function(r) {
+  main_entry: function(r) {
     // 入口数据初始化
     var r = r.data;
-    // 报错判断
-    if (r.ErrorMessage && !this.error(r.ErrorMessage)) return
     UnionId = r.UserGuid;
     this.data.can = false;
     var list = r.ScreenList;
@@ -106,6 +104,11 @@ Page({
       });
       this.page('good', true);
       return;
+    }
+    // 报错判断
+    if (r.ErrorMessage && !this.error(r.ErrorMessage)) {
+      this.setData({ disable: true });
+      return
     }
     // 已预约
     this.data.ordered = r.Subscribe;
@@ -193,12 +196,22 @@ Page({
     if (!this.hasFormId(formId)) return;
     // this.setData({ btnLoading: true })
     wx.showLoading({ mask: true })
+    if (this.posting) return;
+    this.posting = true;
     post.notice(ScreenId, UnionId, formId, res => {
       wx.hideLoading()
-      this.setData({
-        ordered: true,
-        // btnLoading: false
-      })
+      this.posting = false;
+      if (res.State) {
+        this.setData({
+          ordered: true,
+          // btnLoading: false
+        })
+      } else {
+        wx.showModal({
+          content: res.ErrorMessage,
+          showCancel: false,
+        });
+      }
     })
   },
   //-------------------------- 预约下一场
@@ -207,14 +220,17 @@ Page({
     console.log('formId', formId);
     if (!this.hasFormId(formId)) return;
     this.setData({ btnLoading: true })
+    if (this.posting) return;
+    this.posting = true;
     if (++thisScreen > 6) return;
     post.notice(thisScreen, UnionId, formId, res => {
+      this.setData({ btnLoading: false })
+      this.posting = false;
       if (res.State) {
         this.data.page.bad = false;
         this.setData({
           page: this.data.page,
           ordered: true,
-          btnLoading: false
         })
       } else {
         wx.showModal({
@@ -232,7 +248,10 @@ Page({
     // wx.showLoading({ title: '秒杀中...', mask: true })
     wx.showLoading({ mask: true });
     thisScreen = ScreenId;
+    if (this.posting) return;
+    this.posting = true;
     post.prize(ScreenId, UnionId, formId, res => {
+      this.posting = false;
       // wx.hideLoading()
       // console.log(res.State, res.Bonuses, res.BonusState)
       this.main(() => {
@@ -270,9 +289,12 @@ Page({
   //-------------------------- 添加到卡包
   addCard: function () {
     wx.showLoading({ mask: true })
+    if (this.posting) return;
+    this.posting = true;
     if (!UnionId) return;
     post.card(UnionId, res => {
       wx.hideLoading()
+      this.posting = false;
 
       // this.setData({
       //   card: res.State
@@ -306,11 +328,11 @@ Page({
   canvas: function (callback) {
     // 如果已产生，不再新建
     var img = wx.getStorageSync('saveImg');
-    if (img) {
-      console.log('图片生成-缓存', img)
-      callback && callback(img)
-      return;
-    }
+    // if (img) {
+    //   console.log('图片生成-缓存', img)
+    //   callback && callback(img)
+    //   return;
+    // }
     // 初始化 canvas
     ctx = wx.createCanvasContext('forWechat')
     // 画图
@@ -336,8 +358,9 @@ Page({
         canvasId: 'forWechat',
         success: res => {
           console.log('图片生成', res.tempFilePath)
-          wx.setStorageSync('saveImg', res.tempFilePath)
-          callback && callback(res.tempFilePath)
+          img = res.tempFilePath
+          wx.setStorageSync('saveImg', img)
+          callback && callback(img)
         }
       })
     }, 500)
@@ -349,12 +372,12 @@ Page({
   showSave: function () {
     wx.showLoading();
     if (!this.data.saveImg) {
-      this.Timer = setInterval(() => {
-        this.showSave()
-      }, 1000)
+      wx.showToast({
+        title: '保存图片失败',
+      })
       return;
     } else {
-      clearInterval(this.Timer)
+      // clearInterval(this.Timer)
       wx.hideLoading();
     }
     // this.data.page.save = true;
@@ -409,6 +432,7 @@ Page({
   error: function(ErrCode) {
     var tip = '', ifContinue = true;
     switch (ErrCode) {
+      case 897: tip = '抽奖活动已结束'; ifContinue = false; break;
       case 898: tip = '系统错误'; ifContinue = false; break;
       case 899: tip = '身份错误'; ifContinue = false; break;
       case 900: tip = '已经中奖'; break;

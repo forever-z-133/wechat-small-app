@@ -1,7 +1,4 @@
 <!--pages/server/index.wxml-->
-<text>pages/server/index.wxml</text>
-<button open-type="contact">客服按钮</button>
-
-<form bindsubmit='sumit' report-submit>
-  <button form-type='submit'>提交</button>
-</form>
+<!-- <web-view src="http://mp.weixin.qq.com/s/6RqyOKCzu3zTlNG0HyssCQ#wechat_redirect?guid={{webId}}"></web-view> -->
+<image src='https://wx.qlogo.cn/mmhead/Q3auHgzwzM5ibqVyJXHzrcG5VCuplBOuO3J9gVuwXiaPzr0OI2jOOkfw/0'></image>
+<video src='http://101.227.216.145/vlive.qqvideo.tc.qq.com/AagDZUG-pUqHAwewD_casnAgaANkA9DnIVm42D2fqECI/w0200yxbpa1.p201.1.mp4?vkey=3041139090434E99887BCC995ED98F09D8D1E5E3BD6FBDE2D25EEAB13373474BC4CCA067622FC32D181C1EC00803D7A68ECC3A1BF914D66462D9D5E45253AB04C200BFFF1CBCB05A441DBE68C8B9E54BAB5C90A497B1717906BB092F71D4B312688477B8863601522615C233D789B448AC2BFA56269A3760&platform=10201&sdtfrom=&fmt=shd&level=0&locid=8139c5c3-9338-4444-851a-09771714f278&size=2543598&ocid=239801772'></video>

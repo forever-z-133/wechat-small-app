@@ -20,6 +20,17 @@
 
 ---
 
+### 核销服务小程序
+* 完成时间：2017.12.07
+* 难点：工具类，全靠接口，无难点
+* 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdc-check)
+* 提供核销卡券奖品等核销服务的小程序，坤鼎KDC公司出品
+
+<img src="qrcode/gh_d7d2f256176d_344.jpg" width="300">
+
+
+---
+
 ### 万物至上门店小程序
 * 完成时间：2017.11.17
 * 难点：仿制微信门店小程序，无难点
