@@ -56,7 +56,7 @@
       <image src='/img/tree.png' class='bg'></image>
       <text class='label'>奖品</text>
     </view>
-    <view class='for-save' bindtap='showSave'>分享到朋友圈</view>
+    <view class='for-save' catchtap='showSave'>分享到朋友圈</view>
   </view>
 
 
@@ -79,7 +79,8 @@
     <view class='modal-bg bg' bindtap='closeSave'></view>
     <view class='modal-box'>
       <image src='{{saveImg}}' class='image' bindtap='previewSave'></image>
-      <view class='save-tip'>图片已保存到相册，可分享给好友</view>
+      <view class='save-tip' wx:if='{{!previewDeny}}'>图片已保存到相册，可分享给好友</view>
+      <view class='save-tip' wx:if='{{previewDeny}}'>请点开图片自行保存到相册，分享给好友</view>
       <view class='btn-close' bindtap='closeSave'><image src='/img/btn-close.png'></image></view>
     </view>
   </view>

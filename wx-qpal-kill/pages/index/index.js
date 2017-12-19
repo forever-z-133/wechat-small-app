@@ -42,6 +42,7 @@ Page({
     take: false, // 是否已核销
     hasNext: true,  // 是否还有下一场
     card: false,  // 添加到卡包
+    previewDeny: false, // 是否禁用了保存到相册
   },
   onLoad: function() {
     this.posting = false;
@@ -53,10 +54,14 @@ Page({
     });
   },
   onShow: function() {
+    if (this.data.page.save) return
     this.main(null, false);
   },
   main: function (callback, hasToast = true) {
     !hasToast && wx.showLoading({ mask: true });
+    wx.setScreenBrightness({
+      value: .6,
+    });
     // 登录与授权
     app.login(code => {
       app.getInfo(res => {
@@ -376,15 +381,12 @@ Page({
         title: '保存图片失败',
       })
       return;
-    } else {
-      // clearInterval(this.Timer)
-      wx.hideLoading();
     }
-    // this.data.page.save = true;
-    // this.setData({ page: this.data.page })
     wx.saveImageToPhotosAlbum({
       filePath: this.data.saveImg,
-      success: res => {
+      complete: res => {
+        wx.hideLoading();
+        if (/deny/.test(res.errMsg)) this.setData({ previewDeny: true })
         this.data.page.save = true;
         this.setData({ page: this.data.page })
       }
@@ -425,9 +427,15 @@ Page({
   },
   // 二维码相册预览
   previewQrcode: function () {
+    wx.setScreenBrightness({
+      value: 1,
+    });
     wx.previewImage({
       urls: [this.data.qrcode],
-    })
+      complete: res => {
+        console.log('图片预览', res)
+      }
+    });
   },
   error: function(ErrCode) {
     var tip = '', ifContinue = true;

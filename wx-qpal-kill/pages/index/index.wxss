@@ -178,7 +178,7 @@
   background: linear-gradient(#fdf1d1, #bc9b55);
 }
 .btn-start:not(.disable) {
-  /* animation: start 1s infinite linear; */
+   animation: start 1s infinite linear; 
 }
 @keyframes start {
   50% {transform: scale(1.1)}
