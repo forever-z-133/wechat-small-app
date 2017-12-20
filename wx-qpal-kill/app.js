@@ -2,11 +2,11 @@
 App({
   onLaunch: function () {
     // 是否已获得用户信息
-    wx.getSetting({
-      success: settings => {
-        this.globalData.noUser = settings.authSetting['scope.userInfo']
-      }
-    })
+    // wx.getSetting({
+    //   success: settings => {
+    //     this.globalData.noUser = settings.authSetting['scope.userInfo']
+    //   }
+    // })
     // // 登录与授权
     // this.login(code => {
     //   this.getInfo(res => {

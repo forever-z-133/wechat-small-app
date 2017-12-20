@@ -59,7 +59,7 @@ Page({
   },
   main: function (callback, hasToast = true) {
     !hasToast && wx.showLoading({ mask: true });
-    wx.setScreenBrightness({
+    wx.setScreenBrightness && wx.setScreenBrightness({
       value: .6,
     });
     // 登录与授权
@@ -182,9 +182,9 @@ Page({
   },
   topBarTime: function () {
     var time = this.data.timecount, tip = '';
-    if (time < 0) tip = '奥特莱斯圣诞秒杀';
-    else tip = '距离秒杀开始还有' + (time / 3600 >> 0) + '时' + (time % 3600 / 60 >> 0) + '分' + (time % 60) + '秒',
-    wx.setTopBarText({
+    if (time < 0) tip = '青浦奥特莱斯圣诞0元秒杀';
+    else tip = '距离秒杀开始还有' + (time / 3600 >> 0) + '时' + (time % 3600 / 60 >> 0) + '分' + (time % 60) + '秒';
+    wx.setTopBarText && wx.setTopBarText({
       text: tip,
       // success: res => {
       //   console.log('设置置顶消息', res)
@@ -346,7 +346,7 @@ Page({
     ctx.setFillStyle('#ffffff')
     ctx.setFontSize(50)
     ctx.setTextAlign('center')
-    ctx.setTextBaseline('middle')
+    ctx.setTextBaseline && ctx.setTextBaseline('middle')
     ctx.fillText(userInfo.nickName + '邀请你一起来0元秒杀', 610, 640)
     ctx.fillText('资生堂惠润柔净洗发组合', 610, 730)
     ctx.draw()
@@ -380,6 +380,12 @@ Page({
       wx.showToast({
         title: '保存图片失败',
       })
+      return;
+    }
+    if (!wx.saveImageToPhotosAlbum) {
+      wx.hideLoading();
+      this.data.page.save = true;
+      this.setData({ page: this.data.page, previewDeny: true });
       return;
     }
     wx.saveImageToPhotosAlbum({
@@ -427,7 +433,7 @@ Page({
   },
   // 二维码相册预览
   previewQrcode: function () {
-    wx.setScreenBrightness({
+    wx.setScreenBrightness && wx.setScreenBrightness({
       value: 1,
     });
     wx.previewImage({
