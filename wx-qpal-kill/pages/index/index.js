@@ -186,12 +186,6 @@ Page({
     else tip = '距离秒杀开始还有' + (time / 3600 >> 0) + '时' + (time % 3600 / 60 >> 0) + '分' + (time % 60) + '秒';
     wx.setTopBarText && wx.setTopBarText({
       text: tip,
-      // success: res => {
-      //   console.log('设置置顶消息', res)
-      // },
-      // dail: err => {
-      //   console.log('设置置顶消息-报错', err)
-      // }
     })
   },
   //-------------------------- 预约
@@ -264,22 +258,6 @@ Page({
           this.page('bad', true);
         }
       });
-      // if (res.State && res.Bonuses) {
-        // this.setData({
-        //   qrcode: res.Bonuses[0].Qrcode,
-        //   hasPrize: true,
-        // });
-        // this.main();
-      // } else if (!res.State) {
-      //   this.page('bad', true);
-        // if (res.BonusState == 901) {
-        //   wx.showModal({
-        //     content: res.ErrorMessage,
-        //     showCancel: false,
-        //   });
-        // }
-        // this.noticeNext();
-      // }
     })
   },
   //-------------------------- 保存 formId
@@ -300,22 +278,19 @@ Page({
     post.card(UnionId, res => {
       wx.hideLoading()
       this.posting = false;
-
-      // this.setData({
-      //   card: res.State
-      // })
-      // console.log('asda',res)
       this.main(null, false)
     })
   },
   //---------------------------- 图片加载 与 canvas 绘制
   loadImage: function(e) {
     var total = 0, now = 0;
+    var name = e.target.dataset.name
     for (var i in imgs) total++;
-    source[e.target.dataset.name] = {};
-    source[e.target.dataset.name].elem = e;
-    source[e.target.dataset.name].width = e.detail.width;
-    source[e.target.dataset.name].height = e.detail.height;
+    source[name] = {};
+    source[name].elem = e;
+    source[name].src = e.target.dataset.src;
+    source[name].width = e.detail.width;
+    source[name].height = e.detail.height;
     for (var i in source) now++;
     if (now == total) {
       if (thingsOk) thingsOk();
@@ -324,32 +299,40 @@ Page({
   },
   // 所有图片加载完成
   imgsLoaded: function () {
+    thingsOk = null;
+    if (this.Sync) return
+    this.Sync = true;
     this.canvas(path => {
+      this.Sync = false;
       this.setData({ saveImg: path });
     })
-    thingsOk = null;
   },
   // canvas 绘制
   canvas: function (callback) {
     // 如果已产生，不再新建
     var img = wx.getStorageSync('saveImg');
-    // if (img) {
-    //   console.log('图片生成-缓存', img)
-    //   callback && callback(img)
-    //   return;
-    // }
+    if (img) {
+      console.log('图片生成-缓存', img)
+      callback && callback(img)
+      return;
+    }
     // 初始化 canvas
     ctx = wx.createCanvasContext('forWechat')
-    // 画图
+    ctx.clearRect(0, 0, 1220, 1800);
     ctx.drawImage('/img/for-save.jpg', 0, 0, 1220, 1800);
-    // 画字
-    ctx.setFillStyle('#ffffff')
-    ctx.setFontSize(50)
-    ctx.setTextAlign('center')
-    ctx.setTextBaseline && ctx.setTextBaseline('middle')
-    ctx.fillText(userInfo.nickName + '邀请你一起来0元秒杀', 610, 640)
-    ctx.fillText('资生堂惠润柔净洗发组合', 610, 730)
     ctx.draw()
+    setTimeout(() => {
+      // 画图
+      ctx.drawImage('/img/for-save.jpg', 0, 0, 1220, 1800);
+      // 画字
+      ctx.setFontSize(50)
+      ctx.setFillStyle('#ffffff')
+      ctx.setTextAlign('center')
+      ctx.setTextBaseline && ctx.setTextBaseline('middle')
+      ctx.fillText((userInfo.nickName||'') + '邀请你一起来0元秒杀', 610, 640)
+      ctx.fillText('资生堂惠润柔净洗发组合', 610, 730)
+      ctx.draw()
+    }, 300)
     // 完成
     setTimeout(() => {
       wx.canvasToTempFilePath({
@@ -363,7 +346,7 @@ Page({
         canvasId: 'forWechat',
         success: res => {
           console.log('图片生成', res.tempFilePath)
-          img = res.tempFilePath
+          var img = res.tempFilePath
           wx.setStorageSync('saveImg', img)
           callback && callback(img)
         }

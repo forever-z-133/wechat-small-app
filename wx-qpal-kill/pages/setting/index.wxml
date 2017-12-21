@@ -1,0 +1,6 @@
+<!--pages/setting/index.wxml-->
+<view class='tip'>青浦奥特莱斯请求您开启授权</view>
+<view class='line'>
+  <view>开启授权</view>
+  <button open-type='getUserInfo' bindgetuserinfo='bindgetuserinfo'>{{ok?"已授权":"授权"}}</button>
+</view>

@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/setting/index",
     "pages/temp/index"
   ],
   "window": {

@@ -138,6 +138,6 @@
 <view class='sources'>
   <canvas class='for-wechat' canvas-id="forWechat"></canvas>
   <block wx:for='{{imgs}}' wx:key='unique'>
-    <image src='{{item.src}}' data-name="{{item.name}}" bindload='loadImage'></image>
+    <image src='{{item.src}}' data-src='{{item.src}}' data-name="{{item.name}}" bindload='loadImage'></image>
   </block>
 </view>
