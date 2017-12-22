@@ -45,9 +45,12 @@ App({
             confirmText: '前往开启',
             showCancel: false,
             success: res => {
-              wx.reLaunch({
-                url: '/pages/setting/index',
-              });
+              wx.openSetting({
+                success: (res) => {}
+              })
+              // wx.reLaunch({
+              //   url: '/pages/setting/index',
+              // });
             }
           });
           return;
