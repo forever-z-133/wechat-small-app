@@ -1,0 +1,9 @@
+<view class='list'>
+  <block wx:for='{{list}}' wx:key='*this'>
+    <view class='item'>
+      <navigator class='image' url='../video/index?video={{item.video}}'>
+        <image src='{{item.image}}'></image>
+      </navigator>
+    </view>
+  </block>
+</view>

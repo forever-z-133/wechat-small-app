@@ -1,0 +1,13 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/video/index",
+    "pages/temp/index"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "上海优秀商业景观推选",
+    "navigationBarTextStyle":"black"
+  }
+}
