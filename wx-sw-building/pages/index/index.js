@@ -62,7 +62,7 @@ Page({
   data: {
     list: []
   },
-  onLoad: function() {
+  onLoad: function (options) {
     var list = data.map(x => {
       return {
         image: baseUrl + 'img/' + x.image,
@@ -70,6 +70,14 @@ Page({
       }
     });
     this.setData({ list: list });
+
+    // 可能需要跳详情
+    let video = options.video
+    if (video) {
+      wx.navigateTo({
+        url: '/pages/video/index?video=' + video,
+      })
+    }
   },
   onShareAppMessage: function () {
     return {

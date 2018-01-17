@@ -11,7 +11,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      path: '/pages/video/index?video=' + video,
+      path: '/pages/index/index?video=' + video,
     }
   }
 })
