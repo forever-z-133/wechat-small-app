@@ -4,9 +4,17 @@
 
 ---
 
+### 景观展示小程序
+* 完成时间：2018.01.12
+* 难点：无难点，静态视频播放而已
+* 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-sw-building)
+* 审核莫名无反馈，未发布。
+
+---
+
 ### 萌煮辅食打卡小程序
 * 完成时间：未完成
-* 难点：瀑布流列表，避免频繁 navigator，底部菜单组件化
+* 难点：瀑布流列表，规避频繁 navigator，底部菜单组件化
 * 文件夹：[wx-kdc-check](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-mzfs-menu)
 * 萌煮辅食的外包项目，中道崩殂
 
