@@ -1,13 +1,58 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+<!-- 首页 -->
+<view class='section banner'>
+  <swiper class='banner-swiper'>
+    <block wx:for='{{banner}}' wx:key='index'>
+      <swiper-item>
+        <navigator class='imgRadio slide'>
+          <image></image>
+        </navigator>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+<view class='section main-tab'>
+  <view class='flex-tabs'>
+    <block wx:for='{{tabs}}' wx:key='index'>
+      <navigator url='{{item.link}}' class='tab item'>
+        <view class='main-tab-icon imgRadio rect'>
+          <image src='{{item.img}}'></image>
+        </view>
+        <view class='main-tab-name'>{{item.name}}</view>
+      </navigator>
     </block>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+</view>
+<view class='section product-list'>
+  <product-list list-data='{{tabs}}' list-style='list-text-cover'></product-list>
+</view>
+<!-- <view class='section main-type-list'>
+  <view class="list list-text-cover">
+    <block wx:for='{{tabs}}' wx:key='index'>
+      <navigator url='{{item.link}}' class='list-item'>
+        <view class='list-image normal'>
+          <image src='{{item.img}}'></image>
+        </view>
+        <view class='list-content'>
+          <view class='title'>{{item.name}}</view>
+          <view class='desc'>{{item.name}}</view>
+        </view>
+      </navigator>
+    </block>
   </view>
 </view>
+<view class='section product-list'>
+  <product-list></product-list>
+  <view class="list list-text-under">
+    <block wx:for='{{tabs}}' wx:key='index'>
+      <navigator url='{{item.link}}' class='list-item'>
+        <view class='list-image normal'>
+          <image src='{{item.img}}'></image>
+        </view>
+        <view class='list-content'>
+          <view class='title'>{{item.name}}</view>
+          <view class='desc'>{{item.name}}</view>
+        </view>
+      </navigator>
+    </block>
+  </view>
+</view> -->

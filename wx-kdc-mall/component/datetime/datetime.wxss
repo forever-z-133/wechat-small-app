@@ -1,0 +1,15 @@
+
+.datetime {
+  text-align: center;
+}
+.body > .top,
+.body > .list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.body .item {
+  width: calc(100% / 7);
+}
+.today {
+  color: red;
+}

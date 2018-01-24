@@ -1,0 +1,3 @@
+/* component/product-list/product-list.wxss */
+
+@import '/common/list.wxss';

@@ -1,0 +1,26 @@
+
+.imgRadio {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+.imgRadio:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.imgRadio.slide::before {
+  padding-top: 75%;
+}
+.imgRadio > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.flex-tabs {
+  display: flex;
+}
+.flex-tabs > .tab {
+  flex-grow: 1;
+  flex-shrink: 0;
+}

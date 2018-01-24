@@ -8,8 +8,29 @@ let userInfo = null;
 
 Page({
   data: {
+    banner: [1,2],
+    tabs: [
+      {
+        link: '/pages/activity/index',
+        img: '',
+        name: 'xxxx1',
+      },
+      {
+        link: '/pages/activity/index',
+        img: '',
+        name: 'xxxx2',
+      },
+      {
+        link: '/pages/activity/index',
+        img: '',
+        name: 'xxxx3',
+      }
+    ]
   },
   onLoad: function () {
+    wx.setNavigationBarTitle && wx.setNavigationBarTitle({
+      title: '首页'
+    });
     app.getWindow(res => {
       this.setData({
         winW: res.windowWidth,
@@ -42,6 +63,5 @@ Page({
   },
   // 入口数据处理
   main_entry: function() {
-
   },
 })

@@ -1,0 +1,15 @@
+<!--component/product-list/product-list.wxml-->
+
+<view class="list {{listStyle}}">
+  <block wx:for='{{listData}}' wx:key='index'>
+    <navigator url='{{item.link}}' class='list-item'>
+      <view class='list-image normal'>
+        <image src='{{item.img}}'></image>
+      </view>
+      <view class='list-content'>
+        <view class='title'>{{item.name}}</view>
+        <view class='desc'>{{item.name}}</view>
+      </view>
+    </navigator>
+  </block>
+</view>

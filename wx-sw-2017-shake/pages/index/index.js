@@ -533,15 +533,16 @@ function Draw(img, specail) {
   ctx.draw();
 }
 
+// 摇一摇方法
 function Shake(fn, sensitive, timeGap) {
   var lastTime = new Date();
   var lastX = null, lastY = null, lastZ = null;
-  var sensitive = sensitive || 80;
-  var timeGap = timeGap || 200;
+  var sensitive = sensitive || 80;  // 所需力度，xyz偏移值
+  var timeGap = timeGap || 200;     // 两次之间时间间隔
   var isActive = true;
   wx.onAccelerometerChange(function (res) {
     if (!isActive) return;
-    // res = res.accelerationIncludingGravity;
+    res = res.accelerationIncludingGravity;
     var currentTime;
     var timeDifference;
     var deltaX = 0, deltaY = 0, deltaZ = 0;
@@ -567,9 +568,11 @@ function Shake(fn, sensitive, timeGap) {
   return {
     stop: function () {
       isActive = false;
+      wx.stopAccelerometer();
     }
   }
 }
+
 
 // 区间内持续时间的变化
 function smooth(fn, duration, option, finish) {
