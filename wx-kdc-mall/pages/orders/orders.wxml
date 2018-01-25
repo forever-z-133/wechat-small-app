@@ -1,0 +1,8 @@
+<!--pages/orders/orders.wxml-->
+<tabs list-data='{{tabs}}' static-head='{{true}}' date-type='array' bindtabchange='tabchange'>
+  <block wx:for='{{tabs}}' wx:key='index'>
+    <view class='child-wrap' slot='{{index}}'>
+      <list list-data='{{list[index]}}' list-style='list-text-cover product-list'></list>
+    </view>
+  </block> 
+</tabs>

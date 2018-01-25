@@ -1,5 +1,8 @@
 // component/datetime/index.js
 Component({
+  options: {
+    multipleSlots: true,
+  },
   properties: {
 
   },
@@ -16,6 +19,7 @@ Component({
       today: date2str(_now, 'yyyy-mm-dd'),
       date: dateArr,
     });
+    this.triggerEvent('dateinit', {date: dateArr});
   },
   methods: {
 
@@ -32,15 +36,17 @@ function createTheDateArr(date) {
   var _last_sunday = sunday_last_week(_next_month);
   _last_sunday = day_offset(_last_sunday, 7);
   var days = two_date_minus_for_day(_fisrt_sunday, _last_sunday);
+  var thisMonth = month(_fisrt);
   for (var i = 0; i < days; i++) {
     var _day = day_offset(_fisrt_sunday, i);
     result.push({
       year: year(_day),
       month: month(_day),
       day: day(_day),
+      out: month(_day) != thisMonth,
       str: date2str(_day, 'yyyy-mm-dd'),
       str2: date2str(_day, 'yyyy-mm'),
-    })
+    });
   }
   return result;
 }

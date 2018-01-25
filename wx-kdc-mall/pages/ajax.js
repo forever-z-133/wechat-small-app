@@ -1,106 +1,49 @@
-const baseUrl = 'https://sum.kdcer.com/api/OpenShop/'
+
+import { extend } from '../utils/util.js';
+const app = getApp();
+// const baseUrl = app.data.baseUrl;
+const baseUrl = 'https://sum.kdcer.com/api/OpenShop/';
+
+function _AJAX(name, url, data, success) {
+  wx.request({
+    url: baseUrl + url,
+    data: data,
+    success: function (r) {
+      if (app.systemError(r)) return;
+      console.log(name, r.data);
+      success && success(r);
+    },
+    fail: function(err) {
+      wx.showModal({
+        title: name + '接口错误',
+        content: JSON.stringify(err),
+      });
+    }
+  });
+}
 
 module.exports = {
   //==============  请求 - 入口
   entry: function (code, res, callback) {
-    wx.request({
-      url: baseUrl + 'CodeToSeckill',
-      data: {
-        code: code,
-        iv: res.iv,
-        encryptedDataStr: res.encryptedData,
-        userJson: JSON.stringify(res.userInfo),
-      },
-      success: function (r) {
-        console.log('入口', r.data);
-        callback && callback(r);
-      }
-    })
-  },
-  //==============  请求 - 预约
-  notice: function (sid, uid, formId, callback) {
-    wx.request({
-      url: baseUrl + 'SubscribeSeckill',
-      data: {
-        UnionId: uid,
-        ScreeningId: sid,
-        FormId: formId,
-      },
-      success: function (r) {
-        console.log('预约', r.data);
-        callback && callback(r.data);
-      }
-    })
+    _AJAX('入口', 'CodeToSeckill', {
+      code: code,
+      iv: res.iv,
+      encryptedDataStr: res.encryptedData,
+      userJson: JSON.stringify(res.userInfo),
+    }, callback);
   },
   //==============  请求 - 存 formId
   save: function (uid, formId, callback) {
-    wx.request({
-      url: baseUrl + 'FormSeckill',
-      data: {
-        UnionId: uid,
-        FormId: formId,
-      },
-      success: function (r) {
-        console.log('存 formId', r.data);
-        callback && callback(r);
-      }
-    })
+    _AJAX('存 formId', 'FormSeckill', {
+      UnionId: uid,
+      FormId: formId,
+    }, callback);
   },
-  //==============  请求 - 抽奖
-  prize: function (sid, uid, formId, callback) {
-    wx.request({
-      url: baseUrl + 'MerryChristmasLotteryBehavior',
-      data: {
-        UnionId: uid,
-        ScreeningId: sid,
-        FormId: formId,
-      },
-      success: function (r) {
-        console.log('抽奖', r.data);
-        // console.log(callback)
-        callback && callback(r.data);
-      }
-    })
-  },
-  //==============  请求 - 添加到卡包
-  card: function (uid, callback) {
-    wx.request({
-      url: baseUrl + 'AddCardSeckill',
-      data: {
-        UnionId: uid,
-      },
-      success: function (r) {
-        console.log('接口-加入卡包', r.data);
-
-        wx.hideLoading()
-        callback && callback(r.data);
-        if (!r.data) return;
-        if (r.data.State == false) {
-          wx.showModal({
-            content: '您已添加过该卡券',
-            showCancel: false,
-          })
-          return;
-        } else if (r.data.State == true) {
-          console.log('卡券ID', r.data.cardId)
-          // setTimeout(() => {
-            wx.addCard({
-              cardList: [{
-                cardId: r.data.cardId,
-                // cardId: "pn96buFseASpd5n1CJAz2UPcw_74",
-                cardExt: r.data.cardExt,
-              }],
-              complete: res => {
-                console.log('微信-加入卡包', res)
-              }
-            })
-          // }, 400)
-        } else {
-          wx.showToast({
-            title: '系统错误',
-          })
-        }
-      }
-    })
+  //==============  请求 - 拿取页面
+  page: function (name, callback) {
+    return setTimeout(callback, 1000)
+    _AJAX('拿取页面', 'AddCardSeckill', {
+      UnionId: uid,
+    }, callback);
   }
 }

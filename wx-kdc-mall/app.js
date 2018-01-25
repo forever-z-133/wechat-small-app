@@ -1,7 +1,9 @@
 //app.js
 App({
   data: {
-    userInfo: null
+    userInfo: null,
+    userId: null,
+    baseUrl: "https://ApiMall.kdcer.com/",
   },
   onLaunch: function () {
   },
@@ -14,14 +16,14 @@ App({
       }
     })
   },
+  // 请求用户授权获得信息
   getInfo: function (callbcak) {
-    wx.getUserInfo({  // 进行授权
+    wx.getUserInfo({
       lang: 'zh_CN',
       withCredentials: true,
       complete: res => {
-        this.ifGetUser(can => { // 是否授权
+        this.ifGetUser(can => { // 判断是否已授权
           console.log('用户信息', res.userInfo)
-          // 可以将 res 发送给后台解码出 unionId
           this.data.userInfo = res.userInfo
           callbcak && callbcak(res)
         })
@@ -35,11 +37,14 @@ App({
       wx.getSystemInfo({
         success: res => {
           console.log('设备信息', res)
+          this.data.winW = res.windowWidth;
+          this.data.winH = res.windowHeight;
           callback && callback(res)
         }
       })
     }
   },
+  // 检测用户是否拒绝了授权
   ifGetUser: function (callback) {
     wx.getSetting ? wx.getSetting({
       success: settings => {
@@ -68,4 +73,19 @@ App({
       showCancel: false
     });
   },
+  systemError: function(r) {
+    if (typeof r == 'string') {
+      wx.showModal({
+        content: '系统出错了',
+        showCancel: '好吧',
+      });
+      return true;
+    } else return false;
+  },
+  share: function() {
+    return {
+      title: '坤鼎家的电商小程序',
+      path: '/pages/index/index',
+    }
+  }
 })

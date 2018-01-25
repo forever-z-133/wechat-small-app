@@ -2,5 +2,6 @@
   "usingComponents": {
     "list": "/component/list/list",
     "tabs": "/component/tabs/tabs"
-  }
+  },
+  "enablePullDownRefresh": true
 }

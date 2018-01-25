@@ -1,3 +1,15 @@
 <!--pages/page/page.wxml-->
-<text>pages/page/page.wxml</text>
-<datetime></datetime>
+<view class='section'>
+  <list list-data='{{list}}' list-style='list-text-cover type-list'></list>
+</view>
+
+<view class='section datetime'>
+  <datetime binddateinit='dateInit' class>
+    <block wx:for='{{date}}' wx:key='index'>
+      <view slot='{{index}}'>{{item.day}}</view> 
+    </block>
+  </datetime>
+  <view class='datetime-tips'>
+    <text><text class="dot orange"></text>免费体验课程</text>
+  </view>
+</view>

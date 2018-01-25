@@ -2,9 +2,7 @@
 
 <view class='datetime'>
   <view class='head'>
-    <button class='month-prev'>&lt;</button>
     <view class='head-month'>{{head}}</view>
-    <button class='month-next'>&lt;</button>
   </view>
   <view class='body'>
     <view class='top'>
@@ -14,7 +12,9 @@
     </view>
     <view class='list'>
       <block wx:for='{{date}}' wx:key='index'>
-        <view class='item day {{today==item.str ? "today" : ""}}'>{{item.day}}</view>
+        <view class='item day {{item.out?"out":""}} {{item.str==today?"today":""}}'>
+          <slot name='{{index}}'></slot>
+        </view>
       </block>
     </view>
   </view>

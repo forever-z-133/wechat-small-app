@@ -1,66 +1,35 @@
 // pages/page/page.js
+const app = getApp()
+import post from '../ajax.js';
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
+  onShareAppMessage: app.share,
   data: {
-  
+    date: [],
+    list: [],
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
+  onLoad: function() {
+    this.load_list(false, function(r){
+      console.log(r)
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
+  dateInit: function(e) {
+    var date = e.detail.date;
+    this.setData({ date: date });
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  update_list: function(r, callback) {
+    r = new Array(6).fill();
+    r = r.map((p, i) => {
+      return { name: 'xx' + i }
+    });
+    r = this.data.list.concat(r);
+    this.setData({ list: r });
+    callback && callback(r)
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  load_list: function (reload = false, callback) {
+    if (reload) this.data.list = [];
+    post.page('xxx', r => {
+      this.update_list(r, callback);
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })

@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "product-list": "/component/datetime/datetime"
+    "list": "/component/list/list",
+    "datetime": "/component/datetime/datetime"
   }
 }

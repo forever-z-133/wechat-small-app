@@ -11,21 +11,22 @@ Page({
     banner: [1,2],
     tabs: [
       {
-        link: '/pages/activity/index',
+        link: '/pages/page/page',
         img: '',
         name: 'xxxx1',
       },
       {
-        link: '/pages/activity/index',
+        link: '/pages/page/page',
         img: '',
         name: 'xxxx2',
       },
       {
-        link: '/pages/activity/index',
+        link: '/pages/page/page',
         img: '',
         name: 'xxxx3',
       }
-    ]
+    ],
+    list: [],
   },
   onLoad: function () {
     wx.setNavigationBarTitle && wx.setNavigationBarTitle({
@@ -37,6 +38,16 @@ Page({
         winH: res.windowHeight,
       })
     });
+    var raw = this.data.tabs;
+    var list = this.data.list;
+    var xx = ['xxxx', 'yyyy', 'zzzz'];
+    for (let k in xx) {
+      list.push(raw.slice(0).map((p, i) => { p.name = xx[k] + i; return p }))
+    }
+    this.setData({ list: list })
+  },
+  tabchange: function(e) {
+    console.log(e.detail)
   },
   onShow: function () {
     this.main(null, false);

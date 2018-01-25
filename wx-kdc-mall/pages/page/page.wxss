@@ -1,1 +1,26 @@
 /* pages/page/page.wxss */
+.datetime {
+  padding: 20rpx 25rpx;
+  color: #ccc;
+}
+.datetime-tips {
+  color: #333;
+  margin: 0 -25rpx;
+  padding: 0 40rpx;
+  line-height: 80rpx;
+  background: #f3f3f3;
+  font-size: 26rpx;
+}
+.dot {
+  position: relative;
+  top: -.2em;
+  line-height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  border: .45em solid;
+  border-radius: 100%;
+  margin: 0 .4em;
+}
+.orange {
+  color: orange;
+}

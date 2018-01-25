@@ -1,3 +1,73 @@
-/* component/product-list/product-list.wxss */
+/* list 列表组件 */
 
-@import '/common/list.wxss';
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-item {
+  position: relative;
+  flex-shrink: 0;
+}
+.list-image {
+  position: relative;
+  width: 100%;
+}
+.list-image:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.list-image.normal::before {
+  padding-top: 56.25%;
+}
+.list-image.slide::before {
+  padding-top: 75%;
+}
+.list-image > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* 列表样式，tabs ////////////////// list-tabs */
+.list-tabs {
+  padding: 20rpx 0;
+}
+.list-tabs .list-item {
+  flex-grow: 1;
+}
+.list-tabs .list-image {
+  width: 80%;
+  margin: 0 auto 10rpx;
+}
+.list-tabs .desc {
+  display: none;
+}
+
+/* 列表样式，字在图上 ////////////// list-text-cover */
+.list-text-cover .list-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  width: 100%;
+}
+/* 产品列表 ////////////// list-text-cover product-list */
+.product-list .list-image:before {
+  padding-top: 56.25%;
+}
+.product-list .list-item {
+  width: 100%;
+  margin-top: 20rpx;
+}
+.product-list .list-item:first-of-type {
+  margin-top: 0;
+}
+/* 三栏紧挨 ////////////// list-text-cover type-list */
+.type-list {
+  margin: -5rpx 15rpx;
+}
+.type-list .list-item {
+  width: calc(100% / 3 - 10rpx);
+  margin: 5rpx 5rpx;
+}

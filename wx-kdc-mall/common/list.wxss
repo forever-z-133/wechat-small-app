@@ -5,6 +5,7 @@
 }
 .list-item {
   position: relative;
+  flex-shrink: 0;
 }
 .list-image {
   position: relative;
@@ -28,12 +29,12 @@
 }
 
 /* 列表样式，字在图上 */
-.list-text-cover {
-  margin-top: -20rpx;
-}
 .list-text-cover .list-item {
   width: 100%;
   margin-top: 20rpx;
+}
+.list-text-cover .list-item:first-of-type {
+  margin-top: 0;
 }
 .list-text-cover .list-content {
   position: absolute;

@@ -3,7 +3,7 @@
 <view class="list {{listStyle}}">
   <block wx:for='{{listData}}' wx:key='index'>
     <navigator url='{{item.link}}' class='list-item'>
-      <view class='list-image normal'>
+      <view class='list-image'>
         <image src='{{item.img}}'></image>
       </view>
       <view class='list-content'>

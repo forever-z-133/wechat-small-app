@@ -1,13 +1,19 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/orders/orders",
     "pages/page/page",
-    "pages/detail/detail"
+    "pages/index/index",
+    "pages/detail/detail",
+    "pages/address/address",
+    "pages/cart/cart",
+    "pages/confirm/confirm",
+    "pages/address-add/address-add"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "电商小程序",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "navigationStyle ": "custom"
   }
 }
