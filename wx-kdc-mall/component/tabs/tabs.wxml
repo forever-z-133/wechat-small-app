@@ -3,7 +3,7 @@
 <view class='tabs-box'>
   <!-- tab 选项卡部分 -->
   <slot name='tabs-outer-before'></slot>
-  <view class='flex-tabs {{staticHead?"fixed":""}}'>
+  <view class='flex-tabs {{staticHead?"fixed":""}} {{tabStyle}}'>
     <slot name='tabs-inner-before'></slot>
     <block wx:for='{{listData}}' wx:key='index'>
       <view class='tab item main-tab-name {{nowIndex==index?"active":""}}' data-index='{{index}}' catchtap='tabChange'>

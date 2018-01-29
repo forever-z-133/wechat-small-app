@@ -1,0 +1,18 @@
+<!--pages/notice/notice.wxml-->
+<tabs list-data='{{tabs}}' static-head='{{true}}' tab-style='style2' date-type='array' bindtabchange='tabchange'>
+  <block wx:for='{{tabs}}' wx:key='index'>
+    <view class='child-wrap' slot='{{index}}'>
+      <scroll-view 
+        scroll-y 
+        bindscrolltolower='onReachBottom' >
+        <list list-data='{{list[index].data}}' list-style='list-text-cover product-list' list-state='{{list[index].state}}'></list>
+      </scroll-view>
+    </view>
+        <!-- upper-threshold='1' 
+        style='height:{{listHeight}}px' 
+        bindscrolltoupper='onPullDownRefresh'  -->
+    <!-- <view class='child-wrap' slot='{{index}}'>
+      <list list-data='{{list[index]}}' list-style='list-text-cover product-list'></list>
+    </view> -->
+  </block> 
+</tabs>

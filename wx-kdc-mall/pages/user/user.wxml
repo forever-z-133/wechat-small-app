@@ -1,2 +1,27 @@
 <!--pages/user/user.wxml-->
-<text>pages/user/user.wxml</text>
+
+<view class='section user'>
+  <view class='user-head imgRadio round'><image src='{{user.avatarUrl}}'></image></view>
+  <view class='user-name'>{{user.nickName}}</view>
+</view>
+
+<view class='section'>
+  <view class='list'>
+    <navigator class='item' url='../orders/orders'>
+      <view class='icon icon-order'></view>
+      <view>我的订单</view>
+    </navigator>
+    <navigator class='item' url='../address/address'>
+      <view class='icon icon-address'></view>
+      <view>地址管理</view>
+    </navigator>
+    <!-- <navigator class='item' url='../cart/cart' open-type='switchTab'>
+      <view class='icon icon-cart'></view>
+      <view>购物车</view>
+    </navigator> -->
+    <navigator class='item' url='../notice/notice'>
+      <view class='icon icon-notice'></view>
+      <view>系统通知</view>
+    </navigator>
+  </view>
+</view>

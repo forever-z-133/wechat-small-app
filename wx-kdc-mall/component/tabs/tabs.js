@@ -8,6 +8,10 @@ Component({
       type: Array,
       value: [],
     },
+    tabStyle: {
+      type: String,
+      value: '',
+    },
     dateType: {
       type: String,
       value: 'array',  // 或者 json
@@ -28,6 +32,14 @@ Component({
     var i = this.data.nowIndex || 0;
     this.triggerEvent('tabinit', { index: i });
   },
+  // ready: function () {
+  //   this.getHeight(res => {})
+  // },
+  // getHeight: function (callback) {
+  //   wx.createSelectorQuery().select('.flex-tabs').boundingClientRect(rect => {
+  //     console.log(rect)
+  //   }).exec()
+  // },
   methods: {
     tabChange: function(e){
       var i = e.currentTarget.dataset.index || 0;

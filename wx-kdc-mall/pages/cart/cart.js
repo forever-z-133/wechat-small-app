@@ -1,66 +1,89 @@
-// pages/cart/cart.js
+const app = getApp()
+import post from '../ajax.js';
+let listHeight = 0;
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    list: {
+      data: [],
+      state: 'load',
+    },
+    chosen: null,
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
-  
+    this.reload_list();
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
+  // onReachBottom: function () {
+  //   this.load_list();
+  // },
+  onLoad: function () {
+    wx.hideTabBar();
+    
+    this.load_list(false, () => {
+      this.data.list.state = 'empty';
+      this.setData({ list: this.data.list });
+    });
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  choose: function(e) {
+    var i = e.currentTarget.dataset.index;
+    var list = this._now_list().data;
+    list[i].checked = !list[i].checked;
+    var list2 = list.filter(x => x.checked);
+    var price = list2.reduce((re, x) => re + x.price, 0);
+    var count = list2.length;
+    this.setData({ priceAll: price, chosen: count, list: this.data.list });
+  },
+  chooseAll: function () {
+    var list = this._now_list().data;
+    if (list.length && list.length > this.data.chosen) {
+      var price = list.reduce((re, x) => re + x.price, 0);
+      var count = list.length;
+      list = list.map(x => { x.checked = true; return x });
+      this.setData({ priceAll: price, chosen: count, list: this.data.list });
+    } else {
+      list = list.map(x => { x.checked = false; return x });
+      this.setData({ priceAll: 0, chosen: 0, list: this.data.list });
+    }
+  },
+  // 更新当前列表数据
+  update_list: function (r, callback) {
+    let nowList = this._now_list().data;
+    nowList = nowList.push.apply(nowList, r);
+    if (r.length < 1) nowList.state = 'empty';
+    this.setData({ list: this.data.list });
+    callback && callback(r)
+  },
+  // 加载更多当前列表
+  load_list: function (loading = true, callback) {
+    loading && wx.showLoading();
+    post.page('xxx', r => {
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
+      wx.hideNavigationBarLoading();
+      var r = this._default_data();
+      this.update_list(r, callback);
+    });
+  },
+  // 重置当前列表
+  reload_list: function (callback) {
+    let list = this._now_list();
+    list.data = [];
+    list.state = 'load';
+    this.load_list(false, callback);
+  },
+  _now_list: function () {
+    return this.data.list;
+  },
+  _default_data: function () {
+    return new Array(6).fill().map((p, i) => {
+      return {
+        name: '索引'.repeat(Math.random() * 10 >> 0),
+        desc: '$1.00',
+        price: Math.random() * 10 >> 0,
+        theight: 2,
+        dheight: 1,
+        checked: false,
+      }
+    });
   }
 })

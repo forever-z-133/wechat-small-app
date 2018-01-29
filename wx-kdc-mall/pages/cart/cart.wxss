@@ -1,1 +1,35 @@
 /* pages/cart/cart.wxss */
+
+.cart-head {
+  line-height: 100rpx;
+  text-align: center;
+}
+.cart-body {
+  margin: 100rpx 0;
+}
+.choose-item {
+  margin-top: 40rpx;
+  margin-right: 10rpx;
+}
+.cart-foot {
+  line-height: 100rpx;
+  display: flex;
+  align-items: center;
+  padding-left: 20rpx;
+}
+.price-all {
+  flex-grow: 1;
+  text-align: right;
+  padding-right: 20rpx;
+}
+.btn-comfirm {
+  padding: 0 20rpx;
+  min-width: 5em;
+  text-align: center;
+  color: #fff;
+  background: #ff7101;
+}
+.btn-comfirm::after {
+  content: ' (' attr(data-num) ')';
+
+}

@@ -1,11 +1,13 @@
 {
   "pages": [
+    "pages/cart/cart",
+    "pages/notice/notice",
+    "pages/user/user",
+    "pages/index/index",
     "pages/orders/orders",
     "pages/page/page",
-    "pages/index/index",
     "pages/detail/detail",
     "pages/address/address",
-    "pages/cart/cart",
     "pages/confirm/confirm",
     "pages/address-add/address-add"
   ],
@@ -15,5 +17,17 @@
     "navigationBarTitleText": "电商小程序",
     "navigationBarTextStyle": "black",
     "navigationStyle ": "custom"
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "首页"
+    }, {
+      "pagePath": "pages/cart/cart",
+      "text": "购物车"
+    }, {
+      "pagePath": "pages/user/user",
+      "text": "我的"
+    }]
   }
 }

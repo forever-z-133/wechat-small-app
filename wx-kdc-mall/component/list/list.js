@@ -1,8 +1,12 @@
 // 商品列表 组件
 Component({
+  options: {
+    multipleSlots: true,
+  },
   properties: {
     listData: {
       type: Array,
+      value: [],
       // observer: function(newVal, oldVal) {
       //   var result = this.filter(newVal);
       //   this.setData({ list: result })
@@ -11,12 +15,16 @@ Component({
     listStyle: {
       type: String,
       value: 'list-text-cover',
+    },
+    listState: {
+      type: String,
+      value: 'load',
     }
   },
   data: {
   },
   attached: function () {
-    // console.log('xxxx', this.data)
+    // console.log(this.data.listData)
   },
   methods: {
     // filter: function(r) {

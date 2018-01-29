@@ -18,17 +18,21 @@ App({
   },
   // 请求用户授权获得信息
   getInfo: function (callbcak) {
-    wx.getUserInfo({
-      lang: 'zh_CN',
-      withCredentials: true,
-      complete: res => {
-        this.ifGetUser(can => { // 判断是否已授权
-          console.log('用户信息', res.userInfo)
-          this.data.userInfo = res.userInfo
-          callbcak && callbcak(res)
-        })
-      }
-    })
+    if (this.data.userInfo) {
+      callbcak && callbcak(this.data.userInfo)
+    } else {
+      wx.getUserInfo({
+        lang: 'zh_CN',
+        withCredentials: true,
+        complete: res => {
+          this.ifGetUser(can => { // 判断是否已授权
+            console.log('用户信息', res.userInfo)
+            this.data.userInfo = res.userInfo
+            callbcak && callbcak(this.data.userInfo)
+          })
+        }
+      })
+    }
   },
   getWindow: function (callback) {
     if (this.data.window) {

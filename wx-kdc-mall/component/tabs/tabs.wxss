@@ -29,3 +29,15 @@
 .fixed ~ view {
   margin-top: 100rpx;
 }
+
+.style2 {
+  justify-content: center;
+}
+.style2 .item {
+  width: 6em;
+  flex-grow: 0;
+  border-bottom:5rpx solid rgba(0,0,0,0);
+}
+.style2 .item.active {
+  border-bottom-color: inherit;
+}

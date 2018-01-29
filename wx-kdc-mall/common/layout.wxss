@@ -17,10 +17,32 @@
   top: 0;
   left: 0;
 }
+.round, .round > image {
+  border-radius: 100%;
+}
 .flex-tabs {
   display: flex;
 }
 .flex-tabs > .tab {
   flex-grow: 1;
   flex-shrink: 0;
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: 0 2rpx 5rpx rgba(0,0,0,.1);
+}
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: 0 -2rpx 5rpx rgba(0,0,0,.1);
 }

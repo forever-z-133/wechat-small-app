@@ -1,1 +1,29 @@
 /* pages/user/user.wxss */
+.user {
+  padding: 50rpx 50rpx;
+  display: flex;
+  align-items: center;
+  background: #f7f7f7;
+  margin-bottom: 75rpx;
+}
+.user-head {
+  width: 120rpx;
+  margin-right: 50rpx;
+}
+
+.item {
+  border-top: 2rpx solid #e8e8e8;
+  line-height: 95rpx;
+  padding: 0 25rpx;
+  display: flex;
+  align-items: center;
+}
+.item:last-of-type {
+  border-bottom: 2rpx solid #e8e8e8;
+}
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 25rpx;
+  background: #ccc;
+}

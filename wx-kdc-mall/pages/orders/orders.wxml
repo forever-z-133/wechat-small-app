@@ -2,7 +2,19 @@
 <tabs list-data='{{tabs}}' static-head='{{true}}' date-type='array' bindtabchange='tabchange'>
   <block wx:for='{{tabs}}' wx:key='index'>
     <view class='child-wrap' slot='{{index}}'>
-      <list list-data='{{list[index]}}' list-style='list-text-cover product-list'></list>
+      <scroll-view 
+        style='height:{{listHeight}}px' 
+        scroll-y 
+        enable-back-to-top 
+        upper-threshold='1' 
+        bindscrolltoupper='onPullDownRefresh' 
+        bindscrolltolower='onReachBottom' 
+        bindscroll='scroll'>
+        <list list-data='{{list[index]}}' list-style='list-text-cover product-list'></list>
+      </scroll-view>
     </view>
+    <!-- <view class='child-wrap' slot='{{index}}'>
+      <list list-data='{{list[index]}}' list-style='list-text-cover product-list'></list>
+    </view> -->
   </block> 
 </tabs>

@@ -1,23 +1,12 @@
 // pages/user/user.js
-Component({
-  /**
-   * 组件的属性列表
-   */
-  properties: {
+const app = getApp();
 
-  },
-
-  /**
-   * 组件的初始数据
-   */
+Page({
   data: {
-
   },
-
-  /**
-   * 组件的方法列表
-   */
-  methods: {
-
-  }
+  onLoad: function() {
+    app.getInfo(res => {
+      this.setData({ user: res })
+    });
+  },
 })
