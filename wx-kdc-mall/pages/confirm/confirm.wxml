@@ -1,2 +1,48 @@
 <!--pages/confirm/confirm.wxml-->
-<text>pages/confirm/confirm.wxml</text>
+
+<view class='section'>
+  <view class='cell black'>
+    <view>订单状态：{{data}}</view>
+    <view>订单号：{{data}}</view>
+  </view>
+  <view class='cell'>
+    <view class='line'>下单时间：{{data}}</view>
+  </view>
+  <view class='cell'>
+    <view class='line'>下单时间：<view>{{"快递"}}</view></view>
+    <view class='line'>
+      <view class='address-box' wx:if="{{data}}">
+        <text class='name'>{{data}}</text>
+        <text class='tel'>{{data}}</text>
+        <text class='address'>{{data}}</text>
+      </view>
+      <navigator class='add-address' url='../address/address?add=true' wx:else>请选择送货地址</navigator>
+    </view>
+  </view>
+  <view class='cell'>
+    <list list-data='{{list.data}}' list-style='list-order-confirm' list-state='none'>
+      <block wx:for='{{list.data}}' wx:key='index'>
+        <view class='other' slot='after-content-{{index}}'>
+          <view>{{item.price}}0.000</view>
+          <view>{{item.num}}x2</view>
+        </view>
+        <view class='list-more' slot='after-item-{{index}}'>
+          <view class='line'>商品金额：<view>{{"快递"}}</view></view>
+          <view class='line'>优惠折扣：<view>{{"快递"}}</view></view>
+        </view>
+      </block>
+    </list>
+  </view>
+  <view class='cell'>
+    <view class='line'>运费：<view>{{data}}00</view></view>
+    <view class='line'>订单总价：<view>{{data}}00</view></view>
+  </view>
+  <view class='cell'>
+    <view class='line'>需付款：<view class='total'>{{data}}00</view></view>
+  </view>
+</view>
+
+<view class='bottom-bar foot'>
+  <button class='btn btn-cancel'>取消订单</button>
+  <button class='btn btn-confirm'>立即支付</button>
+</view>

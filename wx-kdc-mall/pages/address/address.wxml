@@ -1,2 +1,16 @@
 <!--pages/address/address.wxml-->
-<text>pages/address/address.wxml</text>
+
+<view class='section address'>
+  <list list-data='{{list.data}}' list-style='list-address' list-state='{{list.state}}'>
+    <block wx:for='{{list.data}}' wx:key='index'>
+      <view slot='before-title-{{index}}' class='address-type'><view>家</view></view>
+      <view slot='before-content-{{index}}' class='btn-remove-address' catchtap='remove'>删除</view>
+    </block>
+  </list>
+</view>
+
+<view class='section bottom-bar'>
+  <navigator class='address-foot' url='../address-add/address-add'>
+    <view class="icon icon-add-address"></view><text>新增地址</text>
+  </navigator>
+</view>

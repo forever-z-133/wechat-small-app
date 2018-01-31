@@ -56,7 +56,7 @@ Page({
   // 加载更多当前列表
   load_list: function (loading = true, callback) {
     loading && wx.showLoading();
-    post.page('xxx', r => {
+    post.page('首页', r => {
       wx.hideLoading();
       wx.stopPullDownRefresh();
       wx.hideNavigationBarLoading();

@@ -1,1 +1,72 @@
 /* pages/confirm/confirm.wxss */
+page {
+  background: #f8f8f8;
+}
+.section {
+  margin-bottom: 120rpx;
+}
+
+.foot {
+  padding: 20rpx 25rpx;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.foot .btn {
+  line-height: 70rpx;
+  padding: 0 30rpx;
+  font-size: .8em;
+  margin: 0;
+  margin-left: 30rpx;
+  border: 2rpx solid #c7c7c7;
+}
+.foot .btn:after {
+  border: none;
+}
+.btn-confirm {
+  color: #ff5f00;
+  border-color: #ff5f00;
+}
+.btn-cancel {
+  color: #333;
+}
+
+.cell {
+  margin: 20rpx 0;
+}
+.line {
+  display: flex;
+  background: #fff;
+  padding: 25rpx 25rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+.line > view {
+  flex-grow: 1;
+  text-align: right;
+}
+.address-box {
+  text-align: left;
+}
+.add-address {
+  display: block;
+  width: 100%;
+  padding: 25rpx 25rpx;
+  margin: -25rpx -25rpx;
+}
+
+.black {
+  color: #fff;
+  padding: 25rpx 25rpx;
+  background: #535760;
+}
+.other {
+  margin-left: 20rpx;
+  text-align: right;
+  font-size: .9em;
+}
+.list-more {
+  width: 100%;
+}
+.total {
+  color: #ff6900
+}

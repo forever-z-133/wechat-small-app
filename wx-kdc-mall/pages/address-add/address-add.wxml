@@ -1,2 +1,48 @@
 <!--pages/address-add/address-add.wxml-->
-<text>pages/address-add/address-add.wxml</text>
+
+<view class='cell'>
+  <view class='cell-hd'>
+    <label class='label'>联系人</label>
+  </view>
+  <view class='cell-bd'>
+    <input placeholder='姓名'></input>
+    <radio-group class="radio-group" bindchange="maleChange">
+      <label class='radio {{male==0?"active":""}}'><radio value="0" checked='{{male==0}}'/><text>先生</text></label>
+      <label class='radio {{male==1?"active":""}}'><radio value="1" checked='{{male==1}}'/><text>女士</text></label>
+    </radio-group>
+  </view>
+</view>
+<view class='cell'>
+  <view class='cell-hd'>
+    <label class='label'>电话</label>
+  </view>
+  <view class='cell-bd'>
+    <input placeholder='手机号码'></input>
+  </view>
+</view>
+<view class='cell'>
+  <view class='cell-hd'>
+    <label class='label'>地址</label>
+  </view>
+  <view class='cell-bd'>
+    <picker mode='region' bindchange='province' value='{{region}}'>
+      <view class="picker">{{region.length>0?region[0]+region[1]+region[2]:"选择收货地址"}}</view>
+    </picker>
+  </view>
+</view>
+<view class='cell'>
+  <view class='cell-hd'>
+    <label class='label'>补充说明</label>
+  </view>
+  <view class='cell-bd'>
+    <input placeholder='详细地址（例如小区门牌号等）'></input>
+    <radio-group class="radio-group" bindchange="typeChange">
+      <label class='radio {{type==0?"active":""}}'><radio value="0" checked='{{type==0}}'/><text>家</text></label>
+      <label class='radio {{type==1?"active":""}}'><radio value="1" checked='{{type==1}}'/><text>学校</text></label>
+      <label class='radio {{type==2?"active":""}}'><radio value="2" checked='{{type==2}}'/><text>公司</text></label>
+    </radio-group>
+  </view>
+</view>
+
+<button bindtap='comfirm' class='btn btn-confirm'>确认</button>
+<navigator open-type='navigateBack' class='btn btn-remove'><button>取消</button></navigator>

@@ -1,1 +1,57 @@
 /* pages/address-add/address-add.wxss */
+
+page {
+  background: #eeeeee;
+}
+.btn {
+  margin: 25rpx;
+}
+.btn-confirm {
+  color: #fff;
+  background: #ff7100;
+}
+
+.cell {
+  padding: 10px 15px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  background: #fff;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+.cell-bd {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.label {
+  display: block;
+  width: 105px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+input, picker {
+  width: 100%;
+  display: block;
+}
+.radio-group {
+  padding: 15rpx 0 5rpx;
+  margin-top: 10rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+.radio {
+  font-size: .8em;
+  line-height: 1em;
+  margin-right: 10rpx;
+  padding: 1rpx 20rpx;
+  border: 2rpx solid #c7c7c7;
+  border-radius: 6rpx;
+  color: #8b8b8b;
+}
+.radio.active {
+  color: #ff5f00;
+  border-color: #ff5f00;
+}
+.radio > radio {
+  position: absolute;
+  opacity: 0;
+}

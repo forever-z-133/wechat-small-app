@@ -1,18 +1,45 @@
 <!-- 首页 -->
-<view class='section banner'>
+<view class='section banner' wx:if='{{banner}}'>
   <swiper class='banner-swiper'>
     <block wx:for='{{banner}}' wx:key='index'>
       <swiper-item>
-        <navigator class='imgRadio slide'>
-          <image></image>
+        <navigator wx:if='{{item.link!="#"}}' url='{{item.link}}' class='imgRadio slide'>
+          <image src='{{item.img}}'></image>
         </navigator>
+        <view wx:else class='imgRadio slide'>
+          <image src='{{item.img}}'></image>
+        </view>
       </swiper-item>
     </block>
   </swiper>
 </view>
-<view class='section main-tab'>
+<!-- <view class='section main-tab'>
   <list list-data='{{tabs}}' list-style='list-tabs'></list>
 </view>
 <view class='section product-list'>
   <list list-data='{{list[0]}}' list-style='list-text-cover product-list'></list> 
-</view>
+</view> -->
+
+<block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
+  <block wx:if='{{section.PageData.PageType=="IndexTab"}}'>
+    <list list-data='{{section.PageData.UpperList}}' list-style='list-tabs' list-state='none'></list>
+  </block>
+  <block wx:if='{{section.PageData.PageType=="List"}}'>
+    <view class='section-name'>{{section.PageData.Name}}</view>
+    <list list-data='{{section.PageData.UpperList}}' list-style='list-text-cover product-list' list-state='none'></list>
+    <list list-data='{{section.Commodity}}' list-style='product-list' list-state='none'>
+      <block wx:for='{{section.Commodity}}' wx:key='index'>
+        <view class='price' slot='after-title-{{index}}'>￥{{item.price}}</view>
+      </block>
+    </list>
+  </block>
+</block>
+
+<!-- <block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
+  <block wx:if='{{section.PageData.PageType=="IndexTab"}}'>
+    <view class='section-name'>{{section.PageData.name}}</view>
+    <block wx:for='{{section.Commodity}}' wx:key='index' wx:for-item='part' >
+      <list list-data='{{part}}' list-style='{{part.partType}}'></list>
+    </block>
+  </block>
+</block> -->

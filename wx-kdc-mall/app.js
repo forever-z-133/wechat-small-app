@@ -3,9 +3,18 @@ App({
   data: {
     userInfo: null,
     userId: null,
-    baseUrl: "https://ApiMall.kdcer.com/",
+    baseUrl: "https://ApiMall.kdcer.com/api/",
   },
   onLaunch: function () {
+    if (this.data.userId) {
+
+    } else {
+      this.login(code => {
+        this.getInfo(res => {
+          // post.entry(code, res, this.main_entry)
+        })
+      })
+    }
   },
   login: function (callback) {
     wx.login({

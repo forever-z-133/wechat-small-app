@@ -1,1 +1,44 @@
 /* pages/address/address.wxss */
+
+.address {
+  margin-bottom: 100rpx;
+}
+.address-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 100rpx;
+  text-align: center;
+}
+.icon-add-address {
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  font-size: .8em;
+  margin-right: 20rpx;
+  color: #ff5f00;
+  border-radius: 100%;
+  border: 2rpx solid; 
+}
+.icon-add-address:before {
+  content: "+";
+}
+.address-type {
+  display: inline-block;
+  font-size: .7em;
+  padding: 2rpx 15rpx;
+  line-height: 1em;
+  vertical-align: middle;
+  color: #ff5f00;
+  border: 2rpx solid;
+  border-radius: 6rpx;
+  margin-right: 10rpx;
+}
+.btn-remove-address {
+  flex-shrink: 0;
+  order: 2;
+  color: #f46e6e;
+  margin: -20rpx;
+  padding: 20rpx;
+  margin-left: 15rpx;
+}

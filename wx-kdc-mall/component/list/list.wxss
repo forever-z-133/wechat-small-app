@@ -54,6 +54,9 @@
 .list-tip.empty::before {
   content: '数据就这些了';
 }
+.list-tip.none {
+  display: none;
+}
 .text {
   word-wrap: normal;
   overflow: hidden;
@@ -76,6 +79,8 @@
 }
 .list-tabs .list-item {
   flex-grow: 1;
+  width: auto;
+  text-align: center;
 }
 .list-tabs .list-image {
   width: 80%;
@@ -99,10 +104,15 @@
 }
 .product-list .list-item {
   width: 100%;
+  padding: 0 25rpx;
   margin-top: 20rpx;
 }
-.product-list .list-item:first-of-type {
-  margin-top: 0;
+.product-list .list-title {
+  margin: 10rpx 0;
+}
+.product-list .list-desc {
+  color: #aaa;
+  font-size: .8em;
 }
 /* 三栏紧挨 ////////////// list-text-cover type-list */
 .type-list {
@@ -121,4 +131,40 @@
 .list-cart .list-image {
   width: 150rpx;
   margin-right: 20rpx;
+}
+/* 地址列表 ////////////// list-address */
+.list-address .list-image {
+  display: none;
+}
+.list-address .list-item {
+  display: flex;
+  padding: 30rpx 25rpx;
+  border-bottom: 2rpx solid #f3f3f3;
+}
+.list-address .list-desc {
+  color: #696969;
+  font-size: 28rpx;
+  margin-top: 10rpx;
+}
+/* 确认订单页商品列表 ////////////// list-order-confirm */
+ .list-order-confirm {
+  background: #fbfbfb;
+} 
+.list-order-confirm .list-desc {
+  display: none;
+}
+.list-order-confirm .list-image {
+  width: 130rpx;
+  margin-right: 25rpx;
+}
+.list-order-confirm .list-item {
+  display: flex;
+  padding: 10rpx 25rpx;
+  background: #f8f8f8;
+  margin: 20rpx 0 0;
+}
+.list-order-confirm .list-desc {
+  color: #696969;
+  font-size: 28rpx;
+  margin-top: 10rpx;
 }

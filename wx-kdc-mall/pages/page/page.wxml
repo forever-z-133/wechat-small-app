@@ -1,7 +1,33 @@
 <!--pages/page/page.wxml-->
-<view class='section'>
-  <list list-data='{{list}}' list-style='list-text-cover type-list'></list>
+<view class='section banner' wx:if='{{banner}}'>
+  <swiper class='banner-swiper'>
+    <block wx:for='{{banner}}' wx:key='index'>
+      <swiper-item>
+        <navigator wx:if='{{item.link!="#"}}' url='{{item.link}}' class='imgRadio slide'>
+          <image src='{{item.img}}'></image>
+        </navigator>
+        <view wx:else class='imgRadio slide'>
+          <image src='{{item.img}}'></image>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
 </view>
+
+<block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
+  <block wx:if='{{section.PageData.PageType=="IndexTab"}}'>
+    <list list-data='{{section.PageData.UpperList}}' list-style='list-tabs' list-state='none'></list>
+  </block>
+  <block wx:if='{{section.PageData.PageType=="List"}}'>
+    <view class='section-name'>{{section.PageData.Name}}</view>
+    <list list-data='{{section.PageData.UpperList}}' list-style='list-text-cover product-list' list-state='none'></list>
+    <list list-data='{{section.Commodity}}' list-style='product-list' list-state='none'>
+      <block wx:for='{{section.Commodity}}' wx:key='index'>
+        <view class='price' slot='after-title-{{index}}'>￥{{item.price}}</view>
+      </block>
+    </list>
+  </block>
+</block>
 
 <view class='section datetime'>
   <datetime binddateinit='dateInit' class>

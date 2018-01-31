@@ -1,15 +1,15 @@
 {
   "pages": [
+    "pages/page/page",
+    "pages/index/index",
+    "pages/confirm/confirm",
+    "pages/address-add/address-add",
+    "pages/address/address",
     "pages/cart/cart",
     "pages/notice/notice",
     "pages/user/user",
-    "pages/index/index",
     "pages/orders/orders",
-    "pages/page/page",
-    "pages/detail/detail",
-    "pages/address/address",
-    "pages/confirm/confirm",
-    "pages/address-add/address-add"
+    "pages/detail/detail"
   ],
   "window": {
     "backgroundTextStyle": "dark",

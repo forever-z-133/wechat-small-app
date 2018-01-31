@@ -11,8 +11,14 @@
         </view>
         <view class='list-content'>
           <slot name='prepend-content-{{index}}'></slot>
-          <view class='list-title {{theight==2?"text2":"text"}}'>{{item.name}}</view>
-          <view class='list-desc {{dheight==2?"text2":"text"}}'>{{item.desc}}</view>
+          <view class='list-title {{item.theight==2?"text2":"text"}}'>
+            <slot name='before-title-{{index}}'></slot>
+            <text>{{item.name}}</text>
+            <slot name='after-title-{{index}}'></slot>
+          </view>
+          <view class='list-desc {{item.dheight==2?"text2":"text"}}'>
+            <view>{{item.desc}}</view>
+          </view>
           <slot name='append-content-{{index}}'></slot>
           <slot></slot>
         </view>
@@ -27,8 +33,15 @@
         </view>
         <view class='list-content'>
           <slot name='prepend-content-{{index}}'></slot>
-          <view class='list-title {{theight==2?"text2":"text"}}'>{{item.name}}</view>
-          <view class='list-desc {{dheight==2?"text2":"text"}}'>{{item.desc}}</view>
+          <view class='list-title {{item.theight==2?"text2":"text"}}'>
+            <slot name='before-title-{{index}}'></slot>
+            <text>{{item.name}}</text>
+            <slot name='after-title-{{index}}'></slot>
+          </view>
+          <view class='list-desc {{item.dheight==2?"text2":"text"}}'>
+            <view>{{item.desc}}</view>
+            <slot name='after-content-{{index}}'></slot>
+          </view>
           <slot name='append-content-{{index}}'></slot>
           <slot></slot>
         </view>

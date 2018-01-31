@@ -1,66 +1,70 @@
 // pages/address/address.js
+const app = getApp()
+import post from '../ajax.js';
+let noListState = true;
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    list: {
+      data: [],
+      state: 'load',
+    },
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
-  
+    this.reload_list();
   },
+  onLoad: function () {
+    wx.setNavigationBarTitle && wx.setNavigationBarTitle({
+      title: '管理收货地址'
+    });
+    wx.hideTabBar();
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
+    this.load_list();
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  remove: function(e) {
+    console.log(e)
+  },
+  // 更新当前列表数据
+  update_list: function (r, callback) {
+    let nowList = this._now_list()
+    let nowListData = nowList.data;
+    nowListData = nowListData.push.apply(nowListData, r);
+    if (r.length < 1) nowList.state = 'empty';
+    if (noListState) nowList.state = 'none';
+    console.log(this.data.list, noListState)
+    this.setData({ list: this.data.list });
+    callback && callback(r)
+  },
+  // 加载更多当前列表
+  load_list: function (loading = true, callback) {
+    loading && wx.showLoading();
+    post.list(r => {
+      wx.hideLoading();
+      wx.stopPullDownRefresh();
+      wx.hideNavigationBarLoading();
+      var r = this._default_data();
+      this.update_list(r, callback);
+    });
+  },
+  // 重置当前列表
+  reload_list: function (callback) {
+    let list = this._now_list();
+    list.data = [];
+    list.state = 'load';
+    this.load_list(false, callback);
+  },
+  _now_list: function () {
+    return this.data.list;
+  },
+  _default_data: function () {
+    return new Array(6).fill().map((p, i) => {
+      return {
+        name: '索引'.repeat(Math.random() * 10 >> 0),
+        desc: 'XX 先生 1209381098203',
+        link: '../address-add/address-add?id=' + i,
+        theight: 2,
+        dheight: 1,
+      }
+    });
   }
 })

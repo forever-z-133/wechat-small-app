@@ -3,3 +3,7 @@
 @import '/common/reset.wxss';
 
 @import '/common/layout.wxss';
+
+.banner-swiper {
+  height: 422rpx;
+}

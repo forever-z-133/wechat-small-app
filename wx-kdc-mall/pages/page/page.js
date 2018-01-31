@@ -1,6 +1,7 @@
 // pages/page/page.js
 const app = getApp()
 import post from '../ajax.js';
+let imgUrl = 'https://ApiMall.kdcer.com/'
 
 Page({
   onShareAppMessage: app.share,
@@ -8,9 +9,35 @@ Page({
     date: [],
     list: [],
   },
-  onLoad: function() {
-    this.load_list(false, function(r){
-      console.log(r)
+  onLoad: function(option) {
+    var page = option.Title;
+
+    post.page(page, res => {
+      res.Carousel.map(item => {
+        item.img = imgUrl + item.Pic;
+        item.link = item.Router || '#';
+      })
+      res.PageData.map(section => {
+        section.PageData.UpperList.map(item => {
+          item.name = item.Name;
+          item.img = imgUrl + item.Pic;
+          item.link = item.Router;
+        })
+        section.Commodity.map(item => {
+          item.name = item.Name;
+          item.img = imgUrl + item.Pic;
+          item.desc = item.Des;
+          item.price = item.Price;
+          item.link = '../detail/detail?Id=' + item.CommodityId;
+        })
+      })
+
+      this.setData({
+        banner: res.Carousel,
+        pageData: res.PageData,
+      })
+
+      console.log(res.PageData)
     })
   },
   dateInit: function(e) {

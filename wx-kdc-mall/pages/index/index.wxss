@@ -1,8 +1,8 @@
 /**index.wxss**/
-
-.banner-swiper {
-  height: 422rpx;
+page {
+  padding-bottom: 20rpx;
 }
+
 .main-tab {
   text-align: center;
   line-height: 1em;
@@ -13,4 +13,13 @@
 }
 .main-tab tabs {
   color: green;
+}
+.price {
+  float: right;
+  color: #ff7101;
+}
+.section-name {
+  padding: 5rpx 10rpx;
+  margin: 0 30rpx;
+  border-left: 8rpx solid;
 }

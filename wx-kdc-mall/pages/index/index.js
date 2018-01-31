@@ -1,6 +1,8 @@
 const app = getApp()
 import post from '../ajax.js';
 
+let imgUrl = 'https://ApiMall.kdcer.com/'
+
 // 用户数据
 let UnionId = null;
 let mainInfo = null;
@@ -8,46 +10,43 @@ let userInfo = null;
 
 Page({
   data: {
-    banner: [1,2],
-    tabs: [
-      {
-        link: '/pages/page/page',
-        img: '',
-        name: 'xxxx1',
-      },
-      {
-        link: '/pages/page/page',
-        img: '',
-        name: 'xxxx2',
-      },
-      {
-        link: '/pages/page/page',
-        img: '',
-        name: 'xxxx3',
-      }
-    ],
-    list: [],
+    banner: [],
+    pageData: [],
   },
   onLoad: function () {
     wx.setNavigationBarTitle && wx.setNavigationBarTitle({
       title: '首页'
     });
-    app.getWindow(res => {
-      this.setData({
-        winW: res.windowWidth,
-        winH: res.windowHeight,
-      })
+    wx.setScreenBrightness && wx.setScreenBrightness({
+      value: .6,
     });
-    var raw = this.data.tabs;
-    var list = this.data.list;
-    var xx = ['xxxx', 'yyyy', 'zzzz'];
-    for (let k in xx) {
-      list.push(raw.slice(0).map((p, i) => { p.name = xx[k] + i; return p }))
-    }
-    this.setData({ list: list })
-  },
-  tabchange: function(e) {
-    console.log(e.detail)
+    post.page('首页', res => {
+      res.Carousel.map(item => {
+        item.img = imgUrl + item.Pic;
+        item.link = item.Router || '#';
+      })
+      res.PageData.map(section => {
+        section.PageData.UpperList.map(item => {
+          item.name = item.Name;
+          item.img = imgUrl + item.Pic;
+          item.link = item.Router;
+        })
+        section.Commodity.map(item => {
+          item.name = item.Name;
+          item.img = imgUrl + item.Pic;
+          item.desc = item.Des;
+          item.price = item.Price;
+          item.link = '../detail/detail?Id=' + item.CommodityId;
+        })
+      })
+
+      this.setData({
+        banner: res.Carousel,
+        pageData: res.PageData,
+      })
+
+      console.log(res.PageData)
+    })
   },
   onShow: function () {
     this.main(null, false);
@@ -57,22 +56,10 @@ Page({
   },
   // 主入口
   main: function (callback, hasToast = true) {
-    !hasToast && wx.showLoading({ mask: true });
-    wx.setScreenBrightness && wx.setScreenBrightness({
-      value: .6,
-    });
-    app.login(code => {
-      app.getInfo(res => {
-        mainInfo = res
-        userInfo = res.userInfo
-        post.entry(code, res, this.main_entry)
-        wx.hideLoading();
-        wx.stopPullDownRefresh();
-        callback && callback();
-      })
-    })
+    // !hasToast && wx.showLoading({ mask: true });
   },
   // 入口数据处理
   main_entry: function() {
   },
+
 })
