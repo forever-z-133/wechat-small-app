@@ -57,21 +57,6 @@
 .list-tip.none {
   display: none;
 }
-.text {
-  word-wrap: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.text2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-  display: box;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
 
 /* 列表样式，tabs ////////////////// list-tabs */
 .list-tabs {
@@ -89,7 +74,18 @@
 .list-tabs .desc {
   display: none;
 }
-
+/* 列表样式，tabs ////////////////// page-tabs */
+.page-tabs {
+  margin: 5rpx 5rpx;
+}
+.page-tabs .list-item {
+  width: calc(33.33% - 10rpx);
+  margin: 5rpx 5rpx;
+}
+.page-tabs .list-title,
+.page-tabs .list-desc {
+  display: none;
+}
 /* 列表样式，字在图上 ////////////// list-text-cover */
 .list-text-cover .list-content {
   position: absolute;
@@ -97,6 +93,20 @@
   transform: translate(-50%,-50%);
   text-align: center;
   width: 100%;
+}
+/* 产品列表 ////////////// index-list */
+.index-list {
+  padding: 20rpx 25rpx 0;
+}
+.index-list .list-item {
+  margin-bottom: 20rpx;
+}
+.index-list .list-title,
+.index-list .list-desc {
+  display: none;
+}
+.index-list .list-image:before {
+  padding-top: 75%;
 }
 /* 产品列表 ////////////// list-text-cover product-list */
 .product-list .list-image:before {
@@ -167,4 +177,39 @@
   color: #696969;
   font-size: 28rpx;
   margin-top: 10rpx;
+}
+
+/* 无字 ////////////// list-no-word */
+.list-no-word {
+  padding: 10rpx 0;
+}
+.list-no-word .list-item {
+  padding: 10rpx 25rpx;
+}
+.list-no-word .list-image::before {
+  padding-top: 75%;
+}
+.list-no-word .list-title,
+.list-no-word .list-desc {
+  display: none;
+}
+
+/* 两列，图左 ////////////// list-activity */
+.list-activity {
+  padding: 10rpx 10rpx;
+  margin: 10rpx 0 0;
+}
+.list-activity .list-item {
+  width: calc(50% - 20rpx);
+  margin: 10rpx 10rpx;
+  display: flex;
+  align-items: center;
+  padding: 10rpx 10rpx;
+  box-shadow: 0 0 .5em rgba(0,0,0,.2);
+}
+.list-activity .list-image {
+  width: 30%;
+  overflow: hidden;
+  border-radius: 100%;
+  margin-right: 20rpx;
 }

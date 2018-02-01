@@ -1,5 +1,6 @@
 <!--component/product-list/product-list.wxml-->
 
+<slot name='before-list'></slot>
 <view class="list {{listStyle}}">
   <block wx:for='{{listData}}' wx:key='index'>
     <slot name='before-item-{{index}}'></slot>

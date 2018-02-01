@@ -46,3 +46,20 @@
   background: #fff;
   box-shadow: 0 -2rpx 5rpx rgba(0,0,0,.1);
 }
+
+
+.text {
+  word-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: box;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

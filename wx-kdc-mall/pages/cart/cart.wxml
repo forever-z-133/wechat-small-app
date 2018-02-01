@@ -6,13 +6,13 @@
 
 <view class='cart-body'>
   <view class='cart-list'>
-    <list list-data='{{list.data}}' list-state='{{list.state}}' list-style='list-cart'>
+    <list list-data='{{list.data}}' list-state='none' list-style='list-cart'>
       <block wx:for='{{list.data}}' wx:key='index'>
-        <view slot='before-content-{{index}}'>
+        <label slot='before-content-{{index}}'>
           <checkbox-group class='choose-item' bindchange='choose' data-index='{{index}}'>
             <checkbox value="{{item.name}}" checked="{{item.checked}}" />
           </checkbox-group>
-        </view>
+        </label>
       </block>
     </list>
   </view>
@@ -23,7 +23,7 @@
     <checkbox checked="{{chosen==list.data.length}}"/> <text>全选</text>
   </checkbox-group>
   <view class='price-all'>
-    合计：<text>${{priceAll || 0.00}}</text>
+    合计：<text>{{priceAll || "￥0"}}</text>
   </view>
   <view class='btn btn-comfirm' data-num='{{chosen || 0}}'>结算</view>
 </view>

@@ -1,12 +1,11 @@
 const app = getApp()
 import post from '../ajax.js';
-let listHeight = 0;
+import { money } from '../../utils/util.js';
 
 Page({
   data: {
     list: {
       data: [],
-      state: 'load',
     },
     chosen: null,
   },
@@ -17,12 +16,9 @@ Page({
   //   this.load_list();
   // },
   onLoad: function () {
-    wx.hideTabBar();
+    // wx.hideTabBar();
     
-    this.load_list(false, () => {
-      this.data.list.state = 'empty';
-      this.setData({ list: this.data.list });
-    });
+    this.load_list(false);
   },
   choose: function(e) {
     var i = e.currentTarget.dataset.index;
@@ -31,7 +27,7 @@ Page({
     var list2 = list.filter(x => x.checked);
     var price = list2.reduce((re, x) => re + x.price, 0);
     var count = list2.length;
-    this.setData({ priceAll: price, chosen: count, list: this.data.list });
+    this.setData({ priceAll: money(price), chosen: count, list: this.data.list });
   },
   chooseAll: function () {
     var list = this._now_list().data;
@@ -39,7 +35,7 @@ Page({
       var price = list.reduce((re, x) => re + x.price, 0);
       var count = list.length;
       list = list.map(x => { x.checked = true; return x });
-      this.setData({ priceAll: price, chosen: count, list: this.data.list });
+      this.setData({ priceAll: money(price), chosen: count, list: this.data.list });
     } else {
       list = list.map(x => { x.checked = false; return x });
       this.setData({ priceAll: 0, chosen: 0, list: this.data.list });
@@ -49,7 +45,6 @@ Page({
   update_list: function (r, callback) {
     let nowList = this._now_list().data;
     nowList = nowList.push.apply(nowList, r);
-    if (r.length < 1) nowList.state = 'empty';
     this.setData({ list: this.data.list });
     callback && callback(r)
   },
@@ -76,10 +71,11 @@ Page({
   },
   _default_data: function () {
     return new Array(6).fill().map((p, i) => {
+      var price = parseFloat((Math.random() * 10).toFixed(2))
       return {
         name: '索引'.repeat(Math.random() * 10 >> 0),
-        desc: '$1.00',
-        price: Math.random() * 10 >> 0,
+        desc: money(price),
+        price: price,
         theight: 2,
         dheight: 1,
         checked: false,

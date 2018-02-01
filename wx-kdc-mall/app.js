@@ -1,21 +1,44 @@
 //app.js
+
+import post from 'pages/ajax.js';
+
 App({
   data: {
     userInfo: null,
     userId: null,
-    baseUrl: "https://ApiMall.kdcer.com/api/",
+    baseUrl: "https://apimall.kdcer.com/api/",
   },
   onLaunch: function () {
-    if (this.data.userId) {
+    this.entry();
+  },
 
+  // 身份接口，在 page.js 中使用 app.entry_finish 即可
+  entry: function (cb) {
+    if (this.data.userId) {
+      this.entry_finish(this.data)
     } else {
       this.login(code => {
         this.getInfo(res => {
-          // post.entry(code, res, this.main_entry)
+          this.data.userInfo = res.userInfo;
+          post.entry(code, res, r => {
+            this.data.userId = r.User.Token;
+            cb && cb(this.data);
+            this._entry_finish(this.data);
+          })
         })
       })
     }
   },
+  _entry_finish: function (cb) { },
+  entry_finish: function (cb) {
+    if (this.data.userInfo) {
+      cb && cb(this.data)
+    } else {
+      this._entry_finish = cb
+    }
+  },
+
+  // code与用户信息接口
   login: function (callback) {
     wx.login({
       success: res => {
@@ -25,7 +48,6 @@ App({
       }
     })
   },
-  // 请求用户授权获得信息
   getInfo: function (callbcak) {
     if (this.data.userInfo) {
       callbcak && callbcak(this.data.userInfo)
@@ -36,13 +58,15 @@ App({
         complete: res => {
           this.ifGetUser(can => { // 判断是否已授权
             console.log('用户信息', res.userInfo)
-            this.data.userInfo = res.userInfo
-            callbcak && callbcak(this.data.userInfo)
+            this.data.userInfo = res
+            callbcak && callbcak(res)
           })
         }
       })
     }
   },
+
+  // 系统信息
   getWindow: function (callback) {
     if (this.data.window) {
       callback && callback(this.data.window)
@@ -57,6 +81,7 @@ App({
       })
     }
   },
+
   // 检测用户是否拒绝了授权
   ifGetUser: function (callback) {
     wx.getSetting ? wx.getSetting({
@@ -86,15 +111,8 @@ App({
       showCancel: false
     });
   },
-  systemError: function(r) {
-    if (typeof r == 'string') {
-      wx.showModal({
-        content: '系统出错了',
-        showCancel: '好吧',
-      });
-      return true;
-    } else return false;
-  },
+
+  // 公共分享
   share: function() {
     return {
       title: '坤鼎家的电商小程序',

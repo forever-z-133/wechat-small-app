@@ -11,6 +11,9 @@ Page({
   },
   onLoad: function(option) {
     var page = option.Title;
+    wx.setNavigationBarTitle && wx.setNavigationBarTitle({
+      title: page || '活动'
+    });
 
     post.page(page, res => {
       res.Carousel.map(item => {
@@ -36,8 +39,6 @@ Page({
         banner: res.Carousel,
         pageData: res.PageData,
       })
-
-      console.log(res.PageData)
     })
   },
   dateInit: function(e) {

@@ -1,5 +1,5 @@
 <!--pages/page/page.wxml-->
-<view class='section banner' wx:if='{{banner}}'>
+<view class='section banner' wx:if='{{banner.length}}'>
   <swiper class='banner-swiper'>
     <block wx:for='{{banner}}' wx:key='index'>
       <swiper-item>
@@ -15,27 +15,25 @@
 </view>
 
 <block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
-  <block wx:if='{{section.PageData.PageType=="IndexTab"}}'>
-    <list list-data='{{section.PageData.UpperList}}' list-style='list-tabs' list-state='none'></list>
+  <block wx:if='{{section.PageData.PageType=="MenuTab"}}'></block>
+  <block wx:elif='{{section.PageData.PageType=="list-datelist"}}'>
+    <view class='datetime'>
+      <datetime binddateinit='dateInit' class>
+        <block wx:for='{{date}}' wx:key='index'>
+          <view slot='{{index}}'>{{item.day}}</view> 
+        </block>
+      </datetime>
+      <view class='datetime-tips'>
+        <text><text class="dot orange"></text>免费体验课程</text>
+      </view>
+    </view>
   </block>
-  <block wx:if='{{section.PageData.PageType=="List"}}'>
-    <view class='section-name'>{{section.PageData.Name}}</view>
-    <list list-data='{{section.PageData.UpperList}}' list-style='list-text-cover product-list' list-state='none'></list>
-    <list list-data='{{section.Commodity}}' list-style='product-list' list-state='none'>
+  <block wx:else>
+    <list list-data='{{section.PageData.UpperList}}' list-style='{{section.PageData.PageType}}' list-state='none'></list>
+    <list wx:if='{{section.Commodity.length}}' list-data='{{section.Commodity}}' list-style='product-list' list-state='none'>
       <block wx:for='{{section.Commodity}}' wx:key='index'>
         <view class='price' slot='after-title-{{index}}'>￥{{item.price}}</view>
       </block>
     </list>
   </block>
 </block>
-
-<view class='section datetime'>
-  <datetime binddateinit='dateInit' class>
-    <block wx:for='{{date}}' wx:key='index'>
-      <view slot='{{index}}'>{{item.day}}</view> 
-    </block>
-  </datetime>
-  <view class='datetime-tips'>
-    <text><text class="dot orange"></text>免费体验课程</text>
-  </view>
-</view>

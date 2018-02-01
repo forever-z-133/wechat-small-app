@@ -41,7 +41,24 @@ function _merge(deep, target, ...objs) {
   }, target)
 }
 
+function systemError(r) {
+  if (typeof r == 'string') {
+    wx.showModal({
+      content: '系统出错了',
+      showCancel: '好吧',
+    });
+    return true;
+  } else return false;
+}
+
+function money(...nums) {
+  nums = nums.reduce((a,b) => a+b, 0);
+  return '￥' + nums.toFixed(2)
+}
+
 module.exports = {
   formatTime,
   extend: _merge,
+  systemError,
+  money,
 }

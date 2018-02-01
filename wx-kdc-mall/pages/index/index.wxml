@@ -1,5 +1,5 @@
 <!-- 首页 -->
-<view class='section banner' wx:if='{{banner}}'>
+<view class='section banner' wx:if='{{banner.length}}'>
   <swiper class='banner-swiper'>
     <block wx:for='{{banner}}' wx:key='index'>
       <swiper-item>
@@ -21,6 +21,20 @@
 </view> -->
 
 <block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
+  <block wx:if='{{section.PageData.PageType=="MenuTab"}}'></block>
+  <block wx:else>
+    <list list-data='{{section.PageData.UpperList}}' list-style='{{section.PageData.PageType}}' list-state='none'>
+      <view class='section-name' slot='before-list' wx:if='{{section.PageData.PageType=="index-list"}}'>{{section.PageData.Name}}</view>
+    </list>
+    <list wx:if='{{section.Commodity.length}}' list-data='{{section.Commodity}}' list-style='product-list' list-state='none'>
+      <block wx:for='{{section.Commodity}}' wx:key='index'>
+        <view class='price' slot='after-title-{{index}}'>￥{{item.price}}</view>
+      </block>
+    </list>
+  </block>
+</block>
+
+<!-- <block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
   <block wx:if='{{section.PageData.PageType=="IndexTab"}}'>
     <list list-data='{{section.PageData.UpperList}}' list-style='list-tabs' list-state='none'></list>
   </block>
@@ -33,7 +47,7 @@
       </block>
     </list>
   </block>
-</block>
+</block> -->
 
 <!-- <block wx:for='{{pageData}}' wx:key='index' wx:for-item='section'>
   <block wx:if='{{section.PageData.PageType=="IndexTab"}}'>

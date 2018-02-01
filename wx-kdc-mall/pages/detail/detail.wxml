@@ -1,2 +1,57 @@
 <!--pages/detail/detail.wxml-->
-<text>pages/detail/detail.wxml</text>
+<import src="/utils/wxParse/wxParse.wxml"/>
+
+<view class='top-tool'>
+  <button class='btn-none btn'><view class='icon icon-share'></view></button>
+  <button class='btn-none btn'><view class='icon icon-tel'></view></button>
+  <button class='btn-none btn'><view class='icon icon-cart'></view></button>
+  <button class='btn-none btn'><view class='icon icon-order'></view></button>
+</view>
+
+<view class='section banner' wx:if='{{banner.length}}'>
+  <swiper class='banner-swiper'>
+    <block wx:for='{{banner}}' wx:key='index'>
+      <swiper-item>
+        <navigator wx:if='{{item.link!="#"}}' url='{{item.link}}' class='imgRadio rect'>
+          <image src='{{item.img}}'></image>
+        </navigator>
+        <view wx:else class='imgRadio rect'>
+          <image src='{{item.img}}'></image>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+
+<view class='section info'>
+  <view class='title text2'><text>{{data.title}}</text></view>
+  <view class='price'><text>{{data.price}}</text></view>
+  <!-- <view class='prev' wx:if='{{data.prev}}'>
+    <view class='prev-time'>预约时间：<text>{{data.transform}}</text></view>
+    <view class='prev-desc'>预约说明：<text>{{data.transform}}</text></view>
+  </view> -->
+  <view class='other'>
+    <view class='transform'>运费：<text>{{data.transform}}</text></view>
+    <view class='store'>库存：<text>{{data.store}}</text></view>
+  </view>
+</view>
+
+<view class='section detail' wx:if='{{article.nodes}}'>
+  <view class='section-head'>
+    <view><view class="icon icon-content"></view>详情</view>
+  </view>
+  <view class='detail-content'>
+    <block wx:for='{{content}}' wx:key='index'>
+      <image src='{{item.img}}' style='height:{{item.height}}px;width:100%'></image>
+    </block>
+    <block wx:if='{{article}}'>
+      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+    </block>
+  </view>
+</view>
+
+<view class='bottom-bar detial-foot'>
+  <button class='btn-none btn-shop'><view class='icon icon-shop'></view>店铺</button>
+  <button class='btn-none btn-cart'>加入购物车</button>
+  <button class='btn-none btn-buy'>立即购买</button>
+</view>
