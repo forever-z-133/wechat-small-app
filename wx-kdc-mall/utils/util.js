@@ -45,10 +45,19 @@ function systemError(r) {
   if (typeof r == 'string') {
     wx.showModal({
       content: '系统出错了',
-      showCancel: '好吧',
+      showCancel: false,
+      confirmText: '好吧',
     });
     return true;
-  } else return false;
+  } else if (r.ErrorState) {
+    wx.showModal({
+      title: '系统错误',
+      content: r.ErrorMessage,
+      showCancel: false,
+      confirmText: '好吧',
+    })
+    return true;
+  } return false;
 }
 
 function money(...nums) {

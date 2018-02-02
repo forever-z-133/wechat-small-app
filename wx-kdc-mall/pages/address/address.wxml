@@ -1,10 +1,11 @@
 <!--pages/address/address.wxml-->
 
 <view class='section address'>
-  <list list-data='{{list.data}}' list-style='list-address' list-state='{{list.state}}'>
+  <list list-data='{{list.data}}' list-style='list-address' list-state='none' bindclick='click'>
     <block wx:for='{{list.data}}' wx:key='index'>
-      <view slot='before-title-{{index}}' class='address-type'><view>家</view></view>
-      <view slot='before-content-{{index}}' class='btn-remove-address' catchtap='remove'>删除</view>
+      <view slot='before-title-{{index}}' class='address-type'><view>{{item.type}}</view></view>
+      <view slot='before-content-{{index}}' data-id='{{item.id}}' class='btn-remove-address' catchtap='remove'>删除</view>
+      <view slot='before-content-{{index}}' data-id='{{item.id}}' class='btn-edit-address' catchtap='edit'>编辑</view>
     </block>
   </list>
 </view>

@@ -85,7 +85,11 @@ page {
   color: #a8a8a8;
   font-size: .8em;
   line-height: 90rpx;
+  margin: 0 -25rpx;
   transform: translate3d(0,0,0);
+}
+.detail-content {
+  padding: 0 25rpx;
 }
 .icon-content {
   display: inline-block;
@@ -145,12 +149,101 @@ page {
   line-height: 1;
   font-size: .7em;
 }
-.icon-shop + icon-shop {
-
-}
 .icon-shop {
   width: 2em;
   height: 2em;
   margin-bottom: 5rpx;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAiCAYAAADYmxC7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5RjQxN0VCMDA3MTcxMUU4ODNGRUVCRUE2QjhBNzA3QiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5RjQxN0VCMTA3MTcxMUU4ODNGRUVCRUE2QjhBNzA3QiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjlGNDE3RUFFMDcxNzExRTg4M0ZFRUJFQTZCOEE3MDdCIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjlGNDE3RUFGMDcxNzExRTg4M0ZFRUJFQTZCOEE3MDdCIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+alNODAAAAv9JREFUeNrsmG2ITFEYx++O9c5aeWk3L5/sohBqE4q2KMprKVGUMLMSFl9kk3bLEh+02tSktpAQ6xsflJKXRFsTuyE+0EqR0eZtm8YY/k/9j86e7tx7rnXvlDz168yd+9w7/znnOc/z3FsSj8cdF2sCG/n5pxOOlYAsWJ9MJjv1E6UuzmvAISc6Owfm9FFrzFQleArKwVFwK0Qxw8FVMBDsxGydLjRTVyjoMTgYwSxtA2fBSfBbVExzWAIWggxYHOHSdYFBiURilylqGLjAz43gU4Qx1cTxOISV66JWgvEgDY5FKMhBLEnIvAJDwApd1H6Ouy3uswO0gaEWvuvAGTDJx+8Ax+1K1GxQowW6n+0DW8AsC99GBvMqH7/rHBdhCati/Odil0HO4ofeuGySQvaRY9ZnCb9huMnDOrnxfB5ctAwDleF/WPjmAvi2cawVUZN58NAprqmZmiaiyniQLqYiLGEPhveygWLa1A5wim+vVbCqGZpieaEK2kyA+Htnee/RSpRqG/ZaXjgyQPAq4ast712tRKk0v1WCzOeiFtZHsfNgjIdvjZb/4ixjFYWckZ/U7usUUfeYo8Tuaz+q2wxwQ8v4X9kDdYClhm8pk+sjMA50MzVI0/gMbDa7Ewiq4zViDaqfEqfbmqAUq7cs1VQwXcs7teA5eKDFoeyat+wmq9kriV0Cm8AEcA3M5fefKbCX91BlqAG7sNls8lpYf8y61sObHmHxdNicSRlZ67LskvPawQnj+z30N1ujl+AUBLW6dZ7K5oHlXKYUZ9ErsGV5J4I8Z7HbIqBncnfegZi0X4++ADwJmOG7iK29IA4bgj6iYi7/QIL9g2XB7a/J5kkh0Dd4iarwOBeGjeVY5SVKJbveEJ/3dPtijJHNRmD7L+qfEqV6qrxlF9Bfy7jlS1NUnmNZRJNSafTyrqKkRHyXx2h56cAxLFumvW2561Vm5HH9MGgGrXzxkC5Qjv7Ucuw+RvC4HbWvw6/2ySugwaAejNKm+G9blm9c6s0TvwQYAJuMryXXZCjzAAAAAElFTkSuQmCC);
+}
+
+.modal-box {
+  background: #fff;
+  max-height: 60%;
+}
+.modal-info {
+  display: flex;
+  padding: 15px 25rpx;
+}
+.modal-price {
+  color: #ff5c00;
+}
+.modal-store {
+  font-size: .7em;
+}
+.modal-image {
+  width: 180rpx;
+  flex-shrink: 0;
+  border-radius: 10rpx;
+  overflow: hidden;
+  margin-top: -70rpx;
+  margin-right: 20rpx;
+}
+.panel-body {
+  height: 100%;
+}
+.btn-confirm-to-add-cart {
+  border-radius: 0;
+  color: #fff;
+  background: #f6a522;
+}
+.btn-confirm-to-add-cart:after {
+  display: none;
+}
+
+
+.radio-box {
+  display: block;
+}
+.radio-box.disable text {
+  color: #aaa;
+  pointer-events: none;
+}
+.radio-box.active text {
+  color: #fff;
+  background: #ff7100
+}
+.radio-box radio {
+  position: absolute;
+  opacity: 0;
+}
+.radio-box > text {
+  font-size: .8em;
+  margin: 5rpx 15rpx 5rpx 0;
+  padding: 4rpx 20rpx;
+  background: #f0f0f0;
+  border-radius: 6rpx;
+  display: block;
+}
+.choose-part {
+  padding: 15rpx 25rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+.choose-part-title {
+  margin: 0 0 10rpx;
+}
+
+
+.modal-number-box {
+  display: flex;
+  padding: 15rpx 25rpx;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2rpx solid #f0f0f0;
+  margin-bottom: 15rpx;
+}
+.modal-number {
+  display: flex;
+  align-items: center;
+}
+.modal-number button {
+  width: 2em;
+  line-height: 2em;
+  padding: 0;
+}
+.modal-number text {
+  margin: 0 20rpx;
 }

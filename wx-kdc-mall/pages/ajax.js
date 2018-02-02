@@ -10,7 +10,7 @@ function _AJAX(name, url, data, success) {
     url: baseUrl + url,
     data: data,
     success: function (r) {
-      if (systemError(r)) return;
+      if (systemError(r.data)) return;
       success && success(r.data);
       console.log(name, r.data);
     },
@@ -36,9 +36,9 @@ module.exports = {
         userJson: JSON.stringify(res.userInfo),
       },
       success: function (r) {
-        if (systemError(r)) return;
-        callback && callback(r.data);
+        if (systemError(r.data)) return;
         console.log('入口', r.data);
+        callback && callback(r.data);
       },
       fail: function (err) {
         wx.showModal({
@@ -73,6 +73,40 @@ module.exports = {
   //==============  请求 - 拿取页面
   list: function (callback) {
     callback && callback()
+  },
+  //==============  请求 - 拿取地址列表
+  address: function (user, callback) {
+    _AJAX('地址列表', 'crm/GetAddressList', {
+      token: user
+    }, callback);
+  },
+  //==============  请求 - 新增地址
+  add_address: function (user, json, callback) {
+    _AJAX('新增地址', 'crm/InAddress', {
+      token: user,
+      addJson: JSON.stringify(json)
+    }, callback);
+  },
+  //==============  请求 - 修改地址
+  edit_address: function (user, json, callback) {
+    console.log(json)
+    _AJAX('修改地址', 'crm/InAddress', {
+      token: user,
+      addJson: JSON.stringify(json)
+    }, callback);
+  },
+  //==============  请求 - 删除地址
+  remove_address: function (id, callback) {
+    _AJAX('删除地址', 'crm/DeleteAddrss', {
+      id: id
+    }, callback);
+  },
+  //==============  请求 - 订单与地址绑定
+  bind_address: function (order, address, callback) {
+    _AJAX('订单绑定地址', 'Order/DraftOrderInfo', {
+      draftId: address,
+      addressId: address,
+    }, callback);
   },
   //==============  请求 - 存 formId
   save: function (uid, formId, callback) {

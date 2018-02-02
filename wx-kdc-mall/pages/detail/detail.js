@@ -6,8 +6,17 @@ var WxParse = require('../../utils/wxParse/wxParse.js');
 let imgUrl = 'https://ApiMall.kdcer.com/'
 
 var mainData = null;
+var userId = null;
+
+var skuData = null;
 
 Page({
+  data: {
+    data: {},
+    content: [],
+    modal_show: true,
+    modal: {},
+  },
   onLoad: function(option) {
     var id = option.Id;
     if (!id) {
@@ -19,68 +28,174 @@ Page({
       }); return false;
     }
 
+    // 获取详情
     post.detail(id, res => {
       mainData = res;
-      var allPrice = res.CommonditySkus.reduce((re, x) => re.concat([x._price]), [])
-      var max = Math.max.apply(Math, allPrice);
-      var min = Math.min.apply(Math, allPrice);
-      var price = min == max ? money(min) : money(min) + '-' + money(max);
-
-      var allStore = res.CommonditySkus.reduce((re, x) => re.concat([x._repertory]), [])
-      var store = allStore.reduce((re, x) => re+x, 0);
-
-      var content = res.Detail.PicFile.detail
-      if (content.length > 0) {
-        content.map((x, i) => {
-          wx.downloadFile({
-            url: imgUrl + x.PicUrl,
-            success: res => {
-              console.log(res);
-              wx.getImageInfo({
-                src: res.tempFilePath,
-                complete: r => {
-                  var height = r.width / r.height * 320
-                  content[i] = {
-                    img: res.tempFilePath,
-                    height: height,
-                  }
-                }
-              })
-            }
-          })
-        })
-      } else if (res.Detail.Title != '') {
-        WxParse.wxParse('article', 'html', res.Detail.Title, this)
-      }
-      
-      this.setData({
-        banner: res.Detail.PicFile.swiper.map(x => {
-          x.img = x.PicUrl;
-          x.link = '#';
-        }),
-        data: {
-          title: res.Detail.Name,
-          price: price,
-          store: store,
-          transform: '包邮'
-        },
-      })
+      this.update(res);
     })
 
-    // this.setData({ data: this._default_data() })
-
-    // // 获取身份
-    // app.entry_finish(r => {
-    //   console.log(r)
-    // })
+    // 获取身份 ID
+    app.entry_finish(r => {
+      userId = app.data.userId
+      console.log('用户Token', userId)
+    })
   },
-  _default_data: function() {
-    WxParse.wxParse('article', 'html', '<img src="data:image/png;base64,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">', this);
-    return {
-      title: '标题'.repeat(Math.random()*30>>0),
-      price: money(Math.random() * 1000 >> 0),
-      store: Math.random() * 1000 >> 0,
-      transform: '快递',
+  update: function (res) {
+    // 价格和库存的计算
+    var allPrice = res.CommonditySkus.reduce((re, x) => re.concat([x._price]), [])
+    var max = Math.max.apply(Math, allPrice);
+    var min = Math.min.apply(Math, allPrice);
+    var price = min == max ? money(min) : money(min) + '-' + money(max);
+
+    var allStore = res.CommonditySkus.reduce((re, x) => re.concat([x._repertory]), [])
+    var store = allStore.reduce((re, x) => re + x, 0);
+
+    // 规格的计算
+    skuData = res.CommonditySkus;
+    skuData.map((one, i) => {
+      one.index = i;
+      one.SpecList[0].map((item, j) => {
+        item.pindex = i; item.index = j;
+      })
+    })
+    var skuObj = res.SpecDir;
+    var skuArr = Object.keys(skuObj).reduce((re, partName) => {
+      var itemArr = JSON.parse(skuObj[partName])
+      itemArr = itemArr.reduce((arr, item) => {
+        arr.push({ name: item, index: arr.length, disabled: false }); return arr;
+      }, [])
+      return re.concat([{ name: partName, child: itemArr, active: 0 }]);
+    }, []);
+    justifySku(0, skuArr, skuData);
+    // console.log(skuArr, skuData)
+
+    function justifySku(i, arr, data) {
+      var partName = arr[i].name;
+      var item = arr[i].child[0];
+      console.log(data)
+      var temp = data[0].SpecList[0].filter(x => x.Value == item.name)
+      console.log(temp)
+    }
+
+    // 轮播、标题等基础数据
+    this.setData({
+      banner: res.Detail.PicFile.swiper.map(x => {
+        x.img = x.PicUrl;
+        x.link = '#';
+      }),
+      data: {
+        title: res.Detail.Name,
+        price: price,
+        store: store,
+        transform: '包邮'
+      },
+      sku: skuArr,
+      modal: {
+        price: price,
+        store: store,
+        number: 1
+      }
+    })
+
+    // 详情
+    var content = res.Detail.PicFile.detail
+    if (content.length > 0) {
+      var imgs = content.reduce((re, x) => { re.push(imgUrl + x.PicUrl); return re }, [])
+      covert_detail_image(imgs, result => {
+        this.setData({ content: result })
+      })
+    } else if (res.Detail.Title != '') {
+      WxParse.wxParse('article', 'html', res.Detail.Title, this)
     }
   },
+  // sku、规格切换
+  radioChange: function (e) {
+    // var i = e.currentTarget.dataset.index;
+    // var sku = this.data.sku[i];
+    // var part = sku.part;
+    // var item = e.detail.value;
+    // var newIndex = sku.item.indexOf(item);
+    // sku.active = newIndex;
+    // var chosen = this.data.sku.reduce((re,x) => {re.push(x.item[x.active]);return re}, []);
+    // // var obj = this.findThisSku(chosen);
+    // // console.log(obj)
+    // this.setData({ sku: this.data.sku })
+  },
+  openModal: function () {
+    this.setData({ modal_show: true })
+  },
+  closeModal: function() {
+    this.setData({ modal_show: false })
+  },
+  addNumber: function () {
+    this.data.modal.number += 1;
+    this.setData({ modal: this.data.modal });
+  },
+  minusNumber: function () {
+    this.data.modal.number = Math.max(1, --this.data.modal.number);
+    this.setData({ modal: this.data.modal });
+  },
+  findThisSku: function(chosen) {
+    // var data = skuData.slice(0);
+    // var temp = null;
+    // for (var i in chosen) {
+    //   var item = 
+    // }
+  }
 })
+
+function isThisSku(items, chosen) {
+  var result = null;
+  var temp = items.slice(0)
+  temp.map((x, i) => x.active = i)
+  console.log(temp)
+  for (var i in chosen) {
+    temp = temp.filter(x => x.Value == chosen[i]);
+    console.log(temp, chosen[i])
+
+  }
+  // console.log(items, chosen)
+}
+
+
+// 获取每张图的高度
+// 小程序的图片不会自己撑起高度，所以从富文本扣出后要进行获取高度
+// downloadFile 又有并发限制，所以得改为递归形式
+function getImageHiehgt(src, callback) {
+  app.getWindow(win => {
+    var winW = win.windowWidth - 30;
+    wx.downloadFile({
+      url: src,
+      success: res => {
+        var newSrc = res.tempFilePath
+        wx.getImageInfo({
+          src: newSrc,
+          success: r => {
+            var height = winW / (r.width / r.height)
+            callback && callback(height, src)
+          }
+        })
+      }
+    });
+  })
+}
+// 递归图片数组，获取每张图片高度
+function loop(arr, fn, finish) {
+  var item = arr.shift()
+  if (!item) finish();
+  else fn(item, function () {
+    loop(arr, fn, finish)
+  })
+}
+
+function covert_detail_image(arr, finish) {
+  var result = [];
+  loop(arr, function (src, cb) {
+    getImageHiehgt(src, function (height, img) {
+      result.push({ img, height });
+      cb & cb();
+    })
+  }, function () {
+    finish && finish(result);
+  })
+}

@@ -1,7 +1,10 @@
 // pages/address/address.js
 const app = getApp()
 import post from '../ajax.js';
+
 let noListState = true;
+let userId = null;
+let orderId = null;
 
 Page({
   data: {
@@ -11,18 +14,55 @@ Page({
     },
   },
   onPullDownRefresh: function () {
-    this.reload_list();
   },
-  onLoad: function () {
+  onLoad: function (option) {
     wx.setNavigationBarTitle && wx.setNavigationBarTitle({
       title: '管理收货地址'
     });
-    wx.hideTabBar();
 
-    this.load_list();
+    orderId = option.order;
   },
+  onShow: function () {
+    app.entry_finish(res => {
+      userId = res.userId;
+      this.reload_list();
+    })
+  },
+  // 点击item，与订单绑定
+  click: function(e) {
+    var id = e.detail.id;
+    if (!orderId) return;
+    post.bind_address(orderId, id, res => {
+      wx.navigateBack();
+    })
+  },
+  // 编辑 
+  edit: function(e) {
+    var id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: '../address-add/address-add?id=' + id,
+    })
+  },
+  // 删除
   remove: function(e) {
-    console.log(e)
+    var id = e.currentTarget.dataset.id;
+    post.remove_address(id, res => {
+      res.State && this.reload_list();
+    })
+  },
+  // 修改列表数据结构
+  covert_list: function(r) {
+    var result = [], _type = ['家','学校','公司'];
+    r.slice(0).map(x => {
+      result.push({
+        id: x.Id,
+        // link: '../address-add/address-add?id=' + x.Id,
+        name: [(x.AutoAddress || x.WxAddress) +  x.Address].join(','),
+        desc: x.ContactorName + '(' + (x.Gender ? "女士" : "先生") + ') ' + x.ContactorPhone,
+        type: _type[x.AddsType]
+      })
+    })
+    return result;
   },
   // 更新当前列表数据
   update_list: function (r, callback) {
@@ -31,18 +71,21 @@ Page({
     nowListData = nowListData.push.apply(nowListData, r);
     if (r.length < 1) nowList.state = 'empty';
     if (noListState) nowList.state = 'none';
-    console.log(this.data.list, noListState)
     this.setData({ list: this.data.list });
     callback && callback(r)
   },
   // 加载更多当前列表
   load_list: function (loading = true, callback) {
     loading && wx.showLoading();
-    post.list(r => {
+    post.address(userId, r => {
       wx.hideLoading();
       wx.stopPullDownRefresh();
       wx.hideNavigationBarLoading();
-      var r = this._default_data();
+      // var r = this._default_data();
+      if (!r.State) return;
+      r = r.AddressList
+      wx.setStorageSync('address', r)
+      r = this.covert_list(r);
       this.update_list(r, callback);
     });
   },

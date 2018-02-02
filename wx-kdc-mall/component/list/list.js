@@ -27,6 +27,13 @@ Component({
     // console.log(this.data.listData)
   },
   methods: {
+    clickItem: function(e) {
+      var data = e.currentTarget.dataset;
+      this.triggerEvent('click', {
+        id: data.id,
+        index: data.index,
+      })
+    }
     // filter: function(r) {
     //   return r.filter((p, i) => {
     //     return i > 0;

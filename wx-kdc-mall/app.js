@@ -8,7 +8,10 @@ App({
     userId: null,
     baseUrl: "https://apimall.kdcer.com/api/",
   },
-  onLaunch: function () {
+  onLaunch: function(){
+    
+  },
+  onShow: function () {
     this.entry();
   },
 
@@ -22,6 +25,7 @@ App({
           this.data.userInfo = res.userInfo;
           post.entry(code, res, r => {
             this.data.userId = r.User.Token;
+            this.data.user = r.User.Id;
             cb && cb(this.data);
             this._entry_finish(this.data);
           })
@@ -74,6 +78,7 @@ App({
       wx.getSystemInfo({
         success: res => {
           console.log('设备信息', res)
+          this.data.window = res;
           this.data.winW = res.windowWidth;
           this.data.winH = res.windowHeight;
           callback && callback(res)

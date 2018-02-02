@@ -40,5 +40,13 @@
   color: #f46e6e;
   margin: -20rpx;
   padding: 20rpx;
+  font-size: .8em;
   margin-left: 15rpx;
+}
+.btn-edit-address {
+  position: absolute;
+  bottom: 15rpx;
+  right: 25rpx;
+  margin: -20rpx;
+  padding: 20rpx;
 }

@@ -36,22 +36,64 @@
   </view>
 </view>
 
-<view class='section detail' wx:if='{{article.nodes}}'>
-  <view class='section-head'>
-    <view><view class="icon icon-content"></view>详情</view>
-  </view>
-  <view class='detail-content'>
+<view class='section detail'>
+  <view class='detail-content' wx:if='{{content.length}}'>
+    <view class='section-head'>
+      <view><view class="icon icon-content"></view>详情</view>
+    </view>
     <block wx:for='{{content}}' wx:key='index'>
-      <image src='{{item.img}}' style='height:{{item.height}}px;width:100%'></image>
+      <image src='{{item.img}}' style='height:{{item.height}}px;'></image>
     </block>
-    <block wx:if='{{article}}'>
-      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
-    </block>
+  </view>
+  <view class='detail-content' wx:if='{{article}}'>
+    <view class='section-head'>
+      <view><view class="icon icon-content"></view>详情</view>
+    </view>
+    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
   </view>
 </view>
 
 <view class='bottom-bar detial-foot'>
   <button class='btn-none btn-shop'><view class='icon icon-shop'></view>店铺</button>
-  <button class='btn-none btn-cart'>加入购物车</button>
+  <button class='btn-none btn-cart' bindtap='openModal'>加入购物车</button>
   <button class='btn-none btn-buy'>立即购买</button>
+</view>
+
+<view class='modal actionsheet {{modal_show==true?"in":""}}'>
+  <view class='modal-bg' bindtap='closeModal'></view>
+  <view class='modal-box panel'>
+    <view class='modal-info panel-head'>
+      <view class='modal-image imgRadio'>
+        <image src='{{modal.img}}'></image>
+      </view>
+      <view class='modal-content'>
+        <!-- <view class='modal-name'>{{data.title}}</view> -->
+        <view class='modal-price'>{{modal.price || data.price}}</view>
+        <view class='modal-store'>库存 {{modal.store || data.store}}</view>
+      </view>
+    </view>
+    <view class='choose panel-body scroller'>
+      <block wx:for='{{sku}}' wx:key='index' wx:for-item='part' wx:for-index='i'>
+        <view class='choose-part'>
+          <view class='choose-part-title'>{{part.name}}</view>
+          <radio-group class="radio-group" data-index='{{i}}' bindchange="radioChange">
+            <block wx:for='{{part.child}}' wx:key='index'>
+              <label class='radio-box {{part.active==index?"active":""}} {{item.disabled?"disable":""}}'>
+                <radio value="{{item}}" checked="{{part.active==index}}" disabled='{{item.disabled}}'/><text>{{item.name}}</text>
+              </label>
+            </block>
+          </radio-group>
+        </view>
+      </block>
+      <view class='modal-number-box'>
+        <view>购买数量</view>
+        <view class='modal-number'>
+          <button bindtap='addNumber'>+</button><text>{{modal.number || 1}}</text><button bindtap='minusNumber'>-</button>
+        </view>
+      </view>
+    </view>
+    <view class=' panel-foot'>
+      <button class='btn-confirm-to-add-cart'>确认</button>
+    </view>
+  </view>
 </view>

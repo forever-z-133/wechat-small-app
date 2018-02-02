@@ -27,7 +27,7 @@
       </navigator>
     </block>
     <block wx:if='{{!item.link}}'>
-      <view class='list-item'>
+      <view class='list-item' data-index='{{index}}' data-id='{{item.id}}' bindtap='clickItem'>
         <slot name='before-content-{{index}}'></slot>
         <view class='list-image'>
           <image src='{{item.img}}'></image>
