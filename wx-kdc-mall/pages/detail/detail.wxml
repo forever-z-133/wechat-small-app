@@ -2,9 +2,9 @@
 <import src="/utils/wxParse/wxParse.wxml"/>
 
 <view class='top-tool'>
-  <button class='btn-none btn'><view class='icon icon-share'></view></button>
+  <button class='btn-none btn' open-type='share'><view class='icon icon-share'></view></button>
   <button class='btn-none btn'><view class='icon icon-tel'></view></button>
-  <button class='btn-none btn'><view class='icon icon-cart'></view></button>
+  <navigator url='../cart/cart' open-type='switchTab' class='btn-none btn'><view class='icon icon-cart'></view></navigator>
   <button class='btn-none btn'><view class='icon icon-order'></view></button>
 </view>
 
@@ -78,8 +78,8 @@
           <view class='choose-part-title'>{{part.name}}</view>
           <radio-group class="radio-group" data-index='{{i}}' bindchange="radioChange">
             <block wx:for='{{part.child}}' wx:key='index'>
-              <label class='radio-box {{part.active==index?"active":""}} {{item.disabled?"disable":""}}'>
-                <radio value="{{item}}" checked="{{part.active==index}}" disabled='{{item.disabled}}'/><text>{{item.name}}</text>
+              <label class='radio-box {{part.active==index&&!item.disabled?"active":""}} {{item.disabled?"disable":""}}'>
+                <radio value="{{item.index}}" checked="{{part.active==index}}" disabled='{{item.disabled}}'/><text>{{item.name}}</text>
               </label>
             </block>
           </radio-group>
@@ -93,7 +93,7 @@
       </view>
     </view>
     <view class=' panel-foot'>
-      <button class='btn-confirm-to-add-cart'>确认</button>
+      <button class='btn-confirm-to-add-cart' bindtap='addToCart'>确认</button>
     </view>
   </view>
 </view>

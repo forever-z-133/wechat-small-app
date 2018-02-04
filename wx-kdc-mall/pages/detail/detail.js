@@ -2,23 +2,25 @@
 const app = getApp()
 import post from '../ajax.js';
 import {money} from '../../utils/util.js';
-var WxParse = require('../../utils/wxParse/wxParse.js');
+let WxParse = require('../../utils/wxParse/wxParse.js');
 let imgUrl = 'https://ApiMall.kdcer.com/'
 
-var mainData = null;
-var userId = null;
+let mainData = null;
+let userId = null;
 
-var skuData = null;
+let skuData = null;
+let skuArr = null;
+let skuId = null;
 
 Page({
   data: {
     data: {},
     content: [],
-    modal_show: true,
+    modal_show: false,
     modal: {},
   },
   onLoad: function(option) {
-    var id = option.Id;
+    let id = option.Id;
     if (!id) {
       wx.showModal({
         content: '未获得详情ID',
@@ -42,46 +44,20 @@ Page({
   },
   update: function (res) {
     // 价格和库存的计算
-    var allPrice = res.CommonditySkus.reduce((re, x) => re.concat([x._price]), [])
-    var max = Math.max.apply(Math, allPrice);
-    var min = Math.min.apply(Math, allPrice);
-    var price = min == max ? money(min) : money(min) + '-' + money(max);
+    let allPrice = res.CommonditySkus.reduce((re, x) => re.concat([x._price]), [])
+    let max = Math.max.apply(Math, allPrice);
+    let min = Math.min.apply(Math, allPrice);
+    let price = min == max ? money(min) : money(min) + '-' + money(max);
+    this.tempPrice = price;
 
-    var allStore = res.CommonditySkus.reduce((re, x) => re.concat([x._repertory]), [])
-    var store = allStore.reduce((re, x) => re + x, 0);
-
-    // 规格的计算
-    skuData = res.CommonditySkus;
-    skuData.map((one, i) => {
-      one.index = i;
-      one.SpecList[0].map((item, j) => {
-        item.pindex = i; item.index = j;
-      })
-    })
-    var skuObj = res.SpecDir;
-    var skuArr = Object.keys(skuObj).reduce((re, partName) => {
-      var itemArr = JSON.parse(skuObj[partName])
-      itemArr = itemArr.reduce((arr, item) => {
-        arr.push({ name: item, index: arr.length, disabled: false }); return arr;
-      }, [])
-      return re.concat([{ name: partName, child: itemArr, active: 0 }]);
-    }, []);
-    justifySku(0, skuArr, skuData);
-    // console.log(skuArr, skuData)
-
-    function justifySku(i, arr, data) {
-      var partName = arr[i].name;
-      var item = arr[i].child[0];
-      console.log(data)
-      var temp = data[0].SpecList[0].filter(x => x.Value == item.name)
-      console.log(temp)
-    }
+    let allStore = res.CommonditySkus.reduce((re, x) => re.concat([x._repertory]), [])
+    let store = allStore.reduce((re, x) => re + x, 0);
+    this.tempStore = store;
 
     // 轮播、标题等基础数据
     this.setData({
       banner: res.Detail.PicFile.swiper.map(x => {
-        x.img = x.PicUrl;
-        x.link = '#';
+        x.img = imgUrl + x.PicUrl; x.link = '#'; return x;
       }),
       data: {
         title: res.Detail.Name,
@@ -89,18 +65,22 @@ Page({
         store: store,
         transform: '包邮'
       },
-      sku: skuArr,
       modal: {
-        price: price,
-        store: store,
         number: 1
       }
     })
 
+    // 规格的计算
+    skuData = this.initSkuData(res);
+    skuArr = this.initSkuArr(res);
+    skuArr = updateSkuArr(skuArr, skuData)
+    this.setData({ sku: skuArr })
+    this.updateMainData();
+
     // 详情
-    var content = res.Detail.PicFile.detail
+    let content = res.Detail.PicFile.detail
     if (content.length > 0) {
-      var imgs = content.reduce((re, x) => { re.push(imgUrl + x.PicUrl); return re }, [])
+      let imgs = content.reduce((re, x) => { re.push(imgUrl + x.PicUrl); return re }, [])
       covert_detail_image(imgs, result => {
         this.setData({ content: result })
       })
@@ -110,16 +90,20 @@ Page({
   },
   // sku、规格切换
   radioChange: function (e) {
-    // var i = e.currentTarget.dataset.index;
-    // var sku = this.data.sku[i];
-    // var part = sku.part;
-    // var item = e.detail.value;
-    // var newIndex = sku.item.indexOf(item);
-    // sku.active = newIndex;
-    // var chosen = this.data.sku.reduce((re,x) => {re.push(x.item[x.active]);return re}, []);
-    // // var obj = this.findThisSku(chosen);
-    // // console.log(obj)
-    // this.setData({ sku: this.data.sku })
+    let pi = e.currentTarget.dataset.index;
+    let ci = parseInt(e.detail.value);
+    skuArr.map((part, i) => { if (i >= pi) part.active = -1 })
+    skuArr[pi].active = ci;
+    skuArr = updateSkuArr(skuArr, skuData);
+    this.updateMainData();
+    this.setData({ sku: skuArr });
+  },
+  // 确认加入购物车
+  addToCart: function() {
+    post.toCart(userId, skuId, res => {
+      wx.showToast({ title: '添加成功', mask: true });
+      this.setData({ moal_show: false });
+    });
   },
   openModal: function () {
     this.setData({ modal_show: true })
@@ -128,50 +112,106 @@ Page({
     this.setData({ modal_show: false })
   },
   addNumber: function () {
-    this.data.modal.number += 1;
+    this.data.modal.number = Math.min(this.data.modal.store, ++this.data.modal.number);
     this.setData({ modal: this.data.modal });
   },
   minusNumber: function () {
     this.data.modal.number = Math.max(1, --this.data.modal.number);
     this.setData({ modal: this.data.modal });
   },
-  findThisSku: function(chosen) {
-    // var data = skuData.slice(0);
-    // var temp = null;
-    // for (var i in chosen) {
-    //   var item = 
-    // }
-  }
+  initSkuArr: function (res) {
+    // skuArr 为渲染结构的数据。即父级关系的数据
+    let skuObj = res.SpecDir;
+    skuArr = Object.keys(skuObj).reduce((re, partName) => {
+      let itemArr = JSON.parse(skuObj[partName])
+      itemArr = itemArr.reduce((arr, item) => {
+        arr.push({ name: item, index: arr.length, disabled: true }); return arr;
+      }, [])
+      return re.concat([{ name: partName, child: itemArr, active: -1 }]);
+    }, []);
+    return skuArr;
+  },
+  initSkuData: function (res) {
+    // skuData 为原始且美化过的数据，即一套sku对应的数据
+    skuData = res.CommonditySkus;
+    skuData.map((one, i) => {
+      one.index = i;
+      one.SpecList[0].map((item, j) => {
+        item.pindex = i; item.index = j;
+      })
+      let child = one.SpecList[0].slice(0);
+      one.SpecList = child;
+    })
+    return skuData;
+  },
+  // 根据 active 的 skuArr，给与当前价格和库存
+  updateMainData: function() {
+    var arr = skuArr.reduce((re, part) => {
+      return re.concat([part.active > -1 ? part.child[part.active].name : []])
+    }, [])
+    var result = skuData.filter(part => {
+      var len = part.SpecList.reduce((re, item) => {
+        return re = arr.indexOf(item.Value) ? 1+re : re;
+      }, 0);
+      return !(len == arr.length)
+    })
+    if (result.length) {
+      result = result[0];
+      console.log('选择sku', result);
+      skuId = result._id;
+      this.data.modal.price = money(result._price);
+      this.data.modal.store = result._repertory;
+      this.setData({ modal: this.data.modal });
+    } else {
+      this.data.modal.price = this.tempPrice;
+      this.data.modal.store = this.tempStore;
+      this.setData({ modal: this.data.modal });
+    }
+  },
 })
 
-function isThisSku(items, chosen) {
-  var result = null;
-  var temp = items.slice(0)
-  temp.map((x, i) => x.active = i)
-  console.log(temp)
-  for (var i in chosen) {
-    temp = temp.filter(x => x.Value == chosen[i]);
-    console.log(temp, chosen[i])
-
-  }
-  // console.log(items, chosen)
+//----------------------- 更新 skuArr 的 disable 与 active
+function updateSkuArr(arr, data) {
+  // 重置 disabled，但 active 在外部进行重置
+  arr.map(part => part.child.map(child => child.disabled = true))
+  // 复杂的操作...具体请看步骤
+  arr.reduce((first, part) => {
+    // 从第一级向下匹配，且本级根据上级 active 进行筛选
+    var active = !Array.isArray(first) ? first.child[first.active] : null;
+    // 先选出上级 active 对应的本级剩余条目，比如上级全年，本级只有烹饪与其匹配
+    var last = active ? inSkuData(active.name, data) : data;
+    // 从剩余条目中，激活能用的
+    part.child.map(child => {
+      let ok = inSkuData(child.name, last);
+      if (ok.length) child.disabled = false;
+    })
+    // 进行 active 的赋值
+    let temp = part.child.filter(x => !x.disabled);
+    part.active = part.active < 0 ? (temp[0] ? temp[0].index : -1) : part.active;
+    return part;
+  }, [])
+  return arr;
 }
 
+//----------------------- 从原始规格数据中找出 name 相对的 sku
+function inSkuData(name, data) {
+  return data.filter(part => part.SpecList.filter(item => item.Value == name).length);
+}
 
-// 获取每张图的高度
+//------------------------ 获取每张图的高度
 // 小程序的图片不会自己撑起高度，所以从富文本扣出后要进行获取高度
 // downloadFile 又有并发限制，所以得改为递归形式
 function getImageHiehgt(src, callback) {
   app.getWindow(win => {
-    var winW = win.windowWidth - 30;
+    let winW = win.windowWidth - 30;
     wx.downloadFile({
       url: src,
       success: res => {
-        var newSrc = res.tempFilePath
+        let newSrc = res.tempFilePath
         wx.getImageInfo({
           src: newSrc,
           success: r => {
-            var height = winW / (r.width / r.height)
+            let height = winW / (r.width / r.height)
             callback && callback(height, src)
           }
         })
@@ -181,7 +221,7 @@ function getImageHiehgt(src, callback) {
 }
 // 递归图片数组，获取每张图片高度
 function loop(arr, fn, finish) {
-  var item = arr.shift()
+  let item = arr.shift()
   if (!item) finish();
   else fn(item, function () {
     loop(arr, fn, finish)
@@ -189,7 +229,7 @@ function loop(arr, fn, finish) {
 }
 
 function covert_detail_image(arr, finish) {
-  var result = [];
+  let result = [];
   loop(arr, function (src, cb) {
     getImageHiehgt(src, function (height, img) {
       result.push({ img, height });

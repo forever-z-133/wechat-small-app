@@ -1,24 +1,29 @@
 const app = getApp()
 import post from '../ajax.js';
 import { money } from '../../utils/util.js';
+let imgUrl = 'https://ApiMall.kdcer.com/'
+
+let userId = null;
+let mainData = null;
 
 Page({
   data: {
     list: {
       data: [],
+      state: 'none',
     },
     chosen: null,
   },
   onPullDownRefresh: function () {
     this.reload_list();
   },
-  // onReachBottom: function () {
-  //   this.load_list();
-  // },
   onLoad: function () {
-    // wx.hideTabBar();
-    
-    this.load_list(false);
+    app.entry_finish(res => {
+      userId = res.userId
+      this.load_list(false, r => {
+        mainData = r;
+      });
+    })
   },
   choose: function(e) {
     var i = e.currentTarget.dataset.index;
@@ -41,6 +46,37 @@ Page({
       this.setData({ priceAll: 0, chosen: 0, list: this.data.list });
     }
   },
+
+  // 生成草稿订单
+  addToOrder: function() {
+    // 已选中的货单的ID
+    var ids = this.data.list.data.reduce((re,item) => {
+      re.push(item.id); return re;
+    }, []);
+    // 进行请求
+    post.toOrder(userId, ids, {}, res => {
+
+    });
+  },
+
+
+  // ------------------------------ 列表部分
+  // 列表数据转化
+  convert_list: function(r) {
+    return r.map(x => {
+      x.name = x.Commodity.Name;
+      x.id = x.Id;
+      x.img = imgUrl + x.Commodity.Files.swiper[0].PicUrl;
+      x.desc = money(x.Commodity.Price);
+      x.price = x.Commodity.Price;
+      x.link = '../detail/detail?Id=' + x.Commodity.Id
+      x.theight = 2;
+      x.dheight = 1;
+      x.checked = false;
+      x.number = x.BuyNum;
+      return x;
+    })
+  },
   // 更新当前列表数据
   update_list: function (r, callback) {
     let nowList = this._now_list().data;
@@ -51,11 +87,11 @@ Page({
   // 加载更多当前列表
   load_list: function (loading = true, callback) {
     loading && wx.showLoading();
-    post.page('首页', r => {
+    post.cart_list(userId, r => {
       wx.hideLoading();
       wx.stopPullDownRefresh();
       wx.hideNavigationBarLoading();
-      var r = this._default_data();
+      r = this.convert_list(r.DataList);
       this.update_list(r, callback);
     });
   },
@@ -81,5 +117,6 @@ Page({
         checked: false,
       }
     });
-  }
+  },
+  prevent: function(){ return false },
 })

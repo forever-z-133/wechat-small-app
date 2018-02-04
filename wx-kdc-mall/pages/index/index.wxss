@@ -23,3 +23,7 @@ page {
   margin: 0 30rpx;
   border-left: 8rpx solid;
 }
+.cart-list .radia-label {
+  margin: -25rpx 0;
+  padding: 25rpx 0;
+}

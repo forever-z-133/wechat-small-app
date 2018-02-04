@@ -74,6 +74,27 @@ module.exports = {
   list: function (callback) {
     callback && callback()
   },
+  //==============  请求 - 加入购物车
+  toCart: function (token, skuId, callback) {
+    _AJAX('加入购物车', 'Cart/ShopInCommodity', {
+      token: token,
+      id: skuId,
+    }, callback);
+  },
+  //==============  请求 - 购物车列表
+  cart_list: function (token, callback) {
+    _AJAX('购物车列表', 'Cart/GetUserShopCart', {
+      token: token,
+    }, callback);
+  },
+  //==============  请求 - 生成草稿订单
+  toOrder: function (token, ids, json, callback) {
+    _AJAX('生成草稿订单', 'Order/PlaceOrder', {
+      token: token,
+      cartId: ids,
+      fieldsJson: json,
+    }, callback);
+  },
   //==============  请求 - 拿取地址列表
   address: function (user, callback) {
     _AJAX('地址列表', 'crm/GetAddressList', {

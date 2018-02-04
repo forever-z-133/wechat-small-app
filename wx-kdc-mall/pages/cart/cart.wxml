@@ -8,11 +8,12 @@
   <view class='cart-list'>
     <list list-data='{{list.data}}' list-state='none' list-style='list-cart'>
       <block wx:for='{{list.data}}' wx:key='index'>
-        <label slot='before-content-{{index}}'>
-          <checkbox-group class='choose-item' bindchange='choose' data-index='{{index}}'>
+        <label class='radia-label' slot='before-content-{{index}}' catchtap='prevent'>
+          <checkbox-group class='choose-item' catchchange='choose' data-index='{{index}}'>
             <checkbox value="{{item.name}}" checked="{{item.checked}}" />
           </checkbox-group>
         </label>
+        <view class='number' slot='after-title-{{index}}'>x{{item.number}}</view>
       </block>
     </list>
   </view>
@@ -20,10 +21,10 @@
 
 <view class='cart-foot bottom-bar'>
   <checkbox-group class='choose-all' bindchange='chooseAll'>
-    <checkbox checked="{{chosen==list.data.length}}"/> <text>全选</text>
+    <label><checkbox checked="{{chosen==list.data.length}}"/> <text>全选</text></label>
   </checkbox-group>
   <view class='price-all'>
     合计：<text>{{priceAll || "￥0"}}</text>
   </view>
-  <view class='btn btn-comfirm' data-num='{{chosen || 0}}'>结算</view>
+  <view class='btn btn-comfirm' data-num='{{chosen || 0}}' catchtap='addToOrder'>结算</view>
 </view>
