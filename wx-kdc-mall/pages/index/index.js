@@ -9,6 +9,7 @@ let mainInfo = null;
 let userInfo = null;
 
 Page({
+  prevent: function() { return false },
   data: {
     banner: [],
     pageData: [],

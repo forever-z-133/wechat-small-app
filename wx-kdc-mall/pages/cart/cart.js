@@ -17,10 +17,10 @@ Page({
   onPullDownRefresh: function () {
     this.reload_list();
   },
-  onLoad: function () {
+  onShow: function () {
     app.entry_finish(res => {
       userId = res.userId
-      this.load_list(false, r => {
+      this.reload_list(false, r => {
         mainData = r;
       });
     })
@@ -51,11 +51,30 @@ Page({
   addToOrder: function() {
     // 已选中的货单的ID
     var ids = this.data.list.data.reduce((re,item) => {
-      re.push(item.id); return re;
+      item.checked && re.push(item.id); return re;
     }, []);
+    if (ids.length < 1) {
+      wx.showModal({
+        content: '至少也要选个商品吧',
+        showCancel: false,
+      }); return;
+    }
     // 进行请求
-    post.toOrder(userId, ids, {}, res => {
-
+    post.toOrder(userId, ids, null, res => {
+      if (!res.State) {
+        wx.showModal({
+          title: '新建订单失败',
+          content: JSON.stringify(res),
+        }); return;
+      }
+      // 成功则跳往订单确认页
+      wx.setStorage({
+        key: 'confirm',
+        data: res,
+        success: () => {
+          wx.navigateTo({ url: '../confirm/confirm' })
+        }
+      })
     });
   },
 

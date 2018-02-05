@@ -7,17 +7,18 @@ Page({
   data: {
     list: {
       data: [],
-      state: 'load',
+      state: 'none',
     },
-  },
-  onPullDownRefresh: function () {
-    this.reload_list();
   },
   onLoad: function () {
     wx.setNavigationBarTitle && wx.setNavigationBarTitle({
       title: '确认订单'
     });
-    wx.hideTabBar();
+  },
+  onShow: function () {
+    var r = wx.getStorageSync('confirm');
+
+
 
     this.load_list();
   },

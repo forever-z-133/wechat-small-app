@@ -1,4 +1,7 @@
 <!-- 首页 -->
+
+<!-- <view class='prevent' catchtouchstart='prevent'></view> -->
+
 <view class='section banner' wx:if='{{banner.length}}'>
   <swiper class='banner-swiper'>
     <block wx:for='{{banner}}' wx:key='index'>

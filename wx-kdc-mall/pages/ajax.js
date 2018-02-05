@@ -91,8 +91,8 @@ module.exports = {
   toOrder: function (token, ids, json, callback) {
     _AJAX('生成草稿订单', 'Order/PlaceOrder', {
       token: token,
-      cartId: ids,
-      fieldsJson: json,
+      cartId: ids.join(','),
+      fieldsJson: null,
     }, callback);
   },
   //==============  请求 - 拿取地址列表
