@@ -1,11 +1,18 @@
 /* pages/cart/cart.wxss */
 
 .cart-head {
+  position: relative;
   line-height: 100rpx;
   text-align: center;
 }
+.btn-edit {
+  position: absolute;
+  top: 0;
+  right: 25rpx;
+  font-size: .8em;
+}
 .cart-body {
-  margin: 100rpx 0;
+  margin: 0 0 100rpx;
 }
 .choose-item {
   margin-top: 40rpx;
@@ -37,4 +44,23 @@
   float: right;
   margin-top: .2em;
   font-size: .7em;
+}
+
+.number-edit {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  font-size: .7em;
+  width: 230rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.number-edit button {
+  width: 2em;
+  line-height: 2em;
+  padding: 0;
+}
+.number-edit text {
+  margin: 0 20rpx;
 }

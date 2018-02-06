@@ -2,6 +2,7 @@
 
 <view class='cart-head top-bar'>
   <view class='head-text'>购物车</view>
+  <button class='pure btn-edit' bindtap='list_edit'>{{list.editing?"完成":"编辑"}}</button>
 </view>
 
 <view class='cart-body'>
@@ -13,7 +14,12 @@
             <checkbox value="{{item.name}}" checked="{{item.checked}}" />
           </checkbox-group>
         </label>
-        <view class='number' slot='after-title-{{index}}'>x{{item.number}}</view>
+        <view class='number' wx:if='{{!list.editing}}' slot='after-title-{{index}}'>x{{item.number}}</view>
+        <view class='number-edit' wx:if='{{list.editing}}' slot='append-content-{{index}}'>
+          <button catchtap='addNumber' data-index='{{index}}'>+</button>
+          <text>{{item.number}}</text>
+          <button catchtap='minusNumber' data-index='{{index}}'>-</button>
+        </view>
       </block>
     </list>
   </view>

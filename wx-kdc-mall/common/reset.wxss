@@ -5,3 +5,12 @@ image {
   display: block;
   background: #f0f0f0;
 }
+button.pure {
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  background: none;
+}
+button.pure::after {
+  display: none
+}

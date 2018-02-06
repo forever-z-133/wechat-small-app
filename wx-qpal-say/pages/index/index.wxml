@@ -4,7 +4,7 @@
     <view class='bg'><image src='{{imgUrl}}bg1.jpg'></image></view>
     <view class='buttons'>
       <button class='btn' bindtap='showRule'><image src='{{imgUrl}}btn-rule.png'></image><text>规则</text></button>
-      <button class='btn' bindtap='start'><image src='{{imgUrl}}btn-start.png'></image><text>我要表白</text></button>
+      <button class='btn' bindtap='page_start'><image src='{{imgUrl}}btn-start.png'></image><text>我要表白</text></button>
     </view>
   </view>
   <view class='modal rule {{page.rule?"in":""}}'>
@@ -17,7 +17,7 @@
         <view class='rule-line'>活动期间，每个微信号可以表白无限次，但仅有1次成功表白领红包的机会；</view>
         <view class='rule-line'>成功获得红包的用户需在24小时内提现，逾期无效哦！</view>
       </view>
-      <button class='btn' bindtap='start'><image src='{{imgUrl}}btn-start.png'></image><text>我要表白</text></button>
+      <button class='btn' bindtap='page_start'><image src='{{imgUrl}}btn-start.png'></image><text>我要表白</text></button>
     </view>
   </view>
   <scroll-view scroll-y class='page main {{page.main?"in":""}}' bindscrolltolower='load_list'>
@@ -31,7 +31,8 @@
         <view class='icon icon-say'></view>
         <text class='text2'>{{question}}</text>
       </view>
-      <button class='btn long btn-record {{recording?"on":""}}' bindtouchstart='record' bindtap='stop' bindtouchcancel='stop' bindtouchend='stop'><image src='{{imgUrl}}btn-say.png'></image><text>开始录音</text></button>
+      <button class='btn long btn-record {{recording?"on":""}} {{disable?"disabled grey":""}}' bindtouchstart='record' bindtap='stop' bindtouchcancel='stop' bindtouchend='stop'><image src='{{imgUrl}}btn-say.png'></image><text>开始录音</text></button>
+      <button class='btn long btn-record grey' wx:if='{{empty}}'><image src='{{imgUrl}}disable.png'></image><text>没钱了</text></button>
       <button open-type='share' class='btn-share'>
         <view class='icon icon-share'></view>
         <text>转发好友</text>
@@ -69,12 +70,12 @@
     <form class='get-box' bindsubmit='getMoney'>
       <view class='group'>
         <view class='label'>账户余额</view>
-        <view class='all-price'>{{price || 0.00}}</view>
+        <view class='all-price'>{{price/100 || 0.00}}</view>
       </view>
       <view class='group'>
         <view class='label'>提现余额</view>
-        <view class='input-box'>￥<input name='price'></input></view>
-        <view>提现到微信钱包，<button>全部提现</button></view>
+        <view class='input-box'>￥<input name='price' type='digit' value='{{myPrice?myPrice/100:""}}'></input></view>
+        <view>提现到微信钱包，<button bindtap='all_price'>全部提现</button></view>
       </view>
       <button class='btn' form-type='submit'><image src='{{imgUrl}}btn-get-money.png'></image><text>提现</text></button>
       <view class='get-tip'>1-5个g工作日到账</view>
@@ -89,8 +90,8 @@
       <view class='man good-man' style='background-image:url({{imgUrl}}good-man.png)'><image src=''></image></view>
       <view class='result-content'>
         <view class='good-tip'>不错哟~普通话达到一级甲等水平喽！</view>
-        <view class='good-price' wx:if='{{!prize}}'>{{prize}}元红包快快领走吧！</view>
-        <button class='btn'><image src='{{imgUrl}}btn-get.png'></image><text>提现</text></button>
+        <view class='good-price' wx:if='{{prize}}'>{{prize/100}}元红包快快领走吧！</view>
+        <button class='btn' bindtap='page_get'><image src='{{imgUrl}}btn-get.png'></image><text>提现</text></button>
       </view>
     </view>
   </view>
@@ -103,7 +104,7 @@
       <view class='man bad-man' style='background-image:url({{imgUrl}}bad-man.png)'><image src=''></image></view>
       <view class='result-content'>
         <view class='bad-tip'>先把“凤绍逢”说对再来吧！</view>
-        <button class='btn'><image src='{{imgUrl}}btn-again.png'></image><text>再来一次</text></button>
+        <button class='btn' bindtap='close_bad'><image src='{{imgUrl}}btn-again.png'></image><text>再来一次</text></button>
       </view>
     </view>
   </view>

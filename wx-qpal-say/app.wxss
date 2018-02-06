@@ -12,6 +12,13 @@
 
 /* @import 'libs/font.wxss';  */
 
+.disabled {
+  user-select: none;
+  pointer-events: none;
+}
+.grey {
+  filter: grayscale(1)
+}
 .text {
   word-wrap: normal;
   overflow: hidden;

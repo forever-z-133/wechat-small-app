@@ -5,16 +5,21 @@ let baseUrl = 'https://apimall.kdcer.com/api/';
 // let baseUrl = app.data.baseUrl + 'page/';
 // let baseUrl = 'https://sum.kdcer.com/api/OpenShop/';
 
-function _AJAX(name, url, data, success) {
+function _AJAX(name, url, data, success, type = 'GET') {
   wx.request({
     url: baseUrl + url,
     data: data,
+    method: type,
     success: function (r) {
       if (systemError(r.data)) return;
       success && success(r.data);
       console.log(name, r.data);
     },
     fail: function(err) {
+      wx.hideLoading();
+      wx.hideToast();
+      wx.stopPullDownRefresh();
+      wx.hideNavigationBarLoading();
       wx.showModal({
         title: name + '接口错误',
         content: JSON.stringify(err),
@@ -22,31 +27,22 @@ function _AJAX(name, url, data, success) {
     }
   });
 }
+function _GET(name, url, data, success) {
+  _AJAX(name, url, data, success, 'GET')
+}
+function _POST(name, url, data, success) {
+  _AJAX(name, url, data, success, 'POST')
+}
 
 module.exports = {
   //==============  请求 - 入口
   entry: function (code, res, callback) {
-    wx.request({
-      url: 'https://apimall.kdcer.com/api/user/CodeToSession',
-      method: 'POST',
-      data: {
-        code: code,
-        iv: res.iv,
-        encryptedDataStr: res.encryptedData,
-        userJson: JSON.stringify(res.userInfo),
-      },
-      success: function (r) {
-        if (systemError(r.data)) return;
-        console.log('入口', r.data);
-        callback && callback(r.data);
-      },
-      fail: function (err) {
-        wx.showModal({
-          title: '入口' + '接口错误',
-          content: JSON.stringify(err),
-        });
-      }
-    });
+    _POST('入口', 'user/CodeToSession', {
+      code: code,
+      iv: res.iv,
+      encryptedDataStr: res.encryptedData,
+      userJson: JSON.stringify(res.userInfo),
+    }, callback);
   },
   //==============  请求 - 拿取页面
   page: function (name = '首页', callback) {
@@ -85,6 +81,12 @@ module.exports = {
   cart_list: function (token, callback) {
     _AJAX('购物车列表', 'Cart/GetUserShopCart', {
       token: token,
+    }, callback);
+  },
+  //==============  请求 - 修改购物车
+  edit_cart: function (json, callback) {
+    _GET('修改购物车', 'Cart/ChangeOrderCart', {
+      cartJson: json,
     }, callback);
   },
   //==============  请求 - 生成草稿订单

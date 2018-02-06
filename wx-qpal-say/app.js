@@ -21,7 +21,9 @@ App({
       this.entry_finish(this.data)
     } else {
       this.login(code => {
+        this.data.code = code;
         this.getInfo(res => {
+          this.data.userData = res;
           this.data.userInfo = res.userInfo;
           cb && cb(this.data);
           this._entry_finish(this.data);
@@ -87,21 +89,18 @@ App({
   ifGetUser: function (callback) {
     wx.getSetting ? wx.getSetting({
       success: settings => {
-        var can = settings.authSetting['scope.userInfo']
+        // var need = ['userInfo', 'record']
+        var need = ['userInfo']
+        console.log(settings.authSetting)
+        var can = need.reduce((re, p) => {
+          return !!settings.authSetting['scope.' + p] && re;
+        }, true);
+        // var can = settings.authSetting['scope.userInfo']
         this.data.noUser = can
         console.log('是否已授权', can)
         if (!this.data.noUser) {
           wx.hideLoading();
-          wx.showModal({
-            content: '拒绝了授权，是否重新开启',
-            confirmText: '前往开启',
-            showCancel: false,
-            success: res => {
-              wx.openSetting({
-                success: (res) => { }
-              });
-            },
-          });
+          this.openSetting();
           return;
         } else {
           callback && callback(true);
@@ -112,11 +111,24 @@ App({
       showCancel: false
     });
   },
+  openSetting: function () {
+    wx.showModal({
+      content: '拒绝了授权，是否重新开启',
+      confirmText: '前往开启',
+      showCancel: false,
+      success: res => {
+        wx.openSetting({
+          success: (res) => { }
+        });
+      },
+    });
+    return false;
+  },
 
   // 公共分享
   share: function () {
     return {
-      title: '坤鼎家的电商小程序',
+      title: '来吧！快快表白抢红包！',
       path: '/pages/index/index',
     }
   }

@@ -3,9 +3,9 @@
 
 <view class='top-tool'>
   <button class='btn-none btn' open-type='share'><view class='icon icon-share'></view></button>
-  <button class='btn-none btn'><view class='icon icon-tel'></view></button>
+  <button class='btn-none btn' data-tel='{{phone}}' bindtap='phone' wx:if='{{phone}}'><view class='icon icon-tel'></view></button>
   <navigator url='../cart/cart' open-type='switchTab' class='btn-none btn'><view class='icon icon-cart'></view></navigator>
-  <button class='btn-none btn'><view class='icon icon-order'></view></button>
+  <navigator url='../orders/orders' class='btn-none btn'><view class='icon icon-order'></view></navigator>
 </view>
 
 <view class='section banner' wx:if='{{banner.length}}'>

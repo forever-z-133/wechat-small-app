@@ -22,13 +22,13 @@
   <view class='cell'>
     <list list-data='{{list.data}}' list-style='list-order-confirm' list-state='none'>
       <block wx:for='{{list.data}}' wx:key='index'>
-        <view class='other' slot='after-content-{{index}}'>
-          <view>{{item.price}}0.000</view>
-          <view>{{item.num}}x2</view>
+        <view class='other' slot='append-content-{{index}}'>
+          <view>{{item.price}}</view>
+          <view>x{{item.BuyNum}}</view>
         </view>
         <view class='list-more' slot='after-item-{{index}}'>
-          <view class='line'>商品金额：<view>{{"快递"}}</view></view>
-          <view class='line'>优惠折扣：<view>{{"快递"}}</view></view>
+          <view class='line'>商品金额：<view>{{item.all}}</view></view>
+          <view class='line'>优惠折扣：<view>{{item.Discount}}</view></view>
         </view>
       </block>
     </list>

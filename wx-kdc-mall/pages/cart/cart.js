@@ -10,6 +10,7 @@ Page({
   data: {
     list: {
       data: [],
+      editing: false,
       state: 'none',
     },
     chosen: null,
@@ -76,6 +77,54 @@ Page({
         }
       })
     });
+  },
+
+  // 
+  list_edit: function() {
+    if (this.data.list.editing) { // 编辑完成
+      this.data.list.editing = false;
+      this.data.list.data.map(item => {
+        item.BuyNum = item.number;
+        return item;
+      })
+      post.edit_cart(this.data.list.data, res => {
+        wx.showToast({ title: '修改成功', icon: 'success' });
+      });
+    } else {
+      this.data.list.editing = true;
+    }
+    this.setData({ list: this.data.list });
+  },
+  // 数量加减
+  addNumber: function(e) {
+    var i = e.currentTarget.dataset.index;
+    var item = this.data.list.data[i];
+    if (++item.number > item.Commodity.Stock) {
+      wx.showModal({
+        content: '您选择的数量超过库存了',
+        showCancel: false,
+      });
+      item.number = item.Commodity.Stock
+    }
+    this.setData({ list: this.data.list });
+  },
+  minusNumber: function (e) {
+    var i = e.currentTarget.dataset.index;
+    var item = this.data.list.data[i];
+    if (--item.number < 1) {
+      wx.showModal({
+        content: '你是要删除这件商品吗？',
+        confirmText: '是的',
+        complete: res => {
+          if (res.cancel) {
+            item.number = 1;
+          } else if (res.confirm) {
+            this.data.list.data.splice(i, 1)
+          }
+        },
+      })
+    }
+    this.setData({ list: this.data.list });
   },
 
 

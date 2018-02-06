@@ -105,6 +105,10 @@ Page({
       this.setData({ moal_show: false });
     });
   },
+  phone: function(e) {
+    var tel = e.currentTarget.dataset.tel;
+    wx.makePhoneCall({ phoneNumber: tel })
+  },
   openModal: function () {
     this.setData({ modal_show: true })
   },
