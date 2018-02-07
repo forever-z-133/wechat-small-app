@@ -3,9 +3,12 @@ const app = getApp();
 let userId = null;
 let screenId = null;
 let questionId = null;
+let user = null;
 import post from '../ajax.js';
 
 let audio = wx.createInnerAudioContext()
+// audio.loop = true;
+audio.obeyMuteSwitch = false;
 let record = wx.getRecorderManager()
 let recordOption = {
   duration: 10000,//指定录音的时长，单位 ms 
@@ -21,12 +24,14 @@ let default_page = {
   rule: false,
   main: false,
   get: false,
+  get_ok: false,
   good: false,
   bad: false,
   gameover: false,
 };
 
 Page({
+  prevent: function() { return false },
   onShareAppMessage: app.share,
   onPullDownRefresh: function() {
     this.refresh();
@@ -34,26 +39,34 @@ Page({
   data: {
     imgUrl: 'https://sum.kdcer.com/test/wx-qpal-say/',
     page: Object.assign({}, default_page),
-    list: { data: [], state: 'load' },
+    list: { data: [], state: 'none' },
     question: '题目'.repeat(Math.random()*20>>0),
   },
   onLoad: function () {
     // this.data.page = Object.assign({}, default_page);
     // this.setData({ page: this.data.page });
-    
-    // this.initRecord();
 
-    wx.showLoading({ title: '题目准备中...', mask: true });
-    app.entry_finish(res => {
+    this.loginTimer = setTimeout(() => {
+      this.main_entry();
+    }, 5000)
+
+    this.main_entry();
+    this.bgm();
+  },
+  main_entry: function () {
+    wx.showLoading({ title: 'loading...', mask: true });
+    app.entry(res => {
+      clearInterval(this.loginTimer);
+      this.user = res.userInfo;
       post.entry(res.code, res.userData, r => {
         if (!r.State) {
           wx.showModal({
             title: '系统错误',
-            content: r.Message || r.errMsg || '',
+            content: r.Message || r.errMsg || r.Msg || '',
           }); return;
         }
-        userId = r.UserInfo.UserGuid;
-        screenId = r.Event.ThisScreen.ScreeningId;
+        this.userId = r.UserInfo.UserGuid;
+        this.screenId = r.Event.ThisScreen.ScreeningId;
 
         this.data.page.welcome = true;
         this.setData({
@@ -78,16 +91,26 @@ Page({
 
     this.setData({
       price: r.UserInfo.Amount,
-      disable: r.ThisPlay.IsVerify,  // 是否玩过
+      disable: r.IsSuccess,  // 是否中过奖
     })
   },
 
   game_start: function(callback) {
-    post.begin(userId, screenId, res => {
+    post.begin(this.userId, this.screenId, res => {
+      if (!res.State) {
+        wx.showModal({
+          title: '系统错误',
+          content: r.Messgae,
+        }); return;
+      }
+
       wx.hideLoading()
 
-      questionId = res.ScreenDetailId
-      this.reload_list(res.GiftList);
+      this.questionId = res.ScreenDetailId
+      res.GiftList && this.reload_list(res.GiftList);
+
+      this.setData({ list: this.data.list })
+
       this.setData({
         question: res.ShowContent,
       })
@@ -98,7 +121,21 @@ Page({
 
   // --------------------- 提现部分
   all_price: function() {
-    this.setData({ myPrice:  this.data.price });
+    this.setData({ myPrice: this.data.price });
+  },
+  input: function (e) {
+    var val = e.detail.value * 100 + '';
+
+    if (/(\d+)|(\d+\.\d+)|(\.\d+)/.test(val)) {
+      this.lastInput = val;
+    } else {
+      // wx.showToast({ title: '慢点输，别急嘛', duration: 800 });
+      this.setData({ myPrice: this.lastInput || 0 });
+    }
+    
+    if (val > this.data.price) {
+      this.setData({ myPrice: this.data.price });
+    }
   },
   getMoney: function(e) {
     var price = e.detail.value.price;
@@ -110,7 +147,11 @@ Page({
         showCancel: false,
       }); return;
     }
-    post.getMoney(userId, price, res => {
+    wx.showLoading({ mask: true });
+    // if (!this.posting) return
+    // this.posting = true;
+    post.getMoney(this.userId, price, res => {
+      wx.hideLoading();
       if (!res.State) {
         wx.showModal({
           title: '提现失败',
@@ -118,9 +159,12 @@ Page({
           showCancel: false,
         }); return;
       }
-      this.data.page.get = false;
-      wx.showToast({ title: '提现成功', icon: 'success' });
-      this.setData({ page: this.data.page });
+      this.voice('good');
+      this.data.page.good = false;
+      // this.data.page.get = false;
+      this.data.page.get_ok = true;
+      // wx.showToast({ title: '提现成功', icon: 'success' });
+      this.setData({ page: this.data.page, myPrice: 0, price: res.TotalAmount });
     })
   },
 
@@ -154,6 +198,7 @@ Page({
   },
   record: function (e) {
     // 开始录音
+    this.stopAllVoice();
     this.setData({ recording: true })
     clearTimeout(this.Timer);
     this.Timer = setTimeout(() => {
@@ -180,20 +225,20 @@ Page({
     this.setData({ recording: false });
     if (!e) return false;
     if (e && e.timeStamp - this.startRecordTime < 1000) {
-      wx.showToast({ title: '录音时间过短' });
+      wx.showToast({ title: '录音时间过短', mask: true });
       this.recordSuccess = false;
     } else { this.recordSuccess = true }
   },
   record_finish(res) {
-    wx.showLoading({ title: '匹配判定中...' });
-    console.log(userId, screenId, questionId)
+    wx.showLoading({ title: '匹配判定中...', mask: true });
+    console.log(this.userId, this.screenId, this.questionId)
     wx.uploadFile({
       url: 'https://sum.kdcer.com/api/SouthGift/VerifyVoice',
       filePath: res.tempFilePath,
       formData: {
-        UserGuid: userId,
-        ScreenId: screenId + '',
-        ScreenDetailId: questionId + '',
+        UserGuid: this.userId,
+        screenId: this.screenId + '',
+        ScreenDetailId: this.questionId + '',
         Event: 'QingPu',
       },
       name: "Voice",
@@ -203,19 +248,39 @@ Page({
         console.log('验证语音', r);
         if (r.State && r.Checked) {
           this.data.page.good = true;
+          // this.onLoad();
+          this.data.list.data.unshift(function(user){
+            var x = {};
+            console.log(user)
+            x.name = user.nickName;
+            x.img = user.avatarUrl;
+            x.playing = false;
+            x.second = 0;
+            x.male = user.gender;
+            x.audio = r.VoiceUrl;
+            x.money = money(r.TotalAmount / 100);
+            return x;
+          }(this.user))
           this.setData({
-            price: r.Amount,
-            page: this.data.page
+            price: r.TotalAmount,
+            list: this.data.list,
+            disable: true,
+            thisPrice: money(r.Amount/100),
+            page: this.data.page,
+            good_word: r.Message
           });
+          this.voice('good');
         } else if (!r.Checked) {
-          wx.showModal({
-            title: '识别失败',
-            content: '您说的是：' + r.Baidu + '。\n' + r.Message,
-          });
+          this.data.page.bad = true;
+          this.setData({
+            page: this.data.page,
+            bad_word: r.Message
+          })
+          // this.voice('bad');
         } else if (!r.State) {
           wx.showModal({
             title: '系统错误',
-            content: '您说的是：' + r.Baidu + '。\n' + r.Message,
+            content: r.Message,
           })
         }
       }
@@ -230,32 +295,64 @@ Page({
       item.playing = false;
       audio.stop();
     } else {
-      this.data.list.data.map(x => x.playing = false);
+      this.data.list.data.map(x => {
+        x.playing = false;
+      });
       item.playing = true;
       audio.stop();
       audio.src = item.audio;
       audio.play();
     }
+
+    audio.onEnded(res => {
+      this.stopAllVoice();
+    })
+    
+    this.setData({ list: this.data.list });
+  },
+  stopAllVoice() {
+    this.data.list.data.map(x => {
+      x.playing = false;
+      return x;
+    });
+    audio.stop();
     this.setData({ list: this.data.list });
   },
 
 
   // -------------------- 列表部分
   convert_list: function(r) {
-    return r;
+    return r.map(x => {
+      x.name = x.UserInfo.NickName;
+      x.img = x.UserInfo.HeadImgUrl;
+      x.playing = false;
+      x.second = 0;
+      x.male = x.UserInfo.Gender;
+      x.audio = x.VoiceUrl;
+      x.money = money(x.Amount/100);
+      return x;
+    });
   },
   load_list(r) {
-    if (this.list_loding) return;
-    this.list_loding = true;
-    setTimeout(() => {
-      this.list_loding = false;
-      var arr = r != undefined ? r : this._create_list_data();
-      arr = this.convert_list(arr);
-      var list = this.data.list;
-      if (arr.length < 1) list.state = 'empty';
-      list.data.push(...arr);
-      this.setData({ list: this.data.list });
-    }, 300);
+    // var arr = this._create_list_data();
+    var arr = r;
+    arr = this.convert_list(arr);
+    var list = this.data.list;
+    console.log(arr)
+    list.data.push(...arr);
+    list.state = 'empty';
+    this.setData({ list: this.data.list });
+    // if (this.list_loding) return;
+    // this.list_loding = true;
+    // setTimeout(() => {
+    //   this.list_loding = false;
+    //   var arr = r != undefined ? r : this._create_list_data();
+    //   arr = this.convert_list(arr);
+    //   var list = this.data.list;
+    //   if (arr.length < 1) list.state = 'empty';
+    //   list.data.push(...arr);
+    //   this.setData({ list: this.data.list });
+    // }, 300);
   },
   reload_list(r) {
     this.data.list.data = [];
@@ -280,7 +377,10 @@ Page({
   // -------------------- 界面显隐部分
   page_start: function () {
     this.data.page.rule = false;
+    this.data.page.welcome = false;
     this.data.page.main = true;
+    audio.stop();
+    audio.loop = false;
     this.setData({ page: this.data.page });
   },
   showRule: function () {
@@ -292,7 +392,6 @@ Page({
     this.setData({ page: this.data.page });
   },
   page_get: function () {
-    this.data.page.good = false;
     this.data.page.get = true;
     this.setData({ page: this.data.page });
   },
@@ -300,9 +399,36 @@ Page({
     this.data.page.bad = true;
     this.setData({ page: this.data.page });
   },
+  page_welcome: function () {
+    this.data.page.main = false;
+    this.data.page.welcome = true;
+    this.bgm()
+    this.setData({ page: this.data.page });
+  },
   close_bad: function () {
     this.data.page.bad = false;
     this.setData({ page: this.data.page });
+  },
+  cancel: function() {
+    this.data.page.get = false;
+    this.data.page.good = false;
+    this.setData({ page: this.data.page });
+  },
+  close_ok: function () {
+    this.data.page.get = false;
+    this.data.page.get_ok = false;
+    this.setData({ page: this.data.page });
+  },
+  bgm: function(){
+    audio.stop();
+    audio.loop = true;
+    audio.src = this.data.imgUrl + 'bgm.mp3';
+    audio.play();
+  },
+  voice: function (type) {
+    audio.stop();
+    audio.src = this.data.imgUrl + type + '.mp3';
+    audio.play();
   },
 })
 

@@ -8,6 +8,10 @@
   50% { transform: translate3d(0, -5rpx, 0) }
 }
 
+input {
+  height: 1em;
+  min-height: 1em;
+}
 
 
 .welcome .buttons {
@@ -15,6 +19,15 @@
   bottom: 4%;
   left: 20%;
   right: 20%;
+}
+.welcome .canToGetMOney {
+  bottom:2%;
+  left:25%;
+  right:25%;
+}
+.canToGetMOney .btn-get-money {
+  position: static;
+  /* display: block; */
 }
 .welcome.in .buttons .btn {
   animation: scale 2s cubic-bezier(0.075, 0.82, 0.165, 1), up_down 2s infinite linear;
@@ -24,6 +37,9 @@
 }
 .welcome.in .buttons .btn:nth-child(2) {
   animation-delay: 0s, 2.5s;
+}
+.welcome.in .buttons .btn:nth-child(3) {
+  animation-delay: 0s, 3s;
 }
 
 .rule-box {
@@ -37,8 +53,8 @@
 .rule-text {
   position: absolute;
   top: 13%;
-  left: 22%;
-  right: 22%;
+  left: 20%;
+  right: 20%;
   color: #6a3906;
   font-size: 30rpx;
   line-height: 50rpx;
@@ -68,13 +84,13 @@
   justify-content: space-around;
 }
 .user {
-  width: 200rpx;
   margin: 35rpx auto 40rpx;
   color: #ffba4d;
   font-weight: bold;
 }
 .user-image {
-  margin-bottom: 15rpx;
+  width: 200rpx;
+  margin: 0 auto 15rpx;
   border: 8rpx solid;
   border-radius: 100%;
 }
@@ -184,13 +200,17 @@
 .record-play {
   width: 30rpx;
   height: 40rpx;
-  margin-left: 20rpx;
+  margin: 10rpx 0;
+  /* margin-left: 20rpx; */
   background-size: 100% 300%;
-  background-position: 0 100%;
+  background-position: 50% 0%;
   background-image: url(data:image/png;base64,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);
+}
+.record-play.in {
   animation: voice 1s infinite steps(3);
 }
 @keyframes voice {
+  from {background-position: 50% 100%}
   to {background-position: 50% -50%}
 }
 
@@ -281,4 +301,60 @@
   text-align: center;
   font-size: .8em;
   margin-bottom: 20rpx;
+}
+.btn-back {
+  margin: -20rpx auto 20rpx;
+}
+
+.main {
+  background: linear-gradient(#d94042 500rpx, #ffe1b2 300rpx, #ffe1b2)
+}
+
+.main .btn-get-money {
+  position: absolute;
+  top: 2%;
+  right: 1%;
+  width: 4em;
+  color: #f6e46b
+}
+.btn-back-welcome {
+  position: absolute;
+  top: 2%;
+  left: 1%;
+  width: 4em;
+  color: #f6e46b
+}
+
+.list-title {
+  width:100%;
+  margin-top: -20rpx;
+  margin-bottom: 10rpx;
+  font-weight: bold;
+  color: #683905;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.get_ok .title {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: -.2em;
+}
+.ok-man {
+  z-index: 1;
+}
+.boom {
+  position: absolute;
+  z-index: 0;
+  top: 10%;
+  left: -60rpx;
+  width: 720rpx;
+  height: 309rpx;
+}
+.in .boom {
+  animation: scale 1s .2s, coin 2s infinite 1.2s linear;
+}
+@keyframes coin {
+  50% {transform: scale(.97)}
 }

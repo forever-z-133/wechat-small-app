@@ -20,9 +20,24 @@ Page({
   onShow: function () {
     var r = wx.getStorageSync('confirm');
     console.log('临时订单', r);
+    if (!r || !r.State) {
+      wx.showModal({
+        content: '出了些错误，不如你去订单页检查下吧',
+        showCancel: false,
+        confirmText: '好吧',
+        success: () => {
+          wx.redirectTo({ url: '../orders/orders' })
+        }
+      })
+    }
 
+    r = r.DraftOrder
 
-    this.reload_list(r.DraftOrder.OrderDraftInfos);
+    this.setData({
+      time: new Date(r.CreateTime)
+    })
+
+    this.reload_list(r.OrderDraftInfos);
   },
   remove: function (e) {
     console.log(e)

@@ -8,12 +8,6 @@ App({
     userId: null,
     baseUrl: "https://apimall.kdcer.com/api/",
   },
-  onLaunch: function () {
-
-  },
-  onShow: function () {
-    // this.entry();
-  },
 
   // 身份接口，在 page.js 中使用 app.entry_finish 即可
   entry: function (cb) {
@@ -24,7 +18,7 @@ App({
         this.data.userData = res;
         this.data.userInfo = res.userInfo;
         cb && cb(this.data);
-        // this._entry_finish(this.data);
+        this._entry_finish(this.data);
       })
     })
   },
@@ -44,25 +38,27 @@ App({
         console.log('登录', res)
         this.data.code = res.code
         callback && callback(res.code);
+      },
+      fail: err => {
+        wx.showModal({
+          title: '系统错误',
+          content: JSON.stringify(err),
+        })
       }
     })
   },
   getInfo: function (callbcak) {
-    // if (this.data.userInfo) {
-    //   callbcak && callbcak(this.data.userInfo)
-    // } else {
-      wx.getUserInfo({
-        lang: 'zh_CN',
-        withCredentials: true,
-        complete: res => {
-          this.ifGetUser(can => { // 判断是否已授权
-            console.log('用户信息', res.userInfo)
-            this.data.userInfo = res
-            callbcak && callbcak(res)
-          })
-        }
-      })
-    // }
+    wx.getUserInfo({
+      lang: 'zh_CN',
+      withCredentials: true,
+      complete: res => {
+        this.ifGetUser(can => { // 判断是否已授权
+          console.log('用户信息', res.userInfo)
+          this.data.userInfo = res
+          callbcak && callbcak(res)
+        })
+      }
+    })
   },
 
   // 系统信息
@@ -92,7 +88,7 @@ App({
           return !!settings.authSetting['scope.' + p] && re;
         }, true);
         // var can = settings.authSetting['scope.userInfo']
-        this.data.noUser = can;
+        this.data.noUser = can
         if (!this.data.noUser) {
           wx.hideLoading();
           this.openSetting();
@@ -123,7 +119,7 @@ App({
   // 公共分享
   share: function () {
     return {
-      title: '来吧！快快表白抢红包！',
+      title: '"肉"情蜜意',
       path: '/pages/index/index',
     }
   }
