@@ -1,7 +1,7 @@
 
 import { extend, systemError } from '../utils/util.js';
 const app = getApp();
-let baseUrl = 'https://sum.kdcer.com/api/';
+var baseUrl = 'https://sum.kdcer.com/api/';
 
 
 function _AJAX(type = 'POST', name, url, data, success) {

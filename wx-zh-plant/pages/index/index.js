@@ -3,7 +3,7 @@ const app = getApp();
 import post from '../ajax.js';
 
 let audio = null;
-if (wx.createInnerAudioContext) {
+if (typeof wx.createInnerAudioContext == 'function') {
   audio = wx.createInnerAudioContext()
 }
 
@@ -30,21 +30,6 @@ Page({
       console.log('login is not access')
       this.main();
     }, 5000);
-
-    wx.getSystemInfo({
-      success: function (res) {
-        console.log('手机品牌', res.brand)
-        console.log('手机型号', res.model)
-        console.log('设备像素比	', res.pixelRatio)
-        console.log('屏幕宽度', res.windowWidth)
-        console.log('屏幕高度', res.windowHeight)
-        console.log('微信设置的语言', res.language)
-        console.log('微信版本号', res.version)
-        console.log('操作系统版本', res.system)
-        console.log('客户端平台', res.platform)
-        console.log('客户端基础库版本', res.SDKVersion)
-      },
-    })
   },
   onShow: function () {
     this.main();
@@ -54,8 +39,8 @@ Page({
     wx.showLoading({ title: 'loading...', mask: true });
     app.entry(res => {
       clearInterval(this.loginTimer)
-      this.data.page.welcome = true;
       this.setData({ page: this.data.page });
+      this.data.page.welcome = true;
       post.entry(res.code, res.userData, r => {
         wx.hideLoading()
         if (!r.State) {
@@ -64,6 +49,8 @@ Page({
             this.setData({
               prize: {
                 name: r.Des + (r.Take ? "(已领取)" : ""),
+                Address: r.Address,
+                Tel: r.Tel,
                 more: '请前往' + (r.Address || "百联中环") + '处凭手机号' + (r.Tel ? "("+r.Tel+")" : "")+'领取奖品',
                 tips: '记得要在 ' + (r.Time || "2月14号10:00-21:00") + ' 领取奖品呦',
                 qrcode: r.Bonus,
@@ -109,6 +96,8 @@ Page({
           playAnim: true,
           prize: {
             name: r.Bonuses[0].Des + (r.Bonuses[0].Take ? "(已领取)" : ""),
+            Address: r.Bonuses[0].Address,
+            Tel: r.Bonuses[0].Tel,
             more: '请前往' + (r.Bonuses[0].Address || "百联中环") + '处凭手机号' + (r.Bonuses[0].Tel ? "(" + r.Bonuses[0].Tel + ")":"") +'领取奖品',
             tips: '记得要在 ' + (r.Bonuses[0].Time || "2月14号10:00-21:00") + ' 领取奖品呦',
             qrcode: r.Bonuses[0].QRCode,
@@ -123,7 +112,10 @@ Page({
           });
         }
         this.data.page.bad = true;
-        this.setData({ page: this.data.page });
+        this.setData({
+          page: this.data.page,
+          playAnim: true,
+        });
         this.voice('bad');
       }
     })

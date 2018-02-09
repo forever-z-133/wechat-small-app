@@ -119,8 +119,9 @@ App({
   // 公共分享
   share: function () {
     return {
-      title: '"肉"情蜜意',
+      title: '“多”姿多彩 “肉”情蜜意 情人节来百联中环玩点新花样',
       path: '/pages/index/index',
+      imageUrl: 'https://sum.kdcer.com/test/wx-zh-plant-0207/share.png'
     }
   }
 })

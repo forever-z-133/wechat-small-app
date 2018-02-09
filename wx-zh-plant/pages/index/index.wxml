@@ -2,6 +2,7 @@
 <view class='body'>
   <view class='page welcome {{page.welcome?"in":""}}'>
     <view class='bg'><image src='{{imgUrl}}bg.jpg'></image></view>
+    <view class='img temp'><image src='{{imgUrl}}dialog.png'></image></view>
     <view class='img logo'><image src='{{imgUrl}}logo.png'></image></view>
     <view class='img title'><image src='{{imgUrl}}title.png'></image></view>
     <form bindsubmit='submit' class='main-form'>
@@ -9,7 +10,7 @@
         <input type='number' placeholder='请输入手机号码' name='phone' cursor-spacing='40' placeholder-class='pink' confirm-type='send'></input>
       </label>
       <button form-type='submit' class='btn pure'>
-        <image src='{{imgUrl}}btn-start.png'></image><text>确定</text>
+        <image src='{{imgUrl}}btn-confirm.png'></image><text>确定</text>
       </button>
     </form>
   </view>
@@ -22,17 +23,32 @@
     </block>
     <view class='light light1'><image src='{{imgUrl}}light1.png'></image></view>
     <view class='light light2'><image src='{{imgUrl}}light2.png'></image></view>
-    <view class='prize-box bg'>
+    <view class='prize-box cover'>
+      <view class='img logo'><image src='{{imgUrl}}logo.png'></image></view>
       <view class='img good-text'><image src='{{imgUrl}}good.png'></image></view>
-      <view class='name'>{{prize.name}}</view>
-      <view class='tips'>{{prize.more}}</view>
-      <view class='more'>{{prize.tips}}</view>
+      <view class='prize-text-box'>
+        <view class='name'>{{prize.name}}</view>
+        <view class='tips'>
+          <view>请前往</view>
+          <view>百联中环购物广场</view>
+          <view>{{prize.Address ? prize.Address + '处' : ''}}</view>
+          <view>凭手机号{{prize.Tel ? '（' + prize.Tel + '）' : ''}}</view>
+          <view>领取奖品</view>
+        </view>
+        <view class='more'>{{prize.tips}}</view>
+      </view>
     </view>
   </view>
-  <view class='modal bad {{page.bad?"in":""}}'>
+  <view class='modal bad {{page.bad?"in":""}} {{playAnim?"anim":""}}'>
     <view class='bg'><image src='{{imgUrl}}bg.jpg'></image></view>
+    <block wx:for='{{5}}' wx:key='index'>
+      <view class='flower'>
+        <image src='{{imgUrl}}/flower/{{index}}.png'></image>
+      </view>
+    </block>
     <view class='prize-box bg'>
       <view class='img bad-text'><image src='{{imgUrl}}bad.png'></image></view>
     </view>
+    <view class='img logo'><image src='{{imgUrl}}logo.png'></image></view>
   </view>
 </view>
