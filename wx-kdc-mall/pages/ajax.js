@@ -85,6 +85,17 @@ module.exports = {
   },
   //==============  请求 - 修改购物车
   edit_cart: function (json, callback) {
+    // console.log(json)
+    json = json.reduce((re, x) => {
+      re.push({
+        Id: x.Id,
+        Nums: x.BuyNum,
+      });
+      return re;
+    }, []);
+    json = JSON.stringify(json);
+    // json = json.replace(/"/g, '%22');
+    console.log(json)
     _GET('修改购物车', 'Cart/ChangeOrderCart', {
       cartJson: json,
     }, callback);
@@ -129,6 +140,33 @@ module.exports = {
     _AJAX('订单绑定地址', 'Order/DraftOrderInfo', {
       draftId: address,
       addressId: address,
+    }, callback);
+  },
+  //==============  请求 - 正式订单
+  order_confirm: function (uid, sid, callback) {
+    _AJAX('正式订单', 'Order/GeneratOrder', {
+      token: uid,
+      draftId: sid,
+    }, callback);
+  },
+  //==============  请求 - 开始支付
+  to_pay: function (json, callback) {
+    wx.requestPayment({
+      timeStamp: json.timeStamp,
+      nonceStr: json.nonceStr,
+      package: json.package,
+      signType: 'MD5',
+      paySign: json.paySign,
+      complete: res => {
+        console.log('支付', res);
+      }
+    })
+  },
+  //==============  请求 - 支付成功
+  pay_ok: function (uid, oid, callback) {
+    _AJAX('支付成功', 'Order/AfterPay', {
+      token: uid,
+      orderId: sid,
     }, callback);
   },
   //==============  请求 - 存 formId

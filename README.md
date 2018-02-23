@@ -8,7 +8,6 @@
 * 完成时间：2018.02.07
 * 难点：基本无难点
 * 文件夹：[wx-zh-plant](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-zh-plant)
-* 尚未发布
 
 <img src="qrcode/gh_4f0cb39f5d1c_344.jpg" width="300">
 

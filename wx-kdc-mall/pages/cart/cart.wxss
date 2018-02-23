@@ -5,6 +5,13 @@
   line-height: 100rpx;
   text-align: center;
 }
+.btn-cancel {
+  position: absolute;
+  top: 0;
+  left: 25rpx;
+  color: #aaa;
+  font-size: .8em;
+}
 .btn-edit {
   position: absolute;
   top: 0;

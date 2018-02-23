@@ -1,8 +1,9 @@
 <!--pages/cart/cart.wxml-->
 
 <view class='cart-head top-bar'>
+  <button class='pure btn-cancel' bindtap='list_edit_cancel' wx:if='{{list.data.length&&list_editing}}'>取消</button> 
   <view class='head-text'>购物车</view>
-  <button class='pure btn-edit' bindtap='list_edit'>{{list.editing?"完成":"编辑"}}</button>
+  <button class='pure btn-edit' bindtap='list_edit' wx:if='{{list.data.length}}'>{{list_editing?"完成":"编辑"}}</button>
 </view>
 
 <view class='cart-body'>
@@ -14,8 +15,8 @@
             <checkbox value="{{item.name}}" checked="{{item.checked}}" />
           </checkbox-group>
         </label>
-        <view class='number' wx:if='{{!list.editing}}' slot='after-title-{{index}}'>x{{item.number}}</view>
-        <view class='number-edit' wx:if='{{list.editing}}' slot='append-content-{{index}}'>
+        <view class='number' wx:if='{{!list_editing}}' slot='after-title-{{index}}'>x{{item.number}}</view>
+        <view class='number-edit' wx:if='{{list_editing}}' slot='append-content-{{index}}'>
           <button catchtap='addNumber' data-index='{{index}}'>+</button>
           <text>{{item.number}}</text>
           <button catchtap='minusNumber' data-index='{{index}}'>-</button>

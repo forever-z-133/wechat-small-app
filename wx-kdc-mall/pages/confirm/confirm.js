@@ -1,7 +1,7 @@
 // pages/address/address.js
 const app = getApp()
 import post from '../ajax.js';
-import { money } from '../../utils/util.js';
+import { money, formatTime } from '../../utils/util.js';
 
 let noListState = true;
 
@@ -18,11 +18,57 @@ Page({
     });
   },
   onShow: function () {
+    app.entry_finish(res => {
+      this.userId = res.userId;
+    })
+    
+    this.main_data = this.getDrafData();
+    var r = this.main_data;
+    console.log('获取临时订单', r);
+
+    this.drafId = r.Id;
+
+    this.setData({
+      time: formatTime(new Date(r.CreateTime)),
+      need: money(r.PayAmount),
+      id: r.OrderNo,
+      all: money(r.Amount),
+      transPrice: money(r.Freight),
+    })
+
+    this.reload_list(r.OrderDraftInfos);
+  },
+  cancel: function (e) {
+    wx.navigateBack()
+  },
+  pay_start: function() {
+    post.order_confirm(this.userId, this.drafId, json => {
+      if (json.State) {
+        this.orderId = json.orderId;
+        var data = JSON.parse(json.Json);
+        post.to_pay(data, this.pay_success);
+      }
+    })
+  },
+  pay_success: function () {
+    post.pay_ok(this.userId, this.orderId, r => {
+      wx.showToast({
+        title: '成功下单',
+        icon: 'success',
+        mask: true,
+      });
+      wx.redirectTo({
+        url: 'pages/order/order',
+      });
+    });
+  },
+
+
+  getDrafData: function (callback) {
     var r = wx.getStorageSync('confirm');
-    console.log('临时订单', r);
     if (!r || !r.State) {
       wx.showModal({
-        content: '出了些错误，不如你去订单页检查下吧',
+        content: '出了些错误，去订单页检查下吧',
         showCancel: false,
         confirmText: '好吧',
         success: () => {
@@ -30,18 +76,12 @@ Page({
         }
       })
     }
-
-    r = r.DraftOrder
-
-    this.setData({
-      time: new Date(r.CreateTime)
-    })
-
-    this.reload_list(r.OrderDraftInfos);
+    r = r.DraftOrder;
+    callback && callback(r);
+    return r;
   },
-  remove: function (e) {
-    console.log(e)
-  },
+
+
   // 更新当前列表数据
   convert_list: function (r) {
     return r.map(x => {

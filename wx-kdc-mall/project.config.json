@@ -26,7 +26,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -45,6 +45,17 @@
 					"name": "确认订单",
 					"pathName": "pages/confirm/confirm",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/cart",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单页",
+					"pathName": "pages/orders/orders"
 				}
 			]
 		}

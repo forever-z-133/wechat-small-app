@@ -45,8 +45,6 @@ Page({
         banner: res.Carousel,
         pageData: res.PageData,
       })
-
-      console.log(res.PageData)
     })
   },
   onShow: function () {
