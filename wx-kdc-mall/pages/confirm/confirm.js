@@ -32,8 +32,10 @@ Page({
       time: formatTime(new Date(r.CreateTime)),
       need: money(r.PayAmount),
       id: r.OrderNo,
+      oid: r.Id,
       all: money(r.Amount),
       transPrice: money(r.Freight),
+      address: r.address,
     })
 
     this.reload_list(r.OrderDraftInfos);

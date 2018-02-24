@@ -11,12 +11,12 @@
   <view class='cell'>
     <view class='line'>下单时间：<view>{{"快递"}}</view></view>
     <view class='line'>
-      <view class='address-box' wx:if="{{data}}">
-        <text class='name'>{{data}}</text>
-        <text class='tel'>{{data}}</text>
-        <text class='address'>{{data}}</text>
+      <view class='address-box' wx:if="{{address}}">
+        <text class='name'>{{address.ContactorName}}</text>
+        <text class='tel'>{{address.ContactorPhone}}</text>
+        <text class='address'>{{address.name}}</text>
       </view>
-      <navigator class='add-address' url='../address/address?add=true' wx:else>请选择送货地址</navigator>
+      <navigator class='add-address' url='../address/address?order={{oid}}' wx:else>请选择送货地址</navigator>
     </view>
   </view>
   <view class='cell'>

@@ -10,7 +10,11 @@
         bindscrolltoupper='onPullDownRefresh' 
         bindscrolltolower='onReachBottom' 
         bindscroll='scroll'>
-        <list list-data='{{list[index]}}' list-style='list-text-cover product-list'></list>
+        <list list-data='{{list[index].data}}' list-style='product-list' list-state='{{list[index].state}}'>
+          <block wx:for='{{list[index].data}}' wx:key='index'>
+            <view slot='before-content-{{index}}'>{{item.time}}</view>
+          </block>
+        </list>
       </scroll-view>
     </view>
     <!-- <view class='child-wrap' slot='{{index}}'>

@@ -47,6 +47,12 @@ page {
 .address-box {
   text-align: left;
 }
+.address-box .tel {
+  padding-left: 2em;
+}
+.address-box .address {
+  display: block;
+}
 .add-address {
   display: block;
   width: 100%;

@@ -20,7 +20,7 @@ Page({
       title: '管理收货地址'
     });
 
-    orderId = option.order;
+    this.orderId = option.order;
   },
   onShow: function () {
     app.entry_finish(res => {
@@ -31,9 +31,19 @@ Page({
   // 点击item，与订单绑定
   click: function(e) {
     var id = e.detail.id;
-    if (!orderId) return;
-    post.bind_address(orderId, id, res => {
-      wx.navigateBack();
+    var i = e.detail.index;
+    if (!this.orderId) return;
+    post.bind_address(this.orderId, id, res => {
+      if (!res.State) return wx.showToast({ title: '绑定地址失败' });
+      var data = this.getDrafData();
+      data.DraftOrder.address = this.data.list.data[i];
+      wx.setStorage({
+        key: 'confirm',
+        data: data,
+        success: () => {
+          wx.navigateBack();
+        }
+      })
     })
   },
   // 编辑 
@@ -52,25 +62,20 @@ Page({
   },
   // 修改列表数据结构
   covert_list: function(r) {
-    var result = [], _type = ['家','学校','公司'];
-    r.slice(0).map(x => {
-      result.push({
-        id: x.Id,
-        // link: '../address-add/address-add?id=' + x.Id,
-        name: [(x.AutoAddress || x.WxAddress) +  x.Address].join(','),
-        desc: x.ContactorName + '(' + (x.Gender ? "女士" : "先生") + ') ' + x.ContactorPhone,
-        type: _type[x.AddsType]
-      })
+    var _type = ['家','学校','公司'];
+    return r.map(x => {
+      x.id = x.Id;
+      x.name = [(x.AutoAddress || x.WxAddress) + x.Address].join(',');
+      x.desc = x.ContactorName + '(' + (x.Gender ? "女士" : "先生") + ') ' + x.ContactorPhone;
+      x.type = _type[x.AddsType];
+      return x;
     })
-    return result;
   },
   // 更新当前列表数据
   update_list: function (r, callback) {
-    let nowList = this._now_list()
-    let nowListData = nowList.data;
-    nowListData = nowListData.push.apply(nowListData, r);
-    if (r.length < 1) nowList.state = 'empty';
-    if (noListState) nowList.state = 'none';
+    let list = this._now_list();
+    if (r.length < 7) list.state = 'empty';
+    list.data = list.data.concat(r || []);
     this.setData({ list: this.data.list });
     callback && callback(r)
   },
@@ -109,5 +114,20 @@ Page({
         dheight: 1,
       }
     });
-  }
+  },
+  getDrafData: function (callback) {
+    var r = wx.getStorageSync('confirm');
+    if (!r || !r.State) {
+      wx.showModal({
+        content: '出了些错误，去订单页检查下吧',
+        showCancel: false,
+        confirmText: '好吧',
+        success: () => {
+          wx.redirectTo({ url: '../orders/orders' })
+        }
+      })
+    }
+    callback && callback(r);
+    return r;
+  },
 })

@@ -138,7 +138,7 @@ module.exports = {
   //==============  请求 - 订单与地址绑定
   bind_address: function (order, address, callback) {
     _AJAX('订单绑定地址', 'Order/DraftOrderInfo', {
-      draftId: address,
+      draftId: order,
       addressId: address,
     }, callback);
   },
@@ -159,14 +159,28 @@ module.exports = {
       paySign: json.paySign,
       complete: res => {
         console.log('支付', res);
+        if (/cancel/.test(res.errMsg)) {
+          wx.showToast({ title: '支付取消了' });
+        } else {
+          callback && callback();
+        }
       }
     })
   },
-  //==============  请求 - 支付成功
+  //==============  请求 - 支付成功回调
   pay_ok: function (uid, oid, callback) {
-    _AJAX('支付成功', 'Order/AfterPay', {
+    _AJAX('支付成功回调', 'Order/AfterPay', {
       token: uid,
       orderId: sid,
+    }, callback);
+  },
+  //==============  请求 - 订单列表
+  orders: function (uid, type, page, callback) {
+    _AJAX('订单列表', 'Order/GetOrderInfos', {
+      token: uid,
+      status: type,
+      pageNo: page,
+      pageSize: 8,
     }, callback);
   },
   //==============  请求 - 存 formId
