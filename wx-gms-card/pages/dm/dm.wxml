@@ -1,0 +1,9 @@
+<!--pages/dm/dm.wxml-->
+
+<scroll-view scroll-x class='tabs-box'>
+  <view class='tab tab-item'>
+    <view class='tab=image ratio'>
+      <image></image>
+    </view>
+  </view>
+</scroll-view>

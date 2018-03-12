@@ -1,0 +1,21 @@
+<!-- 日历组件 -->
+
+<view class='datetime'>
+  <view class='head'>
+    <view class='head-month'>{{head}}</view>
+  </view>
+  <view class='body'>
+    <view class='top'>
+      <block wx:for='{{["日","一","二","三","四","五","六"]}}' wx:key='index'>
+        <view class='item week'>{{item}}</view>
+      </block>
+    </view>
+    <view class='list'>
+      <block wx:for='{{date}}' wx:key='index'>
+        <view class='item day {{item.out?"out":""}} {{item.str==today?"today":""}}'>
+          <slot name='{{index}}'></slot>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

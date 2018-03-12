@@ -1,0 +1,45 @@
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-item {
+  position: relative;
+  flex-shrink: 0;
+}
+.list-image {
+  position: relative;
+  width: 100%;
+}
+.list-image:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.list-image.normal::before {
+  padding-top: 56.25%;
+}
+.list-image.slide::before {
+  padding-top: 75%;
+}
+.list-image > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* 列表样式，字在图上 */
+.list-text-cover .list-item {
+  width: 100%;
+  margin-top: 20rpx;
+}
+.list-text-cover .list-item:first-of-type {
+  margin-top: 0;
+}
+.list-text-cover .list-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  width: 100%;
+}

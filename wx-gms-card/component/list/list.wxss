@@ -1,0 +1,81 @@
+/* list 列表组件 */
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-item {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.list-image {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+}
+.list-image:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.list-image.normal::before {
+  padding-top: 56.25%;
+}
+.list-image.slide::before {
+  padding-top: 75%;
+}
+.list-image > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.list-content {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.list-tip {
+  font-size: 28rpx;
+  text-align: center;
+  color: #ccc;
+  width: 100%;
+  line-height: 80rpx;
+  margin: 10rpx 0;
+}
+.list-tip.load::before {
+  content: '数据加载中...';
+}
+.list-tip.empty::before {
+  content: '数据就这些了';
+}
+.list-tip.none {
+  display: none;
+}
+
+/* ----------------- 无图 ----- */
+.no-image .list-image {
+  display: none;
+}
+
+
+/* ----------------- 图在左 ----- */
+.image-left .list-item {
+  display: flex;
+}
+.image-left .list-image {
+  margin-right: 10rpx;
+}
+
+/*////////////////////////////////////////////////////////*/
+.place .list-item {
+  align-items: center;
+  padding: 30rpx 35rpx;
+  border-bottom: 2rpx solid #f3f3f3;
+}
+.place .list-desc {
+  color: #bdbdbd;
+  font-size: .8em;
+  margin-top: 5rpx;
+}

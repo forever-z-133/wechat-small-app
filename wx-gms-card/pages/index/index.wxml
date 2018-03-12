@@ -1,0 +1,41 @@
+<!-- 首页 -->
+
+<view class='bg gms-bg offset'>
+  <image src='/img/bg.jpg'></image>
+</view>
+
+<view class='header top-bar'>
+  <view class='place-name'>门店名称</view>
+  <view class='place-address text'>门店具体位置门店具体位置门店具体位置门店具体位置门店具体位置</view>
+  <navigator url='/pages/place/place' class='more-place'>更多门店</navigator>
+</view>
+
+<view class='user-box' bindtap='preview'>
+  <view class='user-image ratio'>
+    <image src='{{user.image}}' class='circle'></image>
+  </view>
+</view>
+
+<view class='gms-box'>
+  <view class='box-item orange-box'>
+    <view class='label'>已签到</view>
+    <view class='value'>0天</view>
+  </view>
+  <view class='box-item yellow-box'>
+    <view class='label'>我的积分</view>
+    <view class='value'>0</view>
+  </view>
+</view>
+
+<view class='banner-list'>
+  <navigator url='/pages/sign/sign' class='banner-item list-item'>
+    <view class='list-image banner-image ratio'>
+      <image src='/img/b1.jpg'></image>
+    </view>
+  </navigator>
+  <navigator url='/pages/dm/dm' class='banner-item list-item'>
+    <view class='list-image banner-image ratio'>
+      <image src='/img/b2.jpg'></image>
+    </view>
+  </navigator>
+</view>

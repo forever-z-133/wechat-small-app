@@ -1,0 +1,55 @@
+<!--component/product-list/product-list.wxml-->
+
+<slot name='before-list'></slot>
+<view class="list {{listStyle}}">
+  <block wx:for='{{listData}}' wx:key='index'>
+    <slot name='before-item-{{index}}'></slot>
+    <block wx:if='{{item.link}}'>
+      <navigator url='{{item.link}}' class='list-item'>
+        <slot name='before-content-{{index}}'></slot>
+        <view class='list-image'>
+          <image src='{{item.img}}'></image>
+        </view>
+        <view class='list-content'>
+          <slot name='prepend-content-{{index}}'></slot>
+          <view class='list-title {{item.theight==2?"text2":"text"}}'>
+            <slot name='before-title-{{index}}'></slot>
+            <text>{{item.name}}</text>
+            <slot name='after-title-{{index}}'></slot>
+          </view>
+          <view class='list-desc {{item.dheight==2?"text2":"text"}}'>
+            <view>{{item.desc}}</view>
+          </view>
+          <slot name='append-content-{{index}}'></slot>
+          <slot></slot>
+        </view>
+        <slot name='after-content-{{index}}'></slot>
+      </navigator>
+    </block>
+    <block wx:if='{{!item.link}}'>
+      <view class='list-item' data-index='{{index}}' data-id='{{item.id}}' catchtap='clickItem'>
+        <slot name='before-content-{{index}}'></slot>
+        <view class='list-image'>
+          <image src='{{item.img}}'></image>
+        </view>
+        <view class='list-content'>
+          <slot name='prepend-content-{{index}}'></slot>
+          <view class='list-title {{item.theight==2?"text2":"text"}}'>
+            <slot name='before-title-{{index}}'></slot>
+            <text>{{item.name}}</text>
+            <slot name='after-title-{{index}}'></slot>
+          </view>
+          <view class='list-desc {{item.dheight==2?"text2":"text"}}'>
+            <view>{{item.desc}}</view>
+            <slot name='after-content-{{index}}'></slot>
+          </view>
+          <slot name='append-content-{{index}}'></slot>
+          <slot></slot>
+        </view>
+        <slot name='after-content-{{index}}'></slot>
+      </view>
+    </block>
+    <slot name='after-item-{{index}}'></slot>
+  </block>
+  <view class='list-tip {{listState}}'></view>
+</view>

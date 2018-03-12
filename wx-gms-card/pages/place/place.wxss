@@ -1,0 +1,21 @@
+/* pages/place/place.wxss */
+
+
+
+.list-other {
+  order: 99;
+  text-align: right;
+  font-size: .8em;
+}
+.place-choose {
+  width: 1em;
+  height: 1em;
+  margin-right: 10rpx;
+  display: inline-block;
+  background-size: 100% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.place-choose.choosen {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAWBAMAAAFSSgFqAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAhUExURUxpcf5fMf5fMf5fMf5fMf5fMf5fMf5fMf5fMf5fMf5fMcfCN6AAAAAKdFJOUwBSzR74e+akCjKR2NwVAAAApElEQVQYGQXBMUrEQBQA0LeYsGEqC6upVgKyWAVPYMq9wlQBq5SC1VTa7ilmE1nwn9L3wIP0yIGmA7vkgh8ANJPErpGu0ACkBqSd14nuD+K7u4EhbgDoAcoJ6DdAWZjQ37EhLygnhzscN3kB9fkXOMY74AsAAGUGACVGACgxAkCJEW8fgBwrlBhBjhWoccZTrAA1znJcAAw1XmIGwFBjBgDDJ4B/sgok32oK1WYAAAAASUVORK5CYII=);
+}

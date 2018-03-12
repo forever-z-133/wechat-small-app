@@ -153,9 +153,6 @@ Page({
 
   // ------------------------------ 列表部分
   // 列表数据转化
-  data: {
-    list: { data: [], state: 'load' },
-  },
   convert_list: function(r) {
     return r.map(x => {
       x.name = x.Commodity.Name;

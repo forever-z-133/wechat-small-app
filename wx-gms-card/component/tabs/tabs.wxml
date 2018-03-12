@@ -1,0 +1,28 @@
+<!--component/tabs/tabs.wxml-->
+
+<view class='tabs-box'>
+  <!-- tab 选项卡部分 -->
+  <slot name='tabs-outer-before'></slot>
+  <view class='flex-tabs {{staticHead?"fixed":""}} {{tabStyle}}'>
+    <slot name='tabs-inner-before'></slot>
+    <block wx:for='{{listData}}' wx:key='index'>
+      <view class='tab item main-tab-name {{nowIndex==index?"active":""}}' data-index='{{index}}' catchtap='tabChange'>
+        <text>{{dateType=='array'?item:item[dateKey]}}</text>
+      </view>
+    </block>
+    <slot name='tabs-inner-after'></slot>
+  </view>
+  <slot name='tabs-outer-before'></slot>
+  <slot></slot>
+  
+  <!-- tab 对应不同的 view -->
+  <slot name='tabs-target-before'></slot>
+  <block wx:for='{{listData}}' wx:key='index'>
+    <view class='tab-target {{nowIndex==index?"":"hide"}}'>
+      <slot name='tabs-target-inner-before'></slot>
+      <slot name='{{index}}'></slot>
+      <slot name='tabs-target-inner-after'></slot>
+    </view>
+  </block>
+  <slot name='tabs-target-after'></slot>
+</view>

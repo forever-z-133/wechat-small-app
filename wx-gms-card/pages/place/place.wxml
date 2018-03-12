@@ -1,0 +1,10 @@
+<!--pages/place/place.wxml-->
+
+<list list-data="{{list.data}}" list-state='{{list.state}}' list-style='no-image image-left place' bindclick='click'>
+  <block wx:for='{{list.data}}' wx:key='index'>
+    <view slot='before-content-{{index}}' class='list-other'>
+      <view class='place-choose {{item.choosen?"choosen":""}}'></view>
+      <view class='place-dist'>{{item.distence}}</view>
+    </view>
+  </block>
+</list>
