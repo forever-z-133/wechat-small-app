@@ -4,6 +4,13 @@
 
 ---
 
+### 吉买盛吉吉卡小程序
+* 完成时间：未完成
+* 难点：滑动吸顶，纵向轮播，网页来回跳转，地图旋转缩放，打开会员卡与场景判断
+* 文件夹：[wx-gms-card](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-gms-card)
+
+---
+
 ### 百联中环多肉植物抽奖小程序
 * 完成时间：2018.02.07
 * 难点：基本无难点
@@ -17,7 +24,7 @@
 * 完成时间：2018.02.06
 * 难点：录音功能，权限获取，提现功能
 * 文件夹：[wx-qpal-say](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-qpal-say)
-* 尚未发布
+* 审核时间过长，超过了活动开始时间，废弃
 
 ---
 
@@ -25,7 +32,7 @@
 * 完成时间：尚未完成
 * 难点：自定义组件，商品规格渲染与计算，跳页逻辑与性能
 * 文件夹：[wx-kdc-mall](https://github.com/foreverZ133/wechat-small-app/tree/master/wx-kdc-mall)
-* 尚未发布
+* 尚未完成
 
 ---
 

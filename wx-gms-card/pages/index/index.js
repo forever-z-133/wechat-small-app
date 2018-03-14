@@ -16,12 +16,12 @@ Page({
     console.log(options)
   },
   onShow: function () {
-    var url = 'https://sum.kdcer.com/test/sw_shake/1/'
-    setTimeout(() => {
-      wx.previewImage({
-        urls: new Array(200).fill().map((x, i) => url + (i % 26) + '.jpg'),
-      })
-    }, 500)
+    // var url = 'https://sum.kdcer.com/test/sw_shake/1/'
+    // setTimeout(() => {
+    //   wx.previewImage({
+    //     urls: new Array(200).fill().map((x, i) => url + (i % 26) + '.jpg'),
+    //   })
+    // }, 500)
   },
   onPullDownRefresh: function () {
   },
