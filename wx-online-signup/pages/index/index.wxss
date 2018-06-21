@@ -1,0 +1,73 @@
+/* pages/login/index.wxss */
+
+.copyright {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 3%;
+  font-size: .8em;
+  text-align: center;
+  color: #ddd;  
+}
+
+.head-image::before {
+  padding-top: calc(350 / 750 * 100%);
+}
+
+.form {
+  padding: 15rpx 40rpx 0;
+  display: block;
+}
+.form-group {
+  padding: 0 0 15rpx;
+  border-bottom: 2rpx solid #E5E5E5;
+}
+input {
+  height: 2.5em;
+  line-height: 2.5em;
+}
+.placeholder {
+  color: #ddd;
+}
+
+
+.btn-getMsgCode {
+  padding: 0;
+  width: 8em;
+  font-size: .9em;
+  height: 2.5em;
+  line-height: 2.5em;
+  color: #fff;
+  background: #488FFB;
+  border-radius: 10rpx;
+}
+
+
+.btn-login {
+  margin-top: 40rpx;
+  height: 2.8em;
+  line-height: 2.8em;
+  color: #fff;
+  background: #488FFB;
+}
+.btn.disabled {
+  color: #ddd;
+  background: #F8F8F8;
+  pointer-events: none;
+}
+
+.title {
+  font-size: 36rpx;
+  color: #000;
+  font-weight: bold;
+}
+.list-item {
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  border-bottom: 1rpx solid #efefef;
+  transition: .2s;
+}
+.list-item.choose {
+  color: #fff;
+  background: #488FFA;
+}

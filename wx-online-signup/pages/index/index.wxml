@@ -1,0 +1,43 @@
+<!--pages/login/index.wxml-->
+
+<view class='container' wx:if='{{needLogin}}'>
+  <view class='image head-image'>
+    <image src='/images/img_chooseCourse.jpg'></image>
+  </view>
+  <form class='form' bindsubmit='submit'>
+    <view class='form-group form-inline'>
+      <input type='number' value='{{tel}}' placeholder='请输入你的手机号码' placeholder-class='placeholder' maxlength='11' confirm-type='next' bindinput='inputTel'></input>
+      <button class='btn btn-getMsgCode {{yes_msg ? "" : "disabled"}}' bindtap='getMsgCode'>{{msgTips}}</button>
+    </view>
+    <view class='form-group'>
+      <input type='number' value='{{code}}' placeholder='请输入短信验证码' placeholder-class='placeholder' confirm-type='done' bindinput='inputCode'></input>
+    </view>
+    <button form-type='submit' class='btn btn-login {{yes ? "" : "disabled"}}'>{{loginTips}}</button>
+  </form>
+</view>
+<view class='copyright'>www.xuebangsoft.com</view>
+
+<view class='modal {{showModal ? "in" : ""}}'>
+  <view class='bg modal-bg'></view>
+  <view class='modal-box alert'>
+    <view class='alert-head'>
+      <view class='title'>发现您手机号存在多个账户中</view>
+      <view class=''>请选择一个账户进行登录及操作</view>
+    </view>
+    <view class='alert-body'>
+      <scroll-view scroll-y style='max-height: 400rpx'>
+        <view class='list-box'>
+          <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 1}}'>
+            <view class='list-item {{studentIndex == index ? "choose" : ""}}' data-index='{{index}}' catchtap='chooseStudent'>
+              <text class='text'>{{item.studentName}}</text>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='alert-foot'>
+      <button class='btn btn-cancel' bindtap='closeModal'>取消</button>
+      <button class='btn btn-confirm' bindtap='chooseOk'>确定</button>
+    </view>
+  </view>
+</view>

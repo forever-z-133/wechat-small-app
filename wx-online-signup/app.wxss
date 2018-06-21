@@ -1,0 +1,143 @@
+/**app.wxss**/
+
+page {
+  font-size: 36rpx;
+}
+.hide {
+  display: none !important;
+}
+
+
+.pos-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.text {
+  word-wrap: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: box;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.modal, .bg, .cover {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+}
+.modal {
+  opacity: 0;
+  z-index: -1;
+  overflow: hidden;
+  transition: opacity .3s, z-index 0s .3s;
+}
+.modal-bg {
+  background: rgba(0,0,0,.7);
+}
+.modal.in {
+  opacity: 1;
+  z-index: 1;
+  transition: opacity .3s;
+}
+.modal-box {
+  transform: translate3d(0,0,0);
+}
+
+.alert {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 80%;
+  max-width: 1000rpx;
+  background: #fff;
+  overflow: hidden;
+  border-radius: 14rpx;
+}
+.alert {
+  transform: translate3d(-50%,100%,0);
+  transition: transform .3s cubic-bezier(.54,1,.65,1);
+}
+.in .alert {
+  transform: translate3d(-50%,-50%,0);
+}
+.alert-head {
+  padding: 40rpx 20rpx;
+  text-align: center;
+  font-size: 33rpx;
+  color: #999;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+.alert-foot {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 34rpx;
+  border-top: 1rpx solid #e5e5e5;
+}
+.alert-foot > .btn {
+  height: 100rpx;
+  line-height: 100rpx;
+  flex: 1 0 auto;
+  font-size: 1.1em;
+  border-left: 1px solid #e5e5e5;
+}
+.alert-foot > .btn:first-child {
+  border-left: 0;
+}
+.btn-confirm {
+  color: #108EE9;
+}
+
+
+.image {
+  position: relative;
+}
+.image::before {
+  content: "";
+  padding-top: 100%;
+  display: block;
+}
+.image > image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+.btn {
+  font: inherit;
+  background: none;
+  flex-shrink: 0;
+  border-radius: 0;
+}
+.btn::after {
+  display: none;
+}
+.btn.button-hover {
+  opacity: 0.85;
+}
+
+
+.form-group {
+  margin-bottom: 15rpx;
+}
+.form-group input {
+  flex-grow: 1;
+}
+.form-inline {
+  display: flex;
+  align-items: center;
+}

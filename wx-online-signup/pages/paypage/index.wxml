@@ -1,0 +1,2 @@
+<!--pages/paypage/index.wxml-->
+<view class='pos-center'>{{pay_state}}</view>

@@ -1,0 +1,51 @@
+{
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.0.9",
+	"appid": "wx19c0639dc6e8fe0b",
+	"projectname": "%E5%AD%A6%E9%82%A6-%E5%AE%9E%E9%AA%8C",
+	"isGameTourist": false,
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "分享取值",
+					"pathName": "pages/index/index",
+					"query": "id=111",
+					"scene": "1036",
+					"referrerInfo": {
+						"appId": "wx19c0639dc6e8fe0b"
+					}
+				}
+			]
+		}
+	}
+}
