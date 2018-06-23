@@ -1,0 +1,6 @@
+<!--pages/empty/index.wxml-->
+
+<view class='image head-image'>
+  <image src='/images/img_chooseCourse.jpg'></image>
+</view>
+<button>继续选课</button>

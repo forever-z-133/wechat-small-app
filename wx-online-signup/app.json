@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/web/index",
     "pages/paypage/index",
+    "pages/empty/index",
     "pages/getAuth/index"
   ],
   "window":{

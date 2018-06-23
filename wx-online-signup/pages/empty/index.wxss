@@ -1,0 +1,5 @@
+/* pages/empty/index.wxss */
+
+.head-image::before {
+  padding-top: calc(350 / 750 * 100%);
+}

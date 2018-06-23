@@ -157,22 +157,18 @@ Page({
   allIsOk: function (sid) {
     app.data.sid = sid;
     var data = { studentId: sid }
-    // post.getToken(data, res => {
-    //   wx.hideLoading();
-    //   if (res == undefined) {
-    //     wx.hideLoading();
-    //     return alert('系统错误：未取得所需 token');
-    //   }
-    //   app.data.token = res;
+    wx.showToast({ title: '登录成功' });
+    // return setTimeout(() => {
+      // wx.redirectTo({
+      // // wx.navigateTo({
+      //   url: '/pages/web/index' + '?redirect=' + this.redirect,
+      // });
+    // }, 1000);
 
-      wx.showToast({ title: '登录成功' });
-      // return setTimeout(() => {
-        wx.redirectTo({
-        // wx.navigateTo({
-          url: '/pages/web/index' + '?redirect=' + this.redirect,
-        });
-      // }, 1000);
-    // });
+    // 跳往空白页
+    wx.redirectTo({
+      url: '/pages/empty/index' + '?jump=true&redirect=' + this.redirect,
+    });
   },
 
   //////////////////////////////////////////////////////////////////////// 以下与业务逻辑无关

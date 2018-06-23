@@ -18,15 +18,7 @@ Page({
     } catch (err) { data = null; }
     this.data.fromH5 = data;
   },
-  onShow: function() {
-    // 清空
-    app.data.payFinish = null;
-
-    // 未传入所需信息
-    console.log('H5 发起支付', this.data.fromH5);
-    if (!this.data.fromH5) return alert('系统错误：未传入所需支付信息');
-    if (!this.data.fromH5.orderId) return alert('系统错误：未传入所需支付信息 oid');
-    if (!this.data.fromH5.token) return alert('系统错误：未传入所需支付信息 token');
+  onShow: function () {
 
     // 身份丢失
     if (!app.data.oid) {
@@ -38,8 +30,17 @@ Page({
     // 处理支付中却触发到 onShow 的情况
     if (isPaying) return;
 
-    // 开启支付
-    this.startWxPay();
+    // onShow 可能比 onLoad 运行得更快
+    setTimeout(() => {
+      // 未传入所需信息
+      console.log('H5 发起支付', this.data.fromH5);
+      // if (!this.data.fromH5) return alert('系统错误：未传入所需支付信息');
+      // if (!this.data.fromH5.orderId) return alert('系统错误：未传入所需支付信息 oid');
+      // if (!this.data.fromH5.token) return alert('系统错误：未传入所需支付信息 token');
+
+      // 开启支付
+      this.startWxPay();
+    }, 100)
   },
   // --- 根据订单ID拿到校区ID和总价
   startWxPay: function (callback) {
