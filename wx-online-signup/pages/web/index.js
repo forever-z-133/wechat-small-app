@@ -29,10 +29,9 @@ Page({
         app.data.payFinish = null;
       }
     }, 50)
-
   },
   // -------- 设置 web-view 链接
-  setWebView(url = baseUrl, more = '') {
+  setWebView(url = webUrl, more = '') {
     var guid = Math.random().toString(36).substring(2, 7);
     url += '?uid=' + app.data.uid;
     url += '&oid=' + app.data.oid;

@@ -61,10 +61,12 @@ Page({
     this.data.fromH5.totalFee = json.orderAmount;
     this.data.fromH5.campusId = json.campusId;
     var data = {
-      totalFee: this.data.fromH5.totalFee || 0.01,
+      totalFee: (this.data.fromH5.totalFee || 0.01) * 100,
       campusId: this.data.fromH5.campusId || '',
       openId: app.data.oid,
       token: app.data.token,
+      businessId: this.data.fromH5.orderId,
+      institutionId: json.institutionId,
     };
     post.getPayKeyValue(data, res => {
       this.openWxPay(res);  // 开启支付

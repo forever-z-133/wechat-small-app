@@ -30,7 +30,7 @@ function _ajax_success(res, callback, name, errorFn) {
 }
 
 var baseUrl = 'https://uat3.xuebangsoft.net/eduboss/wxapp/';
-var testUrl = 'http://192.168.2.242:8080/eduboss/wxapp/';
+var testUrl = 'http://192.168.2.191:8080/eduboss/wxapp/';
 // baseUrl = testUrl;
 var apiUrl = 'WxAppLoginController';
 var payApi = 'SpecialMerchantsPay';
