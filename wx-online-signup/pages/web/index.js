@@ -36,9 +36,9 @@ Page({
     url += '?uid=' + app.data.uid;
     url += '&oid=' + app.data.oid;
     url += '&sid=' + app.data.sid;
+    url += '&guid=' + guid;
     if (more) url += more;
     url += '#wechat_redirect';
-    url += '?guid=' + guid;
     console.log(url);
     this.setData({ url: url });
   },
