@@ -67,6 +67,7 @@ Page({
       token: app.data.token,
       businessId: this.data.fromH5.orderId,
       institutionId: json.institutionId,
+      type: 'ONLINE_ORDER',
     };
     post.getPayKeyValue(data, res => {
       this.openWxPay(res);  // 开启支付
