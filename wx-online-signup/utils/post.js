@@ -81,7 +81,7 @@ module.exports = {
       complete: res => _ajax_success(res, callback, '获取支付签名', errorFn)
     });
   },
-  // --- 或许订单ID
+  // --- 获取订单ID
   getOrderInfo: function (data, callback, errorFn) {
     var token = data.token;
     delete data.token;
@@ -95,5 +95,20 @@ module.exports = {
       fail: err => _ajax_error,
       complete: res => _ajax_success(res, callback, '获取订单ID', errorFn)
     });
-  }
+  },
+  // --- 核销订单
+  checkOrderStatus: function (data, callback, errorFn) {
+    var token = data.token;
+    delete data.token;
+    wx.request({
+      url: baseUrl + 'OnlineOrder/findStatus.do',
+      data: data,
+      header: {
+        'Authorization': `Bearer ${token}`,
+      },
+      method: 'GET',
+      fail: err => _ajax_error,
+      complete: res => _ajax_success(res, callback, '核销订单', errorFn)
+    });
+  },
 }

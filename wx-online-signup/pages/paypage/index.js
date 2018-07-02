@@ -44,7 +44,6 @@ Page({
   },
   // --- 根据订单ID拿到校区ID和总价
   startWxPay: function (callback) {
-    app.data.token = this.data.fromH5.token;
     var data = {
       id: this.data.fromH5.orderId,
       token: this.data.fromH5.token,
@@ -64,7 +63,7 @@ Page({
       totalFee: (this.data.fromH5.totalFee || 0.01) * 100,
       campusId: this.data.fromH5.campusId || '',
       openId: app.data.oid,
-      token: app.data.token,
+      token: app.data.token || this.data.fromH5.token,
       businessId: this.data.fromH5.orderId,
       institutionId: json.institutionId,
       type: 'ONLINE_ORDER',
@@ -90,8 +89,7 @@ Page({
         console.log('支付签名', res);
         wx.hideLoading();
         if (/cancel/.test(res.errMsg)) {
-          wx.showToast({ title: '支付取消了', icon: 'none', mask: true });
-          setTimeout(() => this.wxPayJump('cancel', res), 1000);
+          return this.checkTheOrder();
         } else if (!/ok$/.test(res.errMsg)) {
           wx.showToast({ title: '支付失败', icon: 'none', mask: true });
           setTimeout(() => this.wxPayJump('fail', res), 1000);
@@ -105,6 +103,27 @@ Page({
   // --- 支付成功的回调
   wxPaySuccess: function(res, callback) {
     this.wxPayJump('SUCCESS', res);
+  },
+  // --- 核销订单，是否到账
+  checkTheOrder: function(callback, times = 0) {
+    var data = {
+      orderId: this.data.fromH5.orderId,
+      token: this.data.fromH5.token,
+    };
+    post.checkOrderStatus(data, res => {
+      if (res.data !== 'DEAL') {
+        // 如果核销未完成，则 300ms 后再试试，总共 1s 内试 3 次
+        if (++times < 3) return setTimeout(() => {
+          this.checkTheOrder(callback, times);
+        }, 300);
+        // 核销已完成，核销失败。
+        callback && callback();
+        return this.wxPayJump('fail', res);
+      }
+      // 核销成功
+      callback && callback();
+      this.wxPaySuccess(res);
+    });
   },
   // --- 支付完成
   wxPayJump: function (type = 'SUCCESS', res) {
