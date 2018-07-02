@@ -17,18 +17,24 @@ Page({
   onLoad: function (options) {
     var web = getValueFromUrl('redirect', options);
     this.setWebView(web || webUrl);
+    if (options.payed) this.toPayFinish();
   },
   onShow: function () {
     setTimeout(() => {
-      // 支付是否完成
       if (app.data.payFinish) {
-        var str = Object.keys(app.data.payFinish).reduce((re, key) => {
-          return re + '&' + key + '=' + app.data.payFinish[key];
-        }, '');
-        this.setWebView(webUrl + 'paymentTip', str);
-        app.data.payFinish = null;
+        wx.redirectTo({ url: '/pages/web/index' + '?payed=true' });
       }
-    }, 50)
+    }, 50);
+  },
+  // -------- 支付成功
+  toPayFinish: function () {
+    if (app.data.payFinish) {
+      var str = Object.keys(app.data.payFinish).reduce((re, key) => {
+        return re + '&' + key + '=' + app.data.payFinish[key];
+      }, '');
+      this.setWebView(webUrl + 'paymentTip', str);
+      app.data.payFinish = null;
+    }
   },
   // -------- 设置 web-view 链接
   setWebView(url = webUrl, more = '') {
