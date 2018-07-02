@@ -88,6 +88,7 @@ Page({
       complete: res => {
         console.log('支付签名', res);
         wx.hideLoading();
+        isPaying = false;
         if (/cancel/.test(res.errMsg)) {
           return this.checkTheOrder();
         } else if (!/ok$/.test(res.errMsg)) {
@@ -132,7 +133,6 @@ Page({
     // app.data.payFinish.errMsg = '';
     app.data.payFinish.money = type === 'SUCCESS' ? this.data.fromH5.totalFee : 0;
     this.data.fromH5 = null;
-    isPaying = false;
     wx.navigateBack();
   },
 })
