@@ -37,10 +37,10 @@ Page({
     wx.showLoading({ title: '获取授权...', mask: true });
 
     setTimeout(() => {
-      // 如果已有 studentId 直接完成
-      if (app.data.sid) {
-        return this.allIsOk(app.data.sid);
-      }
+      // // 如果已有 studentId 直接完成
+      // if (app.data.sid) {
+      //   return this.allIsOk(app.data.sid);
+      // }
 
       // 获得 openid 和 unionid
       app.getUnionId(res => {
