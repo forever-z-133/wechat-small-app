@@ -19,7 +19,7 @@ function is(reg) {
   }
 }
 
-var isTel = is(/1\d{10}/);
+var isTel = is(/^1\d{10}$/);
 
 function commonCallBack(res, name) {}
 
