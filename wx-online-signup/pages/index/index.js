@@ -107,7 +107,7 @@ Page({
     wx.showLoading();
     post.userLogin(data, () => {
       this.chooseSameUser(tel);
-    });
+    }, this.stopTimeCount);
   },
 
   // ---------- 获取账户对应的学生ID，即请求登录
@@ -116,6 +116,7 @@ Page({
     post.chooseSameUser(data, users => {
       wx.hideLoading();
       if (!Array.isArray(users) || users.length < 1) {
+        this.stopTimeCount();
         return alert('没找到相应账号');
       }
       
@@ -125,7 +126,7 @@ Page({
       } else {
         this.setData({ users: users, showModal: true, studentIndex: -1 });
       }
-    });
+    }, this.stopTimeCount);
   },
 
   // ---------- 弹窗选择账号
@@ -150,7 +151,7 @@ Page({
     wx.showLoading();
     post.bindStudentId(data, res => {
       return this.allIsOk(student.studentId);
-    });
+    }, this.stopTimeCount);
   },
 
   // ---------- 全部登录和绑定已完成
@@ -211,11 +212,16 @@ Page({
     this.setData({ yes_msg: false, msgTips: timeout + 's' });
     msgTimer = setInterval(() => {
       if (--timeout < 1) {
-        clearInterval(msgTimer); msgTimer = null;
-        this.setData({ yes_msg: true, msgTips: '重新获取' });
+        this.stopTimeCount();
       } else {
         this.setData({ msgTips: timeout + 's' });
       }
     }, 1000);
+  },
+  stopTimeCount: function () {
+    clearInterval(msgTimer); msgTimer = null;
+    this.setData({ yes_msg: true, msgTips: '重新获取' });
+    this.data.code = '';
+    this.justifyForm();
   },
 })
