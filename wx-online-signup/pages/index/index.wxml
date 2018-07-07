@@ -27,9 +27,9 @@
     <view class='alert-body'>
       <scroll-view scroll-y style='max-height: 400rpx'>
         <view class='list-box'>
-          <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 1}}'>
+          <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 0}}'>
             <view class='list-item {{studentIndex == index ? "choose" : ""}}' data-index='{{index}}' catchtap='chooseStudent'>
-              <text class='text'>{{item.studentName}}</text>
+              <text>{{item.studentName}}{{item.campusName ? "（" + item.campusName + "）" : ""}}</text>
             </view>
           </block>
         </view>
