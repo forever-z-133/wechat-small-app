@@ -57,7 +57,7 @@ Page({
     }, 0);
 
     // 其他初始化
-    clearTimeout(msgTimer);
+    // clearTimeout(msgTimer);
     this.justifyForm();
   },
 
