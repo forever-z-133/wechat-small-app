@@ -9,21 +9,35 @@
   color: #ddd;  
 }
 
-.head-image::before {
-  padding-top: calc(350 / 750 * 100%);
+.logo {
+  position: absolute;
+  top: 12%;
+  left: 10%;
+  width: 80%;
+  height: 10%;
+}
+.logo image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .form {
-  padding: 15rpx 40rpx 0;
+  padding: 30rpx 55rpx 50rpx;
   display: block;
+  margin: 350rpx 60rpx 50rpx;
+  background: #fff;
+  border-radius: 14rpx;
 }
 .form-group {
   padding: 0 0 15rpx;
   border-bottom: 2rpx solid #E5E5E5;
 }
-input {
+input, picker {
+  font-size: 30rpx;
   height: 2.5em;
   line-height: 2.5em;
+  flex-grow: 1;
 }
 .placeholder {
   color: #ddd;
@@ -31,19 +45,19 @@ input {
 
 
 .btn-getMsgCode {
-  padding: 0;
-  width: 8em;
+  width: 7em;
   font-size: .9em;
-  height: 2.5em;
-  line-height: 2.5em;
+  padding: .6em .3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   background: #488FFB;
   border-radius: 10rpx;
 }
 
-
-.btn-login {
-  margin-top: 40rpx;
+.btn-register {
+  margin-top: 60rpx;
   height: 2.8em;
   line-height: 2.8em;
   color: #fff;
@@ -53,6 +67,12 @@ input {
   color: #ddd;
   background: #F8F8F8;
   pointer-events: none;
+}
+.btn-to-login {
+  text-align: center;
+  font-size: 28rpx;
+  color: #488FFA;
+  margin-top: 52rpx;
 }
 
 .title {
@@ -72,9 +92,16 @@ input {
   background: #488FFA;
 }
 
-.btn-to-register {
-  font-size: 24rpx;
-  margin: 30rpx 5rpx 0;
-  text-align: right;
-  color: #999;
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-right: 15rpx;
+}
+.icon-arrow {
+  width: .5em;
+  height: .9em;
+  margin-left: 15rpx;
+  margin-right: 0;
 }

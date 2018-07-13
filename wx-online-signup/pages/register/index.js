@@ -18,35 +18,44 @@ Page({
     showModal: false,
     users: [],
     studentIndex: -1,
+    grand: -1,
+    grandList: [],
+    hasBind: false,
   },
   onLoad: function (options) {
-    // 登出或丢失，则清空全局数据
-    if (options.method == 'logout' || options.method == 'lose') {
-      console.log('登出或丢失身份');
-      app.data.sid = null;
-      app.data.uid = null;
-      app.data.oid = null;
-      app.data.token = null;
-      app.data._token = null;
-      app.data.shareOpt = null;
-      wx.removeStorageSync('shareImg');
-    }
-
-    if (app.data.shareOpt) {
-      this.setData({ hasShareOpt: true });
-    }
 
     // 完成此过程后跳页的重定向
     this.redirect = getValueFromUrl('redirect', options);
+
+    // 机构 ID & 校区 ID
+    if (app.data.shareOpt) {
+      this.campusId = app.data.shareOpt.campusId
+      this.studentId = app.data.shareOpt.referrerId
+      this.studentName = app.data.shareOpt.referrerName
+      this.institutionId = app.data.shareOpt.institutionId
+      return;
+    }
+    this.campusId = getValueFromUrl('cid', options);
+    this.studentId = getValueFromUrl('sid', options);
+    this.studentName = getValueFromUrl('sn', options);
+    this.institutionId = getValueFromUrl('iid', options);
+    app.data.shareOpt = {
+      campusId: this.campusId,
+      referrerId: this.studentId,
+      referrerName: this.studentName,
+      institutionId: this.institutionId,
+    }
   },
   onShow: function () {
     wx.showLoading({ title: '获取授权...', mask: true });
 
     setTimeout(() => {
-      // // 如果已有 studentId 直接完成
-      // if (app.data.sid) {
-      //   return this.allIsOk(app.data.sid);
-      // }
+      if (!this.institutionId || !this.campusId || !this.studentId || !this.studentName) {
+        wx.hideLoading();
+        return alert('缺少注册必需的参数，无法注册', () => {
+          wx.redirectTo({ url: '/pages/index/index' });
+        });
+      }
 
       // 获得 openid 和 unionid
       app.getUnionId(res => {
@@ -62,8 +71,6 @@ Page({
       });
     }, 0);
 
-    // 其他初始化
-    // clearTimeout(msgTimer);
     this.justifyForm();
   },
 
@@ -76,9 +83,13 @@ Page({
       if (typeof users == 'string') {
         return this.allIsOk(users);
       }
-      // 没有相应绑定的账户，走登录流程
+      // 没有相应绑定的账户，走注册流程
       if (!Array.isArray(users) || users.length < 1) {
-        return this.setData({ needLogin: true });
+        this.renderGrandList(); // 请求渲染学员年级
+        this.renderStyle(() => {
+          this.setData({ needLogin: true });
+        });   // 显示自定义注册页样式
+        return;
       }
       // 有相应账户，直接通过或进行选择
       if (users.length == 1) {
@@ -86,7 +97,7 @@ Page({
       } else {
         this.data.hasBind = true;
         users = users.map(id => { studentId: id });
-        this.setData({ users: users, showModal: true, studentIndex: -1 });
+        this.setData({ users: users, showModal: true, studentIndex: -1, hasBind: true });
       }
     });
   },
@@ -116,39 +127,43 @@ Page({
     }, this.stopTimeCount);
   },
 
+  // ---------- 注册
+  register: function (e) {
+    var studentName = this.data.name;
+    var contact = this.data.tel;
+    var campusId = this.campusId;
+    var institutionId = this.institutionId;
+    var referrerId = this.studentId;
+    var referrerName = this.studentName;
+    var gradeId = this.data.grandList[this.data.grand].id;
+    var data = { referrerId, studentName, contact, gradeId, institutionId, campusId, referrerName };
+    wx.showLoading();
+    post.register(data, res => {
+      this.bindStudentId(this.data.uid, res);
+    }, this.stopTimeCount);
+  },
+
   // ---------- 获取账户对应的学生ID，即请求登录
   chooseSameUser: function (tel) {
     var data = { contact: tel };
     post.chooseSameUser(data, users => {
       wx.hideLoading();
+      // 没找到人，直接注册
       if (!Array.isArray(users) || users.length < 1) {
-        this.stopTimeCount();
-        if (app.data.shareOpt) {
-          return wx.showModal({
-            title: '温馨提示',
-            content: '该账号不存在，可以去注册一个',
-            confirmColor: '#108EE9',
-            confirmText: '立即注册',
-            success: () => {
-              wx.redirectTo({ url: '/pages/register/index' });
-            }
-          });
-        }
-        return alert('该账号不存在');
+        return this.register();
       }
-      
-      if (users.length == 1) {
-        app.data.sid = users[0].studentId;
-        this.bindStudentId(this.data.uid, users[0]);
-      } else {
-        this.setData({ users: users, showModal: true, studentIndex: -1 });
-      }
+      // 找到了人，选完后再继续
+      this.setData({ users: users, showModal: true, studentIndex: -1, hasBind: false });
     }, this.stopTimeCount);
   },
 
   // ---------- 弹窗选择账号
   chooseOk: function() {
-    var student = this.data.users[this.data.studentIndex];
+    var index = this.data.studentIndex;
+    // 新注册个账号
+    if (index == -99 || index == '-99') return this.register();
+    // 选择学生
+    var student = this.data.users[index];
     if (!student) return alert('先选个账号吧');
     // 从已绑定的中进行选择，则不走绑定过程
     if (this.data.hasBind) {
@@ -176,13 +191,6 @@ Page({
     app.data.sid = sid;
     var data = { studentId: sid }
     wx.showToast({ title: '登录成功' });
-    // return setTimeout(() => {
-      // wx.redirectTo({
-      // // wx.navigateTo({
-      //   url: '/pages/web/index' + '?redirect=' + this.redirect,
-      // });
-    // }, 1000);
-
     // 跳往空白页
     wx.redirectTo({
       url: '/pages/empty/index' + '?jump=true&redirect=' + this.redirect,
@@ -190,6 +198,33 @@ Page({
   },
 
   //////////////////////////////////////////////////////////////////////// 以下与业务逻辑无关
+
+  // 获取年级列表
+  renderGrandList: function (callback) {
+    var data = { institutionId: this.institutionId };
+    post.getGradeList(data, res => {
+      var list = res.reduce((re, x) => x.state == '0' ? re.concat([x.name]) : re, []);
+      this.setData({ grandList: list });
+      callback && callback();
+    });
+  },
+
+  // 自定义注册样式
+  renderStyle: function (callback) {
+    var data = { institutionId: this.institutionId };
+    post.getRegisterPage(data, res => {
+      var bg = res.backgroundUrl, logo = res.logoUrl;
+      this.setData({ bg: bg, logo: logo });
+      setTimeout(() => this.setData({ bg: bg, logo: logo }), 1000);
+      callback && callback();
+    });
+  },
+
+  // 年级切换
+  grandChange: function (e) {
+    this.setData({ grand: Number(e.detail.value) });
+    this.justifyForm();
+  },
 
   // ---------- 选账号弹窗相关
   closeModal: function () {
@@ -201,6 +236,10 @@ Page({
   },
 
   // ---------- 表单验证
+  inputName: function (e) {
+    this.data.name = e.detail.value;
+    this.justifyForm();
+  },
   inputTel: function (e) {
     this.data.tel = e.detail.value;
     this.justifyForm();
@@ -211,21 +250,28 @@ Page({
   },
   justifyForm: function() {
     var tel = this.data.tel;
+    var name = this.data.name;
     var code = this.data.code;
+    var grand = this.data.grand;
     if (!tel && !code) {
-      this.setData({ loginTips: notLogin ? '注册' : '登录', yes: false });
+      this.setData({ loginTips: '注册并登陆', yes: false });
     } else if (!isTel(tel)) {
       this.setData({ loginTips: '手机号码不正确', yes: false });
       this.redirect = ''
     } else if (isTel(tel) && !code) {
       this.setData({ loginTips: '请填写短信验证码', yes: false });
+    } else if (isTel(tel) && code && grand < 0) {
+      this.setData({ loginTips: '请选择年级', yes: false });
+    } else if (isTel(tel) && code && grand > -1 && !name) {
+      this.setData({ loginTips: '请填写姓名', yes: false });
     } else if (isTel(tel) && code) {
-      this.setData({ loginTips: notLogin ? '注册' : '登录', yes: true });
+      this.setData({ loginTips: '注册并登陆', yes: true });
     }
   },
 
   // ---------- 获取验证码的倒计时
   startTimeCount: function () {
+    this.stopTimeCount();
     this.setData({ yes_msg: false, msgTips: timeout + 's' });
     msgTimer = setInterval(() => {
       if (--timeout < 1) {

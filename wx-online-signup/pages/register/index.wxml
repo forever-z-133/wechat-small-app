@@ -1,0 +1,67 @@
+<!--pages/login/index.wxml-->
+
+<view class='modal in' wx:if='{{needLogin}}'>
+  <view class='bg'>
+    <image src='{{bg || "/images/mp-login-default-bg.jpg"}}'></image>
+  </view>
+  <view class='logo'>
+    <image src='{{logo || "/images/mp-login-default-logo.png"}}'></image>
+  </view>
+  <view class='modal-box'>
+    <form class='form' bindsubmit='submit'>
+      <view class='form-group form-inline'>
+        <image src='/images/user.svg' class='icon icon-user'></image>
+        <input value='{{name}}' placeholder='请输入姓名' placeholder-class='placeholder' bindinput='inputName'></input>
+      </view>
+      <view class='form-group form-inline'>
+        <image src='/images/tel.svg' class='icon icon-tel'></image>
+        <input type='number' value='{{tel}}' placeholder='请输入手机号码' placeholder-class='placeholder' maxlength='11' confirm-type='next' bindinput='inputTel'></input>
+        <button class='btn btn-getMsgCode {{yes_msg ? "" : "disabled"}}' bindtap='getMsgCode'>{{msgTips}}</button>
+      </view>
+      <view class='form-group form-inline'>
+        <image src='/images/code.svg' class='icon icon-tel'></image>
+        <input type='number' value='{{code}}' placeholder='请输入短信验证码' placeholder-class='placeholder' confirm-type='done' bindinput='inputCode'></input>
+      </view>
+      <view class='form-group form-inline'>
+        <image src='/images/grand.svg' class='icon icon-tel'></image>
+        <picker value='{{grand}}' range='{{grandList}}' bindchange='grandChange'>
+          <view class='placeholder' wx:if="{{grand<0}}">请选择学员年级</view>
+          <view wx:else>{{grandList[grand]}}</view>
+        </picker>
+        <image src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAMAAABx9wfiAAAANlBMVEUAAADx8vvu8PjGx8vm5u7d3uTT1NnX2N3j5OvNztLa2+Dq6/Pm5++srKyzs7S9vb/BwcS4uLpFtpsZAAAADXRSTlMAYWr9iajNwJLitHmDmaGAQgAAAGFJREFUCNdNjksSxSAIBB1MYj6v0Xf/y2ahUGHVXVDMFGtNZY3BoeABzSZr6/iuEMe3r5whu9N/S+yGYWVtDqh5BV0TT/BH89E/HukZcE+0DivYarbTBZdl55oxtUrBSeUFjZMDP9CcHBEAAAAASUVORK5CYII=' class='icon icon-arrow'></image>
+      </view>
+      <button form-type='submit' class='btn btn-register {{yes ? "" : "disabled"}}'>{{loginTips}}</button>
+      <navigator class='btn-to-login' url="/pages/index/index" open-type="redirect">已有账号？点击登录</navigator>
+    </form>
+  </view>
+</view>
+
+<view class='copyright'>www.xuebangsoft.com</view>
+
+<view class='modal {{showModal ? "in" : ""}}'>
+  <view class='bg modal-bg'></view>
+  <view class='modal-box alert'>
+    <view class='alert-head'>
+      <view class='title'>发现您手机号存在多个账户中</view>
+      <view class=''>请选择一个账户进行登录及操作</view>
+    </view>
+    <view class='alert-body'>
+      <scroll-view scroll-y style='max-height: 400rpx'>
+        <view class='list-box'>
+          <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 0}}'>
+            <view class='list-item {{studentIndex == index ? "choose" : ""}}' data-index='{{index}}' catchtap='chooseStudent'>
+              <text>{{item.studentName}}{{item.campusName ? "（" + item.campusName + "）" : ""}}</text>
+            </view>
+          </block>
+          <view class='list-item {{studentIndex == -99 ? "choose" : ""}}' data-index='-99' catchtap='chooseStudent' wx:if="{{!hasBind}}">
+            <text>我想新注册个账号</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='alert-foot'>
+      <button class='btn btn-cancel' bindtap='closeModal'>取消</button>
+      <button class='btn btn-confirm' bindtap='chooseOk'>确定</button>
+    </view>
+  </view>
+</view>

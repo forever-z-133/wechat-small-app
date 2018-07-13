@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 
-import { alert, getValueFromUrl } from '../../utils/util.js';
+import { alert, getValueFromUrl, getQueryString } from '../../utils/util.js';
 var app = getApp();
 
 var webUrl = app.data.webUrl + '/';
@@ -57,14 +57,23 @@ Page({
   // -------- 分享
   onShareAppMessage: function(options) {
     var web = options.webViewUrl;
-    web = web.replace(/(\?|#)[\w\W]*$/, '');
+    console.log('转发时的网页链接', web);
+    var href = web.replace(/(\?|#)[\w\W]*$/, '');
+    var url = '/pages/index/index';
+    // 普通分享，未带上
+    if (!getQueryString('iid', web)) {
+      alert('该转发未带有关键信息，对方无法');
+    } else {
+
+    }
+    console.log('href', web)
     var url = '/pages/index/index';
     // url += '?redirect=' + web;
     console.log('分享链接', url);
     return {
-      title: '选课选课选课',
+      title: '一起来报班学习吧！',
       path: url,
-      imageUrl: '',
+      imageUrl: '../../images/share.jpg',
     }
   }
 })

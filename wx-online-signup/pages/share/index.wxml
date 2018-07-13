@@ -1,0 +1,13 @@
+<!--pages/share/index.wxml-->
+
+<view class='wrap'>
+  <view class='pic-box image' bindtap='showImg'>
+    <view class='canvas bg'>
+      <canvas canvas-id='img'></canvas>
+    </view>
+  </view>
+  <view class='footer'>
+    <button class='btn btn-share' open-type='share'>发给朋友</button>
+    <button class='btn btn-save' bindtap='saveImg'>保存图片</button>
+  </view>
+</view>

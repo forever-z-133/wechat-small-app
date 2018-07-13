@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -36,14 +36,11 @@
 			"current": -1,
 			"list": [
 				{
-					"id": -1,
-					"name": "分享取值",
-					"pathName": "pages/index/index",
-					"query": "id=111",
-					"scene": "1036",
-					"referrerInfo": {
-						"appId": "wx19c0639dc6e8fe0b"
-					}
+					"id": 0,
+					"name": "从分享进入",
+					"pathName": "pages/register/index",
+					"query": "cid=4210&iid=1&sid=10489&sn=介绍人",
+					"scene": "1012"
 				}
 			]
 		}

@@ -30,7 +30,7 @@ function _ajax_success(res, callback, name, errorFn) {
 }
 
 var baseUrl = 'https://uat3.xuebangsoft.net/eduboss/wxapp/';
-var testUrl = 'http://192.168.2.191:8080/eduboss/wxapp/';
+var testUrl = 'http://192.168.2.144:8080/eduboss/wxapp/';
 // baseUrl = testUrl;
 var apiUrl = 'WxAppLoginController';
 var payApi = 'SpecialMerchantsPay';
@@ -67,6 +67,18 @@ module.exports = {
   // --- 获取 Token
   getToken: function (data, callback, errorFn) {
     _GET(baseUrl + apiUrl + '/generateToken.do', data, callback, '获取 Token', errorFn);
+  },
+  // --- 获取年级列表
+  getGradeList: function (data, callback, errorFn) {
+    _GET(testUrl + 'WxAppRegisterController' + '/getGradeList.do', data, callback, '获取年级列表', errorFn);
+  },
+  // --- 获取自定义样式
+  getRegisterPage: function (data, callback, errorFn) {
+    _GET(testUrl + 'WxAppRegisterController' + '/getRegisterPage.do', data, callback, '获取自定义样式', errorFn);
+  },
+  // --- 注册
+  register: function (data, callback, errorFn) {
+    _POST(testUrl + 'WxAppRegisterController' + '/register.do', data, callback, '注册', errorFn);
   },
   // --- 获取支付签名
   getPayKeyValue: function (data, callback, errorFn) {

@@ -1,6 +1,8 @@
 {
   "pages":[
     "pages/index/index",
+    "pages/share/index",
+    "pages/register/index",
     "pages/web/index",
     "pages/paypage/index",
     "pages/empty/index",

@@ -22,9 +22,10 @@ App({
       this.data._token = null;
     }
 
-    // if (this.data._token) {
-    //   callback && callback(this.data._token)
-    // } else {
+    if (this.data._token) {
+      console.log('缓存中身份ID', this.data._token);
+      callback && callback(this.data._token)
+    } else {
       this.ifGetUser(yes => {
         getCode((code, raw) => {
           post.getUnionIdDirect({ code: code }, res => {
@@ -54,7 +55,7 @@ App({
           });
         });
       });
-    // }
+    }
   },
 
   /*
