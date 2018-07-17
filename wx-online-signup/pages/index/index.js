@@ -20,6 +20,10 @@ Page({
     studentIndex: -1,
   },
   onLoad: function (options) {
+
+    // 完成此过程后跳页的重定向
+    this.redirect = getValueFromUrl('redirect', options);
+
     // 登出或丢失，则清空全局数据
     if (options.method == 'logout' || options.method == 'lose') {
       console.log('登出或丢失身份');
@@ -34,20 +38,13 @@ Page({
 
     if (app.data.shareOpt) {
       this.setData({ hasShareOpt: true });
+      this.redirect = this.redirect || app.data.shareOpt.redirect;
     }
-
-    // 完成此过程后跳页的重定向
-    this.redirect = getValueFromUrl('redirect', options);
   },
   onShow: function () {
     wx.showLoading({ title: '获取授权...', mask: true });
 
     setTimeout(() => {
-      // // 如果已有 studentId 直接完成
-      // if (app.data.sid) {
-      //   return this.allIsOk(app.data.sid);
-      // }
-
       // 获得 openid 和 unionid
       app.getUnionId(res => {
         app.data.oid = res.openid || res.openId;
@@ -96,6 +93,8 @@ Page({
     var tel = this.data.tel;
     timeout = 60;
     if (!isTel(tel)) return wx.showToast({ title: '请填写正确手机号', icon: 'none' });
+    this.data.code = '';
+    this.setData({ code: '' });
     var data = { contact: tel };
     wx.showLoading();
     post.getMsgCode(data, (res, raw) => {
@@ -176,12 +175,6 @@ Page({
     app.data.sid = sid;
     var data = { studentId: sid }
     wx.showToast({ title: '登录成功' });
-    // return setTimeout(() => {
-      // wx.redirectTo({
-      // // wx.navigateTo({
-      //   url: '/pages/web/index' + '?redirect=' + this.redirect,
-      // });
-    // }, 1000);
 
     // 跳往空白页
     wx.redirectTo({

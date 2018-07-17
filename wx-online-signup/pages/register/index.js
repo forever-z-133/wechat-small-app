@@ -33,6 +33,7 @@ Page({
       this.studentId = app.data.shareOpt.referrerId
       this.studentName = app.data.shareOpt.referrerName
       this.institutionId = app.data.shareOpt.institutionId
+      this.redirect = this.redirect || app.data.shareOpt.redirect
       return;
     }
     this.campusId = getValueFromUrl('cid', options);
@@ -44,6 +45,7 @@ Page({
       referrerId: this.studentId,
       referrerName: this.studentName,
       institutionId: this.institutionId,
+      redirect: this.redirect,
     }
   },
   onShow: function () {
@@ -52,6 +54,7 @@ Page({
     setTimeout(() => {
       if (!this.institutionId || !this.campusId || !this.studentId || !this.studentName) {
         wx.hideLoading();
+        console.log(this.institutionId,this.campusId,this.studentId,this.studentName)
         return alert('缺少注册必需的参数，无法注册', () => {
           wx.redirectTo({ url: '/pages/index/index' });
         });
@@ -191,6 +194,7 @@ Page({
     app.data.sid = sid;
     var data = { studentId: sid }
     wx.showToast({ title: '登录成功' });
+    app.data.shareOpt = null;
     // 跳往空白页
     wx.redirectTo({
       url: '/pages/empty/index' + '?jump=true&redirect=' + this.redirect,

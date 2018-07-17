@@ -1,5 +1,5 @@
 //app.js
-import { getCode, getUserInfo, hasGotAllAuth, isPage, apiUrl } from './utils/util.js';
+import { getCode, getUserInfo, hasGotAllAuth, isPage, apiUrl, getShareParams } from './utils/util.js';
 import post from './utils/post.js';
 
 App({
@@ -84,4 +84,40 @@ App({
       }
     });
   },
+
+  /*
+   * 公用的生成分享数据的接口
+   */
+  createShareData: function (webview) {
+    console.log('获得链接', webview);
+    // 默认转发
+    var path = '/pages/index/index';
+    var title = '报班学习了解一下！';
+    var imageUrl = '../../images/img_chooseCourse.jpg';
+
+    var shareOpt = getShareParams(webview);
+
+    // 未带有分享参数，比如 web-view 未加载完成时
+    if (!shareOpt.institutionId) return { title, path, imageUrl }
+
+    // 如果是详情页，重定向为详情页
+    var page = shareOpt.href.match(/\/[^\?$\/]+/g);
+    page = page ? page[page.length - 1] : '';
+    var redirect = page === '/courseDetail' ? shareOpt.href : '';
+
+    // 合并为 path
+    var userShareParams = '';
+    userShareParams += 'iid=' + shareOpt.institutionId;
+    userShareParams += '&cid=' + shareOpt.campusId;
+    userShareParams += '&sid=' + shareOpt.referrerId;
+    userShareParams += '&sn=' + shareOpt.referrerName;
+    path = '/pages/register/index';
+    path += (!!~path.indexOf('?') ? '&' : '?') + userShareParams;
+    path += redirect ? '&redirect=' + encodeURIComponent(redirect) : '';
+    console.log('转发出去的链接', path);
+
+    title = '一起来报班学习吧！';
+    imageUrl = '../../images/share.jpg';
+    return { title, path, imageUrl, raw: shareOpt };
+  }
 })

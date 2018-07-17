@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 
-import { alert, getValueFromUrl, getQueryString } from '../../utils/util.js';
+import { alert, getValueFromUrl } from '../../utils/util.js';
 var app = getApp();
 
 var webUrl = app.data.webUrl + '/';
@@ -16,6 +16,7 @@ Page({
   },
   onLoad: function (options) {
     var web = getValueFromUrl('redirect', options);
+    web = decodeURIComponent(web);
     
     // 支付后的跳转有点复杂...
     // 由于 /web/index 的 web-view 跳到支付完成页后还能返回确定订单页，故选择重载 /web/index 清除历史访问记录。
@@ -47,7 +48,7 @@ Page({
     // url += '?uid=' + app.data.uid;
     // url += '&oid=' + app.data.oid;
     // url += '&sid=' + app.data.sid;
-    url += '?sid=' + app.data.sid;
+    url += '?sid=' + '100043165' || app.data.sid;
     url += '&guid=' + guid;
     if (more) url += more;
     url += '#wechat_redirect';
@@ -55,25 +56,9 @@ Page({
     this.setData({ url: url });
   },
   // -------- 分享
-  onShareAppMessage: function(options) {
-    var web = options.webViewUrl;
-    console.log('转发时的网页链接', web);
-    var href = web.replace(/(\?|#)[\w\W]*$/, '');
-    var url = '/pages/index/index';
-    // 普通分享，未带上
-    if (!getQueryString('iid', web)) {
-      alert('该转发未带有关键信息，对方无法');
-    } else {
-
-    }
-    console.log('href', web)
-    var url = '/pages/index/index';
-    // url += '?redirect=' + web;
-    console.log('分享链接', url);
-    return {
-      title: '一起来报班学习吧！',
-      path: url,
-      imageUrl: '../../images/share.jpg',
-    }
+  onShareAppMessage: function (options) {
+    var webview = options.webViewUrl;
+    var json = app.createShareData(webview);
+    return json;
   }
 })

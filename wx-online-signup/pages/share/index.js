@@ -1,12 +1,22 @@
 // pages/share/index.js
-import { alert } from '../../utils/util.js';
+import { alert, getValueFromUrl, getShareParams } from '../../utils/util.js';
+import post from '../../utils/post.js';
 
+const app = getApp();
 let ctx = null;
 
 Page({
   data: {
   },
   onLoad: function (options) {
+    var from = getValueFromUrl('from', options);
+    if (!from) return alert('缺少邀请参数');
+    from = decodeURIComponent(from);
+    var json = app.createShareData(from);
+    this.sharaJson = json;
+    console.log(json);
+
+    // 内存中已生成的图
     this.shareImg = wx.getStorageSync('shareImg');
     wx.clearStorageSync();
 
@@ -28,12 +38,9 @@ Page({
     })
   },
   onShareAppMessage: function (options) {
-    var url = '/pages/index/index';
-    return {
-      title: '一起来报班学习吧！',
-      path: url,
-      imageUrl: '../../images/share.jpg',
-    }
+    var json = this.sharaJson;
+    console.log(json.path);
+    return json;
   },
 
 
@@ -111,7 +118,10 @@ Page({
     }.bind(this))()
   },
   getQrcode: function (callback) {
-    callback && callback()
+    var data = { path: this.sharaJson.path }
+    post.getQrcode(data, res => {
+      callback && callback(res)
+    });
   },
   createImg: function (callback) {
     wx.canvasToTempFilePath({
@@ -119,8 +129,8 @@ Page({
       y: 0,
       width: this.winW * 2,
       height: this.winH * 2,
-      destWidth: this.winW * 2,
-      destHeight: this.winH * 2,
+      destWidth: this.winW,
+      destHeight: this.winH,
       canvasId: 'img',
       complete: function (res) {
         console.log('生成图片',  res);

@@ -39,7 +39,7 @@
 					"id": 0,
 					"name": "从分享进入",
 					"pathName": "pages/register/index",
-					"query": "cid=4210&iid=1&sid=10489&sn=介绍人",
+					"query": "iid=895&cid=4227&sid=5266335&sn=zyh&redirect=https%3A%2F%2Fstatic-uat.xuebangsoft.net%2FcourseDetail%3FcourseId%3D39%26type%3DSMALL_CLASS",
 					"scene": "1012"
 				}
 			]

@@ -145,6 +145,18 @@ function getValueFromUrl(key, opts) {
   return getQueryString(key, path);
 }
 
+// 从转发链接中获取所需信息
+function getShareParams(url) {
+  return {
+    rawUrl: url,
+    href: url.replace(/iid=[^$]*/, '').replace(/sid=[^&#$]*&?/, '').replace(/(\?|&|#)*$/, ''),
+    campusId: getQueryString('cid', url),
+    referrerId: getQueryString('sid', url),
+    referrerName: getQueryString('sn', url),
+    institutionId: getQueryString('iid', url),
+  }
+}
+
 module.exports = {
   alert,
   getQueryString,
@@ -154,4 +166,5 @@ module.exports = {
   hasGotAllAuth,
   isPage,
   isTel,
+  getShareParams
 }

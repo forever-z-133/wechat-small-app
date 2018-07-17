@@ -70,15 +70,19 @@ module.exports = {
   },
   // --- 获取年级列表
   getGradeList: function (data, callback, errorFn) {
-    _GET(testUrl + 'WxAppRegisterController' + '/getGradeList.do', data, callback, '获取年级列表', errorFn);
+    _GET(baseUrl + 'WxAppRegisterController' + '/getGradeList.do', data, callback, '获取年级列表', errorFn);
   },
   // --- 获取自定义样式
   getRegisterPage: function (data, callback, errorFn) {
-    _GET(testUrl + 'WxAppRegisterController' + '/getRegisterPage.do', data, callback, '获取自定义样式', errorFn);
+    _GET(baseUrl + 'WxAppRegisterController' + '/getRegisterPage.do', data, callback, '获取自定义样式', errorFn);
   },
   // --- 注册
   register: function (data, callback, errorFn) {
-    _POST(testUrl + 'WxAppRegisterController' + '/register.do', data, callback, '注册', errorFn);
+    _POST(baseUrl + 'WxAppRegisterController' + '/register.do', data, callback, '注册', errorFn);
+  },
+  // --- 获取转发二维码
+  getQrcode: function (data, callback, errorFn) {
+    _GET(baseUrl + 'WxAppRegisterController' + '/getWxAppQrCode.do', data, callback, '获取转发二维码', errorFn);
   },
   // --- 获取支付签名
   getPayKeyValue: function (data, callback, errorFn) {
