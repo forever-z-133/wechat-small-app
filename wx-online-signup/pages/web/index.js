@@ -48,7 +48,7 @@ Page({
     // url += '?uid=' + app.data.uid;
     // url += '&oid=' + app.data.oid;
     // url += '&sid=' + app.data.sid;
-    url += '?sid=' + '100043165' || app.data.sid;
+    url += '?sid=' + app.data.sid;
     url += '&guid=' + guid;
     if (more) url += more;
     url += '#wechat_redirect';

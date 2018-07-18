@@ -63,10 +63,13 @@ Page({
       this._draw(ctx, source);
       setTimeout(() => {
         this._draw(ctx, source);
-        this.createImg(img => {
-          wx.hideLoading();
-          callback && callback(img);
-        });
+        setTimeout(() => {
+          this._draw(ctx, source);
+          this.createImg(img => {
+            wx.hideLoading();
+            callback && callback(img);
+          });
+        }, 500);
       }, 500);
     });
   },
@@ -120,7 +123,7 @@ Page({
   getQrcode: function (callback) {
     var data = { path: this.sharaJson.path }
     post.getQrcode(data, res => {
-      callback && callback(res)
+      callback && callback('data:image/png;base64,' + res.base64WxAppQrCode);
     });
   },
   createImg: function (callback) {
