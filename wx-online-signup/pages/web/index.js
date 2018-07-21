@@ -19,7 +19,8 @@ Page({
     web = decodeURIComponent(web);
     
     // 支付后的跳转有点复杂...
-    // 由于 /web/index 的 web-view 跳到支付完成页后还能返回确定订单页，故选择重载 /web/index 清除历史访问记录。
+    // 由于 /web/index 的 web-view 跳到支付完成页后还能返回确定订单页
+    // 故选择重载 redirectTo 到 /web/index，清除所有历史访问记录。
     // 先在 onShow 判断是否支付完成，是则重载 /web/index，并带上参数 payed；
     // 重载触发 onLoad，此时判断 payed 是否存在，存在则使 web-view 显示支付结果页。
     if (options.payed) return this.toPayFinish();
@@ -35,19 +36,16 @@ Page({
   // -------- 支付成功
   toPayFinish: function () {
     if (app.data.payFinish) {
-      var str = Object.keys(app.data.payFinish).reduce((re, key) => {
+      var more = Object.keys(app.data.payFinish).reduce((re, key) => {
         return re + '&' + key + '=' + app.data.payFinish[key];
       }, '');
-      this.setWebView(webUrl + 'paymentTip', str);
+      this.setWebView(webUrl + 'paymentTip', more);
       app.data.payFinish = null;
     }
   },
   // -------- 设置 web-view 链接
   setWebView(url = webUrl, more = '') {
     var guid = Math.random().toString(36).substring(2, 7);
-    // url += '?uid=' + app.data.uid;
-    // url += '&oid=' + app.data.oid;
-    // url += '&sid=' + app.data.sid;
     url += '?sid=' + app.data.sid;
     url += '&guid=' + guid;
     if (more) url += more;

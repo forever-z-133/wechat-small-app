@@ -16,23 +16,18 @@ Page({
     this.sharaJson = json;
     console.log(json);
 
-    // 内存中已生成的图
-    this.shareImg = wx.getStorageSync('shareImg');
-    wx.clearStorageSync();
-
     // 获取 canvas 宽高
     wx.getSystemInfo({
       complete: win => {
         console.log('系统', win);
         if (!/ok$/i.test(win.errMsg)) return alert('无法生成分享图');
-        this.winW = win.windowWidth * 0.8;
+        this.winW = (win.windowWidth || 414) * 0.8;
         this.winH = 844 / 560 * this.winW;
 
         // 开始画图
         this.getImg((img, cache) => {
           console.log('生成分享图', cache?'缓存':'', img);
           this.shareImg = img;
-          // wx.setStorageSync('shareImg', img);
         });
       },
     })
@@ -51,9 +46,6 @@ Page({
    * 
    **************************************/
   getImg: function (callback) {
-    // if (this.shareImg) {
-    //   return callback && callback(this.shareImg, true);
-    // }
     this.drawImg(callback, false);
   },
   drawImg: function (callback) {
@@ -63,17 +55,14 @@ Page({
       this._draw(ctx, source);
       setTimeout(() => {
         this._draw(ctx, source);
-        setTimeout(() => {
-          this._draw(ctx, source);
-          this.createImg(img => {
-            wx.hideLoading();
-            callback && callback(img);
-          });
-        }, 500);
+        this.createImg(img => {
+          wx.hideLoading();
+          callback && callback(img);
+        });
       }, 500);
     });
   },
-  _draw(ctx, source) {
+  _draw(ctx, source, callback) {
     var winW = this.winW, winH = this.winH;
     var px = winW / 560;
     var l = 144 * px, t = 467 * px, w = 273 * px;
@@ -94,7 +83,7 @@ Page({
     ctx.fillRect(l, t, w, w);
     ctx.drawImage(source.qrcode.path, l + 16 * px, t + 16 * px, w - 32 * px, w - 32 * px);
     // 绘制
-    ctx.draw();
+    ctx.draw(true, callback);
   },
   preloadSource: function (callback) {
     var source = {
