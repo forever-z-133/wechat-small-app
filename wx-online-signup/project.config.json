@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -33,14 +33,28 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
 					"name": "从分享进入",
 					"pathName": "pages/register/index",
-					"query": "iid=895&cid=4227&sid=5266335&sn=zyh&redirect=https%3A%2F%2Fstatic-uat.xuebangsoft.net%2FcourseDetail%3FcourseId%3D39%26type%3DSMALL_CLASS",
+					"query": "iid=1&cid=4246&sid=5267426&re=courseId=98&type=ONE_ON_ONE_COURSE",
 					"scene": "1012"
+				},
+				{
+					"id": 1,
+					"name": "普通转发",
+					"pathName": "pages/register/index",
+					"query": "iid=1&cid=4246&sid=5267426&re=null",
+					"scene": "1007"
+				},
+				{
+					"id": -1,
+					"name": "普通转发带重定向",
+					"pathName": "pages/register/index",
+					"query": "iid=1&cid=4246&sid=5267426&re=courseId%3D98%26type%3DONE_ON_ONE_COURSE",
+					"scene": "1007"
 				}
 			]
 		}

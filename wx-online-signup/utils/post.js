@@ -81,8 +81,18 @@ module.exports = {
     _POST(baseUrl + 'WxAppRegisterController' + '/register.do', data, callback, '注册', errorFn);
   },
   // --- 获取转发二维码
+  // getQrcode: function (data, callback, errorFn) {
+  //   _GET(testUrl + 'WxAppRegisterController' + '/getWxAppQrCode.do', data, callback, '获取转发二维码', errorFn);
+  // },
+  // --- 获取转发二维码
   getQrcode: function (data, callback, errorFn) {
-    _GET(baseUrl + 'WxAppRegisterController' + '/getWxAppQrCode.do', data, callback, '获取转发二维码', errorFn);
+    var apiUrl = testUrl + 'WxAppRegisterController' + '/getWxAppQrCode.do';
+    var url = '?pagePath=' + data.path;
+    url += '&token=Bearer ' + data.token;
+    url += data.redirect ? '&redirect=' + data.redirect : '';
+    console.log('分享二维码链接', url);
+    url = apiUrl + url;
+    return callback && callback(url);
   },
   // --- 获取支付签名
   getPayKeyValue: function (data, callback, errorFn) {

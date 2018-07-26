@@ -96,7 +96,7 @@ Page({
     this.data.code = '';
     this.setData({ code: '' });
     var data = { contact: tel };
-    wx.showLoading();
+    wx.showLoading({ mask: true });
     post.getMsgCode(data, (res, raw) => {
       if (raw.businessCode != 0) alert(raw.resultMessage);
       wx.showToast({ title: '发送成功' });
@@ -109,7 +109,7 @@ Page({
   submit: function(e) {
     var tel = this.data.tel, code = this.data.code;
     var data = { contact: tel, verifyCode: code };
-    wx.showLoading();
+    wx.showLoading({ mask: true });
     post.userLogin(data, () => {
       this.chooseSameUser(tel);
     }, this.stopTimeCount);
@@ -164,7 +164,7 @@ Page({
       unionId: app.data.uid,
       institutionId: student.institutionId,
     }
-    wx.showLoading();
+    wx.showLoading({ mask: true });
     post.bindStudentId(data, res => {
       return this.allIsOk(student.studentId);
     }, this.stopTimeCount);

@@ -10,6 +10,7 @@ App({
     userInfo: null,
     apiUrl: apiUrl,
     webUrl: 'https://static-uat.xuebangsoft.net',
+    // webUrl: 'http://192.168.2.144:3000',
   },
 
   /*************************
@@ -30,11 +31,6 @@ App({
         getCode((code, raw) => {
           post.getUnionIdDirect({ code: code }, res => {
             if (res.unionid) {
-              // getUserInfo(user => {
-              //   res = Object.assign({}, user.userInfo, res)
-              //   this.data._token = res;
-              //   callback && callback(res);
-              // });
               this.data._token = res;
               callback && callback(res);
             } else {
@@ -90,6 +86,7 @@ App({
    */
   createShareData: function (webview) {
     console.log('获得链接', webview);
+    webview = webview.replace('#wechat_redirect', '');
     // 默认转发
     var path = '/pages/index/index';
     var title = '报班学习了解一下！';
@@ -98,26 +95,40 @@ App({
     var shareOpt = getShareParams(webview);
 
     // 未带有分享参数，比如 web-view 未加载完成时
-    if (!shareOpt.institutionId) return { title, path, imageUrl }
+    if (!shareOpt.token || !shareOpt.institutionId) return { title, path, imageUrl }
 
     // 如果是详情页，重定向为详情页
     var page = shareOpt.href.match(/\/[^\?$\/]+/g);
     page = page ? page[page.length - 1] : '';
-    var redirect = page === '/courseDetail' ? shareOpt.href : '';
+    var redirect = '';
+    if (page === '/courseDetail') {
+      var temp = shareOpt.href.split(/[\?&#]/);
+      temp = temp.filter(x => /courseId|type/i.test(x));
+      redirect = temp.join('&');
+    }
 
     // 合并为 path
     var userShareParams = '';
     userShareParams += 'iid=' + shareOpt.institutionId;
     userShareParams += '&cid=' + shareOpt.campusId;
     userShareParams += '&sid=' + shareOpt.referrerId;
-    userShareParams += '&sn=' + shareOpt.referrerName;
+    // userShareParams += '&sn=' + shareOpt.referrerName;
     path = '/pages/register/index';
+    shareOpt.path = path;
     path += (!!~path.indexOf('?') ? '&' : '?') + userShareParams;
-    path += redirect ? '&redirect=' + encodeURIComponent(redirect) : '';
-    console.log('转发出去的链接', path);
+    path += redirect ? '&re=' + encodeURIComponent(redirect) : '';
+    shareOpt.redirect = encodeURIComponent(redirect);
 
     title = '一起来报班学习吧！';
     imageUrl = '../../images/share.jpg';
     return { title, path, imageUrl, raw: shareOpt };
-  }
+  },
+  mergerPath(path, params, filter) {
+    params = filter.filter(key => (key in params));
+    var temp = Object.keys(params).reduce((re, key) => {
+      return re.concat([key + '=' + params[key]]);
+    }, []);
+    var userShareParams = temp.length < 1 ? '' : temp.join('&');
+    path += (!!~path.indexOf('?') ? '&' : '?') + userShareParams;
+  },
 })

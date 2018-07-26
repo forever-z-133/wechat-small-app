@@ -20,30 +20,36 @@ Page({
     studentIndex: -1,
     grand: -1,
     grandList: [],
+    grandRawList: [],
     hasBind: false,
   },
   onLoad: function (options) {
 
     // 完成此过程后跳页的重定向
     this.redirect = getValueFromUrl('redirect', options);
+    var re = getValueFromUrl('re', options);
+    if (re && re != 'null') {
+      re = app.data.webUrl + '/courseDetail?' + re;
+      this.redirect = encodeURIComponent(re);
+    }
 
     // 机构 ID & 校区 ID
     if (app.data.shareOpt) {
       this.campusId = app.data.shareOpt.campusId
       this.studentId = app.data.shareOpt.referrerId
-      this.studentName = app.data.shareOpt.referrerName
+      // this.studentName = app.data.shareOpt.referrerName
       this.institutionId = app.data.shareOpt.institutionId
       this.redirect = this.redirect || app.data.shareOpt.redirect
       return;
     }
     this.campusId = getValueFromUrl('cid', options);
     this.studentId = getValueFromUrl('sid', options);
-    this.studentName = getValueFromUrl('sn', options);
+    // this.studentName = getValueFromUrl('sn', options);
     this.institutionId = getValueFromUrl('iid', options);
     app.data.shareOpt = {
       campusId: this.campusId,
       referrerId: this.studentId,
-      referrerName: this.studentName,
+      // referrerName: this.studentName,
       institutionId: this.institutionId,
       redirect: this.redirect,
     }
@@ -52,7 +58,7 @@ Page({
     wx.showLoading({ title: '获取授权...', mask: true });
 
     setTimeout(() => {
-      if (!this.institutionId || !this.campusId || !this.studentId || !this.studentName) {
+      if (!this.institutionId || !this.campusId || !this.studentId) {
         wx.hideLoading();
         console.log(this.institutionId,this.campusId,this.studentId,this.studentName)
         return alert('缺少注册必需的参数，无法注册', () => {
@@ -111,7 +117,7 @@ Page({
     timeout = 60;
     if (!isTel(tel)) return wx.showToast({ title: '请填写正确手机号', icon: 'none' });
     var data = { contact: tel };
-    wx.showLoading();
+    wx.showLoading({ mask: true });
     post.getMsgCode(data, (res, raw) => {
       if (raw.businessCode != 0) alert(raw.resultMessage);
       wx.showToast({ title: '发送成功' });
@@ -138,7 +144,7 @@ Page({
     var institutionId = this.institutionId;
     var referrerId = this.studentId;
     var referrerName = this.studentName;
-    var gradeId = this.data.grandList[this.data.grand].id;
+    var gradeId = this.data.grandRawList[this.data.grand].id;
     var data = { referrerId, studentName, contact, gradeId, institutionId, campusId, referrerName };
     wx.showLoading();
     post.register(data, res => {
@@ -153,6 +159,7 @@ Page({
       wx.hideLoading();
       // 没找到人，直接注册
       if (!Array.isArray(users) || users.length < 1) {
+        // return this.setData({ users: [], showModal: true, studentIndex: -1, hasBind: false });
         return this.register();
       }
       // 找到了人，选完后再继续
@@ -183,7 +190,7 @@ Page({
       unionId: app.data.uid,
       institutionId: student.institutionId,
     }
-    wx.showLoading();
+    wx.showLoading({ mask: true });
     post.bindStudentId(data, res => {
       return this.allIsOk(student.studentId);
     }, this.stopTimeCount);
@@ -207,6 +214,7 @@ Page({
   renderGrandList: function (callback) {
     var data = { institutionId: this.institutionId };
     post.getGradeList(data, res => {
+      this.data.grandRawList = res.filter(x => x.state == '0');
       var list = res.reduce((re, x) => x.state == '0' ? re.concat([x.name]) : re, []);
       this.setData({ grandList: list });
       callback && callback();

@@ -154,6 +154,7 @@ function getShareParams(url) {
     referrerId: getQueryString('sid', url),
     referrerName: getQueryString('sn', url),
     institutionId: getQueryString('iid', url),
+    token: getQueryString('token', url),
   }
 }
 

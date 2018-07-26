@@ -5,7 +5,6 @@ import { alert, getValueFromUrl } from '../../utils/util.js';
 var app = getApp();
 
 var webUrl = app.data.webUrl + '/';
-// webUrl = 'http://192.168.2.144:3000/';
 
 var tokenTimer = null;
 
@@ -16,6 +15,7 @@ Page({
   },
   onLoad: function (options) {
     var web = getValueFromUrl('redirect', options);
+    web = decodeURIComponent(web);
     web = decodeURIComponent(web);
     
     // 支付后的跳转有点复杂...
@@ -57,6 +57,7 @@ Page({
   onShareAppMessage: function (options) {
     var webview = options.webViewUrl;
     var json = app.createShareData(webview);
+    console.log('转发出去的链接', json.path);
     return json;
   }
 })
