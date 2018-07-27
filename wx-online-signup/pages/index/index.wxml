@@ -13,7 +13,7 @@
       <input type='number' value='{{code}}' placeholder='请输入短信验证码' placeholder-class='placeholder' confirm-type='done' bindinput='inputCode'></input>
     </view>
     <button form-type='submit' class='btn btn-login {{yes ? "" : "disabled"}}'>{{loginTips}}</button>
-    <navigator class='btn-to-register' url="/pages/register/index" wx:if="{{hasShareOpt}}" open-type="redirect">我想去注册</navigator>
+    <navigator class='btn-to-register' url="/pages/register/index" wx:if="{{hasShareOpt}}" open-type="redirect">返回注册</navigator>
   </form>
 </view>
 <view class='copyright'>www.xuebangsoft.com</view>

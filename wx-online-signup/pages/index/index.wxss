@@ -73,8 +73,8 @@ input {
 }
 
 .btn-to-register {
-  font-size: 24rpx;
-  margin: 30rpx 5rpx 0;
-  text-align: right;
-  color: #999;
+  text-align: center;
+  font-size: 28rpx;
+  color: #488FFA;
+  margin-top: 52rpx;
 }

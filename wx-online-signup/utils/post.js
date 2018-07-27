@@ -86,7 +86,7 @@ module.exports = {
   // },
   // --- 获取转发二维码
   getQrcode: function (data, callback, errorFn) {
-    var apiUrl = testUrl + 'WxAppRegisterController' + '/getWxAppQrCode.do';
+    var apiUrl = baseUrl + 'WxAppRegisterController' + '/getWxAppQrCode.do';
     var url = '?pagePath=' + data.path;
     url += '&token=Bearer ' + data.token;
     url += data.redirect ? '&redirect=' + data.redirect : '';
