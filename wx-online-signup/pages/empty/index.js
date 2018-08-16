@@ -18,6 +18,7 @@ Page({
   },
   onShow: function () {
     setTimeout(this.jump, 50);
+    app.data.lastWebView = null;
   },
   jump: function () {
     wx.navigateTo({

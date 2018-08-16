@@ -29,11 +29,15 @@ function _ajax_success(res, callback, name, errorFn) {
   callback && callback(res.data.data, res.data);
 }
 
-var baseUrl = 'https://uat3.xuebangsoft.net/eduboss/wxapp/';
+var baseUrl = 'https://pre3.xuebangsoft.net/eduboss/wxapp/';
 var testUrl = 'http://192.168.2.144:8080/eduboss/wxapp/';
 // baseUrl = testUrl;
 var apiUrl = 'WxAppLoginController';
 var payApi = 'SpecialMerchantsPay';
+
+var baseUrl2 = 'https://pre3.xuebangsoft.net/eduboss/';
+// baseUrl2 = 'http://192.168.2.195:8080/eduboss/'
+
 module.exports = {
   apiUrl: baseUrl + apiUrl,
   // --- 直取 UnionId，如果存在则不走 wx.getUserInfo 和 post.getUnionId
@@ -136,5 +140,16 @@ module.exports = {
       fail: err => _ajax_error,
       complete: res => _ajax_success(res, callback, '核销订单', errorFn)
     });
+  },
+
+
+
+  // --- 收款modal -> 查订单
+  getFundOrderDetail: function (data, callback, errorFn) {
+    _GET(baseUrl2 + 'weChat/preFundsChangeHistoryWeChatController/getPreFundsChangeHistoryDetail.do', data, callback, '查推送订单', errorFn);
+  },
+  // --- 收款modal -> 获取支付签名
+  startFundOrderPay: function (data, callback, errorFn) {
+    _POST(baseUrl2 + 'weChat/preFundsChangeHistoryWeChatController/pay.do', data, callback, '获取推送支付签名', errorFn);
   },
 }

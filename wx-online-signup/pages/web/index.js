@@ -17,18 +17,21 @@ Page({
     var web = getValueFromUrl('redirect', options);
     web = decodeURIComponent(web);
     web = decodeURIComponent(web);
+    web = web === 'null' ? webUrl : '';
     
     // 支付后的跳转有点复杂...
     // 由于 /web/index 的 web-view 跳到支付完成页后还能返回确定订单页
     // 故选择重载 redirectTo 到 /web/index，清除所有历史访问记录。
     // 先在 onShow 判断是否支付完成，是则重载 /web/index，并带上参数 payed；
     // 重载触发 onLoad，此时判断 payed 是否存在，存在则使 web-view 显示支付结果页。
-    if (options.payed) return this.toPayFinish();
-    this.setWebView(web || webUrl);
+    this.web = web;
   },
   onShow: function () {
+    if (app.data.payed) return this.toPayFinish();
+    this.setWebView(this.web || webUrl);
     setTimeout(() => {
       if (app.data.payFinish) {
+        app.data.payed = true;
         wx.redirectTo({ url: '/pages/web/index' + '?payed=true' });
       }
     }, 50);
@@ -41,10 +44,13 @@ Page({
       }, '');
       this.setWebView(webUrl + 'paymentTip', more);
       app.data.payFinish = null;
+      app.data.payed = false;
     }
   },
   // -------- 设置 web-view 链接
   setWebView(url = webUrl, more = '') {
+    if (app.data.lastWebView === url) return;
+    app.data.lastWebView = url;
     var guid = Math.random().toString(36).substring(2, 7);
     url += '?sid=' + app.data.sid;
     url += '&guid=' + guid;

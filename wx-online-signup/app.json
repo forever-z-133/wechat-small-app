@@ -5,6 +5,8 @@
     "pages/register/index",
     "pages/web/index",
     "pages/paypage/index",
+    "pages/redirect/index",
+    "pages/preFundsChangeHistoryDetail/index",
     "pages/empty/index",
     "pages/getAuth/index"
   ],

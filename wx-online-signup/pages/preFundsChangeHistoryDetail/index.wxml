@@ -1,0 +1,83 @@
+<!--pages/preFundsChangeHistoryDetail/index.wxml-->
+<view class='section state-header flex'>
+  <view class='label flex {{data.payStatus==="PAID"?"paid":""}}'>
+    <text wx:if='{{data.payStatus==="PAID"}}'>已付款</text>
+    <text wx:elif='{{data.payStatus==="PAYING"}}'>待付款</text>
+    <text wx:else>付款状态</text>
+  </view>
+  <view wx:if='{{data.payStatus!=="PAID"}}'>需付：￥{{data.thisAmount || 0}}</view>
+</view>
+<view class='section user-info flex'>
+  <view class='label list-title'>报名信息</view>
+  <view>
+    <text class='username'>{{data.studentName || "用户名称"}} </text>
+    <text class='mobile'>{{data.studentContact || "13800000000"}} </text>
+    <text class='grand'>{{data.studentGrade || "年级"}} </text>
+  </view>
+</view>
+<view class='section class-list'>
+  <view class='list-title'>报读课程</view>
+  <view class='list-box'>
+    <view class="list-item" wx:for="{{data.contractProductList || 1}}" wx:key="index">
+      <view class='list-content'>
+        <view class='list-name'>【{{item.type || '课程类型'}}】{{item.productRo.name || "班课名称班课名称班课名称"}}</view>
+        <view class='list-desc gap-r flex'>
+          <view class='price'>￥{{item.single || 0}} x {{item.quantity || 1}}课时 = ￥{{item.planAmount || 0}}</view>
+          <view class='cut'>优惠 -￥{{item.promotionAmount || 0}}</view>
+          <view class='total'>应付 ￥{{(item.should) || 0}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='gap'></view>
+<view class='section campus-info'>
+  <view class='list-title'>签约信息</view>
+  <view class='cell'>
+    <view class='label'>签约校区</view>
+    <text>{{data.signCampusName || '-'}}</text>
+  </view>
+  <view class='cell'>
+    <view class='label'>签约时间</view>
+    <text>{{data.signTime || '-'}}</text>
+  </view>
+  <view class='cell'>
+    <view class='label'>签约人</view>
+    <text>{{data.signUserName || '-'}}</text>
+  </view>
+</view>
+<view class='gap'></view>
+<view class='section final-info'>
+  <view class='table'>
+    <view class='cell'>
+      <view class='label'>
+        <text class="countAll">
+          <text class='label'>共</text>
+          <text>{{data.contractProductList.length || 0}}个课程</text>
+        </text>
+        <text>合同总价</text>
+      </view>
+      <view>￥{{data.contractAmount || 0}}</view>
+    </view>
+    <view class='cell'>
+      <view class='label'>优惠总额</view>
+      <view>-￥{{data.promotionAmount || 0}}</view>
+    </view>
+    <view class='cell'>
+      <view class='label'>应付金额</view>
+      <view>￥{{data.shouldPayAmount || 0}}</view>
+    </view>
+    <view class='cell'>
+      <view class='label'>已付款</view>
+      <view>￥{{data.paidAmount || 0}}</view>
+    </view>
+    <view class='cell' wx:if='{{data.payStatus!=="PAID"}}'>
+      <view class='label'>本次支付</view>
+      <view>￥{{data.thisAmount || 0}}</view>
+    </view>
+  </view>
+</view>
+<view class='needPay' wx:if="{{showPayButton}}"></view>
+<view class='pay-button' wx:if="{{showPayButton}}">
+  <button class='btn btn-pay' bindtap='startPay'>立即支付</button>
+</view>

@@ -7,9 +7,7 @@ App({
 
   },
   data: {
-    userInfo: null,
-    apiUrl: apiUrl,
-    webUrl: 'https://static-uat.xuebangsoft.net',
+    webUrl: 'https://static-pre.xuebangsoft.net',
     // webUrl: 'http://192.168.2.144:3000',
   },
 
@@ -32,6 +30,7 @@ App({
           post.getUnionIdDirect({ code: code }, res => {
             if (res.unionid) {
               this.data._token = res;
+              res.openid = res.openid || res.openId;
               callback && callback(res);
             } else {
               // 当直取拿不到 uid 时，走 wx.getUserInfo 和 post.getUnionId
@@ -43,6 +42,7 @@ App({
                     encryptedData: user.encryptedData,
                   }, res => {
                     this.data._token = res;
+                    res.openid = res.openid || res.openId;
                     callback && callback(res);
                   });
                 });
@@ -95,7 +95,7 @@ App({
     var shareOpt = getShareParams(webview);
 
     // 未带有分享参数，比如 web-view 未加载完成时
-    if (!shareOpt.token || !shareOpt.institutionId) return { title, path, imageUrl }
+    if (!(shareOpt.token || shareOpt.institutionId)) return { title, path, imageUrl }
 
     // 如果是详情页，重定向为详情页
     var page = shareOpt.href.match(/\/[^\?$\/]+/g);

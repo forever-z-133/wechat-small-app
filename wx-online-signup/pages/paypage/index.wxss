@@ -1,1 +1,6 @@
 /* pages/paypage/index.wxss */
+.pos-center {
+  width: 100%;
+  padding: 0 100rpx;
+  text-align: center;
+}

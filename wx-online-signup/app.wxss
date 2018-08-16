@@ -131,6 +131,9 @@ page {
   background: none;
   flex-shrink: 0;
   border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .btn::after {
   display: none;
@@ -150,3 +153,8 @@ page {
   display: flex;
   align-items: center;
 }
+
+.gap-t > view:not(:first-child) { margin-top: 20rpx; }
+.gap-b > view:not(:last-child) { margin-bottom: 20rpx; }
+.gap-l > view:not(:first-child) { margin-left: 20rpx; }
+.gap-r > view:not(:last-child) { margin-right: 20rpx; }

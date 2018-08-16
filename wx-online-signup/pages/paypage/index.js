@@ -13,6 +13,17 @@ Page({
   },
   onLoad: function (options) {
 
+    // 获取 推送 传来的信息，#10404
+    var data = options;
+    try {
+      data = JSON.parse(data.fromFund);
+    } catch (err) { data = null; }
+    this.data.fromFund = data;
+    if (this.data.fromFund) {
+      console.log('推送发起支付', this.data.fromFund);
+      return setTimeout(this.startWxPay, 100);
+    }
+
     // 身份丢失
     if (!app.data.oid) {
       return alert('身份丢失，请重新登录', () => {
@@ -44,34 +55,63 @@ Page({
   },
   // --- 根据订单ID拿到校区ID和总价
   startWxPay: function (callback) {
-    var data = {
-      id: this.data.fromH5.orderId,
-      token: this.data.fromH5.token,
-    };
+    var data = null;
+
+    if (this.data.fromH5) {
+      data = {
+        id: this.data.fromH5.orderId,
+        token: this.data.fromH5.token,
+      };
+    }
+
+    if (this.data.fromFund) {
+      data = {
+        openId: app.data.oid,
+        type: 'ONLINE_ORDER',
+        totalFee: this.data.fromFund.totalFee,
+        businessId: this.data.fromFund.preFundsChangeHistoryId,
+      };
+      return this.getWxPayData(data);
+    }
+
     post.getOrderInfo(data, res => {
       this.getWxPayData(res);  // 拿取支付签名
     }, err => {
-      this.setData({ pay_state: '系统错误：获取订单信息失败！' });
+      // this.setData({ pay_state: '系统错误：获取订单信息失败！' });
       setTimeout(() => this.wxPayJump('fail'), 1000);
     });
   },
   // --- 拿取支付签名等信息
   getWxPayData: function (json, callback) {
-    this.data.fromH5.totalFee = json.orderAmount;
-    this.data.fromH5.campusId = json.campusId;
-    var data = {
-      totalFee: (this.data.fromH5.totalFee || 0.01) * 100,
-      campusId: this.data.fromH5.campusId || '',
-      openId: app.data.oid,
-      token: app.data.token || this.data.fromH5.token,
-      businessId: this.data.fromH5.orderId,
-      institutionId: json.institutionId,
-      type: 'ONLINE_ORDER',
-    };
+    var data = null;
+
+    if (this.data.fromH5) {
+      this.data.fromH5.totalFee = json.orderAmount;
+      this.data.fromH5.campusId = json.campusId;
+      data = {
+        totalFee: (this.data.fromH5.totalFee || 0.01) * 100,
+        campusId: this.data.fromH5.campusId || '',
+        openId: app.data.oid,
+        token: app.data.token || this.data.fromH5.token,
+        businessId: this.data.fromH5.orderId,
+        institutionId: json.institutionId,
+        type: 'ONLINE_ORDER',
+      };
+    }
+
+    if (this.data.fromFund) {
+      return post.startFundOrderPay(json, res => {
+        this.openWxPay(res);  // 开启支付
+      }, err => {
+        // this.setData({ pay_state: '系统错误：获取支付签名失败！' });
+        setTimeout(() => this.wxPayJump('fail'), 1000);
+      });
+    }
+    
     post.getPayKeyValue(data, res => {
       this.openWxPay(res);  // 开启支付
     }, err => {
-      this.setData({ pay_state: '系统错误：获取支付签名失败！' });
+      // this.setData({ pay_state: '系统错误：获取支付签名失败！' });
       setTimeout(() => this.wxPayJump('fail'), 1000);
     });
   },
@@ -95,6 +135,9 @@ Page({
   },
   // --- 支付完成的回调
   wxPayFinish: function (res, callback) {
+    if (this.data.fromFund) {
+      return this.wxPayJump('fail');
+    }
     wx.showLoading();
     if (/cancel/.test(res.errMsg)) {
       return this.checkTheOrder();
@@ -134,11 +177,12 @@ Page({
   // --- 支付完成
   wxPayJump: function (type = 'SUCCESS', res) {
     wx.hideLoading();
+    if (!this.data.fromH5) this.data.fromH5 = {};
     app.data.payFinish = { typeTip: type };
     app.data.payFinish.orderId = this.data.fromH5.orderId;
-    // app.data.payFinish.errMsg = '';
     app.data.payFinish.money = type === 'SUCCESS' ? this.data.fromH5.totalFee : 0;
     this.data.fromH5 = null;
+    this.data.fromFund = null;
     wx.navigateBack();
   },
 })

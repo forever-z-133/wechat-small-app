@@ -9,7 +9,7 @@ function alert(text, fn) {
 function getQueryString(name, str) {
   var str = decodeURIComponent(str);
   var reg = new RegExp('(^|\\?|&)' + name + '=([^&]*)(&|$|\'|\")');
-  var r = (str || window.location.href).match(reg);
+  var r = (str || '').match(reg);
   if (r != null) return decodeURIComponent(r[2]); return null;
 }
 
@@ -138,7 +138,7 @@ function useCache(fn) {
  */
 function getValueFromUrl(key, opts) {
   if (!opts || JSON.stringify(opts) == '{}') return '';
-  if (opts[key] == '' || opts[key] == undefined) return '';
+  if (opts[key] == '') return '';
   if (opts[key]) return opts[key];
   if (opts.query && opts.query[key]) return opts.query[key];
   var path = opts.query ? opts.query.q : opts.q || '';

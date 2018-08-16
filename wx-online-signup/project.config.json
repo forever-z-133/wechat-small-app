@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -33,15 +33,8 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 3,
 			"list": [
-				{
-					"id": 0,
-					"name": "从分享进入",
-					"pathName": "pages/register/index",
-					"query": "iid=1&cid=4246&sid=5267426&re=courseId=98&type=ONE_ON_ONE_COURSE",
-					"scene": "1012"
-				},
 				{
 					"id": 1,
 					"name": "普通转发",
@@ -54,6 +47,20 @@
 					"name": "普通转发带重定向",
 					"pathName": "pages/register/index",
 					"query": "iid=1&cid=4246&sid=5267426&re=courseId%3D98%26type%3DONE_ON_ONE_COURSE",
+					"scene": "1007"
+				},
+				{
+					"id": 2,
+					"name": "收款 modal",
+					"pathName": "pages/preFundsChangeHistoryDetail/index",
+					"query": "preFundsChangeHistoryId=51",
+					"scene": "1007"
+				},
+				{
+					"id": 3,
+					"name": "重定向",
+					"pathName": "pages/redirect/index",
+					"query": "pagePath=/pages/preFundsChangeHistoryDetail/index%3FpreFundsChangeHistoryId%3D392",
 					"scene": "1007"
 				}
 			]
