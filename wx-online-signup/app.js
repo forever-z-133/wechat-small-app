@@ -1,14 +1,9 @@
 //app.js
-import { getCode, getUserInfo, hasGotAllAuth, isPage, apiUrl, getShareParams } from './utils/util.js';
+import { getCode, getUserInfo, hasGotAllAuth, isPage, getShareParams } from './utils/util.js';
 import post from './utils/post.js';
 
 App({
-  onLaunch: function (options) {
-
-  },
   data: {
-    webUrl: 'https://static-pre.xuebangsoft.net',
-    // webUrl: 'http://192.168.2.144:3000',
   },
 
   /*************************

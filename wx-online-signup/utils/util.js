@@ -1,4 +1,6 @@
 
+import config from './config.js';
+
 var app = {};
 app.data = {};
 
@@ -158,6 +160,40 @@ function getShareParams(url) {
   }
 }
 
+// 拿取 config 里的链接时，先选择环境
+function chooseEnviromentFirst(key) {
+  var env = null;
+  // 判断是否为 env.prd，是则跳页选择并取 now，否则取 prd
+  // wx.getAccountInfoSync 方法需 2.2.2 版本，所以还是采用 config.isPrd 算了
+  if (app.data.isPrd === true || config.isPrd === true) {
+    env = config.enviroment.prd;
+  } else if (app.data.isPrd === false || config.isPrd === false) {
+    env = config.enviroment.now
+  } else {
+    var appInfo = wx.getAccountInfoSync && wx.getAccountInfoSync();
+    var appId = appInfo && appInfo.miniProgram.appId;
+    if (appId === config.enviroment.prd.appId) {
+      app.data.isPrd = true;
+      config.isPrd = true;
+      env = config.enviroment.prd;
+    } else {
+      app.data.isPrd = false;
+      config.isPrd = false;
+    }
+  }
+  
+  // 已有 env 则向下走，否则跳页先选，prd 上以上判断
+  if (env) {
+    if (key) return env && env[key];
+    return env;
+  } else {
+    wx.navigateTo({
+      url: '/pages/chooseEnviroment/index',
+    });
+    return null;
+  }
+}
+
 module.exports = {
   alert,
   getQueryString,
@@ -167,5 +203,6 @@ module.exports = {
   hasGotAllAuth,
   isPage,
   isTel,
-  getShareParams
+  getShareParams,
+  chooseEnviromentFirst
 }

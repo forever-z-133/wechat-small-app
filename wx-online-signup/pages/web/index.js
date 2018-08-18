@@ -1,10 +1,11 @@
 //index.js
 //获取应用实例
 
-import { alert, getValueFromUrl } from '../../utils/util.js';
+import { alert, getValueFromUrl, chooseEnviromentFirst } from '../../utils/util.js';
 var app = getApp();
 
-var webUrl = app.data.webUrl + '/';
+// var webUrl = app.data.webUrl + '/';
+var webUrl = '';
 
 var tokenTimer = null;
 
@@ -17,6 +18,10 @@ Page({
     var web = getValueFromUrl('redirect', options);
     web = decodeURIComponent(web);
     web = decodeURIComponent(web);
+
+    webUrl = chooseEnviromentFirst('webUrl');
+    webUrl = webUrl ? webUrl + '/' : '';
+
     web = web === 'null' ? webUrl : '';
     
     // 支付后的跳转有点复杂...

@@ -2,6 +2,7 @@
   "pages":[
     "pages/index/index",
     "pages/share/index",
+    "pages/chooseEnviroment/index",
     "pages/register/index",
     "pages/web/index",
     "pages/paypage/index",

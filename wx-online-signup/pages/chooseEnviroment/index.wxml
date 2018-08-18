@@ -1,0 +1,4 @@
+<!--pages/chooseEnviroment/index.wxml-->
+<text>选择测试环境</text>
+<button bindtap='to_uat'>uat</button>
+<button bindtap='to_pre'>pre</button>
