@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/share/index",
     "pages/chooseEnviroment/index",
+    "pages/chooseCampus/index",
     "pages/register/index",
     "pages/web/index",
     "pages/paypage/index",

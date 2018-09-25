@@ -162,22 +162,20 @@ function getShareParams(url) {
 
 // 拿取 config 里的链接时，先选择环境
 function chooseEnviromentFirst(key) {
-  var env = null;
+  var env = wx.getStorageSync('env_now') || null;
   // 判断是否为 env.prd，是则跳页选择并取 now，否则取 prd
   // wx.getAccountInfoSync 方法需 2.2.2 版本，所以还是采用 config.isPrd 算了
-  if (app.data.isPrd === true || config.isPrd === true) {
+  if (config.isPrd === true) {
     env = config.enviroment.prd;
-  } else if (app.data.isPrd === false || config.isPrd === false) {
-    env = config.enviroment.now
+  } else if (config.isPrd === false) {
+    env = wx.getStorageSync('env_now');
   } else {
     var appInfo = wx.getAccountInfoSync && wx.getAccountInfoSync();
     var appId = appInfo && appInfo.miniProgram.appId;
     if (appId === config.enviroment.prd.appId) {
-      app.data.isPrd = true;
       config.isPrd = true;
       env = config.enviroment.prd;
     } else {
-      app.data.isPrd = false;
       config.isPrd = false;
     }
   }

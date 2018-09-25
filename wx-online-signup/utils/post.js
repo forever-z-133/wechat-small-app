@@ -16,6 +16,7 @@ function _POST(url, data, callback, name, errorFn) {
   _Ajax(url, data, callback, 'POST', name, errorFn);
 }
 function _ajax_error(res, errorFn) {
+  if (errorFn === false) return;
   wx.hideLoading();
   wx.stopPullDownRefresh();
   var errMsg = (res.data && res.data.resultMessage) || JSON.stringify(res) || '系统错误';
@@ -86,6 +87,11 @@ module.exports = {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
     _GET(baseUrl + 'WxAppRegisterController' + '/getRegisterPage.do', data, callback, '获取自定义样式', errorFn);
   },
+  // --- 获取开通了功能的校区
+  getWxAppOpenCampus: function (data, callback, errorFn) {
+    if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
+    _GET(baseUrl + 'WxAppLoginController' + '/getWxAppOnlineOrganization.do', data, callback, '获取开通的校区', errorFn);
+  },
   // --- 注册
   register: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
@@ -149,8 +155,6 @@ module.exports = {
     });
   },
 
-
-
   // --- 收款modal -> 查订单
   getFundOrderDetail: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl2'))) return;
@@ -160,5 +164,11 @@ module.exports = {
   startFundOrderPay: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl2'))) return;
     _POST(baseUrl + 'weChat/preFundsChangeHistoryWeChatController/pay.do', data, callback, '获取推送支付签名', errorFn);
+  },
+
+  // --- 更新推荐人
+  addScanCodeLoginLog: function (data, callback, errorFn) {
+    if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
+    _POST(baseUrl + 'WxAppRegisterController/addScanCodeLoginLog.do', data, callback, '更新推荐人', false);
   },
 }

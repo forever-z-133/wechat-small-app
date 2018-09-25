@@ -20,9 +20,9 @@ Page({
     studentIndex: -1,
   },
   onLoad: function (options) {
-
     // 完成此过程后跳页的重定向
     this.redirect = getValueFromUrl('redirect', options);
+    this.method = options.method;
 
     // 登出或丢失，则清空全局数据
     if (options.method == 'logout' || options.method == 'lose') {
@@ -35,11 +35,19 @@ Page({
       app.data.shareOpt = null;
       wx.removeStorageSync('shareImg');
     }
+    if (options.method == 'logout') {
+      wx.removeStorageSync('student');
+      wx.removeStorageSync('organizationId');
+    }
 
     if (app.data.shareOpt) {
       this.setData({ hasShareOpt: true });
       this.redirect = this.redirect || app.data.shareOpt.redirect;
     }
+
+    // 存储推荐人
+    var usid = getValueFromUrl('usid', options);
+    app.data.usid = usid;
   },
   onShow: function () {
     wx.showLoading({ title: '获取授权...', mask: true });
@@ -66,6 +74,22 @@ Page({
 
   // ---------- 判断能否直接登录
   beforeLogin: function () {
+    if (this.method === 'lose') {
+      wx.hideLoading();
+      this.method == '';
+      return this.setData({ needLogin: true });
+    }
+
+    // 选择校区返回，后续已无操作，可直接登录
+    var organizationId = app.data.organizationId;
+    var student = app.data.student;
+    if (organizationId && student) {
+      app.data.student = null;
+      app.data.campusData = null;
+      app.data.organizationId = null;
+      return this.bindStudentId(this.data.uid, student);
+    }
+
     var data = { unionId: app.data.uid };
     post.getStudentIdDirect(data, users => {
       wx.hideLoading();
@@ -78,12 +102,8 @@ Page({
         return this.setData({ needLogin: true });
       }
       // 有相应账户，直接通过或进行选择
-      if (users.length == 1) {
+      if (users.length >= 1) {
         return this.allIsOk(users[0]);
-      } else {
-        this.data.hasBind = true;
-        users = users.map(id => { studentId: id });
-        this.setData({ users: users, showModal: true, studentIndex: -1 });
       }
     });
   },
@@ -138,7 +158,9 @@ Page({
       
       if (users.length == 1) {
         app.data.sid = users[0].studentId;
-        this.bindStudentId(this.data.uid, users[0]);
+        this.checkCampusOpen(users[0], () => {
+          this.bindStudentId(this.data.uid, users[0]);
+        });
       } else {
         this.setData({ users: users, showModal: true, studentIndex: -1 });
       }
@@ -154,7 +176,37 @@ Page({
       return this.allIsOk(student.studentId);
     }
     // 尚未绑定的情况，前往绑定
-    this.bindStudentId(this.data.uid, student);
+    this.checkCampusOpen(student, () => {
+      this.bindStudentId(this.data.uid, student);
+    });
+  },
+
+  // ---------- 检测学生所在校区是否开通
+  checkCampusOpen(student, callback) {
+    var data = {
+      studentId: student.studentId,
+    }
+    // 获取开通了的校区
+    post.getWxAppOpenCampus(data, res => {
+      // var checkOpen = res.openOnlineOrganization;
+      var res = res.onlineOrganizationDtos;
+      if (res.length < 1) return alert('您所在的机构皆未开通在线选课');
+      if (!checkOpen(res)) {
+        this.setData({ users: [], showModal: false, studentIndex: -1 });
+        app.data.student = student;
+        app.data.campusData = res;
+        return wx.navigateTo({
+          url: '/pages/chooseCampus/index',
+        });
+      }
+      wx.setStorageSync('student', student);
+      wx.setStorageSync('organizationId', student.campusId);
+      callback && callback(student);
+    });
+    // 判断本人所在的校区是否开通了选课
+    function checkOpen(data) {
+      return data.some(campus => campus.organizationId === student.campusId);
+    }
   },
 
   // ---------- 进行学生ID与 uid 的绑定
@@ -173,8 +225,10 @@ Page({
   // ---------- 全部登录和绑定已完成
   allIsOk: function (sid) {
     app.data.sid = sid;
-    var data = { studentId: sid }
     wx.showToast({ title: '登录成功' });
+
+    var params = { studentId: sid, userId: app.data.usid };
+    post.addScanCodeLoginLog(params);
 
     // 跳往空白页
     wx.redirectTo({

@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.9",
+	"libVersion": "2.2.3",
 	"appid": "wx19c0639dc6e8fe0b",
 	"projectname": "%E5%9C%A8%E7%BA%BF%E9%80%89%E8%AF%BE-%E5%B0%8F%E9%99%88%E6%97%AD",
 	"isGameTourist": false,
@@ -33,13 +33,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 0,
 			"list": [
 				{
-					"id": 1,
+					"id": 0,
 					"name": "普通转发",
 					"pathName": "pages/register/index",
-					"query": "iid=1&cid=4246&sid=5267426&re=null",
+					"query": "iid=895&cid=4226&sid=5268784&usid=10610",
 					"scene": "1007"
 				},
 				{
@@ -51,14 +51,7 @@
 				},
 				{
 					"id": 2,
-					"name": "收款 modal",
-					"pathName": "pages/preFundsChangeHistoryDetail/index",
-					"query": "preFundsChangeHistoryId=51",
-					"scene": "1007"
-				},
-				{
-					"id": 3,
-					"name": "重定向",
+					"name": "收款",
 					"pathName": "pages/redirect/index",
 					"query": "pagePath=/pages/preFundsChangeHistoryDetail/index%3FpreFundsChangeHistoryId%3D392",
 					"scene": "1007"

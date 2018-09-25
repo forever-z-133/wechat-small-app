@@ -35,6 +35,7 @@ Page({
   },
   onShareAppMessage: function (options) {
     var json = this.sharaJson;
+    if (app.data.usid) json.path += '&usid=' + app.data.usid;
     console.log('转发出去的链接', json.path);
     return json;
   },
