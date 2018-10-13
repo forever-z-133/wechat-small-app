@@ -192,6 +192,23 @@ function chooseEnviromentFirst(key) {
   }
 }
 
+// 自动存储到 storage 的双向绑定
+function ObjectDefineProperty(obj, key, value) {
+  Object.defineProperty(app.data, key, {
+    set: function (newVal) {
+      if (!this.temp) this.temp = {};
+      this.temp[key] = newVal;
+      wx.setStorageSync(key, newVal);
+    },
+    get: function () {
+      if (!this.temp) this.temp = {};
+      if (this.temp[key] == undefined) this.temp[key] = value;
+      var val = wx.getStorageSync(key) || this.temp[key];
+      return val;
+    }
+  })
+}
+
 module.exports = {
   alert,
   getQueryString,
@@ -202,5 +219,6 @@ module.exports = {
   isPage,
   isTel,
   getShareParams,
-  chooseEnviromentFirst
+  chooseEnviromentFirst,
+  ObjectDefineProperty
 }

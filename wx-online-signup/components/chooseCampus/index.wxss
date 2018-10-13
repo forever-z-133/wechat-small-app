@@ -1,0 +1,67 @@
+/* components/chooseCampus/index.wxss */
+
+.user {
+  padding: 80rpx 40rpx 120rpx;
+  text-align: center;
+}
+.user .w1 {
+  font-size: 24rpx;
+  display: block;
+  color: #999;
+  margin-bottom: 20rpx;
+}
+.user .w2 {
+  font-size: 30rpx;
+  display: block;
+}
+
+swiper {
+  height: 5.5em;
+}
+.campusItem:not(.current) {
+  transform: scale(0.7);
+}
+.campusItem {
+  width: 5em;
+  height: 5em;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid #999;
+  border-radius: 100%;
+  background: #fff;
+  box-shadow: 0 5rpx 10rpx blue;
+  transition: transform .2s;
+}
+.text2 {
+  overflow: hidden;
+  line-height: 1.2em;
+  max-height: 3.6em;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.campusInfo {
+  padding: 80rpx 30rpx 30rpx;
+}
+.campusInfo > text {
+  display: block;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 60rpx;
+}
+
+.btn-submit {
+  width: 7em;
+  line-height: 1;
+  padding: 25rpx 1em;
+  color: #fff;
+  border-radius: 1000rpx;
+  background: #558EFF;
+  margin: 60rpx auto 30rpx;
+}

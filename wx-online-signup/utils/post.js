@@ -26,7 +26,7 @@ function _ajax_success(res, callback, name, errorFn) {
   if (!/ok$/.test(res.errMsg)) return _ajax_error(res, errorFn);
   if (/DOCTYPE html/.test(res.data)) return _ajax_error(res, errorFn);
   if (res.data.resultCode != 0) return _ajax_error(res, errorFn);
-  console.log(name || url, res.data.data);
+  // console.log(name || url, res.data.data);
   callback && callback(res.data.data, res.data);
 }
 

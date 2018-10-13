@@ -91,7 +91,7 @@ Page({
       app.data.student = null;
       app.data.campusData = null;
       app.data.organizationId = null;
-      return this.bindStudentId(this.data.uid, user);
+      return this.bindStudentId(this.data.uid, student);
     }
 
     var data = { unionId: app.data.uid };
@@ -200,16 +200,21 @@ Page({
     }
     // 获取开通了的校区
     post.getWxAppOpenCampus(data, res => {
-      var res = res.onlineOrganizationDtos;
-      if (res.length < 1) return alert('您所在的机构皆未开通在线选课');
-      if (!checkOpen(res)) {
+      var list = res.onlineOrganizationDtos;
+      var studentName = res.studentName;
+      var organizationId = res.studentOrganizationId;
+      if (list.length < 1) return alert('您所在的机构皆未开通在线选课');
+      if (!checkOpen(list) && !res.openOnlineOrganization) {
         this.setData({ users: [], showModal: false, studentIndex: -1 });
         app.data.student = student;
-        app.data.campusData = res;
+        app.data.studentName = studentName;
+        app.data.campusData = list;
         return wx.navigateTo({
           url: '/pages/chooseCampus/index',
         });
       }
+      wx.setStorageSync('student', student);
+      wx.setStorageSync('organizationId', student.campusId);
       callback && callback(student);
     });
     // 判断本人所在的校区是否开通了选课
@@ -239,7 +244,7 @@ Page({
     app.data.shareOpt = null;
     
     var params = { studentId: sid, userId: app.data.usid };
-    post.addScanCodeLoginLog(params);
+    (sid && app.data.usid) && post.addScanCodeLoginLog(params);
 
     // 跳往空白页
     wx.redirectTo({

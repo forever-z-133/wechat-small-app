@@ -13,18 +13,11 @@ Page({
     contact: '',
     data: [],
   },
-  onLoad: function (options) {
-    this.sid = getValueFromUrl('sid', options);
-    this.sn = getValueFromUrl('sn', options);
-
-    this.sn && this.setData({ studentName: this.sn });
-    this.student = app.data.student || wx.getStorageSync('student');
-  },
   onShow: function () {
-    var student = this.student || {};
+    var student = wx.getStorageSync('student') || app.data.student || {};
     this.sid = student.studentId || app.data.sid || this.sid;
     if (!this.sid) return alert('缺少学生 ID 信息');
-    this.sn = student.studentName || this.sn;
+    this.sn = student.studentName || app.data.studentName || this.sn;
     this.sn && this.setData({ studentName: this.sn });
 
     if (app.data.campusData) {

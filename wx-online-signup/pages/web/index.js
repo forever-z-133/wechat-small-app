@@ -104,21 +104,22 @@ Page({
     }
     // 获取开通了的校区
     post.getWxAppOpenCampus(data, res => {
-      // 无开通校区
-      // var checkOpen = res.openOnlineOrganization;
-      var res = res.onlineOrganizationDtos;
-      if (!res || res.length < 1) {
+      var list = res.onlineOrganizationDtos;
+      var studentName = res.studentName;
+      var organizationId = res.studentOrganizationId;
+
+      if (!list || list.length < 1) {
         return alert('您所在的机构皆未开通在线选课', () => {
           wx.reLaunch({
             url: '/pages/index/index?method=lose',
           });
         });
       }
-      // 本人校区或已选校区未开通
-      if (!checkOpen(res)) {
-        this.setData({ users: [], showModal: false, studentIndex: -1 });
+      
+      if (!checkOpen(list)) {
         app.data.student = student;
-        app.data.campusData = res;
+        app.data.studentName = studentName;
+        app.data.campusData = list;
         return wx.navigateTo({
           url: '/pages/chooseCampus/index',
         });

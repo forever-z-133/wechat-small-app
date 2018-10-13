@@ -7,6 +7,9 @@ page {
   display: none !important;
 }
 
+.bg-white {
+  background: #fff;
+}
 
 .pos-center {
   position: absolute;
