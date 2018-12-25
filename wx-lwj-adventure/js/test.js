@@ -1,10 +1,13 @@
 import Player from './test/index'
 import Box from './test/shape'
-import Group from './test/group'
+import Box1 from './test/box1'
+import Scroller from './base/scroller'
 import DataBus from './databus'
+import EventBus from './base/eventbus'
 
 let ctx = canvas.getContext('2d')
 let databus = new DataBus()
+let eventbus = new EventBus()
 
 /**
  * 游戏主函数
@@ -15,15 +18,22 @@ export default class Main {
     this.Timer = 0;
 
     this.restart()
+
+    eventbus.on('x', a => console.log(a));
+    eventbus.on('y', a => console.log(a));
+    eventbus.off('x', a => console.log(a));
+
+    setTimeout(() => eventbus.emit('x', 1), 500)
   }
 
   restart() {
     databus.reset();
 
     // 重建元素们
-    this.player = new Player();
-    this.box = new Box();
-    this.group = new Group();
+    // this.player = new Player();
+    // this.box = new Box();
+    this.panel = new Box1();
+    this.scroller = new Scroller(300);
 
     // 清除上一局的动画
     window.cancelAnimationFrame(this.Timer);
@@ -34,16 +44,17 @@ export default class Main {
   render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    this.player.drawToCanvas(ctx);
-    this.box.drawToCanvas(ctx);
-    this.group.drawToCanvas(ctx);
+    // this.player.drawToCanvas(ctx); // 图片
+    // this.box.drawToCanvas(ctx);    // 图形
+    // this.panel.drawToCanvas(ctx);  // 元素组
+    this.scroller.drawToCanvas(ctx); // 滑动容器
   }
 
   // 游戏逻辑更新主函数
   update() {
     if ( databus.gameOver ) return;
 
-    this.group.run();
+    // this.panel.run();
   }
 
   // 实现游戏帧循环

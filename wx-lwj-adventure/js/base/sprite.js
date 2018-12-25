@@ -18,18 +18,16 @@ export default class Sprite {
   /**
    * 将精灵图绘制在canvas上
    */
+  beforeDraw (ctx) {}
   drawToCanvas(ctx) {
-    if ( !this.visible )
-      return
-
-    ctx.drawImage(
-      this.img,
-      this.x,
-      this.y,
-      this.width,
-      this.height
-    )
+    if ( !this.visible ) return;
+    this.beforeDraw(ctx);
+    this.draw && this.draw(ctx);
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    (this.child || []).forEach((item) => { item.drawToCanvas(ctx); });
+    this.afterDraw(ctx);
   }
+  afterDraw (ctx) {}
 
   /**
    * 当手指触摸屏幕的时候
@@ -40,6 +38,7 @@ export default class Sprite {
    * @return {Boolean}: 用于标识手指是否在飞机上的布尔值
    */
   checkIsOnThisSprite(x, y, deviation = 0) {
+    console.log(x, y, this, this.x, this.width)
     return !!(x >= this.x - deviation
       && y >= this.y - deviation
       && x <= this.x + this.width + deviation

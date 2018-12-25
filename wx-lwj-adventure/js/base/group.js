@@ -1,5 +1,8 @@
 import Sprite from '../base/sprite'
 
+const screenWidth = window.innerWidth
+const screenHeight = window.innerHeight
+
 let KeyMap = {};
 
 export default class Group extends Sprite {
@@ -10,50 +13,36 @@ export default class Group extends Sprite {
 
     this.frozen = false;
   }
-
+  
   //------------ 绑定值的联动
-  initChildChange(that) {
-    const temp = {},
-      proxy = {};
+  initChildChange (that) {
+    const temp = {}, proxy = {};
     ['x', 'y'].forEach((key) => {
       temp[key] = that[key] || 0;
       // 父级值变动，触发 proxy 变动，即子级的变动
       Object.defineProperty(that, key, {
-        set(val) {
-          proxy[key] = val;
-          return val;
-        },
-        get() {
-          return proxy[key];
-        }
+        set (val) { proxy[key] = val; return val; },
+        get () { return proxy[key]; }
       });
       // 子级的数值变动
       Object.defineProperty(proxy, key, {
         set(val) {
           const offset = val - temp[key];
-          that.child.forEach((item) => {
-            item[key] += offset;
-          });
+          that.child.forEach((item) => { item[key] += offset; });
           temp[key] = val;
         },
-        get() {
-          return temp[key]
-        }
+        get() { return temp[key] }
       });
     });
     // 改父级宽高，子级宽高的变化需是等比的，之后再搞
     // 如果正在运动中，进行盒子模式计算是有误的，还没想好怎么弄
     // disable 和 visible 等更多玩意暂时不管
-    // 理论上，如果子级值变化，父级也应变化，啊也没想好，感觉应该弄到 databus 里去处理
   }
 
   //------------ 计算本元素组的盒子模式，确保元素组包含着所有元素
   calculateNewPosition() {
     const first = this.child[0] || {};
-    let minx = first.x,
-      miny = first.y,
-      maxr = minx + first.width,
-      maxb = miny + first.height;
+    let minx = first.x, miny = first.y, maxr = minx + first.width, maxb = miny + first.height;
     this.child.slice(1).forEach((item) => {
       if (item.x < minx) minx = item.x;
       if (item.y < miny) miny = item.y;
@@ -67,7 +56,7 @@ export default class Group extends Sprite {
   }
 
   //------------ 增删子元素
-  addChild(key, el) {
+  addChild (key, el) {
     if (key in KeyMap) {
       this.removeChild(key);
     }
@@ -75,50 +64,28 @@ export default class Group extends Sprite {
     KeyMap[key] = el;
     this.calculateNewPosition();
   }
-  removeChild(key) {
+  removeChild (key) {
     this.child = this.child.filter((item) => {
       return KeyMap[key] !== item;
     });
     delete KeyMap[key];
     this.calculateNewPosition();
   }
-  emptyChild() {
+  emptyChild () {
     this.child = [];
     KeyMap = {};
     this.calculateNewPosition();
   }
 
   //------------ 禁用元素，元素禁用则不可触发事件
-  disable() {
-    this.map((item) => {
+  disable () {
+    this.child.forEach((item) => {
       this.disable = true;
     });
   }
   enable() {
-    this.map((item) => {
+    this.child.forEach((item) => {
       this.disable = false;
     });
-  }
-
-  //------------ 递归出每个子级
-  map(func) {
-    const loop = (list, func) => {
-      (list || []).forEach((item) => {
-        func && func(item);
-        loop(item, func);
-      })
-    }
-    loop(this.child, func);
-  }
-
-  //------------ 绘制
-  drawToCanvas(ctx) {
-    if (!this.visible) return;
-
-    this.beforeDraw(ctx);
-    this.map((item) => {
-      item.drawToCanvas(ctx);
-    });
-    this.afterDraw(ctx);
   }
 }

@@ -20,7 +20,7 @@ export default class Box extends Sprite {
   }
 
   // 重写绘制方法
-  drawToCanvas(ctx) {
+  draw(ctx) {
     if (!this.visible) return;
     ctx.fillStyle = 'red';
     ctx.fillRect(this.x, this.y, this.width, this.height)
