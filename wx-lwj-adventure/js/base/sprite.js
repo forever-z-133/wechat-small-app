@@ -38,7 +38,6 @@ export default class Sprite {
    * @return {Boolean}: 用于标识手指是否在飞机上的布尔值
    */
   checkIsOnThisSprite(x, y, deviation = 0) {
-    console.log(x, y, this, this.x, this.width)
     return !!(x >= this.x - deviation
       && y >= this.y - deviation
       && x <= this.x + this.width + deviation

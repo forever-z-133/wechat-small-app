@@ -18,12 +18,6 @@ export default class Main {
     this.Timer = 0;
 
     this.restart()
-
-    eventbus.on('x', a => console.log(a));
-    eventbus.on('y', a => console.log(a));
-    eventbus.off('x', a => console.log(a));
-
-    setTimeout(() => eventbus.emit('x', 1), 500)
   }
 
   restart() {
