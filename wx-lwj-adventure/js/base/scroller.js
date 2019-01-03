@@ -1,6 +1,5 @@
 import Group from '../base/group'
 
-import TWEEN from '../libs/tween.js'
 import { distence, anim } from '../libs/utils.js'
 
 const winW = window.innerWidth
@@ -12,16 +11,13 @@ export default class Scroller extends Group {
 
     this.maxHeight = maxHeight || winH;
 
-    this.options = {
-      min: 0,
-      max: this.height,
+    // this.x = 50;
+    // this.y = 50;
+    // this.width = winW - 100;
+    // this.height = winH - 100;
 
-    }
 
-    this.x = 50;
-    this.y = 50;
-    this.width = winW - 100;
-    this.height = winH - 100;
+    // this.calculateNewPosition_old = this.calculateNewPosition
 
     this.clicked = false;
     this.moveing = false;
@@ -29,6 +25,19 @@ export default class Scroller extends Group {
     this.last = {};
 
     this.bindEvent();
+  }
+
+  calculateNewPosition() {
+    // this.calculateNewPosition_old()
+    this.options = {
+      min: this.y,
+      max: -1 * this.maxHeight,
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height,
+      maxHeight: this.maxHeight,
+    }
   }
 
   bindEvent() {
@@ -69,7 +78,7 @@ export default class Scroller extends Group {
     const x = this.x + e.pageX - this.last.x;
     const y = this.y + e.pageY - this.last.y;
 
-    this.scrollLeft(x, 0);
+    // this.scrollLeft(x, 0);
     this.scrollTop(y, 0);
 
     this.last.x = e.pageX;
@@ -86,12 +95,22 @@ export default class Scroller extends Group {
     if (!this.clicked) return;
     if (!this.moveing) return;
 
-    const current = -1 * this.y, max = winH - 50, min = 50
-    if (current >= max) {
-      this.scrollTop(max, 600);
-    } else if (current <= min) {
-      this.scrollTop(min, 600);
+    const { min, max } = this.options;
+
+    console.log(this.y, max);
+    if (this.y > min) {
+      this.scrollTop(min, 300);
+    } else if (this.y < max) {
+      this.scrollTop(max, 300);
     }
+    // const current = -1 * this.y, max = winH - 50, min = 50
+    // if (current >= max) {
+    //   console.log('max')
+    //   this.scrollTop(max, 300);
+    // } else if (current <= min) {
+    //   console.log('min')
+    //   this.scrollTop(min, 300);
+    // }
     //  else {
     //   nt = Date.now() - st;
     //   // 划得特别快，则计算加速度，不快就随意啦
@@ -144,11 +163,14 @@ export default class Scroller extends Group {
 
   // ---------- 接触滑动容器
   beforeDraw(ctx) {
-    ctx.fillStyle = 'lightblue';
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    // ctx.fillStyle = 'lightblue';
+    if (this.child.length > 0) {
+      ctx.fillRect(this.options.x, this.options.y, this.options.width, this.options.maxHeight);
+      ctx.clip();
+    }
   }
 
   draw(ctx) {
-    TWEEN.update();
+    // TWEEN.update();
   }
 }

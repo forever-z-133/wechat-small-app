@@ -18,7 +18,7 @@ export const anim = function(start, to, duration, callback) {
   
   (function run() {
     var per = Math.min(1, (Date.now() - time) / duration);
-    if (per >= 1) return;
+    if (per >= 1) return callback && callback(to, 1);
     var now = start + (to - start) * per;
     callback && callback(now, per);
     animTimer = window.requestAnimationFrame(run);
