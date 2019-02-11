@@ -15,8 +15,8 @@ export default class Box extends Sprite {
     super('', PLAYER_WIDTH, PLAYER_HEIGHT)
 
     // 玩家默认处于屏幕底部居中位置
-    this.x = screenWidth / 2 - this.width / 2 - 50;
-    this.y = screenHeight - this.height - 150;
+    this.x = screenWidth / 2 - this.width / 2;
+    this.y = screenHeight / 2  - this.height / 2;
   }
 
   // 重写绘制方法

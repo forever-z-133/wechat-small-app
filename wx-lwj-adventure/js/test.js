@@ -27,8 +27,8 @@ export default class Main {
     // 重建元素们
     // this.player = new Player();
     // this.box = new Box();
-    this.panel = new Box1();
-    this.scroller = new Scroller(300);
+    // this.panel = new Box1();
+    // this.scroller = new Scroller(300);
     this.TestScroller = new TestScroller(300);
 
     // 清除上一局的动画
