@@ -1,0 +1,1 @@
+export const fontFamily = 'Georgia,"Times New Roman",Times,SimSun,FontAwesome,serif';

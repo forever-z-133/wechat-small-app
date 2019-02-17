@@ -5,6 +5,8 @@ import Scroller from './base/scroller'
 import DataBus from './databus'
 import EventBus from './base/eventbus'
 import TestScroller from './test/testScroller.js'
+import Header from './sprites/header/index'
+import MainBody from './sprites/mainBody/index'
 
 let ctx = canvas.getContext('2d')
 let databus = new DataBus()
@@ -30,6 +32,8 @@ export default class Main {
     // this.panel = new Box1();
     // this.scroller = new Scroller(300);
     this.TestScroller = new TestScroller(300);
+    this.Header = new Header();
+    this.MainBody = new MainBody();
 
     // 清除上一局的动画
     window.cancelAnimationFrame(this.Timer);
@@ -44,7 +48,9 @@ export default class Main {
     // this.box.drawToCanvas(ctx);    // 图形
     // this.panel.drawToCanvas(ctx);  // 元素组
     // this.scroller.drawToCanvas(ctx); // 滑动容器
-    this.TestScroller.drawToCanvas(ctx);
+    // this.TestScroller.drawToCanvas(ctx);
+    this.MainBody.drawToCanvas(ctx);
+    this.Header.drawToCanvas(ctx);
   }
 
   // 游戏逻辑更新主函数

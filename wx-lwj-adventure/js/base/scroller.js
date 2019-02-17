@@ -15,6 +15,7 @@ export default class Scroller extends Group {
     super();
 
     this.maxHeight = maxHeight || winH;
+    this.afterCalculateNewPosition();
 
     this.clicked = false;
     this.moveing = false;
@@ -25,6 +26,7 @@ export default class Scroller extends Group {
   }
 
   afterCalculateNewPosition() {
+    this.height = this.maxHeight;
     this.options = {
       x: this.x,
       y: this.y,
@@ -112,7 +114,6 @@ export default class Scroller extends Group {
         var speed = distance / nt;
         var destination = current + (speed * speed) / (2 * 0.006) * (distance < 0 ? -1 : 1);
         var tRatio = 1;
-        console.log(current, min, max, destination, distance, speed);
         // if (destination < min) {
         //   if (destination < min - 600) {
         //     tRatio = reverseEase((current - min + 60) / (current - destination));
@@ -155,16 +156,24 @@ export default class Scroller extends Group {
     anim(this.x, top, duration, (now) => this.x = now);
   }
 
-
   // ---------- 接触滑动容器
+  // 方法1
   beforeDraw(ctx) {
-    // TODO: 使用 clip 会非常卡顿，不知该怎么弄
-    // if (this.child.length > 0) {
-    //   const { x, y, maxWidth: width, maxHeight: height } = this.options;
-    //   // console.log(x, y, width, height)
-    //   ctx.rect(x, y, width, height);
-    //   ctx.clip();
-    //   // ctx.restore();
-    // }
+    const { x, y, maxWidth: width, maxHeight: height } = this.options;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(x, y, width, height);
+    ctx.globalCompositeOperation = "source-atop";
   }
+  afterDraw(ctx) {
+    ctx.globalCompositeOperation = "source-over";
+  }
+  // // 方法2
+  // afterDraw(ctx) {
+  //   const { x, y, maxWidth: width, maxHeight: height } = this.options;
+  //   // console.log(x, y, width, height)
+  //   ctx.globalCompositeOperation = "destination-in";
+  //   ctx.fillStyle = '#fff';
+  //   ctx.fillRect(x, 50, width, height);
+  //   ctx.globalCompositeOperation = "source-over";
+  // }
 }

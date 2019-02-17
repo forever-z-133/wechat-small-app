@@ -24,3 +24,17 @@ export const anim = function(start, to, duration, callback) {
     animTimer = window.requestAnimationFrame(run);
   })();
 }
+
+// 扩大容器对象尺寸
+export const boxGrowUp = (obj, gap) => {
+  let { x, y, width, height } = obj;
+  x -= gap; y -= gap; width += gap * 2; height += gap * 2;
+  return { x, y, width, height };
+}
+
+export const px2rem = (windowWidth, designWidth) => {
+  var ratio = designWidth / windowWidth;
+  return function(px) {
+    return Number((px * ratio).toFixed(2));
+  }
+}

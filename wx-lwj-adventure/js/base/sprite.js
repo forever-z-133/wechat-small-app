@@ -20,12 +20,19 @@ export default class Sprite {
    */
   beforeDraw (ctx) {}
   drawToCanvas(ctx) {
-    if ( !this.visible ) return;
+    if (!this.visible) return;
+    const { img, x, y, width, height } = this;
+    ctx.save();
     this.beforeDraw(ctx);
     this.draw && this.draw(ctx);
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    ctx.drawImage(img, x, y, width, height);
+    ctx.restore();
     (this.child || []).forEach((item) => { item.drawToCanvas(ctx); });
+    ctx.save();
     this.afterDraw(ctx);
+    ctx.restore();
+    ctx.fillStyle = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+    ctx.strokeRect(x, y, width, height);
   }
   afterDraw (ctx) {}
 
