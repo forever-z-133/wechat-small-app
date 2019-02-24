@@ -21,17 +21,31 @@ export default class Sprite {
   beforeDraw (ctx) {}
   drawToCanvas(ctx) {
     if (!this.visible) return;
+
     const { img, x, y, width, height } = this;
+
     ctx.save();
     this.beforeDraw(ctx);
-    this.draw && this.draw(ctx);
-    ctx.drawImage(img, x, y, width, height);
     ctx.restore();
-    (this.child || []).forEach((item) => { item.drawToCanvas(ctx); });
+
+    if (!this.customDrawToCanvas) {
+      ctx.save();
+      this.draw && this.draw(ctx);
+      ctx.drawImage(img, x, y, width, height);
+      ctx.restore();
+
+      (this.child || []).forEach((item) => { item.drawToCanvas(ctx); });
+    } else {
+      ctx.save();
+      this.customDrawToCanvas(ctx);
+      ctx.restore();
+    }
+
     ctx.save();
     this.afterDraw(ctx);
     ctx.restore();
-    ctx.fillStyle = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
+
+    ctx.fillStyle = '#' + Math.floor(Math.random() * 0xCCCCCC).toString(16);
     ctx.strokeRect(x, y, width, height);
   }
   afterDraw (ctx) {}

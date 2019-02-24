@@ -1,12 +1,17 @@
+
+/**
+ * 莫名不能根据 arguments.length 来判断，
+ */
 export const distence = (x1, y1, x2, y2) => {
-  // if (arguments.length === 2) {
-  //   return Math.abs(x1 - y1);
-  // }
-  // if (arguments.length === 4) {
-    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(x2 - y2, 2));
-  // }
+  if (x2 === undefined && y2 === undefined) {
+    return Math.abs(x1 - y1);
+  }
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(x2 - y2, 2));
 }
 
+/**
+ * 动画，以后应该会改进，加个 TODO
+ */
 let animTimer = null;
 export const anim = function(start, to, duration, callback) {
   if (duration === 0) {
@@ -25,7 +30,9 @@ export const anim = function(start, to, duration, callback) {
   })();
 }
 
-// 扩大容器对象尺寸
+/**
+ * 扩大容器对象尺寸
+ */
 export const boxGrowUp = (obj, gap) => {
   let { x, y, width, height } = obj;
   x -= gap; y -= gap; width += gap * 2; height += gap * 2;
@@ -37,4 +44,16 @@ export const px2rem = (windowWidth, designWidth) => {
   return function(px) {
     return Number((px * ratio).toFixed(2));
   }
+}
+
+/**
+ * 获取文本真实宽度
+ */
+export const getTextWidth = (text = '', fontSize = 16) => {
+  if (!text) return 0;
+  
+  return text.split('').reduce((re, char) => {
+    const ratio = char.codePointAt() > 128 ? 1 : 0.24;
+    return re + fontSize * ratio >> 0;
+  }, 0);
 }
