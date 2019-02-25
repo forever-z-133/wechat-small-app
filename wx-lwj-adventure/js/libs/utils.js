@@ -49,8 +49,10 @@ export const px2rem = (windowWidth, designWidth) => {
 /**
  * 获取文本真实宽度
  */
-export const getTextWidth = (text = '', fontSize = 16) => {
+export const getTextWidth = (text = '', fontSize = 16, ctx) => {
   if (!text) return 0;
+
+  if (ctx) return ctx.measureText(text).width; // 小游戏的 measureText 莫名不准
   
   return text.split('').reduce((re, char) => {
     const ratio = char.codePointAt() > 128 ? 1 : 0.24;
