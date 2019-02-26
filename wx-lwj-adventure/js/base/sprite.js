@@ -44,11 +44,12 @@ export default class Sprite {
     ctx.save();
     this.afterDraw(ctx);
     ctx.restore();
-
-    ctx.fillStyle = '#' + Math.floor(Math.random() * 0xCCCCCC).toString(16);
-    ctx.strokeRect(x, y, width, height);
   }
-  afterDraw (ctx) {}
+  afterDraw(ctx) {
+    // const { x, y, width, height } = this;
+    // ctx.fillStyle = '#' + Math.floor(Math.random() * 0xCCCCCC).toString(16);
+    // ctx.strokeRect(x, y, width, height);
+  }
 
   /**
    * 当手指触摸屏幕的时候

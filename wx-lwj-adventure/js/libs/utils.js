@@ -59,3 +59,25 @@ export const getTextWidth = (text = '', fontSize = 16, ctx) => {
     return re + fontSize * ratio >> 0;
   }, 0);
 }
+
+/**
+ * 让对象中的某值变化，配上联动函数
+ */
+export const watchValueChange = (obj, key, callback) => {
+  const temp = {}, proxy = {};
+  temp[key] = obj[key];
+  // 父级值变动，触发 proxy 变动，即子级的变动
+  Object.defineProperty(obj, key, {
+    set(val) { proxy[key] = val; return val; },
+    get() { return proxy[key]; }
+  });
+  // 子级的数值变动
+  Object.defineProperty(proxy, key, {
+    set(newValue) {
+      const oldValue = temp[key];
+      newValue = callback && callback(newValue, oldValue) || newValue;
+      temp[key] = newValue;
+    },
+    get() { return temp[key] }
+  });
+}

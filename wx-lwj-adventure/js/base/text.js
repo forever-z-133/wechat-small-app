@@ -1,7 +1,7 @@
 import Sprite from './sprite.js';
 
 import { fontFamily } from '../libs/config.js';
-import { getTextWidth } from '../libs/utils.js'
+import { getTextWidth, watchValueChange } from '../libs/utils.js'
 
 export default class Text extends Sprite {
   constructor(text, maxWidth = Infinity, textWrap = false) {
@@ -12,9 +12,14 @@ export default class Text extends Sprite {
     this.maxWidth = maxWidth; // 超出时使用 ... 
     this.textWrap = textWrap; // 超出是否换行，做不到很好的 justify 哟
 
+    // 绑定数值联动
+    watchValueChange(this, 'fontSize', (value) => {
+      this.lineHeight = value * 1.3;
+    });
+
+    // 其他重要赋值
     this.color = this.color || '#000';
     this.fontSize = this.fontSize || 16;
-    this.lineHeight = this.fontSize * 1.3;
   }
 
   /**
