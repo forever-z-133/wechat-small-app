@@ -1,7 +1,7 @@
 import Sprite from './sprite.js';
 
 import { fontFamily } from '../libs/config.js';
-import { getTextWidth, watchValueChange } from '../libs/utils.js'
+import { getTextWidth, watchValueChange } from '../libs/utils.js';
 
 export default class Text extends Sprite {
   constructor(text, maxWidth = Infinity, textWrap = false) {
@@ -20,6 +20,7 @@ export default class Text extends Sprite {
     // 其他重要赋值
     this.color = this.color || '#000';
     this.fontSize = this.fontSize || 16;
+    this.height = this.lineHeight;
   }
 
   /**
@@ -104,5 +105,38 @@ export default class Text extends Sprite {
         case 'left': default: ctx.fillText(item.text, x, y + index * lineHeight);
       }
     });
+  }
+
+  /**
+   * 根据 maxWidth 和 textWrap 获取文本显示的 json 结构
+   */
+  getTextWrapJson(text) {
+    const { fontSize, lineHeight, maxWidth, textWrap } = this;
+
+    // 如果不定宽，则直接返回
+    if (maxWidth === undefined) {
+      const realCharWidth = getTextWidth(text, fontSize);
+      return {
+        width: realCharWidth,
+        height: lineHeight,
+        json: [{ text: text, width: realCharWidth }],
+      };
+    }
+
+    const re = []; // 每行文本的数据
+
+    for (let char of text) {
+      let item = re.slice(-1)[0];
+      if (!item) item = { text: '', width: 0 }
+      const realCharWidth = getTextWidth(char, fontSize);
+      if (item.width + realCharWidth <= maxWidth) {
+        item.text += char;
+        item.width += realCharWidth;
+        re.splice(-1, 1, item);
+      } else {
+        item = { text: char, width: realCharWidth }
+        re.push(item);
+      }
+    }
   }
 }

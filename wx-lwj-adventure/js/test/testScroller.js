@@ -13,4 +13,9 @@ export default class TestScroller extends Scroller {
 
     this.initChildChange(this);
   }
+
+  beforeDraw(ctx) {
+    ctx.fillStyle = 'green';
+    ctx.fillRect(0,0,100,100)
+  }
 }

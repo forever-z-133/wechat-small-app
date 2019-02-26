@@ -1,16 +1,11 @@
 import Sprite from '../../base/sprite.js';
 
-const winW = window.innerWidth;
+import { px } from '../../libs/utils.js';
 
 export default class Player extends Sprite {
   constructor() {
-    super()
-
-    this.x = 20;
-    this.y = 10;
-    this.width = 50;
-    this.height = 50;
-
+    super(px(30), px(20), px(130), px(130))
+    
     this.bindEvent();
   }
 
@@ -26,7 +21,7 @@ export default class Player extends Sprite {
     }
   }
 
-  beforeDraw(ctx) {
+  draw(ctx) {
     ctx.fillStyle = '#fff';
     const { x, y, width, height } = this;
     ctx.fillRect(x, y, width, height);

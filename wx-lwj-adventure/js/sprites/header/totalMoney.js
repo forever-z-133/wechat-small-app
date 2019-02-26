@@ -1,23 +1,21 @@
-import Sprite from '../../base/sprite.js';
+import Money from '../common/money.js';
 
-import { fontFamily } from '../../libs/config.js';
-const winW = window.innerWidth;
+import { px } from '../../libs/utils.js';
 
-export default class TotalMoney extends Sprite {
+export default class TotalMoney extends Money {
   constructor() {
-    super()
+    super('0.00', px(400), false)
 
-    this.x = 80;
-    this.y = 10;
-    this.width = 260;
-    this.height = 20;
+    this.x = px(180);
+    this.y = px(20);
+    this.fontSize = 25;
   }
 
-  beforeDraw(ctx) {
-    const { x, y, width, height } = this;
-    ctx.textBaseline = 'top';
-    ctx.fillStyle = 'green';
-    ctx.font = `${height}px / 1 ${fontFamily}`;
-    ctx.fillText('$0.00', x, y);
+  draw(ctx) {
+    // const { x, y, width, height } = this;
+    // ctx.textBaseline = 'top';
+    // ctx.fillStyle = 'green';
+    // ctx.font = `${height}px / 1 ${fontFamily}`;
+    // ctx.fillText('$0.00', x, y);
   }
 }

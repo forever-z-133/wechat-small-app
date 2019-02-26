@@ -1,4 +1,3 @@
-import Player from './index'
 import Box from './shape'
 import Group from '../base/group'
 
@@ -11,7 +10,7 @@ export default class Box1  extends Group {
     
     const box = new Box();
     box.x = 10; box.y = 10;
-    this.addChild('fly', new Player());
+    this.addChild('fly', new Box(60, 60));
     this.addChild('box', box);
 
     this.initChildChange(this);
@@ -21,7 +20,7 @@ export default class Box1  extends Group {
   }
 
   // 重写绘制方法
-  beforeDraw (ctx) {
+  afterDraw (ctx) {
     ctx.strokeStyle = 'green';
     ctx.strokeRect(this.x, this.y, this.width, this.height);
   }

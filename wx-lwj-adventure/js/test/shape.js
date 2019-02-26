@@ -11,8 +11,8 @@ const PLAYER_HEIGHT = 80
 let databus = new DataBus()
 
 export default class Box extends Sprite {
-  constructor() {
-    super('', PLAYER_WIDTH, PLAYER_HEIGHT)
+  constructor(width, height) {
+    super(width || PLAYER_WIDTH, height || PLAYER_HEIGHT)
 
     // 玩家默认处于屏幕底部居中位置
     this.x = screenWidth / 2 - this.width / 2;

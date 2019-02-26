@@ -39,12 +39,17 @@ export const boxGrowUp = (obj, gap) => {
   return { x, y, width, height };
 }
 
-export const px2rem = (windowWidth, designWidth) => {
-  var ratio = designWidth / windowWidth;
+/**
+ * 将宽度转为其他比例计算，
+ * 比如 px = px2rem(375, 750) 则可用 px(750) 的设计图尺寸得到实际需要的 375px 值
+ */
+export const px2rem = (windowWidth, designWidth = 750) => {
+  var ratio = windowWidth / designWidth;
   return function(px) {
     return Number((px * ratio).toFixed(2));
   }
 }
+export const px = px2rem(window.innerWidth, 750)
 
 /**
  * 获取文本真实宽度

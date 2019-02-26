@@ -2,10 +2,7 @@
  * 游戏基础的精灵类
  */
 export default class Sprite {
-  constructor(imgSrc = '', width=  0, height = 0, x = 0, y = 0) {
-    this.img     = new Image()
-    this.img.src = imgSrc
-
+  constructor(x = 0, y = 0, width = 0, height = 0) {
     this.width  = width
     this.height = height
 
@@ -13,33 +10,29 @@ export default class Sprite {
     this.y = y
 
     this.visible = true
+
+    this.disabled = false
   }
 
   /**
    * 将精灵图绘制在canvas上
    */
+  customDrawToCanvas(ctx) { }
+  customDrawToCanvas2(ctx) { }
   beforeDraw (ctx) {}
   drawToCanvas(ctx) {
     if (!this.visible) return;
-
-    const { img, x, y, width, height } = this;
 
     ctx.save();
     this.beforeDraw(ctx);
     ctx.restore();
 
-    if (!this.customDrawToCanvas) {
-      ctx.save();
-      this.draw && this.draw(ctx);
-      ctx.drawImage(img, x, y, width, height);
-      ctx.restore();
-
-      (this.child || []).forEach((item) => { item.drawToCanvas(ctx); });
-    } else {
-      ctx.save();
-      this.customDrawToCanvas(ctx);
-      ctx.restore();
-    }
+    this.customDrawToCanvas(ctx);
+    ctx.save();
+    this.draw && this.draw(ctx);
+    ctx.restore();
+    this.child && this.child.forEach(item => item.drawToCanvas(ctx));
+    this.customDrawToCanvas2(ctx);
 
     ctx.save();
     this.afterDraw(ctx);
@@ -71,16 +64,12 @@ export default class Sprite {
    * 另一个精灵的中心点处于本精灵所在的矩形内即可
    * @param{Sprite} sp: Sptite的实例
    */
-  isCollideWith(sp) {
-    let spX = sp.x + sp.width / 2
-    let spY = sp.y + sp.height / 2
+  isCollideWith(sp, deviation = 0) {
+    if (!this.visible || !sp.visible) return false
 
-    if ( !this.visible || !sp.visible )
-      return false
+    let spX = sp.x + sp.width / 2;
+    let spY = sp.y + sp.height / 2;
 
-    return !!(   spX >= this.x
-              && spX <= this.x + this.width
-              && spY >= this.y
-              && spY <= this.y + this.height  )
+    return this.checkIsOnThisSprite(spX, spY, deviation);
   }
 }

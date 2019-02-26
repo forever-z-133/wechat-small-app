@@ -47,6 +47,8 @@ export default class Scroller extends Group {
 
   // ---------- 接触滑动容器
   touchstart = (e) => {
+    if (this.disabled) return;
+
     e = e.touches ? e.touches[0] : e;
 
     const clickInner = this.checkIsOnThisSprite(e.pageX, e.pageY);
@@ -63,7 +65,9 @@ export default class Scroller extends Group {
 
   // ---------- 开始滑动
   touchmove = (e) => {
+    if (this.disabled) return;
     if (!this.clicked) return;
+
     e = e.touches ? e.touches[0] : e;
 
     // 不超过 5px 不算滑动
@@ -90,6 +94,7 @@ export default class Scroller extends Group {
 
   // ---------- 手势结束
   touchend = () => {
+    if (this.disabled) return;
     if (!this.clicked) return;
     if (!this.moveing) return;
 
@@ -100,46 +105,8 @@ export default class Scroller extends Group {
       this.scrollTop(min, 300);
     } else if (this.y < max) {
       this.scrollTop(max, 300);
-    }
-    else {
-      let { x: sx, y: sy, time: st } = this.start;
-      let { y: ny } = this.last;
-      let current = this.y;
-      let nt = 0;
-      nt = Date.now() - st;
-      // 划得特别快，则计算加速度，不快就随意啦
-      if (nt < 300) {
-        // 此算法来自于 https://github.com/AlloyTeam/AlloyTouch
-        var distance = ny - sy;
-        var speed = distance / nt;
-        var destination = current + (speed * speed) / (2 * 0.006) * (distance < 0 ? -1 : 1);
-        var tRatio = 1;
-        // if (destination < min) {
-        //   if (destination < min - 600) {
-        //     tRatio = reverseEase((current - min + 60) / (current - destination));
-        //     destination = min - 60;
-        //   } else {
-        //     tRatio = reverseEase((current - min + 60 * (min - destination) / 600) / (current - destination));
-        //     destination = min - 60 * (min - destination) / 600;
-        //   }
-        // } else if (destination > max) {
-        //   if (destination < max + 600) {
-        //     tRatio = reverseEase((max + 60 - current) / (destination - current));
-        //     destination = max + 60;
-        //   } else {
-        //     tRatio = reverseEase((max + 60 * (destination - max) / 600 - current) / (destination - current));
-        //     destination = max + 60 * (destination - max) / 600;
-        //   }
-        // }
-        // console.log(speed, tRatio);
-        // var duration = Math.round(speed / 0.006) * tRatio;
-        // console.log(destination, duration);
-        // if (opt.topStop) {
-        //     if (current >= max) return;
-        // }
-        // if ((current >= max && opt.topStop) || (current <= min && opt.bottomStop)) return;
-        // _to(Math.round(destination), Math.abs(duration), ease);
-      } else { }
+    } else {
+      // 弹性滑动还没开始搞
     }
   }
 
@@ -157,17 +124,16 @@ export default class Scroller extends Group {
   }
 
   // ---------- 接触滑动容器
-  // 方法1
-  beforeDraw(ctx) {
+  // 方法1，与 save restore 有点难封装
+  customDrawToCanvas(ctx) {
     const { x, y, maxWidth: width, maxHeight: height } = this.options;
-    ctx.fillStyle = 'black';
     ctx.fillRect(x, y, width, height);
     ctx.globalCompositeOperation = "source-atop";
   }
-  afterDraw(ctx) {
+  customDrawToCanvas2(ctx) {
     ctx.globalCompositeOperation = "source-over";
   }
-  // // 方法2
+  // // 方法2，除本组件外其他组件都没了，故不适用
   // afterDraw(ctx) {
   //   const { x, y, maxWidth: width, maxHeight: height } = this.options;
   //   // console.log(x, y, width, height)

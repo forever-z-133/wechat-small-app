@@ -5,7 +5,7 @@ import TotalMonney from './totalMoney.js';
 import AddItemNum from './addItemNum.js';
 import UserGoldConfig from './userGoldConfig.js';
 
-import { boxGrowUp } from '../../libs/utils.js';
+import { boxGrowUp, px } from '../../libs/utils.js';
 
 const winW = window.innerWidth;
 
@@ -27,10 +27,7 @@ export default class Header extends Group {
   }
 
   beforeDraw(ctx) {
-    const { x, y, width, height } = boxGrowUp(this, 10);
-    ctx.save();
     ctx.fillStyle = '#514A44';
-    ctx.fillRect(0, 0, winW, height);
-    ctx.restore();
+    ctx.fillRect(0, 0, px(750), px(180));
   }
 }

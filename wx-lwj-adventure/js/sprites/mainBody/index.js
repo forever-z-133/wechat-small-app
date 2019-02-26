@@ -12,7 +12,7 @@ const winH = window.innerHeight;
 
 export default class MainBody extends Scroller {
   constructor() {
-    super(winH - 60);
+    super(winH - 100);
 
     this.x = 0;
     this.y = 60;

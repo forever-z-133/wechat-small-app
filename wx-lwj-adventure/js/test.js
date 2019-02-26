@@ -31,7 +31,7 @@ export default class Main {
     // this.box = new Box();
     // this.panel = new Box1();
     // this.scroller = new Scroller(300);
-    this.TestScroller = new TestScroller(300);
+    // this.TestScroller = new TestScroller(300);
     this.Header = new Header();
     this.MainBody = new MainBody();
 

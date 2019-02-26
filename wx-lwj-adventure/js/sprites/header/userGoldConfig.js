@@ -1,24 +1,26 @@
 import Sprite from '../../base/sprite.js';
 import Group from '../../base/group.js';
 import Text from '../../base/text.js';
+import Img from '../../base/img.js';
 
 import { fontFamily } from '../../libs/config.js';
+import { px } from '../../libs/utils.js';
 import gameConfig from '../../gameData/index.js';
-const winW = window.innerWidth;
 
 class TotalMoneyItem extends Group {
   constructor(options) {
     super()
 
     const { label, value, color } = options;
+
+    var image = new Img('../../../images/bg.jpg', 10, 100, 200, 300);
+    this.addChild('image', image);
     
     const labelDom = new Text(label);
     labelDom.x = 80;
     labelDom.y = 40;
     // labelDom.fontSize = 50;
     labelDom.color = color;
-
-    window.test(1, labelDom.lineHeight);
 
     // const valueDom = new Text(value, 100);
     // valueDom.x = 200;
