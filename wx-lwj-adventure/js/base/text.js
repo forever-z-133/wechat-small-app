@@ -14,13 +14,19 @@ export default class Text extends Sprite {
 
     // 绑定数值联动
     watchValueChange(this, 'fontSize', (value) => {
-      this.lineHeight = value * 1.3;
+      this.lineHeight = value * 1.2;
+      this.resize();
+    });
+    watchValueChange(this, 'maxWidth', (value) => {
+      this.resize();
+    });
+    watchValueChange(this, 'text', (value) => {
+      this.resize();
     });
 
     // 其他重要赋值
     this.color = this.color || '#000';
     this.fontSize = this.fontSize || 16;
-    this.height = this.lineHeight;
   }
 
   /**
@@ -30,79 +36,18 @@ export default class Text extends Sprite {
    * 3. 超出换行的
    */
   customDrawToCanvas(ctx) {
-    const { x, y, fontSize, lineHeight, maxWidth, textWrap, color } = this;
-    let { width, height, text } = this;
-    const realWidth = getTextWidth(text, fontSize);
+    const { options: { json } } = this;
+    const { x, y, maxWidth, fontSize, lineHeight, color, textAlign } = this;
 
     ctx.textBaseline = 'top';
     ctx.fillStyle = color;
     ctx.font = `${fontSize}px / ${lineHeight} ${fontFamily}`;
 
-    if (realWidth < maxWidth) { // 普通
-      this.width = width = realWidth;
-      this.height = height = lineHeight;
-      ctx.fillText(text, x, y);
-    } else if (textWrap !== true) { // 超出不换行的
-      this.width = maxWidth;
-      this.height = height = lineHeight;
-      this.drawSingleLineText(ctx, text, maxWidth, x, y);
-    } else if (textWrap === true) { // 超出换行的
-      this.width = maxWidth;
-      const line = (realWidth / maxWidth >> 0) + 1;
-      this.height = height = lineHeight * line;
-      this.drawMultiLineText(ctx, text, maxWidth, x, y);
-    }
-  }
-
-  /**
-   * 绘制单行文本
-   */
-  drawSingleLineText(ctx, text = '', maxWidth = 0, x = 0, y = 0) {
-    if (!ctx || !text) return 0;
-
-    const { fontSize } = this;
-    let str = '';
-
-    for (let char of text) {
-      const width = getTextWidth(str + char + '...', fontSize);
-      if (width >= maxWidth) {
-        str += '...'; break;
-      }
-      str += char
-    }
-
-    ctx.fillText(str, x, y);
-  }
-
-  /**
-   * 绘制多行文本
-   */
-  drawMultiLineText(ctx, text = '', maxWidth = 0, x = 0, y = 0) {
-    if (!ctx || !text) return 0;
-
-    const { fontSize, lineHeight } = this;
-    const re = []; // 每行文本的数据
-
-    for (let char of text) {
-      let item = re.slice(-1)[0];
-      if (!item) item = { text: '', width: 0 }
-      const realCharWidth = getTextWidth(char, fontSize);
-      if (item.width + realCharWidth <= maxWidth) {
-        item.text += char;
-        item.width += realCharWidth;
-        re.splice(-1, 1, item);
-      } else {
-        item = { text: char, width: realCharWidth }
-        re.push(item);
-      }
-    }
-
-    const textAlign = this.textAlign || ctx.textAlign;
-    re.forEach((item, index) => {
+    json.forEach(({ text, width }, index) => {
       switch (textAlign) {
-        case 'center': ctx.fillText(item.text, x + maxWidth / 2 - item.width / 2, y + index * lineHeight); break;
-        case 'right': ctx.fillText(item.text, x + maxWidth - item.width, y + index * lineHeight); break;
-        case 'left': default: ctx.fillText(item.text, x, y + index * lineHeight);
+        case 'center': ctx.fillText(text, x + maxWidth / 2 - width / 2, y + index * lineHeight); break;
+        case 'right': ctx.fillText(text, x + maxWidth - width, y + index * lineHeight); break;
+        case 'left': default: ctx.fillText(text, x, y + index * lineHeight);
       }
     });
   }
@@ -114,7 +59,7 @@ export default class Text extends Sprite {
     const { fontSize, lineHeight, maxWidth, textWrap } = this;
 
     // 如果不定宽，则直接返回
-    if (maxWidth === undefined) {
+    if (maxWidth === Infinity) {
       const realCharWidth = getTextWidth(text, fontSize);
       return {
         width: realCharWidth,
@@ -123,20 +68,42 @@ export default class Text extends Sprite {
       };
     }
 
-    const re = []; // 每行文本的数据
+    const json = []; // 每行文本的数据
 
     for (let char of text) {
-      let item = re.slice(-1)[0];
+      let item = json.slice(-1)[0];
       if (!item) item = { text: '', width: 0 }
       const realCharWidth = getTextWidth(char, fontSize);
       if (item.width + realCharWidth <= maxWidth) {
         item.text += char;
         item.width += realCharWidth;
-        re.splice(-1, 1, item);
+        json.splice(-1, 1, item);
       } else {
-        item = { text: char, width: realCharWidth }
-        re.push(item);
+        if (textWrap === true) {
+          item = { text: char, width: realCharWidth }
+          json.push(item);
+        } else {
+          item.text += '...';
+          json.splice(-1, 1, item);
+        }
       }
     }
+
+    return {
+      width: maxWidth,
+      height: lineHeight * json.length,
+      json,
+    };
+  }
+
+  /**
+   * 重新计算盒子大小
+   */
+  resize() {
+    const { text } = this;
+    this.options = this.getTextWrapJson(text);
+    const { width, height } = this.options;
+    this.width = width;
+    this.height = height;
   }
 }

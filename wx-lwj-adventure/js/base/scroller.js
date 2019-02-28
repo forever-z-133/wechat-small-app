@@ -131,6 +131,7 @@ export default class Scroller extends Group {
     ctx.globalCompositeOperation = "source-atop";
   }
   customDrawToCanvas2(ctx) {
+    this.child.forEach(item => item.drawToCanvas(ctx));
     ctx.globalCompositeOperation = "source-over";
   }
   // // 方法2，除本组件外其他组件都没了，故不适用

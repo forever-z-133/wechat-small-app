@@ -16,12 +16,12 @@ export default class Header extends Group {
     const headImage = new HeadImage();
     const totalMoney = new TotalMonney();
     const addItemNum = new AddItemNum();
-    const userGoldConfig = new UserGoldConfig();
+    // const userGoldConfig = new UserGoldConfig();
 
     this.addChild('headImage', headImage);
     this.addChild('totalMoney', totalMoney);
     this.addChild('addItemNum', addItemNum);
-    this.addChild('userGoldConfig', userGoldConfig);
+    // this.addChild('userGoldConfig', userGoldConfig);
 
     this.initChildChange(this);
   }

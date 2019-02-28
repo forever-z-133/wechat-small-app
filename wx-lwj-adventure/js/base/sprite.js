@@ -31,7 +31,6 @@ export default class Sprite {
     ctx.save();
     this.draw && this.draw(ctx);
     ctx.restore();
-    this.child && this.child.forEach(item => item.drawToCanvas(ctx));
     this.customDrawToCanvas2(ctx);
 
     ctx.save();

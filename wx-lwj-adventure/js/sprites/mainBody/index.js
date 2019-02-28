@@ -20,7 +20,7 @@ export default class MainBody extends Scroller {
 
     const itemList = new ItemList();
 
-    this.addChild('itemList', itemList);
+    // this.addChild('itemList', itemList);
 
     this.initChildChange(this);
   }

@@ -6,11 +6,14 @@ export default class Img extends Sprite {
 
     this.img = new Image();
     this.img.src = imgSrc;
+    this.img.onload = () => {
+      this.img.loaded = true;
+    }
   }
 
   customDrawToCanvas(ctx) {
     const { img, x, y, width, height } = this;
-    if (!img) return;
+    if (!img || !img.loaded) return;
 
     ctx.drawImage(img, x, y, width, height);
   }
