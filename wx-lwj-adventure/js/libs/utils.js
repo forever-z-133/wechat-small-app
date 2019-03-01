@@ -39,9 +39,15 @@ export const anim = function(start, to, duration, callback) {
 /**
  * 扩大容器对象尺寸
  */
-export const boxGrowUp = (obj, gap) => {
+export const boxGrowUp = (obj, ...padding) => {
+  let top = 0, right = 0, bottom = 0, left = 0;
+  if (padding.length === 1) [top, right = top, bottom = top, left = top] = padding;
+  if (padding.length === 2) [top, right, bottom = top, left = right] = padding;
+  if (padding.length === 3) [top, right, bottom, left = right] = padding;
+  if (padding.length === 4) [top, right, bottom, left] = padding;
+
   let { x, y, width, height } = obj;
-  x -= gap; y -= gap; width += gap * 2; height += gap * 2;
+  x -= left; y -= top; width += left + right; height += top + bottom;
   return { x, y, width, height };
 }
 

@@ -17,11 +17,10 @@ export default class Text extends Sprite {
       this.lineHeight = val * 1.2;
       this.resize();
     });
-    watchValueChange(this, 'maxWidth', (val) => {
-      this.resize();
-    });
-    watchValueChange(this, 'text', (val) => {
-      this.resize();
+    ['maxWidth', 'text'].forEach(key => {
+      watchValueChange(this, key, (val) => {
+        this.resize();
+      });
     });
 
     // 其他重要赋值
