@@ -8,9 +8,13 @@ import TestScroller from './test/testScroller.js'
 import Header from './sprites/header/index'
 import MainBody from './sprites/mainBody/index'
 
+import { setGlobalCtx } from './libs/utils.js';
+
 let ctx = canvas.getContext('2d')
 let databus = new DataBus()
 let eventbus = new EventBus()
+
+setGlobalCtx(ctx);
 
 /**
  * 游戏主函数

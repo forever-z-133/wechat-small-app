@@ -15,12 +15,13 @@ export default class TotalMoney extends Group {
 
     this.initChildChange(this);
 
-    // watchValueChange(this, 'fontSize', (val) => {
-    //   unit.fontSize = val * 0.7;
-    //   value.fontSize = val;
-    //   this.height = value.height;
-    //   this.width = value.width;
-    // });
+    watchValueChange(this, 'fontSize', (val) => {
+      // unit.fontSize = val * 0.7;
+      // console.log(val)
+      value.fontSize = val;
+      // this.height = value.height;
+      // this.width = value.width;
+    });
     // watchValueChange(this, 'color', (val) => {
     //   unit.color = val;
     //   value.color = val;

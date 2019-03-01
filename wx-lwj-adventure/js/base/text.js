@@ -12,21 +12,23 @@ export default class Text extends Sprite {
     this.maxWidth = maxWidth; // 超出时使用 ... 
     this.textWrap = textWrap; // 超出是否换行，做不到很好的 justify 哟
 
-    // 绑定数值联动
-    watchValueChange(this, 'fontSize', (value) => {
-      this.lineHeight = value * 1.2;
-      this.resize();
-    });
-    watchValueChange(this, 'maxWidth', (value) => {
-      this.resize();
-    });
-    watchValueChange(this, 'text', (value) => {
-      this.resize();
-    });
-
     // 其他重要赋值
-    this.color = this.color || '#000';
-    this.fontSize = this.fontSize || 16;
+    this.color = '#000';
+    this.fontSize = 16;
+    this.lineHeight = 16 * 1.2;
+
+    // 绑定数值联动
+    watchValueChange(this, 'fontSize', (val) => {
+      this.lineHeight = val * 1.2;
+      console.log('xx', this.fontSize)
+      this.resize();
+    });
+    watchValueChange(this, 'maxWidth', (val) => {
+      this.resize();
+    });
+    watchValueChange(this, 'text', (val) => {
+      this.resize();
+    });
   }
 
   /**
@@ -61,11 +63,7 @@ export default class Text extends Sprite {
     // 如果不定宽，则直接返回
     if (maxWidth === Infinity) {
       const realCharWidth = getTextWidth(text, fontSize);
-      return {
-        width: realCharWidth,
-        height: lineHeight,
-        json: [{ text: text, width: realCharWidth }],
-      };
+      return { width: realCharWidth, height: lineHeight, json: [{ text: text, width: realCharWidth }] };
     }
 
     const json = []; // 每行文本的数据
@@ -73,18 +71,23 @@ export default class Text extends Sprite {
     for (let char of text) {
       let item = json.slice(-1)[0];
       if (!item) item = { text: '', width: 0 }
-      const realCharWidth = getTextWidth(char, fontSize);
-      if (item.width + realCharWidth <= maxWidth) {
-        item.text += char;
-        item.width += realCharWidth;
-        json.splice(-1, 1, item);
-      } else {
-        if (textWrap === true) {
-          item = { text: char, width: realCharWidth }
-          json.push(item);
+      
+      if (textWrap === true) { // 换行
+        // item = { text: char, width: realCharWidth }
+        // json.push(item);
+      } else {  // 不换行
+        const realCharWidth = getTextWidth(item.text + char + '...', fontSize);
+        if (realCharWidth <= maxWidth) {
+          // window.test(10, char, realCharWidth, maxWidth)
+          item.text += char;
+          item.width = realCharWidth;
+          json.splice(-1, 1, item);
         } else {
           item.text += '...';
+          item.width = maxWidth;
+          // window.test(10, char, realCharWidth, maxWidth)
           json.splice(-1, 1, item);
+          return { width: maxWidth, height: lineHeight, json };
         }
       }
     }

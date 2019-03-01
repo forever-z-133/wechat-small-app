@@ -1,4 +1,10 @@
 
+let globalCtx = null;
+
+export const setGlobalCtx = (ctx) => {
+  globalCtx = ctx;
+}
+
 /**
  * 莫名不能根据 arguments.length 来判断，
  */
@@ -53,16 +59,12 @@ export const px = px2rem(window.innerWidth, 750)
 
 /**
  * 获取文本真实宽度
+ * 因为汉字总是得到 10px，所以按比例给出符合字体大小的宽度
  */
-export const getTextWidth = (text = '', fontSize = 16, ctx) => {
+export const getTextWidth = (text = '', fontSize = 16) => {
   if (!text) return 0;
 
-  if (ctx) return ctx.measureText(text).width; // 小游戏的 measureText 莫名不准
-  
-  return text.split('').reduce((re, char) => {
-    const ratio = char.codePointAt() > 128 ? 1 : 0.24;
-    return re + fontSize * ratio >> 0;
-  }, 0);
+  return globalCtx ? globalCtx.measureText(text).width / 10 * fontSize : 0;
 }
 
 /**
