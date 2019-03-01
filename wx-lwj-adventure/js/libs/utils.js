@@ -70,20 +70,20 @@ export const getTextWidth = (text = '', fontSize = 16) => {
 /**
  * 让对象中的某值变化，配上联动函数
  */
-export const watchValueChange = (obj, key, callback) => {
+export const watchValueChange = (obj, key, callback, defaultValue) => {
   const temp = {}, proxy = {};
-  temp[key] = obj[key];
+  temp[key] = obj[key] || defaultValue;
   // 父级值变动，触发 proxy 变动，即子级的变动
   Object.defineProperty(obj, key, {
-    set(val) { proxy[key] = val; return val; },
+    set(val) { proxy[key] = val; },
     get() { return proxy[key]; }
   });
-  // 子级的数值变动
+  // 子级的数值变动，本身也要改变则 callback 中要 return 一下，切记不可直接 callback 中修改本身
   Object.defineProperty(proxy, key, {
     set(newValue) {
       const oldValue = temp[key];
-      newValue = callback && callback(newValue, oldValue) || newValue;
       temp[key] = newValue;
+      callback && callback(newValue, oldValue);
     },
     get() { return temp[key] }
   });

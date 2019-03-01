@@ -1,20 +1,25 @@
-import Money from '../common/money.js';
+import Group from '../../base/group.js';
+import Text from '../../base/text.js';
 
 import { px } from '../../libs/utils.js';
 
-export default class TotalMoney extends Money {
+export default class TotalMoney extends Group {
   constructor() {
-    super('万岁0afg$万恶没有英文𠮷', px(200), false)
-    console.log(px(200))
+    super()
 
-    this.x = px(180);
-    this.y = px(20);
-    this.fontSize = 50;
-    this.color = 'red';
+    const __value = new Text('0.00', px(400), false);
+    __value.x = px(180);
+    __value.y = px(20);
+    __value.fontSize = 25;
+    __value.color = 'red';
+    this.__value = __value;
+
+    this.addChild('value', __value);
+
+    this.initChildChange(this);
   }
-  afterDraw(ctx) {
-    const { x, y, width, height } = this;
-    ctx.strokeStyle = 'red';
-    ctx.strokeRect(x, y, width, height);
+
+  run() {
+    this.__value.text = '0.02'
   }
 }

@@ -12,15 +12,9 @@ export default class Text extends Sprite {
     this.maxWidth = maxWidth; // 超出时使用 ... 
     this.textWrap = textWrap; // 超出是否换行，做不到很好的 justify 哟
 
-    // 其他重要赋值
-    this.color = '#000';
-    this.fontSize = 16;
-    this.lineHeight = 16 * 1.2;
-
     // 绑定数值联动
     watchValueChange(this, 'fontSize', (val) => {
       this.lineHeight = val * 1.2;
-      console.log('xx', this.fontSize)
       this.resize();
     });
     watchValueChange(this, 'maxWidth', (val) => {
@@ -29,6 +23,10 @@ export default class Text extends Sprite {
     watchValueChange(this, 'text', (val) => {
       this.resize();
     });
+
+    // 其他重要赋值
+    this.color = '#000';
+    this.fontSize = 16;
   }
 
   /**
@@ -58,7 +56,7 @@ export default class Text extends Sprite {
    * 根据 maxWidth 和 textWrap 获取文本显示的 json 结构
    */
   getTextWrapJson(text) {
-    const { fontSize, lineHeight, maxWidth, textWrap } = this;
+    const { fontSize = 16, lineHeight, maxWidth, textWrap } = this;
 
     // 如果不定宽，则直接返回
     if (maxWidth === Infinity) {
@@ -73,19 +71,24 @@ export default class Text extends Sprite {
       if (!item) item = { text: '', width: 0 }
       
       if (textWrap === true) { // 换行
-        // item = { text: char, width: realCharWidth }
-        // json.push(item);
+        const realCharWidth = getTextWidth(item.text + char, fontSize);
+        if (realCharWidth <= maxWidth) {
+          item.text += char;
+          item.width = realCharWidth;
+          json.splice(-1, 1, item);
+        } else {
+          item = { text: char, width: realCharWidth };
+          json.push(item);
+        }
       } else {  // 不换行
         const realCharWidth = getTextWidth(item.text + char + '...', fontSize);
         if (realCharWidth <= maxWidth) {
-          // window.test(10, char, realCharWidth, maxWidth)
           item.text += char;
           item.width = realCharWidth;
           json.splice(-1, 1, item);
         } else {
           item.text += '...';
           item.width = maxWidth;
-          // window.test(10, char, realCharWidth, maxWidth)
           json.splice(-1, 1, item);
           return { width: maxWidth, height: lineHeight, json };
         }

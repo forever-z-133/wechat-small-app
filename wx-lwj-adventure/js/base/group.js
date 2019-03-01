@@ -22,7 +22,7 @@ export default class Group extends Sprite {
       watchValueChange(this, key, (val, old) => {
         const offset = val - old;
         this.child.forEach(item => item[key] += offset);
-      });
+      }, 0);
     });
     ['disabled', 'visible'].forEach(key => {
       watchValueChange(this, key, (val) => {
