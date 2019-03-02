@@ -26,19 +26,25 @@ export default class Img extends Sprite {
         this.newImgHeight = newImgHeight;
       });
     });
+    watchValueChange(this, 'position', (val) => {
+      const { newImgX, newImgY } = this.getImgPosition();
+      this.newImgX = newImgX;
+      this.newImgY = newImgY;
+    });
 
     // 其他重要赋值
     this.imgSrc = imgSrc;
-    this.position = 'left top';
+    this.size = '50% 50%';  // 切记 size 的赋值需在 position 之前
+    this.position = 'top left';
     this.repeat = 'no-repeat';
-    this.size = 'full';
   }
 
   customDrawToCanvas(ctx) {
-    const { img, x, y, newImgWidth, newImgHeight } = this;
+    const { img, x, y, newImgX, newImgY, newImgWidth, newImgHeight } = this;
     if (!img) return;
 
-    ctx.drawImage(img, x, y, newImgWidth, newImgHeight);
+    // ctx.drawImage(img, x, y, newImgWidth, newImgHeight);
+    ctx.drawImage(img, newImgX, newImgY, newImgWidth, newImgHeight);
   }
   beforeDraw(ctx) {
     const { x, y, width, height } = boxGrowUp(this);
@@ -87,5 +93,35 @@ export default class Img extends Sprite {
     }
 
     return { newImgWidth, newImgHeight };
+  }
+
+  /**
+   * 计算图片实际位置，比如 left center top right 或者 50 10% 等
+   */
+  getImgPosition() {
+    const { x, y, width, height, newImgWidth, newImgHeight, position } = this;
+    let newImgX = 0, newImgY = 0;
+    
+    const temp = position.split(' ');
+    if (temp.length === 0) return { newImgX: 0, newImgY: 0 };
+    if (temp.length === 1) temp.push('center');  // 只传入一个时，另一个默认为 center
+    if ((temp[0] === 'top' || temp[0] === 'bottom')) temp.reverse();  // 把 top bottom 放到后面去
+    if ((temp[1] === 'left' || temp[1] === 'right')) temp.reverse();  // 如果 left right 在后面则调到前面
+    
+    temp.forEach((item, index) => {
+      var value = 0;
+      if (item === 'top') value = y;
+      else if (item === 'bottom') value = y + height - newImgHeight;
+      else if (item === 'left') value = x;
+      else if (item === 'right') value = x + width - newImgWidth;
+      else if (item === 'center' && index === 0) value = x + width / 2 - newImgWidth / 2;
+      else if (item === 'center' && index === 1) value = y + height / 2 - newImgHeight / 2;
+      else if (/\d+%/.test(item)) { value = (index === 0 ? x : y) + width * parseFloat(item) / 100; }
+      else { value = (index === 0 ? x : y) + parseFloat(item); }  // 包括 px 哟
+      console.log(item, value)
+      index === 0 ? (newImgX = value) : (newImgY = value);
+    });
+
+    return { newImgX, newImgY };
   }
 }
