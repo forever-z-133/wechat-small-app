@@ -1,6 +1,7 @@
 import Sprite from '../../base/sprite.js';
 
 import { fontFamily } from '../../libs/config.js';
+import { px } from '../../libs/utils.js';
 const winW = window.innerWidth;
 
 export default class TotalMoney extends Sprite {
@@ -8,7 +9,7 @@ export default class TotalMoney extends Sprite {
     super()
 
     this.x = 80;
-    this.y = 90;
+    this.y = px(200);
     this.width = 260;
     this.height = 20;
   }

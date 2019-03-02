@@ -11,7 +11,6 @@ export default class TotalMoney extends Group {
     __value.x = px(180);
     __value.y = px(20);
     __value.fontSize = 25;
-    __value.color = 'red';
     this.__value = __value;
 
     this.addChild('value', __value);

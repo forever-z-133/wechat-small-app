@@ -35,20 +35,23 @@ export default class Img extends Sprite {
     // 其他重要赋值
     this.imgSrc = imgSrc;
     this.size = '50% 50%';  // 切记 size 的赋值需在 position 之前
-    this.position = 'top left';
+    this.bgColor = 'red' || 'rgba(255, 255, 255, 0)';
+    this.position = -px(20) + ' left';
     this.repeat = 'no-repeat';
   }
 
   customDrawToCanvas(ctx) {
-    const { img, x, y, newImgX, newImgY, newImgWidth, newImgHeight } = this;
+    const { img, x, y, width, height, bgColor } = this;
+    const { newImgX, newImgY, newImgWidth, newImgHeight } = this;
     if (!img) return;
 
-    // ctx.drawImage(img, x, y, newImgWidth, newImgHeight);
-    ctx.drawImage(img, newImgX, newImgY, newImgWidth, newImgHeight);
-  }
-  beforeDraw(ctx) {
-    const { x, y, width, height } = boxGrowUp(this);
+    ctx.save();
+    ctx.fillStyle = bgColor;
     ctx.fillRect(x, y, width, height);
+    ctx.globalCompositeOperation = "source-atop";
+    ctx.drawImage(img, newImgX, newImgY, newImgWidth, newImgHeight);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
   }
 
   /**
@@ -118,7 +121,6 @@ export default class Img extends Sprite {
       else if (item === 'center' && index === 1) value = y + height / 2 - newImgHeight / 2;
       else if (/\d+%/.test(item)) { value = (index === 0 ? x : y) + width * parseFloat(item) / 100; }
       else { value = (index === 0 ? x : y) + parseFloat(item); }  // 包括 px 哟
-      console.log(item, value)
       index === 0 ? (newImgX = value) : (newImgY = value);
     });
 

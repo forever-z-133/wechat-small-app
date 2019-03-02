@@ -9,6 +9,8 @@ export default class Sprite {
     this.x = x
     this.y = y
 
+    this.bgColor = 'rgba(255, 255, 255, 0)';
+
     this.visible = true
 
     this.disabled = false
@@ -19,7 +21,8 @@ export default class Sprite {
    */
   customDrawToCanvas(ctx) { }
   customDrawToCanvas2(ctx) { }
-  beforeDraw (ctx) {}
+  beforeDraw(ctx) { }
+  afterDraw(ctx) { }
   drawToCanvas(ctx) {
     if (!this.visible) return;
 
@@ -36,11 +39,6 @@ export default class Sprite {
     ctx.save();
     this.afterDraw(ctx);
     ctx.restore();
-  }
-  afterDraw(ctx) {
-    // const { x, y, width, height } = this;
-    // ctx.fillStyle = '#' + Math.floor(Math.random() * 0xCCCCCC).toString(16);
-    // ctx.strokeRect(x, y, width, height);
   }
 
   /**

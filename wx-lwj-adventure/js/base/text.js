@@ -38,6 +38,8 @@ export default class Text extends Sprite {
     const { options: { json } } = this;
     const { x, y, maxWidth, fontSize, lineHeight, color, textAlign } = this;
 
+    ctx.save();
+    
     ctx.textBaseline = 'top';
     ctx.fillStyle = color;
     ctx.font = `${fontSize}px / ${lineHeight} ${fontFamily}`;
@@ -49,6 +51,8 @@ export default class Text extends Sprite {
         case 'left': default: ctx.fillText(text, x, y + index * lineHeight);
       }
     });
+
+    ctx.restore();
   }
 
   /**

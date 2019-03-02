@@ -22,7 +22,7 @@ export default class Box extends Sprite {
   // 重写绘制方法
   draw(ctx) {
     if (!this.visible) return;
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'lightblue';
     ctx.fillRect(this.x, this.y, this.width, this.height)
   }
 }

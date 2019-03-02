@@ -33,7 +33,7 @@ export default class AddItemNumConfig extends Sprite {
     const { x, y, width, height } = this;
     const { _addItemNum } = gameConfig;
     ctx.textBaseline = 'top';
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'grey';
     ctx.font = `${height}px / 1 ${fontFamily}`;
     ctx.fillText(`${_addItemNum}`, x, y);
   }

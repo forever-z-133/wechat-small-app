@@ -74,6 +74,8 @@ export default class Group extends Sprite {
   }
 
   customDrawToCanvas2(ctx) {
+    ctx.save();
     this.child.forEach(item => item.drawToCanvas(ctx));
+    ctx.restore();
   }
 }

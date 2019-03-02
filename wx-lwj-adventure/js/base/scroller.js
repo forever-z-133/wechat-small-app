@@ -1,6 +1,6 @@
 import Group from '../base/group'
 
-import { distence, anim } from '../libs/utils.js'
+import { distence, anim, watchValueChange } from '../libs/utils.js'
 
 const winW = window.innerWidth
 const winH = window.innerHeight
@@ -13,6 +13,12 @@ function reverseEase(y) {
 export default class Scroller extends Group {
   constructor(maxHeight, options) {
     super();
+
+    ['x', 'y', 'width', 'maxHeight'].forEach(key => {
+      watchValueChange(this, key, (val) => {
+        this.afterCalculateNewPosition();
+      });
+    });
 
     this.maxHeight = maxHeight || winH;
     this.afterCalculateNewPosition();
@@ -126,7 +132,9 @@ export default class Scroller extends Group {
   // ---------- 接触滑动容器
   // 方法1，与 save restore 有点难封装
   customDrawToCanvas(ctx) {
+    const { bgColor } = this;
     const { x, y, maxWidth: width, maxHeight: height } = this.options;
+    ctx.fillStyle = bgColor;
     ctx.fillRect(x, y, width, height);
     ctx.globalCompositeOperation = "source-atop";
   }
