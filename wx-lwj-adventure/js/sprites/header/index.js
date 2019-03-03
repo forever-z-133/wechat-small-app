@@ -1,4 +1,4 @@
-import Group from '../../base/group';
+import Block from '../../base/block';
 
 import HeadImage from './headImage.js';
 import TotalMonney from './totalMoney.js';
@@ -7,9 +7,9 @@ import UserGoldConfig from './userGoldConfig.js';
 
 import { px } from '../../libs/utils.js';
 
-export default class Header extends Group {
+export default class Header extends Block {
   constructor() {
-    super();
+    super(0, 0, px(750), px(160));
 
     const headImage = new HeadImage();
     const totalMoney = new TotalMonney();

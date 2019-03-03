@@ -1,53 +1,17 @@
-import Sprite from '../base/sprite'
+import Group from '../base/group'
 
-import { watchValueChange } from '../libs/utils.js';
+import { watchValueChange, px } from '../libs/utils.js';
 
-const screenWidth = window.innerWidth
-const screenHeight = window.innerHeight
-
-let KeyMap = {};
-
-export default class Group extends Sprite {
-  constructor() {
+export default class Block extends Group {
+  constructor(x, y, width, height) {
     super();
 
-    this.child = [];
+    // Group 组件是贴合子组件宽高的，Block 的宽高是固定的，即贴合后直接覆盖 Group 宽高即可
+    this.raw = { x, y, width, height };
   }
 
-  //------------ 绑定值的联动
-  initChildChange(that) {
-    ['x', 'y'].forEach(key => {
-      watchValueChange(this, key, (val, old) => {
-        const offset = val - old;
-        this.child.forEach(item => item[key] += offset);
-      });
-    });
-    ['disabled', 'visible'].forEach(key => {
-      watchValueChange(this, key, (val) => {
-        this.child.forEach(item => item[key] = val);
-      });
-    });
-  }
-
-  //------------ 增删子元素
-  addChild(key, el) {
-    if (key in KeyMap) {
-      this.removeChild(key);
-    }
-    this.child.push(el);
-    KeyMap[key] = el;
-    this.calculateNewPosition();
-  }
-  removeChild(key) {
-    this.child = this.child.filter((item) => {
-      return KeyMap[key] !== item;
-    });
-    delete KeyMap[key];
-    this.calculateNewPosition();
-  }
-  emptyChild() {
-    this.child = [];
-    KeyMap = {};
-    this.calculateNewPosition();
+  constomAfterCalculateNewPosition() {
+    const { x, y, width, height } = this.raw;
+    this.x = x; this.y = y; this.width = width; this.height = height;
   }
 }

@@ -44,9 +44,11 @@ export default class Group extends Sprite {
     this.y = miny;
     this.width = maxr - this.x;
     this.height = maxb - this.y;
+    this.constomAfterCalculateNewPosition(this);
     this.afterCalculateNewPosition(this);
   }
   afterCalculateNewPosition() {}
+  constomAfterCalculateNewPosition() {}
 
   //------------ 增删子元素
   addChild (key, el) {
