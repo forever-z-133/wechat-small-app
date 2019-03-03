@@ -35,8 +35,7 @@ export default class Img extends Sprite {
     // 其他重要赋值
     this.imgSrc = imgSrc;
     this.size = '50% 50%';  // 切记 size 的赋值需在 position 之前
-    this.bgColor = 'red' || 'rgba(255, 255, 255, 0)';
-    this.position = -px(20) + ' left';
+    this.position = 'left top';
     this.repeat = 'no-repeat';
   }
 
@@ -46,11 +45,16 @@ export default class Img extends Sprite {
     if (!img) return;
 
     ctx.save();
+
     ctx.fillStyle = bgColor;
-    ctx.fillRect(x, y, width, height);
-    ctx.globalCompositeOperation = "source-atop";
+    ctx.rect(x, y, width, height);
+    // ctx.clip 会有闪动，也无法做移动的效果，
+    // 但 source-atop 如果要裁剪又必须得有背景色，这谁顶得住呀
+    ctx.globalCompositeOperation = 'source-atop';
     ctx.drawImage(img, newImgX, newImgY, newImgWidth, newImgHeight);
-    ctx.globalCompositeOperation = "source-over";
+    this.drawNoreRepeat(ctx);
+    ctx.globalCompositeOperation = 'source-over';
+
     ctx.restore();
   }
 
@@ -125,5 +129,17 @@ export default class Img extends Sprite {
     });
 
     return { newImgX, newImgY };
+  }
+
+  /**
+   * 绘制更多重复图片
+   */
+  drawNoreRepeat(ctx) {
+    const { img, x, y, width, height, repeat } = this;
+    const { newImgX, newImgY, newImgWidth, newImgHeight } = this;
+
+    if (repeat === 'repeat-x') {
+      
+    }
   }
 }

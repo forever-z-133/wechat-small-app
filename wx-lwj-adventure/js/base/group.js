@@ -1,9 +1,6 @@
 import Sprite from '../base/sprite'
 
-import { watchValueChange } from '../libs/utils.js';
-
-const screenWidth = window.innerWidth
-const screenHeight = window.innerHeight
+import { watchValueChange, boxGrowUp } from '../libs/utils.js';
 
 let KeyMap = {};
 
@@ -74,8 +71,6 @@ export default class Group extends Sprite {
   }
 
   customDrawToCanvas2(ctx) {
-    ctx.save();
     this.child.forEach(item => item.drawToCanvas(ctx));
-    ctx.restore();
   }
 }

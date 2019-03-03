@@ -68,6 +68,7 @@ export default class Text extends Sprite {
     }
 
     const json = []; // 每行文本的数据
+    const dotWidth = getTextWidth('...', fontSize);
 
     for (let char of text) {
       let item = json.slice(-1)[0];
@@ -84,8 +85,8 @@ export default class Text extends Sprite {
           json.push(item);
         }
       } else {  // 不换行
-        const realCharWidth = getTextWidth(item.text + char + '...', fontSize);
-        if (realCharWidth <= maxWidth) {
+        const realCharWidth = getTextWidth(item.text + char, fontSize);
+        if (realCharWidth <= maxWidth + dotWidth) {
           item.text += char;
           item.width = realCharWidth;
           json.splice(-1, 1, item);

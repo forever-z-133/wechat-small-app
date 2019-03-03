@@ -1,17 +1,26 @@
-import Sprite from '../../base/sprite.js';
+import Group from '../../base/group.js';
+import Text from '../../base/text.js';
 
 import { fontFamily } from '../../libs/config.js';
+import { px } from '../../libs/utils.js';
 import gameConfig from '../../gameData/index.js';
 const winW = window.innerWidth;
 
-export default class AddItemNumConfig extends Sprite {
+export default class AddItemNumConfig extends Group {
   constructor() {
     super()
 
-    this.y = 40;
-    this.width = 50;
-    this.height = 20;
-    this.x = winW - this.width - 20;
+    const { _addItemNum } = gameConfig;
+    const __text = new Text(_addItemNum, px(100));
+    __text.x = px(750 - 20) - __text.width;
+    __text.y = px(100);
+    __text.textAlign = 'right';
+    this.addChild('text', __text);
+    this.__text = __text;
+
+    this.initChildChange(this);
+
+    this.bgColor = 'pink'
 
     this.bindEvent();
   }
@@ -23,18 +32,11 @@ export default class AddItemNumConfig extends Sprite {
   click = (e) => {
     e = e.touches ? e.touches[0] : e;
     const clickInner = this.checkIsOnThisSprite(e.pageX, e.pageY);
-    if (clickInner) {
-      const { _addItemNum: now, _addItemNumConfig: temp } = gameConfig;
-      gameConfig._addItemNum = temp[temp.indexOf(now) + 1] || temp[0];
-    }
-  }
+    if (!clickInner) return;
 
-  beforeDraw(ctx) {
-    const { x, y, width, height } = this;
-    const { _addItemNum } = gameConfig;
-    ctx.textBaseline = 'top';
-    ctx.fillStyle = 'grey';
-    ctx.font = `${height}px / 1 ${fontFamily}`;
-    ctx.fillText(`${_addItemNum}`, x, y);
+    const { _addItemNum: now, _addItemNumConfig: temp } = gameConfig;
+    var newValue = temp[temp.indexOf(now) + 1] || temp[0];
+    this.__text.text = newValue;
+    gameConfig._addItemNum = newValue;
   }
 }

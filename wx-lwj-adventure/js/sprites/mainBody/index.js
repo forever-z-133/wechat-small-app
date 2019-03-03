@@ -19,11 +19,15 @@ export default class MainBody extends Scroller {
     this.addChild('itemList', itemList);
 
     this.initChildChange(this);
+
+    this.bgColor = 'pink';
   }
 
-  beforeDraw(ctx) {
-    const { x, y, width, height } = this.options;
-    ctx.fillStyle = 'pink';
-    ctx.fillRect(x, y, width, height);
-  }
+  // beforeDraw(ctx) {
+  //   const { x, y, width, height } = this.options;
+  //   ctx.save();
+  //   ctx.fillStyle = 'pink';
+  //   ctx.fillRect(x, y, width, height);
+  //   ctx.restore();
+  // }
 }

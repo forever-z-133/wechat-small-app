@@ -130,25 +130,16 @@ export default class Scroller extends Group {
   }
 
   // ---------- 接触滑动容器
-  // 方法1，与 save restore 有点难封装
   customDrawToCanvas(ctx) {
     const { bgColor } = this;
     const { x, y, maxWidth: width, maxHeight: height } = this.options;
-    ctx.fillStyle = bgColor;
+    ctx.fillStyle = /rgba\(([^,]*),([^,]*),([^,]*),\s*0\s*\)/.test(bgColor) ? '#fff' : bgColor; // 必须要有背景色
     ctx.fillRect(x, y, width, height);
-    ctx.globalCompositeOperation = "source-atop";
+    ctx.globalCompositeOperation = 'source-atop';
   }
   customDrawToCanvas2(ctx) {
     this.child.forEach(item => item.drawToCanvas(ctx));
-    ctx.globalCompositeOperation = "source-over";
+    ctx.globalCompositeOperation = 'source-over';
   }
-  // // 方法2，除本组件外其他组件都没了，故不适用
-  // afterDraw(ctx) {
-  //   const { x, y, maxWidth: width, maxHeight: height } = this.options;
-  //   // console.log(x, y, width, height)
-  //   ctx.globalCompositeOperation = "destination-in";
-  //   ctx.fillStyle = '#fff';
-  //   ctx.fillRect(x, 50, width, height);
-  //   ctx.globalCompositeOperation = "source-over";
-  // }
+  drawBgColor(ctx) {}  // 覆盖原背景设置
 }

@@ -5,9 +5,7 @@ import TotalMonney from './totalMoney.js';
 import AddItemNum from './addItemNum.js';
 import UserGoldConfig from './userGoldConfig.js';
 
-import { boxGrowUp, px } from '../../libs/utils.js';
-
-const winW = window.innerWidth;
+import { px } from '../../libs/utils.js';
 
 export default class Header extends Group {
   constructor() {
@@ -19,15 +17,12 @@ export default class Header extends Group {
     // const userGoldConfig = new UserGoldConfig();
 
     this.addChild('headImage', headImage);
-    this.addChild('totalMoney', totalMoney);
     this.addChild('addItemNum', addItemNum);
+    this.addChild('totalMoney', totalMoney);
     // this.addChild('userGoldConfig', userGoldConfig);
 
     this.initChildChange(this);
-  }
 
-  beforeDraw(ctx) {
-    ctx.fillStyle = '#514A44';
-    ctx.fillRect(0, 0, px(750), px(180));
+    this.bgColor = 'grey';
   }
 }

@@ -1,19 +1,20 @@
 /**
  * 游戏基础的精灵类
  */
+
+import { boxGrowUp } from '../libs/utils.js';
+
 export default class Sprite {
   constructor(x = 0, y = 0, width = 0, height = 0) {
-    this.width  = width
-    this.height = height
-
-    this.x = x
-    this.y = y
+    
+    this.width  = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
 
     this.bgColor = 'rgba(255, 255, 255, 0)';
-
-    this.visible = true
-
-    this.disabled = false
+    this.visible = true;
+    this.disabled = false;
   }
 
   /**
@@ -25,6 +26,10 @@ export default class Sprite {
   afterDraw(ctx) { }
   drawToCanvas(ctx) {
     if (!this.visible) return;
+
+    ctx.save();
+    this.drawBgColor(ctx);
+    ctx.restore();
 
     ctx.save();
     this.beforeDraw(ctx);
@@ -39,6 +44,12 @@ export default class Sprite {
     ctx.save();
     this.afterDraw(ctx);
     ctx.restore();
+  }
+  drawBgColor(ctx) {
+    const { padding = [], bgColor } = this;
+    const { x, y, width, height } = boxGrowUp(this, ...padding);
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(x, y, width, height);
   }
 
   /**
