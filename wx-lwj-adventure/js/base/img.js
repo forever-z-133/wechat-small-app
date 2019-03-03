@@ -1,6 +1,6 @@
 import Sprite from './sprite.js';
 
-import { px, watchValueChange, boxGrowUp } from '../libs/utils.js';
+import { px, watchValueChange, isTransparent } from '../libs/utils.js';
 
 export default class Img extends Sprite {
   constructor(imgSrc, x, y, width, height) {
@@ -46,7 +46,7 @@ export default class Img extends Sprite {
 
     ctx.save();
 
-    ctx.fillStyle = bgColor;
+    ctx.fillStyle = isTransparent(bgColor) ? '#fff' : bgColor;
     ctx.rect(x, y, width, height);
     // ctx.clip 会有闪动，也无法做移动的效果，
     // 但 source-atop 如果要裁剪又必须得有背景色，这谁顶得住呀

@@ -95,3 +95,25 @@ export const watchValueChange = (obj, key, callback, defaultValue) => {
     get() { return temp[key] }
   });
 }
+
+/**
+ * 判断是否为透明色，在剪切效果时有用
+ */
+export const isTransparent = (color) => {
+  if (globalCtx && globalCtx.opacity <= 0) return true;
+  return /(rgba|hsla)\(([^,]*,){3}\s*0\s*\)/.test(color);
+}
+
+/**
+ * border background 等属性的拆分
+ */
+const border2json = (borderStr) => {
+  const temp = borderStr ? borderStr.split(' ') : [];
+  const [width = 1, style = 'solid', color = '#000'] = temp;
+  return { width, style, color };
+}
+const background2json = (backgroundStr) => {
+  const temp = backgroundStr.split('/'); // 如果有 bg-size 先拆这个
+  const temp1 = temp[0].split(' ');    // emmm 比想象中难搞，自闭了
+  return { color, image, position, size, repeat };
+}

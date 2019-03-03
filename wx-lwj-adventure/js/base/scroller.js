@@ -1,6 +1,6 @@
 import Group from '../base/group'
 
-import { distence, anim, watchValueChange } from '../libs/utils.js'
+import { distence, anim, watchValueChange, isTransparent } from '../libs/utils.js'
 
 const winW = window.innerWidth
 const winH = window.innerHeight
@@ -133,7 +133,7 @@ export default class Scroller extends Group {
   customDrawToCanvas(ctx) {
     const { bgColor } = this;
     const { x, y, maxWidth: width, maxHeight: height } = this.options;
-    ctx.fillStyle = /rgba\(([^,]*),([^,]*),([^,]*),\s*0\s*\)/.test(bgColor) ? '#fff' : bgColor; // 必须要有背景色
+    ctx.fillStyle = isTransparent(bgColor) ? '#fff' : bgColor; // 必须要有背景色
     ctx.fillRect(x, y, width, height);
     ctx.globalCompositeOperation = 'source-atop';
   }
