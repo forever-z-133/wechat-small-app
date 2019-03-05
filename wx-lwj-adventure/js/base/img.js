@@ -34,8 +34,8 @@ export default class Img extends Sprite {
 
     // 其他重要赋值
     this.imgSrc = imgSrc;
-    this.size = '50% 50%';  // 切记 size 的赋值需在 position 之前
-    this.position = 'left top';
+    this.size = 'full';  // 切记 size 的赋值需在 position 之前
+    this.position = 'top left';
     this.repeat = 'no-repeat';
   }
 
@@ -138,8 +138,23 @@ export default class Img extends Sprite {
     const { img, x, y, width, height, repeat } = this;
     const { newImgX, newImgY, newImgWidth, newImgHeight } = this;
 
-    if (repeat === 'repeat-x') {
-      
+    if (!newImgWidth || !newImgHeight) return;
+
+    const repeatX = repeat === 'reepeat-x' || repeat == 'repeat';
+    const repeatY = repeat === 'reepeat-y' || repeat == 'repeat';
+
+    if (newImgWidth < width && repeatX) {
+      const leftCount = (newImgX - x) / newImgWidth >> 0;
+      if (leftCount > 0) {
+        for (let i=0; i<=leftCount+1; i++) {
+          ctx.drawImage(img, (newImgX-(newImgWidth*i)), newImgY, newImgWidth, newImgHeight)
+        }
+      }
+      window.test(1, newImgX, x, newImgWidth, leftCount);
+    }
+
+    if (newImgHeight < height && repeatY) {
+
     }
   }
 }

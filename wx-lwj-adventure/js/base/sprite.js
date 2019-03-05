@@ -53,7 +53,6 @@ export default class Sprite {
   }
 
   /**
-   * 当手指触摸屏幕的时候
    * 判断手指是否在飞机上
    * @param {Number} x: 手指的X轴坐标
    * @param {Number} y: 手指的Y轴坐标
