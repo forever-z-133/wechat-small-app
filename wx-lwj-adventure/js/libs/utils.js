@@ -19,7 +19,7 @@ export const distence = (x1, y1, x2, y2) => {
  * 动画，以后应该会改进，加个 TODO
  */
 let animTimer = null;
-export const anim = function(start, to, duration, callback) {
+export const anim = function(start = 0, to = 0, duration = 0, callback) {
   if (duration === 0) {
     return callback && callback(to, 1);
   }
@@ -107,13 +107,20 @@ export const isTransparent = (color) => {
 /**
  * border background 等属性的拆分
  */
-const border2json = (borderStr) => {
+export const border2json = (borderStr) => {
   const temp = borderStr ? borderStr.split(' ') : [];
-  const [width = 1, style = 'solid', color = '#000'] = temp;
+  const [width = 0, style = 'solid', color = 'rgba(0, 0, 0, 0)'] = temp;
   return { width, style, color };
 }
-const background2json = (backgroundStr) => {
+export const background2json = (backgroundStr) => {
   const temp = backgroundStr.split('/'); // 如果有 bg-size 先拆这个
   const temp1 = temp[0].split(' ');    // emmm 比想象中难搞，自闭了
   return { color, image, position, size, repeat };
+}
+
+/**
+ * 转金钱格式 1,234,000.00 那种
+ */
+export const money = (val = 0, unit = ',', fixed = 2) => {
+  return (Number(val) || 0).toFixed(fixed).replace(/\B(?=(\d{3})+(?!\d))/g, unit);
 }

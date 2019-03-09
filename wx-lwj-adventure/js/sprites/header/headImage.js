@@ -10,11 +10,7 @@ export default class HeadImage extends Group {
     super()
 
     const __img = new Img(url, px(30), px(20), px(120), px(120));
-    // __img.bgColor = '#fff';
     this.addChild('img', __img);
-    __img.size = '50% 50%';
-    __img.position = '40 10';
-    __img.repeat = 'repeat';
     __img.bgColor = '#fff';
     this.initChildChange(this);
     

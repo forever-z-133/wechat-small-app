@@ -16,15 +16,13 @@ class Shape extends Sprite {
     ctx.fillStyle = color || bgColor;
     ctx.lineWidth = borderWidth;
     ctx.strokeStyle = borderColor;
-    ctx.lineWidth = borderWidth;
-    borderStyle !== 'solid' && oGc.setLineDash([borderWidth, borderWidth]);
+    borderStyle !== 'solid' && ctx.setLineDash([borderWidth, borderWidth]); // 如果不是 solid 那就是 - - 这样的边框
     ctx.fill();
     ctx.stroke();
     ctx.restore();
   }
-  customDrawShape(ctx) {
-
-  }
+  customDrawShape(ctx) {}
+  drawBgColor() {} // 屏蔽原背景绘制
 }
 
 // 圆角方形
@@ -44,10 +42,15 @@ export class Ellipse extends Rect {
 
 // 圆形
 export class Circle extends Shape {
+  // 注： xy 为左上角而非圆心坐标
   constructor(x, y, radius) {
-    super(x, y, radius, radius);
+    super(x, y, radius * 2, radius * 2);
+    this.radius = radius;
   }
   customDrawShape(ctx) {
+    let { x, y, radius } = this;
+    x += radius;
+    y += radius;
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
   }
 }

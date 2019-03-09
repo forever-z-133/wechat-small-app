@@ -4,11 +4,11 @@ import { fontFamily } from '../libs/config.js';
 import { getTextWidth, watchValueChange } from '../libs/utils.js';
 
 export default class Text extends Sprite {
-  constructor(text, maxWidth = Infinity, textWrap = false) {
+  constructor(text = '', maxWidth = Infinity, textWrap = false) {
     /* 注：maxWidth 不可为 null */
     super();
 
-    this.text = text;
+    this.text = text || '';
     this.maxWidth = maxWidth; // 超出时使用 ... 
     this.textWrap = textWrap; // 超出是否换行，做不到很好的 justify 哟
 
@@ -70,7 +70,8 @@ export default class Text extends Sprite {
     const json = []; // 每行文本的数据
     const dotWidth = getTextWidth('...', fontSize);
 
-    for (let char of text) {
+    for (let i in text) {
+      let char = text[i];
       let item = json.slice(-1)[0];
       if (!item) item = { text: '', width: 0 }
       
@@ -110,7 +111,7 @@ export default class Text extends Sprite {
    * 重新计算盒子大小
    */
   resize() {
-    const { text } = this;
+    const { text = '' } = this;
     this.options = this.getTextWrapJson(text);
     const { width, height } = this.options;
     this.width = width;

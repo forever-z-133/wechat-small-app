@@ -7,6 +7,8 @@ import EventBus from './base/eventbus'
 import TestScroller from './test/testScroller.js'
 import Header from './sprites/header/index'
 import MainBody from './sprites/mainBody/index'
+import MainBg from './sprites/mainBg'
+import Footer from './sprites/footer/index'
 
 import { setGlobalCtx } from './libs/utils.js';
 
@@ -38,6 +40,8 @@ export default class Main {
     // this.TestScroller = new TestScroller(300);
     this.Header = new Header();
     this.MainBody = new MainBody();
+    this.MainBg = new MainBg();
+    this.Footer = new Footer();
 
     // 清除上一局的动画
     window.cancelAnimationFrame(this.Timer);
@@ -53,8 +57,10 @@ export default class Main {
     // this.panel.drawToCanvas(ctx);  // 元素组
     // this.scroller.drawToCanvas(ctx); // 滑动容器
     // this.TestScroller.drawToCanvas(ctx);
+    this.MainBg.drawToCanvas(ctx);
     this.MainBody.drawToCanvas(ctx);
     this.Header.drawToCanvas(ctx);
+    this.Footer.drawToCanvas(ctx);
   }
 
   // 游戏逻辑更新主函数

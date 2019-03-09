@@ -33,7 +33,8 @@ export default class Group extends Sprite {
   //------------ 计算本元素组的盒子模式，确保元素组包含着所有元素
   calculateNewPosition() {
     const first = this.child[0] || {};
-    let minx = first.x, miny = first.y, maxr = minx + first.width, maxb = miny + first.height;
+    const { x, y, width, height } = first.raw || first;
+    let minx = x, miny = y, maxr = minx + width, maxb = miny + height;
     this.child.slice(1).forEach((item) => {
       if (item.x < minx) minx = item.x;
       if (item.y < miny) miny = item.y;
@@ -44,8 +45,8 @@ export default class Group extends Sprite {
     this.y = miny;
     this.width = maxr - this.x;
     this.height = maxb - this.y;
-    this.constomAfterCalculateNewPosition(this);
     this.afterCalculateNewPosition(this);
+    this.constomAfterCalculateNewPosition(this);
   }
   afterCalculateNewPosition() {}
   constomAfterCalculateNewPosition() {}

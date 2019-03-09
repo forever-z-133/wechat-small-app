@@ -1,33 +1,25 @@
 import Scroller from '../../base/scroller.js';
+import Img from '../../base/img.js';
 
 import ItemList from './itemList.js';
-// import TotalMonney from './totalMoney.js';
-// import AddItemNum from './addItemNum.js';
-// import UserGoldConfig from './userGoldConfig.js';
 
 import { px, boxGrowUp } from '../../libs/utils.js';
+const bgSrc = 'imgs/bg.png';
 
 const winW = window.innerWidth;
 const winH = window.innerHeight;
 
 export default class MainBody extends Scroller {
   constructor() {
-    super(winH - px(300));
+    super(winH - px(160) - px(100));
 
-    const itemList = new ItemList();
+    const __bg = new Img(bgSrc, 0, 0, px(600), winH);
+    const __itemList = new ItemList();
+    __itemList.y = px(160);
 
-    this.addChild('itemList', itemList);
+    this.addChild('bg', __bg);
+    this.addChild('itemList', __itemList);
 
     this.initChildChange(this);
-
-    this.bgColor = 'pink';
   }
-
-  // beforeDraw(ctx) {
-  //   const { x, y, width, height } = this.options;
-  //   ctx.save();
-  //   ctx.fillStyle = 'pink';
-  //   ctx.fillRect(x, y, width, height);
-  //   ctx.restore();
-  // }
 }

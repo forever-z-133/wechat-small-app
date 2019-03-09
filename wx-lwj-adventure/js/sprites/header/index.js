@@ -21,8 +21,10 @@ export default class Header extends Block {
     this.addChild('totalMoney', totalMoney);
     // this.addChild('userGoldConfig', userGoldConfig);
 
+    this.totalMoney = totalMoney;
+
     this.initChildChange(this);
 
-    this.bgColor = 'grey';
+    this.bgColor = 'rgba(0, 0, 0, .5)';
   }
 }

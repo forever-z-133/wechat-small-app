@@ -104,6 +104,9 @@ export default class Scroller extends Group {
     if (!this.clicked) return;
     if (!this.moveing) return;
 
+    this.start = {};
+    this.last = {};
+
     const { minHeight: min, maxHeight, height } = this.options;
     const max = maxHeight + min - height;
     
@@ -123,10 +126,12 @@ export default class Scroller extends Group {
 
   // ---------- 滑动至哪
   scrollTop(top, duration, easing) {
-    anim(this.y, top, duration, (now) => this.y = now );
+    const { y = 0 } = this;
+    anim(y, top, duration, (now) => this.y = now );
   }
-  scrollLeft(top, duration, easing) {
-    anim(this.x, top, duration, (now) => this.x = now);
+  scrollLeft(left, duration, easing) {
+    const { x = 0 } = this;
+    anim(x, left, duration, (now) => this.x = now);
   }
 
   // ---------- 接触滑动容器

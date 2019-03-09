@@ -52,7 +52,7 @@ export default class Img extends Sprite {
     // 但 source-atop 如果要裁剪又必须得有背景色，这谁顶得住呀
     ctx.globalCompositeOperation = 'source-atop';
     ctx.drawImage(img, newImgX, newImgY, newImgWidth, newImgHeight);
-    this.drawNoreRepeat(ctx);
+    this.drawMoreRepeat(ctx);
     ctx.globalCompositeOperation = 'source-over';
 
     ctx.restore();
@@ -134,7 +134,7 @@ export default class Img extends Sprite {
   /**
    * 绘制更多重复图片
    */
-  drawNoreRepeat(ctx) {
+  drawMoreRepeat(ctx) {
     const { img, x, y, width, height, repeat } = this;
     const { newImgX, newImgY, newImgWidth, newImgHeight } = this;
 
@@ -150,7 +150,6 @@ export default class Img extends Sprite {
           ctx.drawImage(img, (newImgX-(newImgWidth*i)), newImgY, newImgWidth, newImgHeight)
         }
       }
-      window.test(1, newImgX, x, newImgWidth, leftCount);
     }
 
     if (newImgHeight < height && repeatY) {
