@@ -1,24 +1,22 @@
 // pages/chooseEnviroment/index.js
 
 import config from '../../utils/config.js';
+const app = getApp();
 
 Page({
   to_uat () {
-    // config.enviroment.now = config.enviroment.uat;
     wx.setStorageSync('env_now', config.enviroment.uat);
-    wx.setStorageSync('env_now_name', 'uat');
+    app.event.emit('enviromentReady', config.enviroment.uat)
     wx.navigateBack();
   },
   to_pre() {
-    // config.enviroment.now = config.enviroment.pre;
     wx.setStorageSync('env_now', config.enviroment.pre);
-    wx.setStorageSync('env_now_name', 'pre');
+    app.event.emit('enviromentReady', config.enviroment.pre)
     wx.navigateBack();
   },
   to_test() {
-    // config.enviroment.now = config.enviroment.pre;
     wx.setStorageSync('env_now', config.enviroment.test);
-    wx.setStorageSync('env_now_name', 'test');
+    app.event.emit('enviromentReady', config.enviroment.test)
     wx.navigateBack();
   }
 })

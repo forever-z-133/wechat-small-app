@@ -1,2 +1,69 @@
 <!--pages/paypage/index.wxml-->
-<view class='pos-center'>{{pay_state}}</view>
+<view wx:if='{{!finish}}'>
+  <view class='pos-center'>{{pay_state}}</view>
+</view>
+<view wx:else class='paymentTip'>
+  <view class='payResult'>
+    <view wx:if='{{isSuccess}}' class='isSuccess'>
+      <image src="../../images/pay-good.jpg"></image>
+      <view class='pay_result'>
+        <text class='tip'>支付成功</text>
+        <view class='price'><text>{{price || 0}}</text></view>
+      </view>
+      <view class='buttons xb-buttons' wx:if='{{!isFundPay}}'>
+        <button class='btn btn_back' bindtap='backToList'>再去逛逛</button>
+      </view>
+    </view>
+    <view wx:else class='isFail'>
+      <image src="../../images/pay-bad.jpg"></image>
+      <view class='pay_result'>
+        <text class='tip'>支付失败</text>
+      </view>
+      <view class='buttons xb-buttons'>
+        <button class='btn btn_re_pay' bindtap='rePay'>重新支付</button>
+        <button class='btn btn_back' bindtap='backToList' wx:if='{{!isFundPay}}'>返回选课中心</button>
+      </view>
+    </view>
+  </view>
+  <view class='integrationTip' wx:if="{{showIntegrationShareTip}}">
+    <view class='ratio'>
+      <image src='../../images/share-tip-bg.png'></image>
+    </view>
+    <view class='cover'>
+      <view class='contentWrap'>
+        <view class="flex-row header">
+          <text class='w1 grow'>线上选课专享</text>
+          <view class="icon btn-tips" bindtap='openTipsModal'>?</view>
+        </view>
+        <view class='content'>
+          <text class='w2'>完成转介绍领积分奖励</text>
+          <text class='w3'>每成功转介绍 {{howMuchPeopleNeedToShare}} 个新学员，可获得 {{shareForHowMuchIntegration}} 积分，积分可当钱花哦</text>
+        </view>
+        <button bindtap='openSharePanel' class="btn btn-share">立即转发</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class='modal {{showTipsModal ? "in" : ""}}'>
+  <view class='bg modal-bg'></view>
+  <view class='modal-box alert'>
+    <view class='alert-head'>
+      <view class='title'>活动规则</view>
+    </view>
+    <view class='alert-body'>
+      <scroll-view scroll-y style='max-height: 600rpx'>
+        <view class='tipsModalContent'>
+          <text>1.点击立即分享，转发给好友或保存图片分享到朋友圈</text>
+          <text>2.好友长摁识别二维码，进入注册页面</text>
+          <text>3.好友注册成功后，您即可获得积分奖励</text>
+          <text>4.已存在的学员不计入本次奖励范围，邀请新学员越多，您奖励越多，上不封顶！</text>
+          <text>本活动最终解释权归#{{institutionName}}#所有</text>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='alert-foot'>
+      <button class='btn btn-confirm' bindtap='closeTipsModal'>好的</button>
+    </view>
+  </view>
+</view>

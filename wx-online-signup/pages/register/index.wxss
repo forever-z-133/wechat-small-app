@@ -46,14 +46,15 @@ input, picker {
 
 .btn-getMsgCode {
   width: 7em;
-  font-size: .9em;
-  padding: .6em .3em;
+  font-size: 30rpx;
+  height: 60rpx;
+  line-height: 60rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  background: #488FFB;
-  border-radius: 10rpx;
+  color: #7F7F7F;
+  background: #F4F4F4;
+  border-radius: 1000em;
 }
 
 .btn-register {
@@ -62,6 +63,7 @@ input, picker {
   line-height: 2.8em;
   color: #fff;
   background: #488FFB;
+  border-radius: 1000em;
 }
 .btn.disabled {
   color: #ddd;
@@ -80,16 +82,9 @@ input, picker {
   color: #000;
   font-weight: bold;
 }
-.list-item {
-  font-size: 38rpx;
-  padding: 1em 30rpx;
+.login-list .list-item.add {
   text-align: center;
-  border-bottom: 1rpx solid #efefef;
-  transition: .2s;
-}
-.list-item.choose {
-  color: #fff;
-  background: #488FFA;
+  display:block;
 }
 
 .icon {
@@ -104,4 +99,9 @@ input, picker {
   height: .9em;
   margin-left: 15rpx;
   margin-right: 0;
+}
+
+.btn-blue {
+  color: #fff;
+  background: #488FFB;
 }

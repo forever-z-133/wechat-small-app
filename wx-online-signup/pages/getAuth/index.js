@@ -43,6 +43,7 @@ Page({
   },
   // --- 是否已获得所有授权
   finishTheAuth() {
+    app.event.emit('authReady', true);
     wx.navigateBack()
   }
 })

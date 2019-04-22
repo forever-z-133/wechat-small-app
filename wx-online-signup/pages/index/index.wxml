@@ -2,18 +2,20 @@
 
 <view class='container' wx:if='{{needLogin}}'>
   <view class='image head-image'>
-    <image src='/images/img_chooseCourse.jpg'></image>
+    <image src='/images/img_chooseCourse.png'></image>
   </view>
   <form class='form' bindsubmit='submit'>
     <view class='form-group form-inline'>
-      <input type='number' value='{{tel}}' placeholder='请输入你的手机号码' placeholder-class='placeholder' maxlength='11' confirm-type='next' bindinput='inputTel'></input>
-      <button class='btn btn-getMsgCode {{yes_msg ? "" : "disabled"}}' bindtap='getMsgCode'>{{msgTips}}</button>
+      <image src='/images/phone.svg' class='icon icon-tel'></image>
+      <input type='number' value='{{tel}}' placeholder='请输入手机号' placeholder-class='placeholder' maxlength='11' confirm-type='next' bindinput='inputTel'></input>
     </view>
-    <view class='form-group'>
-      <input type='number' value='{{code}}' placeholder='请输入短信验证码' placeholder-class='placeholder' confirm-type='done' bindinput='inputCode'></input>
+    <view class='form-group form-inline'>
+      <image src='/images/telCode.svg' class='icon icon-code'></image>
+      <input type='number' value='{{code}}' placeholder='请输入验证码' placeholder-class='placeholder' confirm-type='done' bindinput='inputCode'></input>
+      <button class='btn btn-getMsgCode {{telIsOk && yes_msg ? "btn-blue" : ""}} {{yes_msg ? "" : "disabled"}}' bindtap='getMsgCode'>{{msgTips}}</button>
     </view>
     <button form-type='submit' class='btn btn-login {{yes ? "" : "disabled"}}'>{{loginTips}}</button>
-    <navigator class='btn-to-register' url="/pages/register/index" wx:if="{{hasShareOpt}}" open-type="redirect">返回注册</navigator>
+    <navigator class='btn-to-register' wx:if="{{hasShareOpt}}" open-type="navigateBack">返回注册</navigator>
   </form>
 </view>
 <view class='copyright'>www.xuebangsoft.com</view>
@@ -27,10 +29,19 @@
     </view>
     <view class='alert-body'>
       <scroll-view scroll-y style='max-height: 400rpx'>
-        <view class='list-box'>
+        <view class='list-box login-list'>
           <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 0}}'>
-            <view class='list-item {{studentIndex == index ? "choose" : ""}}' data-index='{{index}}' catchtap='chooseStudent'>
-              <text>{{item.studentName}}{{item.campusName ? "（" + item.campusName + "）" : ""}}</text>
+            <view class='list-item {{studentIndex == index ? "choose" : ""}} {{item.userId ? "student" : "worker"}}' data-index='{{index}}' catchtap='chooseStudent'>
+              <view class='list-image ratio'>
+                <image src='{{item.studentUrl || item.userUrl || ""}}'></image>
+              </view>
+              <view class='list-content'>
+                <text>{{item.studentName || item.userName || '员工名称'}}</text>
+                <text class='quote'>
+                  <text>{{item.campusName || item.organizationName || '机构名称'}}</text>
+                  <text>{{item.userId ? '员工' : '学员'}}</text>
+                </text>
+              </view>
             </view>
           </block>
         </view>

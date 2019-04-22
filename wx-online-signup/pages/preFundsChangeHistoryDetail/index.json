@@ -1,1 +1,5 @@
-{}
+{
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#488FFA",
+  "backgroundTextStyle": "light"
+}

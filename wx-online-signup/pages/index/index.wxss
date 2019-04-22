@@ -10,11 +10,13 @@
 }
 
 .head-image::before {
-  padding-top: calc(350 / 750 * 100%);
+  padding-top: calc(530 / 935 * 100%);
 }
 
 .form {
-  padding: 15rpx 40rpx 0;
+  padding: 100rpx 40rpx 0;
+  width: 70%;
+  margin: 0 auto;
   display: block;
 }
 .form-group {
@@ -24,30 +26,43 @@
 input {
   height: 2.5em;
   line-height: 2.5em;
+  font-size: 34rpx;
 }
 .placeholder {
   color: #ddd;
+}
+.icon {
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  margin-right: 30rpx;
+  display: block;
+  flex-shrink: 0;
 }
 
 
 .btn-getMsgCode {
   padding: 0;
   width: 8em;
-  font-size: .9em;
-  height: 2.5em;
-  line-height: 2.5em;
+  font-size: 30rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  color: #7F7F7F;
+  background: #F4F4F4;
+  border-radius: 1000em;
+}
+.btn-blue {
   color: #fff;
   background: #488FFB;
-  border-radius: 10rpx;
 }
 
-
 .btn-login {
-  margin-top: 40rpx;
+  margin-top: 120rpx;
   height: 2.8em;
   line-height: 2.8em;
   color: #fff;
   background: #488FFB;
+  border-radius: 1000em;
 }
 .btn.disabled {
   color: #ddd;
@@ -60,17 +75,7 @@ input {
   color: #000;
   font-weight: bold;
 }
-.list-item {
-  font-size: 38rpx;
-  padding: 1em 30rpx;
-  text-align: center;
-  border-bottom: 1rpx solid #efefef;
-  transition: .2s;
-}
-.list-item.choose {
-  color: #fff;
-  background: #488FFA;
-}
+
 
 .btn-to-register {
   text-align: center;

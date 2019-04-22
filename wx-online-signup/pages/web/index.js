@@ -1,92 +1,91 @@
 //index.js
 //获取应用实例
 
-import { alert, getValueFromUrl, chooseEnviromentFirst } from '../../utils/util.js';
+import { alert, urlAddSearch, chooseEnviromentFirst } from '../../utils/util.js';
 import post from '../../utils/post.js';
 var app = getApp();
+// app.data.user = { id: '87092', identity: 'student' };
 
-// var webUrl = app.data.webUrl + '/';
 var webUrl = '';
 
-var tokenTimer = null;
-
 Page({
-  data: {
-  },
-  onmessage: function (res) {
+  onUnload: function() {
+    app.data.lastWebView = null;
   },
   onLoad: function (options) {
-    var web = getValueFromUrl('redirect', options);
-    web = decodeURIComponent(web);
-    web = decodeURIComponent(web);
-
-    webUrl = chooseEnviromentFirst('webUrl');
-    webUrl = webUrl ? webUrl + '/' : '';
-
-    web = web === 'null' ? webUrl : '';
-    
-    // 支付后的跳转有点复杂...
-    // 由于 /web/index 的 web-view 跳到支付完成页后还能返回确定订单页
-    // 故选择重载 redirectTo 到 /web/index，清除所有历史访问记录。
-    // 先在 onShow 判断是否支付完成，是则重载 /web/index，并带上参数 payed；
-    // 重载触发 onLoad，此时判断 payed 是否存在，存在则使 web-view 显示支付结果页。
-    this.web = web;
-
-    this.cid = wx.getStorageSync('organizationId');
-    var student = wx.getStorageSync('student') || {};
-    this.cid = student.campusId || this.cid;
+    options = Object.assign({}, options, options.query);
+    this.options = options;
+    if (options.redirect) {
+      this.redirect = decodeURIComponent(options.redirect);
+    }
   },
   onShow: function () {
-    if (app.data.payed) return this.toPayFinish();
+    if (this.nowFirstLoad && !this.systemReady) return;
+    this.nowFirstLoad = true;
+    wx.showLoading({ mask: true });
 
-    setTimeout(() => {
-      if (app.data.payFinish) {
-        app.data.payed = true;
-        wx.redirectTo({ url: '/pages/web/index' + '?payed=true' });
+    const gulp = ['wxUnionId', 'auth', 'enviroment'];
+    app.systemSetup(gulp).then(res => {
+      this.systemReady = true;
+      webUrl = chooseEnviromentFirst('webUrl');
+      app.data.user = app.data.user || wx.getStorageSync('user');
+
+      // 支付未完成切过来，保持，成功则跳到订单页
+      if (app.temp.payed) {
+        app.temp.payed = false;
+        this.redirect = webUrl + 'chooseCourse';
       }
-    }, 50);
 
-    var student = {
-      studentId: app.data.sid,
-      campusId: this.cid,
-    }
-    this.checkCampusOpen(student, res => {
-      this.setWebView(this.web || webUrl);
+      const { id, identity } = app.data.user;
+      app.checkCampusOpen(id, identity, res => {
+        if (this.redirect) {
+          this.setWebView(this.redirect);
+          this.redirect = '';
+        } else {  // 有临时重新向得先跑重定向
+          this.setWebView(webUrl);
+        }
+      });
     });
   },
-  // -------- 支付成功
-  toPayFinish: function () {
-    if (app.data.payFinish) {
-      var more = Object.keys(app.data.payFinish).reduce((re, key) => {
-        return re + '&' + key + '=' + app.data.payFinish[key];
-      }, '');
-      this.setWebView(webUrl + 'paymentTip', more);
-      app.data.payFinish = null;
-      app.data.payed = false;
-    }
-  },
   // -------- 设置 web-view 链接
-  setWebView(url = webUrl, more = '') {
+  setWebView(url = webUrl) {
+    wx.hideLoading();
+    const { id, identity } = app.data.user;
+    const organizationId = wx.getStorageSync('organizationId');
     var guid = Math.random().toString(36).substring(2, 7);
-    url += '?sid=' + app.data.sid;
-    if (this.cid) url += '&cid=' + this.cid;
-    url += '&guid=' + guid;
-    if (more) url += more;
-    url += '#wechat_redirect';
+    if (!id) return alert('未获取到学生/员工 ID！');
+    if (identity === 'student') { // 学员
+      url = urlAddSearch(url, 'sid=' + id);
+    } else {  // 员工
+      url = urlAddSearch(url, 'wid=' + id);
+    }
+    if (organizationId) {
+      url = urlAddSearch(url, 'cid=' + organizationId);
+    }
+    url = urlAddSearch(url, 'oid=' + app.data.openId);
+
+    const { usid, userId } = app.data.entryData || {};
+    if (usid || userId) url = urlAddSearch(url, 'usid=' + (usid || userId));
+
     console.log(url);
-    if (app.data.lastWebView === url.replace(/&guid=[^&#$]*/, '')) return;
-    app.data.lastWebView = url.replace(/&guid=[^&#$]*/, '');
+
+    // 同个页面，不刷新
+    if (app.data.lastWebView === url) return;
+    app.data.lastWebView = url;
+
+    url = urlAddSearch(url, 'guid=' + guid);
+    url += '#wechat_redirect';
+
     this.setData({ url: url });
   },
   // -------- 分享
   onShareAppMessage: function (options) {
     var webview = options.webViewUrl;
     var json = app.createShareData(webview);
-    if (app.data.usid) json.path += '&usid=' + app.data.usid;
     console.log('转发出去的链接', json.path);
     return json;
   },
-  checkCampusOpen(student, callback) {
+  checkStudentCampusOpen(student, callback) {
     // 选择校区返回，则直接进入
     var organizationId = app.data.organizationId;
     var student = app.data.student;
@@ -103,7 +102,7 @@ Page({
       studentId: app.data.sid,
     }
     // 获取开通了的校区
-    post.getWxAppOpenCampus(data, res => {
+    post.checkStudentCampusOpen(data, res => {
       var list = res.onlineOrganizationDtos;
       var studentName = res.studentName;
       var organizationId = res.studentOrganizationId;

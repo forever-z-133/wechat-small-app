@@ -9,8 +9,9 @@ Page({
     data: {},
     showPayButton: false,
   },
-  onLoad: function (options) {
-    this.id = getValueFromUrl('preFundsChangeHistoryId', options);
+  onLoad: function (options = {}) {
+    options = Object.assign({}, options, options.query);
+    this.id = options.preFundsChangeHistoryId;
     console.log('收款订单ID', this.id)
     if (!this.id) {
       return alert('缺少重要参数，无法进行操作');
@@ -18,22 +19,25 @@ Page({
     wx.setNavigationBarTitle({ title: '收款单' });
   },
   onShow: function () {
-    wx.showLoading();
-    app.getUnionId(res => {
-      if (!res.openid) {
-        return alert('未能取得 openid 无法支付');
-      }
-      app.data.oid = res.openid;
+    if (this.nowFirstLoad && !this.systemReady) return;
+    this.nowFirstLoad = true;
+    wx.showLoading({ mask: true });
 
-      if (!this.id) return;
-      // this.load_data();
-      setTimeout(() => this.load_data(), 500);
-    },);
+    const gulp = ['wxUnionId', 'auth', 'enviroment'];
+    app.systemSetup(gulp).then(res => {
+      this.systemReady = true;
+      app.data.user = app.data.user || wx.getStorageSync('user');
+      this.load_data();
+    });
+  },
+  onPullDownRefresh() {
+    this.load_data();
   },
   load_data: function () {
     var data = { preFundsChangeHistoryId: this.id };
     post.getFundOrderDetail(data, res => {
       wx.hideLoading();
+      wx.stopPullDownRefresh();
       
       const typeObj = {
         'ONE_ON_ONE_COURSE': '1对1',

@@ -16,7 +16,7 @@
       <view class='form-group form-inline'>
         <image src='/images/tel.svg' class='icon icon-tel'></image>
         <input type='number' value='{{tel}}' placeholder='请输入手机号码' placeholder-class='placeholder' maxlength='11' confirm-type='next' bindinput='inputTel'></input>
-        <button class='btn btn-getMsgCode {{yes_msg ? "" : "disabled"}}' bindtap='getMsgCode'>{{msgTips}}</button>
+        <button class='btn btn-getMsgCode {{telIsOk && yes_msg ? "btn-blue" : ""}} {{yes_msg ? "" : "disabled"}}' bindtap='getMsgCode'>{{msgTips}}</button>
       </view>
       <view class='form-group form-inline'>
         <image src='/images/code.svg' class='icon icon-tel'></image>
@@ -31,7 +31,7 @@
         <image src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAMAAABx9wfiAAAANlBMVEUAAADx8vvu8PjGx8vm5u7d3uTT1NnX2N3j5OvNztLa2+Dq6/Pm5++srKyzs7S9vb/BwcS4uLpFtpsZAAAADXRSTlMAYWr9iajNwJLitHmDmaGAQgAAAGFJREFUCNdNjksSxSAIBB1MYj6v0Xf/y2ahUGHVXVDMFGtNZY3BoeABzSZr6/iuEMe3r5whu9N/S+yGYWVtDqh5BV0TT/BH89E/HukZcE+0DivYarbTBZdl55oxtUrBSeUFjZMDP9CcHBEAAAAASUVORK5CYII=' class='icon icon-arrow'></image>
       </view>
       <button form-type='submit' class='btn btn-register {{yes ? "" : "disabled"}}'>{{loginTips}}</button>
-      <navigator class='btn-to-login' url="/pages/index/index" open-type="redirect">已有账号？点击登录</navigator>
+      <button class='pure btn-to-login' bindtap='toLogin'>已有账号？点击登录</button>
     </form>
   </view>
 </view>
@@ -47,13 +47,22 @@
     </view>
     <view class='alert-body'>
       <scroll-view scroll-y style='max-height: 400rpx'>
-        <view class='list-box'>
+        <view class='list-box login-list'>
           <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 0}}'>
-            <view class='list-item {{studentIndex == index ? "choose" : ""}}' data-index='{{index}}' catchtap='chooseStudent'>
-              <text>{{item.studentName}}{{item.campusName ? "（" + item.campusName + "）" : ""}}</text>
+            <view class='list-item {{studentIndex == index ? "choose" : ""}} {{item.userId ? "student" : "worker"}}' data-index='{{index}}' catchtap='chooseStudent'>
+              <view class='list-image ratio'>
+                <image src='{{item.studentUrl || item.userUrl || ""}}'></image>
+              </view>
+              <view class='list-content'>
+                <text>{{item.studentName || item.userName || '员工名称'}}</text>
+                <text class='quote'>
+                  <text>{{item.campusName || item.organizationName || '机构名称'}}</text>
+                  <text>{{item.userId ? '员工' : '学员'}}</text>
+                </text>
+              </view>
             </view>
           </block>
-          <view class='list-item {{studentIndex == -99 ? "choose" : ""}}' data-index='-99' catchtap='chooseStudent' wx:if="{{!hasBind}}">
+          <view class='list-item add {{studentIndex == -99 ? "choose" : ""}}' data-index='-99' catchtap='chooseStudent' wx:if="{{!hasBind}}">
             <text>我想新注册个账号</text>
           </view>
         </view>

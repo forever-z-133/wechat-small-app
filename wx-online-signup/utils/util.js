@@ -5,6 +5,9 @@ var app = {};
 app.data = {};
 
 function alert(text, fn) {
+  wx.hideLoading();
+  wx.stopPullDownRefresh();
+  wx.hideToast();
   wx.showModal({ content: text, mask: true, showCancel: false, success: fn });
 }
 
@@ -153,9 +156,10 @@ function getShareParams(url) {
     rawUrl: url,
     href: url.replace(/iid=[^$]*/, '').replace(/sid=[^&#$]*&?/, '').replace(/(\?|&|#)*$/, ''),
     campusId: getQueryString('cid', url),
-    referrerId: getQueryString('sid', url),
+    referrerId: getQueryString('sid', url) || getQueryString('wid', url),
     referrerName: getQueryString('sn', url),
     institutionId: getQueryString('iid', url),
+    userId: getQueryString('wid', url),
     token: getQueryString('token', url),
   }
 }
@@ -181,6 +185,8 @@ function chooseEnviromentFirst(key) {
   }
   
   // 已有 env 则向下走，否则跳页先选，prd 上以上判断
+  // env = config.enviroment.uat;
+  // env = config.enviroment.pre;
   if (env) {
     if (key) return env && env[key];
     return env;
@@ -209,6 +215,35 @@ function ObjectDefineProperty(obj, key, value) {
   })
 }
 
+function InterceptManage() {
+  var temp = {};
+  return {
+    data: temp,
+    set: function (key, times) {
+      temp[key] = times;
+      return temp[key];
+    },
+    get: function (key) {
+      return temp[key] || 0;
+    },
+    ok: function (key) {
+      if (--temp[key] < 1) return true;
+      else return false;
+    },
+    remove: function (key) {
+      delete temp[key];
+    }
+  }
+}
+
+// 往 url 中添加新值
+function urlAddSearch(url, search) {
+  if (!search) return url;
+  let join = '?';
+  if (url.indexOf('?') > -1) join = '&';
+  return url + join + search;
+}
+
 module.exports = {
   alert,
   getQueryString,
@@ -220,5 +255,7 @@ module.exports = {
   isTel,
   getShareParams,
   chooseEnviromentFirst,
-  ObjectDefineProperty
+  ObjectDefineProperty,
+  interceptManage: new InterceptManage(),
+  urlAddSearch,
 }

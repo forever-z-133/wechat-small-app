@@ -10,20 +10,19 @@ Page({
   data: {
   },
   onLoad: function (options) {
-    var from = getValueFromUrl('from', options);
+    let from = getValueFromUrl('from', options);
     if (!from) return alert('缺少邀请参数');
     from = decodeURIComponent(from);
-    from = from.replace('#wechat_redirect', '');
-    var json = app.createShareData(from);
+    const json = app.createShareData(from);
+    if (!json.raw.token) return alert('token 丢失，请重新登录');
     this.sharaJson = json;
-    console.log(json);
 
     // 获取 canvas 宽高
     wx.getSystemInfo({
       complete: win => {
         if (!/ok$/i.test(win.errMsg)) return alert('无法生成分享图');
-        this.winW = (win.windowWidth || 414) * 0.8;
-        this.winH = 844 / 560 * this.winW;
+        this.winW = (win.windowWidth || 414);
+        this.winH = (win.windowHeight || 736);
 
         // 开始画图
         this.getImg((img, cache) => {
@@ -35,7 +34,6 @@ Page({
   },
   onShareAppMessage: function (options) {
     var json = this.sharaJson;
-    if (app.data.usid) json.path += '&usid=' + app.data.usid;
     console.log('转发出去的链接', json.path);
     return json;
   },
@@ -73,33 +71,29 @@ Page({
   },
   _draw(ctx, source, callback) {
     var winW = this.winW, winH = this.winH;
-    var px = winW / 560;
-    var l = 144 * px >> 0, t = 467 * px >> 0, w = 273 * px >> 0;
+    var px = winW / 750;
+    this.px = px;
     // 背景色
-    ctx.setFillStyle('#5891FE');
+    ctx.setFillStyle('#fff');
     ctx.fillRect(0, 0, winW, winH);
     // 背景图
-    ctx.drawImage(source.bg.path, 0, 0, winW, winH);
-    // 下方字（center 有时无效）
-    ctx.setFontSize(28 * px);
-    ctx.setFillStyle('#ffffff');
-    ctx.fillText('识别邀请二维码进入小程序', 112 * px, winH - 28 * px);
-    // 圆角白框（round 有时无效）
-    ctx.setStrokeStyle('#ffffff');
-    ctx.lineJoin = "round";
-    ctx.lineWidth = 16 * px;
-    ctx.strokeRect(l, t, w, w);
-    // 二维码部分
-    ctx.setFillStyle('#fff');
-    ctx.fillRect(l, t, w, w);
-    var pos = { left: l + 16 * px, top: t + 16 * px, width: w - 32 * px, height: w - 32 * px };
-    ctx.drawImage(source.qrcode.path, pos.left, pos.top, pos.width, pos.height);
+    ctx.drawImage(source.head.path, 0, 0, winW, 543 * px);
+    // 二维码
+    var pos = { width: winW * 0.7, height: winW * 0.7 };
+    pos.top = winH / 2 - winH * 0.05 * px;
+    pos.left = winW / 2 - pos.width / 2 * px;
+    ctx.drawImage(source.qrcode.path, pos.left, pos.top, pos.width * px, pos.height * px);
+    // 下方字
+    ctx.setFontSize(26 * px);
+    ctx.setFillStyle('#7F7F7F');
+    ctx.fillText('识别邀请二维码进入小程序', winW / 2 - 26 * 6 * px, pos.top + pos.height * px + 50 * px);
     // 绘制
     ctx.draw(true, callback);
   },
   preloadSource: function (callback) {
     var source = {
       bg: '../../images/share-bg.jpg',
+      head: '../../images/share-head.png',
     }
     var res = {}, i = -1;
     this.getQrcode(qrcode => {
@@ -136,18 +130,26 @@ Page({
   },
   getQrcode: function (callback) {
     var data = this.sharaJson.raw;
-    post.getQrcode(data, res => {
-      callback && callback(res);
-    });
+    const { identity = 'student' } = app.data.user || {};
+    if (identity === 'student') {
+      post.getNormalQrcode(data, res => {
+        callback && callback(res);
+      });
+    } else {
+      post.getUserQrcode(data, res => {
+        callback && callback(res);
+      });
+    }
   },
   createImg: function (callback) {
+    const px = this.px;
     wx.canvasToTempFilePath({
       x: 0,
       y: 0,
       width: this.winW * 2,
       height: this.winH * 2,
       destWidth: this.winW,
-      destHeight: this.winH,
+      destHeight: this.winH * 0.75,
       canvasId: 'img',
       complete: function (res) {
         if (!/ok$/.test(res.errMsg)) alert(res.errMsg);

@@ -4,3 +4,112 @@
   padding: 0 100rpx;
   text-align: center;
 }
+
+page {
+  background: #FBFBFB;
+}
+
+.payResult {
+  position: relative;
+  z-index: 0;
+  margin: 50rpx auto;
+  width: 680rpx;
+  height: 560rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+.payResult image {
+  z-index: -1;
+}
+
+.pay_result {
+  position: absolute;
+  top: 10%;
+  right: 0;
+  text-align: right;
+  padding: 0 40rpx;
+  font-size: 42rpx;
+}
+.isSuccess .pay_result {
+  color: #488ffa;
+}
+.isFail .pay_result {
+  color: #000;
+}
+
+.price::before {
+  content: "￥";
+  font-size: 26rpx;
+  position: relative;
+  top: -.2em;
+}
+
+.btn_blue,
+.btn_white {
+  line-height: 3em;
+  font-size: 26rpx;
+  border: 1px solid rgba(0,0,0,0);
+}
+.btn_blue {
+  color: white;
+  background: #488ffa;
+  border-color: #488ffa;
+}
+.btn_white {
+  color: #666;
+  border-color: #dfdfdf;
+}
+
+.payResult .buttons {
+  position: absolute;
+  bottom: 10%;
+  right: 0;
+}
+
+.integrationTip {
+  position: relative;
+  padding: 20rpx 40rpx;
+  box-sizing: border-box;
+}
+.integrationTip .ratio:before {
+  padding-top: 39.8%;
+}
+.integrationTip .contentWrap {
+  padding: 40rpx 60rpx;
+  color: #fff;
+}
+.integrationTip .w1 { font-size: 34rpx; }
+.integrationTip .w2 { font-size: 34rpx; font-weight: bold; }
+.integrationTip .w3 { font-size: 22rpx; display: block; }
+.integrationTip .btn-share {
+  position: absolute;
+  bottom: 40rpx;
+  right: 60rpx;
+  font-size: 26rpx;
+  padding: 16rpx 40rpx;
+  background: #fff;
+  color: #F35E08;
+  border-radius: 1000px;
+}
+.integrationTip .btn-tips {
+  font-size: 20rpx;
+  border: 1px solid #fff;
+  border-radius: 100%;
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  line-height: 1em;
+}
+
+.tipsModalContent {
+  padding: 60rpx 50rpx;
+}
+.tipsModalContent > text {
+  display: block;
+  text-align: justify;
+  font-size: 30rpx;
+}
+.tipsModalContent > text:not(:last-child) {
+  margin-bottom: 20rpx;
+}

@@ -14,29 +14,21 @@ Page({
     data: [],
   },
   onShow: function () {
-    var student = wx.getStorageSync('student') || app.data.student || {};
-    this.sid = student.studentId || app.data.sid || this.sid;
-    if (!this.sid) return alert('缺少学生 ID 信息');
-    this.sn = student.studentName || app.data.studentName || this.sn;
-    this.sn && this.setData({ studentName: this.sn });
-
-    if (app.data.campusData) {
-      var data = app.data.campusData;
-      return this.setSwiperData(data);
+    const { data: res } = app.temp.chooseCampusData || {};
+    
+    if (!res) {
+      return alert('传入参数有误');
     }
-    this.getWxAppOpenCampus(this.sid, data => {
-      this.setSwiperData(data);
-    });
+
+    const name = res.studentName || res.userName;
+    const listData = res.onlineOrganizationDtos;
+
+    this.setData({ studentName: name });
+    this.setSwiperData(listData);
   },
   swiperChange (e) {
     this.setData({ current: e.detail.current+1 });
     this.updataSwiperActive();
-  },
-  getWxAppOpenCampus(sid, callback) {
-    const params = { studentId: sid };
-    post.getWxAppOpenCampus(params, res => {
-      callback && callback(res);
-    });
   },
   setSwiperData(data) {
     data = data.map((item) => {
@@ -50,9 +42,7 @@ Page({
     this.updataSwiperActive();
   },
   updataSwiperActive() {
-    var i = this.data.current;
-    var data = this.rawData[i];
-    var params = {};
+    const data = this.rawData[this.data.current];
     this.setData({
       campusName: data.organizationAliasName,
       address: data.address,
@@ -61,12 +51,10 @@ Page({
   },
   // 确定
   submit() {
-    var i = this.data.current;
-    var data = this.rawData[i];
-    var organizationId = data.organizationId || this.student.campusId;
-    app.data.organizationId = organizationId;
+    const data = this.rawData[this.data.current];
+    const { organizationId } = data;
     wx.setStorageSync('organizationId', organizationId);
-    this.student && wx.setStorageSync('student', this.student);
+    app.temp.chooseCampusData.organizationId = organizationId;
     wx.navigateBack();
   },
 })
