@@ -2,7 +2,6 @@
 
 .user {
   padding: 80rpx 40rpx 120rpx;
-  text-align: center;
 }
 .user .w1 {
   font-size: 24rpx;
@@ -36,14 +35,8 @@ swiper {
   transition: transform .2s;
 }
 .text2 {
-  overflow: hidden;
   line-height: 1.2em;
-  max-height: 3.6em;
-  text-overflow: ellipsis;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  max-height: 2.4em;
 }
 
 .campusInfo {
@@ -52,13 +45,11 @@ swiper {
 .campusInfo > text {
   display: block;
   font-size: 30rpx;
-  text-align: center;
   line-height: 60rpx;
 }
 
 .btn-submit {
-  width: 7em;
-  line-height: 1;
+  width: 70%;
   padding: 25rpx 1em;
   color: #fff;
   border-radius: 1000rpx;

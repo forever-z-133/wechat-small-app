@@ -82,9 +82,18 @@ input, picker {
   color: #000;
   font-weight: bold;
 }
-.login-list .list-item.add {
+.list-item.add {
+  font-size: 38rpx;
+  padding: .9em 30rpx;
   text-align: center;
-  display:block;
+  transition: .2s;
+}
+.list-item.add.choose {
+  color: #fff;
+  background: #488FFA;
+}
+.list-item[data-disabled="true"] {
+  background: #ccc;
 }
 
 .icon {

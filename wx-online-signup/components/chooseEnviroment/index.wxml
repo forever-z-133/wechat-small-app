@@ -1,0 +1,7 @@
+<!--components/chooseEnviroment/index.wxml-->
+<view class='cover text-center bg-white' wx:if='{{!env_now}}'>
+  <text class='title'>选择测试环境</text>
+  <button bindtap='to_test'>test</button>
+  <button bindtap='to_uat'>uat</button>
+  <button bindtap='to_pre'>pre</button>
+</view>

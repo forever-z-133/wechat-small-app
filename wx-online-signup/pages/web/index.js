@@ -1,14 +1,22 @@
 //index.js
-//获取应用实例
-
-import { alert, urlAddSearch, chooseEnviromentFirst } from '../../utils/util.js';
+import {
+  alert,
+  urlAddSearch,
+  chooseEnviromentFirst,
+  returnNoEmptyObject
+} from '../../utils/util.js';
 import post from '../../utils/post.js';
-var app = getApp();
-// app.data.user = { id: '87092', identity: 'student' };
-
-var webUrl = '';
+const app = getApp();
+let webUrl = '';
+// wx.setStorageSync('user', { id: '87092', identity: 'student' });
+// app.data.user = { id: '87092', identity: 'student' }; // 审核专用
 
 Page({
+  data: {
+    campusData: undefined,
+    url: '',
+    show_flag: false,
+  },
   onUnload: function() {
     app.data.lastWebView = null;
   },
@@ -20,63 +28,75 @@ Page({
     }
   },
   onShow: function () {
-    if (this.nowFirstLoad && !this.systemReady) return;
-    this.nowFirstLoad = true;
-    wx.showLoading({ mask: true });
+    const { env_now, wx_auth, openId, unionId, user } = app.data;
 
-    const gulp = ['wxUnionId', 'auth', 'enviroment'];
-    app.systemSetup(gulp).then(res => {
-      this.systemReady = true;
-      webUrl = chooseEnviromentFirst('webUrl');
-      app.data.user = app.data.user || wx.getStorageSync('user');
+    if (!this.count || this.count < 2) { this.count = 1 + (this.count || 0); return; }
+    if (!returnNoEmptyObject(env_now)) return;
+    if (!returnNoEmptyObject(wx_auth)) return;
+    if (!openId || !unionId) return alert('系统错误：未能取得所需 UnionId');
 
-      // 支付未完成切过来，保持，成功则跳到订单页
-      if (app.temp.payed) {
-        app.temp.payed = false;
-        this.redirect = webUrl + 'chooseCourse';
-      }
+    webUrl = chooseEnviromentFirst('webUrl');
 
-      const { id, identity } = app.data.user;
-      app.checkCampusOpen(id, identity, res => {
-        if (this.redirect) {
-          this.setWebView(this.redirect);
-          this.redirect = '';
-        } else {  // 有临时重新向得先跑重定向
-          this.setWebView(webUrl);
-        }
-      });
+    // 支付未完成切过来，保持，成功则跳到订单页
+    if (app.temp.payed) {
+      app.temp.payed = false;
+      this.redirect = webUrl + 'chooseCourse';
+    }
+
+    const { id, identity } = user;
+    if (!id) return alert('登录人数据丢失');
+    app.checkCampusOpen(id, identity).then((oid) => {
+      wx.setStorageSync('organizationId', oid);
+      this.baseDataIsOK();
+    }).catch(campusData => {
+      console.log(campusData, 22);
+      this.setData({ campusData });
     });
+  },
+  campusChange({ detail = {} }) {
+    const { organizationId } = detail;
+    wx.setStorageSync('organizationId', organizationId);
+    this.setData({ campusData: null });
+    this.baseDataIsOK();
+  },
+  baseDataIsOK() {
+    if (this.redirect) {
+      this.setWebView(this.redirect);
+      this.redirect = '';
+    } else {  // 有临时重新向得先跑重定向
+      this.setWebView(webUrl);
+    }
   },
   // -------- 设置 web-view 链接
   setWebView(url = webUrl) {
-    wx.hideLoading();
-    const { id, identity } = app.data.user;
+    if (!/^http/i.test(url)) url = webUrl + url;
+
+    const { wx_auth, user } = app.data;
+    const { id, identity } = user;
+    const { openId } = wx_auth || {};
+    const userId = wx.getStorageSync('userId');
     const organizationId = wx.getStorageSync('organizationId');
     var guid = Math.random().toString(36).substring(2, 7);
+
     if (!id) return alert('未获取到学生/员工 ID！');
-    if (identity === 'student') { // 学员
-      url = urlAddSearch(url, 'sid=' + id);
-    } else {  // 员工
-      url = urlAddSearch(url, 'wid=' + id);
-    }
-    if (organizationId) {
-      url = urlAddSearch(url, 'cid=' + organizationId);
-    }
-    url = urlAddSearch(url, 'oid=' + app.data.openId);
+    if (!openId) return alert('openId 丢失');
 
-    const { usid, userId } = app.data.entryData || {};
-    if (usid || userId) url = urlAddSearch(url, 'usid=' + (usid || userId));
-
-    console.log(url);
+    if (identity === 'student') url = urlAddSearch(url, 'sid=' + id);
+    if (identity === 'worker') url = urlAddSearch(url, 'wid=' + id);
+    if (organizationId) url = urlAddSearch(url, 'cid=' + organizationId);
+    if (userId) url = urlAddSearch(url, 'usid=' + (userId));
+    url = urlAddSearch(url, 'oid=' + openId);
 
     // 同个页面，不刷新
     if (app.data.lastWebView === url) return;
     app.data.lastWebView = url;
 
+    console.log(url);
+
     url = urlAddSearch(url, 'guid=' + guid);
     url += '#wechat_redirect';
 
-    this.setData({ url: url });
+    this.setData({ url });
   },
   // -------- 分享
   onShareAppMessage: function (options) {
@@ -85,50 +105,4 @@ Page({
     console.log('转发出去的链接', json.path);
     return json;
   },
-  checkStudentCampusOpen(student, callback) {
-    // 选择校区返回，则直接进入
-    var organizationId = app.data.organizationId;
-    var student = app.data.student;
-    if (organizationId) {
-      app.data.student = null;
-      app.data.campusData = null;
-      app.data.organizationId = null;
-      this.cid = wx.getStorageSync('organizationId');
-      callback && callback();
-    }
-
-    var cid = wx.getStorageSync('organizationId');
-    var data = {
-      studentId: app.data.sid,
-    }
-    // 获取开通了的校区
-    post.checkStudentCampusOpen(data, res => {
-      var list = res.onlineOrganizationDtos;
-      var studentName = res.studentName;
-      var organizationId = res.studentOrganizationId;
-
-      if (!list || list.length < 1) {
-        return alert('您所在的机构皆未开通在线选课', () => {
-          wx.reLaunch({
-            url: '/pages/index/index?method=lose',
-          });
-        });
-      }
-      
-      if (!checkOpen(list)) {
-        app.data.student = student;
-        app.data.studentName = studentName;
-        app.data.campusData = list;
-        return wx.navigateTo({
-          url: '/pages/chooseCampus/index',
-        });
-      }
-      // 满足条件
-      callback && callback(student);
-    });
-    // 判断本人所在的校区是否开通了选课
-    function checkOpen(data) {
-      return data.some(campus => campus.organizationId === cid);
-    }
-  }
 })

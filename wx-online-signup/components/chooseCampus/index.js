@@ -1,38 +1,30 @@
 // components/chooseCampus/index.js
-
-import {
-  alert,
-  getValueFromUrl
-} from '../../utils/util.js';
-const app = getApp();
-
 Component({
+  options: {
+    addGlobalClass: true,
+  },
   properties: {
-    list: {
-      type: Array,
-      value: [],
-      observer: function(data) {
-        data && data.length && this.setSwiperData(data);
-      }
-    },
-    studentName: {
-      type: String,
-      value: ''
-    },
+    campusData: Object
   },
   data: {
     current: 0,
+    studentName: '',
     campusName: '',
     address: '',
     contact: '',
+    data: [],
+  },
+  ready() {
+    const { campusData } = this.data;
+    if (!campusData) return;
+    const { studentName, userName, onlineOrganizationDtos: list = [] } = campusData;
+    this.setData({ studentName: studentName || userName });
+    this.setSwiperData(list);
   },
   methods: {
     swiperChange(e) {
-      var i = e.detail.current;
-      this.setData({
-        current: i + 1
-      });
-      this.updataSwiperActive(i);
+      this.setData({ current: e.detail.current + 1 });
+      this.updataSwiperActive();
     },
     setSwiperData(data) {
       data = data.map((item) => {
@@ -40,31 +32,24 @@ Component({
         item.name = item.organizationAliasName;
         return item;
       });
-      data.push('');
-      data.unshift('');
+      data.push(''); data.unshift('');
       this.rawData = data;
-      this.setData({
-        data: data,
-        current: 1
-      });
-      this.updataSwiperActive(1);
+      this.setData({ data: data, current: 1 });
+      this.updataSwiperActive();
     },
-    updataSwiperActive(index) {
-      var i = this.data.current;
-      var data = this.rawData[i];
-      var params = {};
+    updataSwiperActive() {
+      const data = this.rawData[this.data.current];
       this.setData({
         campusName: data.organizationAliasName,
         address: data.address,
         contact: data.contact,
       });
     },
+    // 确定
     submit() {
-      var i = this.data.current;
-      var data = this.data.list[i];
-      var organizationId = data.organizationId;
-      var params = { organizationId, data };
-      this.triggerEvent('submit', params);
+      const data = this.rawData[this.data.current];
+      const { organizationId } = data;
+      this.triggerEvent('change', { organizationId });
     },
   }
 })

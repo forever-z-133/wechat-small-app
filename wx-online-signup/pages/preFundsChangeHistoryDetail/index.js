@@ -1,34 +1,38 @@
 // pages/preFundsChangeHistoryDetail/index.js
-import { alert, getValueFromUrl } from '../../utils/util.js';
+import { alert, returnNoEmptyObject } from '../../utils/util.js';
 import post from '../../utils/post.js';
 
 const app = getApp();
 
 Page({
   data: {
+    env_now: wx.getStorageSync('env_now'),
+    wx_auth: wx.getStorageSync('wx_auth'),
     data: {},
     showPayButton: false,
   },
   onLoad: function (options = {}) {
-    options = Object.assign({}, options, options.query);
-    this.id = options.preFundsChangeHistoryId;
-    console.log('收款订单ID', this.id)
-    if (!this.id) {
-      return alert('缺少重要参数，无法进行操作');
-    }
+    this.options = Object.assign({}, options, options.query);
     wx.setNavigationBarTitle({ title: '收款单' });
   },
   onShow: function () {
-    if (this.nowFirstLoad && !this.systemReady) return;
-    this.nowFirstLoad = true;
-    wx.showLoading({ mask: true });
+    const { wx_auth, env_now, user } = app.data;
+    const { openId, unionId } = wx_auth || {};
 
-    const gulp = ['wxUnionId', 'auth', 'enviroment'];
-    app.systemSetup(gulp).then(res => {
-      this.systemReady = true;
-      app.data.user = app.data.user || wx.getStorageSync('user');
-      this.load_data();
-    });
+    if (!this.count || this.count < 2) { this.count = 1 + (this.count || 0); return; }
+    if (!returnNoEmptyObject(env_now)) return;
+    if (!returnNoEmptyObject(wx_auth)) return;
+    if (!openId || !unionId) return alert('系统错误：未能取得所需 openId');
+
+    const { preFundsChangeHistoryId } = this.options;
+    if (!preFundsChangeHistoryId) return alert('缺少重要参数，无法进行操作');
+    this.id = preFundsChangeHistoryId;
+    console.log('收款订单ID', this.id);
+
+    this.baseDataIsOK();
+  },
+  baseDataIsOK() {
+    this.load_data();
   },
   onPullDownRefresh() {
     this.load_data();

@@ -28,10 +28,10 @@
       <view class=''>请选择一个账户进行登录及操作</view>
     </view>
     <view class='alert-body'>
-      <scroll-view scroll-y style='max-height: 400rpx'>
+      <scroll-view scroll-y style='max-height: 600rpx'>
         <view class='list-box login-list'>
           <block wx:for='{{users}}' wx:key='{{index}}' wx:if='{{users.length > 0}}'>
-            <view class='list-item {{studentIndex == index ? "choose" : ""}} {{item.userId ? "student" : "worker"}}' data-index='{{index}}' catchtap='chooseStudent'>
+            <view class='list-item {{studentIndex == index ? "choose" : ""}} {{item.userId ? "student" : "worker"}}' data-index='{{index}}' data-disabled="{{item.disabled}}" catchtap='chooseStudent'>
               <view class='list-image ratio'>
                 <image src='{{item.studentUrl || item.userUrl || ""}}'></image>
               </view>
@@ -53,3 +53,7 @@
     </view>
   </view>
 </view>
+
+<chooseCampus wx:if="{{!!campusData}}" campusData="{{campusData}}" bindchange="campusChange" />
+<getUnionId bindchange="onShow" />
+<chooseEnviroment bindchange="onShow" />

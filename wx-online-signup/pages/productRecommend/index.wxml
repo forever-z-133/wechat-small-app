@@ -1,0 +1,50 @@
+<!--pages/preFundsChangeHistoryDetail/index.wxml-->
+<view class='section state-header flex'>
+  <view class='flex'> </view>
+</view>
+<view class='section user-info flex'>
+  <view>
+    <view class='line'>
+      <text class='label'>推荐人</text>
+      <text class='value'>{{data.recommendUserName || '-'}}</text>
+    </view>
+    <view class='line'>
+      <text class='label'>报读校区</text>
+      <text class='value'>{{data.blCampusName || '-'}}</text>
+    </view>
+  </view>
+</view>
+<view class='section class-list'>
+  <view class='list-title'>课程信息</view>
+  <view class='list-box'>
+    <view class="list-item" wx:for="{{data.onlineProductDtoList || 0}}" wx:key="index">
+      <view class='list-content'>
+        <view class='list-name'>{{item.name || "班课名称班课名称班课名称"}}</view>
+        <view class='list-desc gap-r flex'>
+          <view class='price'>￥{{item.mallUnitPrice || 0}} x {{item.courseHour || 1}}课时 = ￥{{item.mallTotalPrice || 0}}</view>
+          <view class='cut'>优惠 -￥0</view>
+          <view class='total'>应付 ￥{{(item.mallTotalPrice) || 0}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='gap'></view>
+<view class='section campus-info'>
+  <view class='list-title'>转发信息</view>
+  <view class='cell'>
+    <view class='label'>转发标题</view>
+    <text>{{data.sharingTitle || '-'}}</text>
+  </view>
+  <view class='cell'>
+    <view class='label'>转发图例</view>
+    <view class='ratio' style='width:10em'>
+      <image src="{{data.sharingPictureUrl}}"></image>
+    </view>
+  </view>
+</view>
+<view class='pay-button' wx:if="{{detailData}}">
+  <button class='btn btn-share' open-type='share'>立即转发</button>
+</view>
+
+<chooseEnviroment bindchange="onShow" />

@@ -1,0 +1,8 @@
+<!--components/getUnionId/index.wxml-->
+<view class='cover bg-white' wx:if='{{!wx_auth}}'>
+  <view class='container'>
+    <text class='tips'>请开启以下功能，否则无法进行后续操作</text>
+    <button open-type='getUserInfo' bindgetuserinfo="onGetUserInfo" withCredentials wx:if='{{needUserAuth}}'>身份授权</button>
+    <button open-type="openSetting" wx:if='{{needOtherAuth}}'>开启媒体功能</button>
+  </view>
+</view>

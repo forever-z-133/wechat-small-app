@@ -12,9 +12,11 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.2.3",
-	"appid": "wx19c0639dc6e8fe0b",
-	"projectname": "%E5%9C%A8%E7%BA%BF%E9%80%89%E8%AF%BE-%E5%B0%8F%E9%99%88%E6%97%AD",
+	"appid": "wx2b7ba9c5dc71c1b5",
+	"projectname": "%E5%9C%A8%E7%BA%BF%E9%80%89%E8%AF%BE-%E6%B5%8B%E8%AF%95%E7%89%88",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -33,28 +35,69 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 8,
 			"list": [
 				{
 					"id": 0,
 					"name": "普通转发",
 					"pathName": "pages/register/index",
-					"query": "iid=895&cid=4226&sid=5268784&usid=10610",
-					"scene": "1007"
+					"query": "iid=895&cid=4222&sid=5268784&usid=10610",
+					"scene": 1007
+				},
+				{
+					"id": 1,
+					"name": "收款",
+					"pathName": "pages/redirect/index",
+					"query": "pagePath=/pages/preFundsChangeHistoryDetail/index%3FpreFundsChangeHistoryId%3D687",
+					"scene": 1007
 				},
 				{
 					"id": -1,
-					"name": "普通转发带重定向",
+					"name": "审核专用",
+					"pathName": "pages/web/index",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "员工转发",
 					"pathName": "pages/register/index",
-					"query": "iid=1&cid=4246&sid=5267426&re=courseId%3D98%26type%3DONE_ON_ONE_COURSE",
+					"query": "iid=1&cid=4227&wid=10494&usid=10610",
 					"scene": "1007"
 				},
 				{
-					"id": 2,
-					"name": "收款",
-					"pathName": "pages/redirect/index",
-					"query": "pagePath=/pages/preFundsChangeHistoryDetail/index%3FpreFundsChangeHistoryId%3D392",
-					"scene": "1007"
+					"id": 4,
+					"name": "新转发规则",
+					"pathName": "pages/register/index",
+					"query": "sceneId=11",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "普通转发并重定向",
+					"pathName": "pages/register/index",
+					"query": "iid=895&cid=4226&sid=5268784&usid=10610&redirect=https%3A%2F%2Fstatic-uat.xuebangsoft.net%2FcourseDetail%3FcourseId%3D149%26type%3DONE_ON_N_GROUP",
+					"scene": null
+				},
+				{
+					"id": 6,
+					"name": "转发码",
+					"pathName": "pages/productRecommend/index",
+					"query": "productRecommendId=179",
+					"scene": null
+				},
+				{
+					"id": 7,
+					"name": "转发码再转发",
+					"pathName": "pages/register/index",
+					"query": "iid=895&wid=10492&cid=4222&redirect=confirmOrder%3FproductRecommendId%3D3",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "推荐卡",
+					"pathName": "pages/register/index",
+					"query": "scene=207",
+					"scene": null
 				}
 			]
 		}

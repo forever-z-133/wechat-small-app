@@ -1,0 +1,11 @@
+/* components/getUnionId/index.wxss */
+
+.container {
+  padding: 250rpx 40rpx 0;
+}
+.tips {
+  text-align: center;
+  margin: 0 auto 50rpx;
+  display: block;
+  font-size: .9em;
+}

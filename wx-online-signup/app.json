@@ -1,21 +1,25 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/share/index",
-    "pages/chooseEnviroment/index",
-    "pages/chooseCampus/index",
     "pages/register/index",
     "pages/web/index",
     "pages/paypage/index",
     "pages/redirect/index",
     "pages/preFundsChangeHistoryDetail/index",
     "pages/empty/index",
-    "pages/getAuth/index"
+    "pages/productRecommend/index"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "usingComponents": {
+    "chooseCampus": "components/chooseCampus/index",
+    "chooseEnviroment": "components/chooseEnviroment/index",
+    "getUnionId": "components/getUnionId/index"
+  },
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "",
-    "navigationBarTextStyle":"black"
-  }
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
 }

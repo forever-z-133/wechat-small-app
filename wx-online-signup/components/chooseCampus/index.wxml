@@ -1,11 +1,9 @@
 <!--components/chooseCampus/index.wxml-->
-
-<view class='body' wx:if="{{data.length}}">
-  <view class='user'>
+<view class='cover bg-white' wx:if='{{campusData}}'>
+  <view class='user text-center'>
     <text class='w1'>亲爱的{{studentName || "学生姓名"}}，你所选校区未开启线上报名通道</text>
     <text class='w2'>你可以报读其他校区的课程或直接前往校区报读</text>
   </view>
-
   <view class='swiper-caontiner'>
     <swiper display-multiple-items="{{3}}" bindchange="swiperChange">
       <swiper-item wx:for="{{data}}" wx:key="index">
@@ -15,13 +13,11 @@
       </swiper-item>
     </swiper>
   </view>
-
-  <view class='campusInfo'>
+  <view class='campusInfo text-center'>
     <text class='name'>{{campusName || "校区名称"}}</text>
-    <text class='address'>{{address}}</text>
-    <text class='tel'>{{contcat}}</text>
+    <text class='address'>{{address || ''}}</text>
+    <text class='tel'>{{contcat || ''}}</text>
   </view>
-
   <view class='footer'>
     <button class='btn btn-submit' bindtap='submit'>确定</button>
   </view>

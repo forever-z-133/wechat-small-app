@@ -6,6 +6,8 @@ var app = getApp();
 
 Page({
   data: {
+    env_now: wx.getStorageSync('env_now'),
+    wx_auth: wx.getStorageSync('wx_auth'),
     finish: false,
     pay_state: '正在支付...',
     isSuccess: false,
@@ -35,7 +37,8 @@ Page({
     }
 
     // 身份丢失
-    if (!app.data.openId) {
+    const { openId } = app.data.wx_auth || wx.getStorageSync('wx_auth');
+    if (!openId) {
       wx.hideLoading();
       return alert('身份丢失，请重新登录', () => {
         wx.reLaunch({ url: '/pages/index/index?method=lose' });
@@ -49,18 +52,6 @@ Page({
     } catch (err) { data = null; }
     this.data.fromH5 = data;
 
-    // 显示积分转发提示
-    const { showIntegrationShareTip, shareForHowMuchIntegration, institutionName } = data || {};
-    if (showIntegrationShareTip) {
-      const { integralAmount, amount } = shareForHowMuchIntegration;
-      this.setData({
-        showIntegrationShareTip: true,
-        howMuchPeopleNeedToShare: amount,
-        shareForHowMuchIntegration: integralAmount,
-        institutionName,
-      });
-    }
-
     // 处理支付中却触发到 onShow 的情况
     if (this.isPaying) return;
 
@@ -69,6 +60,18 @@ Page({
       console.log('H5 发起支付', this.data.fromH5);
       this.startWxPay();
     }, 50);
+
+    // 显示积分转发提示
+    const { showIntegrationShareTip, shareForHowMuchIntegration, institutionName } = data || {};
+    if (showIntegrationShareTip && shareForHowMuchIntegration) {
+      const { integralAmount, amount } = shareForHowMuchIntegration;
+      this.setData({
+        showIntegrationShareTip: true,
+        howMuchPeopleNeedToShare: amount,
+        shareForHowMuchIntegration: integralAmount,
+        institutionName,
+      });
+    }
   },
   onShow: function () {
     setTimeout(function () {
@@ -79,19 +82,13 @@ Page({
   startWxPay: function (callback) {
     wx.showLoading();
     this.setData({ finish: false });
+    const { openId } = this.data.wx_auth;
 
     var data = null;
 
-    if (this.data.fromH5) {
-      data = {
-        id: this.data.fromH5.orderId,
-        token: this.data.fromH5.token,
-      };
-    }
-
     if (this.data.fromFund) {
       data = {
-        openId: app.data.openId,
+        openId,
         type: 'ONLINE_ORDER',
         totalFee: Math.round(this.data.fromFund.totalFee || 0.01),
         businessId: this.data.fromFund.preFundsChangeHistoryId,
@@ -99,8 +96,17 @@ Page({
       return this.getWxPayData(data);
     }
 
-    post.getOrderInfo(data, res => {
-      this.getWxPayData(res);  // 拿取支付签名
+    if (!this.data.fromH5) return alert('缺少 fromH5 数据');
+
+    const { orderId, token } = this.data.fromH5;
+    data = { id: orderId, token: token };
+    post.getOrderInfo(data, json => {
+      const { campusId } = json;
+      post.getPayType({ campusId, token }, (res) => {
+        const { specialMerchantsPayType: type } = res;
+        this.payType = type;
+        this.getWxPayData(json);  // 拿取支付签名
+      });
     }, err => {
       setTimeout(() => this.wxPayJump('fail'), 1000);
     });
@@ -108,6 +114,7 @@ Page({
   // --- 拿取支付签名等信息
   getWxPayData: function (json, callback) {
     var data = null;
+    const { openId } = this.data.wx_auth;
 
     if (this.data.fromH5) {
       this.data.fromH5.totalFee = json.orderAmount;
@@ -121,7 +128,7 @@ Page({
       data = {
         totalFee: Math.round((this.data.fromH5.totalFee || 0.01) * 100),
         campusId: this.data.fromH5.campusId || '',
-        openId: app.data.openId,
+        openId,
         token: app.data.token || this.data.fromH5.token,
         businessId: this.data.fromH5.orderId,
         institutionId: json.institutionId,
@@ -138,7 +145,8 @@ Page({
       });
     }
 
-    post.getPayKeyValue(data, res => {
+    const ajax = this.payType === 'HUI_FU' ? post.getHuifuPayKeyValue : post.getPayKeyValue;
+    ajax(data, res => {
       this.openWxPay(res);  // 开启支付
     }, err => {
       if (err.data.resultMessage === '订单已经支付') {
@@ -150,19 +158,20 @@ Page({
   // --- 调起小程序支付，json 从 post.getPayKeyValue 中去取
   openWxPay: function (json, callback) {
     this.isPaying = true;
-    wx.requestPayment({
+    const params = {
       appId: json.appId,
       timeStamp: json.timeStamp,
       nonceStr: json.nonceStr,
       package: json.package,
-      signType: 'MD5',
+      signType: json.signType,
       paySign: json.paySign,
       complete: res => {
         console.log('支付签名', res);
         this.isPaying = false;
         this.wxPayFinish(res, callback);
       }
-    })
+    };
+    wx.requestPayment(params)
   },
   // --- 支付完成的回调
   wxPayFinish: function (res, callback) {

@@ -46,6 +46,7 @@ function _ajax_error(res, errorFn) {
   if (errMsg.indexOf('due to error code') > -1) {
     errMsg = '服务忙，请稍后再试';
   }
+  console.error(errMsg, res);
   alert(errMsg, () => errorFn && errorFn(res));
 }
 function _ajax_success(res, callback, name, errorFn) {
@@ -58,8 +59,7 @@ function _ajax_success(res, callback, name, errorFn) {
     console.error(res);
     return alert('部署中，稍后再来', () => errorFn && errorFn(res));
   }
-  if (res.data.resultCode != 0) {
-    console.error(res);
+  if (res.data.resultCode) {
     return _ajax_error(res, errorFn);
   }
   callback && callback(res.data.data, res.data);
@@ -77,6 +77,11 @@ module.exports = {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
     // baseUrl = 'https://uat3.xuebangsoft.net/eduboss/wxapp/';
     _GET(baseUrl + apiUrl + '/jsCode2Session.do', data, callback, '直取身份ID', errorFn);
+  },
+  // 
+  getStudentByUnionId: function (data, callback, errorFn) {
+    if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
+    _GET(baseUrl + apiUrl + '/getStudentByUnionId.do', data, callback, '推荐商品时，直取学员信息', errorFn);
   },
   // --- 请求获取 UnionId
   getUnionId: function (data, callback, errorFn) {
@@ -172,11 +177,23 @@ module.exports = {
     url = apiUrl + url;
     return callback && callback(url);
   },
+  // --- 获取支付方式
+  getPayType: function (data, callback, errorFn) {
+    if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
+    // baseUrl = 'http://localhost:8080/eduboss/wxapp/'
+    _GET2(baseUrl + payApi + '/getPayType.do', data, callback, '获取支付方式', errorFn);
+  },
   // --- 获取支付签名
   getPayKeyValue: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
     // baseUrl = 'http://wxxxtsat.nat300.top/eduboss/wxapp/'
     _POST2(baseUrl + payApi + '/pay.do', data, callback, '获取支付签名', errorFn);
+  },
+  // --- 获取汇付支付签名
+  getHuifuPayKeyValue: function (data, callback, errorFn) {
+    if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
+    // baseUrl = 'http://localhost:8080/eduboss/wxapp/'
+    _POST2(baseUrl + payApi + '/payByHuiFu.do', data, callback, '获取支付签名', errorFn);
   },
   // --- 获取订单ID
   getOrderInfo: function (data, callback, errorFn) {
@@ -203,13 +220,13 @@ module.exports = {
   getFundOrderDetail: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl2'))) return;
     // baseUrl = 'http://wxxxtsat.nat300.top/eduboss/'
-    _GET(baseUrl + 'weChat/preFundsChangeHistoryWeChatController/getPreFundsChangeHistoryDetail.do', data, callback, '查推送订单', errorFn);
+    _GET(baseUrl + 'wxapp/PreFundsChangeHistoryWeChatController/getPreFundsChangeHistoryDetail.do', data, callback, '查推送订单', errorFn);
   },
   // --- 收款modal -> 获取支付签名
   startFundOrderPay: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl2'))) return;
     // baseUrl = 'http://wxxxtsat.nat300.top/eduboss/'
-    _POST(baseUrl + 'weChat/preFundsChangeHistoryWeChatController/pay.do', data, callback, '获取推送支付签名', errorFn);
+    _POST(baseUrl + 'wxapp/PreFundsChangeHistoryWeChatController/pay.do', data, callback, '获取推送支付签名', errorFn);
   },
 
   // --- 更新推荐人
@@ -221,5 +238,10 @@ module.exports = {
   logout: function (data, callback, errorFn) {
     if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
     _POST(baseUrl + 'WxAppLoginController/logout.do', data, callback, '登出', false);
+  },
+  // --- 推荐卡详情
+  getProductRecommendDetail: function (data, callback, errorFn) {
+    if (!(baseUrl = chooseEnviromentFirst('apiUrl'))) return;
+    _GET(baseUrl + 'WxAppProductRecommendWxAppController/findById.do', data, callback, '推荐卡详情', errorFn);
   },
 }

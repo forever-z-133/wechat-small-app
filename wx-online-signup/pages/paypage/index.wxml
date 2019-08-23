@@ -25,7 +25,7 @@
       </view>
     </view>
   </view>
-  <view class='integrationTip' wx:if="{{showIntegrationShareTip}}">
+  <view class='integrationTip' wx:if="{{showIntegrationShareTip && isSuccess}}">
     <view class='ratio'>
       <image src='../../images/share-tip-bg.png'></image>
     </view>

@@ -10,6 +10,9 @@ page {
 .bg-white {
   background: #fff;
 }
+.text-center {
+  text-align: center;
+}
 
 .pos-center {
   position: absolute;
@@ -27,9 +30,16 @@ page {
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
-  display: box;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.text3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -45,6 +55,7 @@ page {
   z-index: -1;
   overflow: hidden;
   transition: opacity .3s, z-index 0s .3s;
+  pointer-events: none;
 }
 .modal-bg {
   background: rgba(0,0,0,.7);
@@ -53,6 +64,7 @@ page {
   opacity: 1;
   z-index: 1;
   transition: opacity .3s;
+  pointer-events: all;
 }
 .modal-box {
   transform: translate3d(0,0,0);

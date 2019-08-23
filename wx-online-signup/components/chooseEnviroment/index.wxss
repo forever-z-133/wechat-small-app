@@ -1,0 +1,6 @@
+/* components/chooseEnviroment/index.wxss */
+
+.title {
+  margin: 1em auto;
+  display: block;
+}

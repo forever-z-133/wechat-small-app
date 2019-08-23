@@ -83,3 +83,7 @@ input {
   color: #488FFA;
   margin-top: 52rpx;
 }
+
+.list-item[data-disabled="true"] {
+  background: #ccc;
+}

@@ -76,45 +76,6 @@ function getUserInfo(code, callback, options) {
   wx.getUserInfo(opts)
 }
 
-
-/*
-* 检测是否全部已授权
-* arr 可为 ['info', 'camera'] 或 'camera' 两种形式
-*/
-function _checkAuth(arr, callback) {
-  wx.getSetting ? wx.getSetting({
-    success: settings => {
-      var auth = settings.authSetting;
-
-      // 一些容错判断
-      if (typeof arr === 'string') arr = [arr];
-      if (!Array.isArray(arr)) return alert('checkAuth 传参有误');
-      if (arr.length < 1) return callback && callback(false, auth);
-
-      // 是否获得了所有授权
-      var hasAllAuth = arr.every((one) => {
-        return auth['scope.' + one]
-      })
-      // console.log('需授权', arr.join(','), '已授权', settings.authSetting, '是否全授权', hasAllAuth);
-
-      callback && callback(hasAllAuth, auth)
-    }
-  }) : alert('您的小程序版本太低，请更新微信');
-}
-
-/*
-* 是否获取了所有授权，主要逻辑在 _checkAuth 中
-* str 为 'info,camera' 的必填形式
-*/
-function hasGotAllAuth(str, callback) {
-  if (typeof str != 'string') return alert('hasGotAllAuth 传参有误！');
-  var arr = (str || 'userInfo').split(',');
-  _checkAuth(arr, (yes, raw) => {
-    callback && callback(yes, raw);
-  });
-}
-
-
 /*
 * 本页 url 是否正是 path
 */
@@ -167,52 +128,8 @@ function getShareParams(url) {
 // 拿取 config 里的链接时，先选择环境
 function chooseEnviromentFirst(key) {
   var env = wx.getStorageSync('env_now') || null;
-  // 判断是否为 env.prd，是则跳页选择并取 now，否则取 prd
-  // wx.getAccountInfoSync 方法需 2.2.2 版本，所以还是采用 config.isPrd 算了
-  if (config.isPrd === true) {
-    env = config.enviroment.prd;
-  } else if (config.isPrd === false) {
-    env = wx.getStorageSync('env_now');
-  } else {
-    var appInfo = wx.getAccountInfoSync && wx.getAccountInfoSync();
-    var appId = appInfo && appInfo.miniProgram.appId;
-    if (appId === config.enviroment.prd.appId) {
-      config.isPrd = true;
-      env = config.enviroment.prd;
-    } else {
-      config.isPrd = false;
-    }
-  }
-  
-  // 已有 env 则向下走，否则跳页先选，prd 上以上判断
-  // env = config.enviroment.uat;
-  // env = config.enviroment.pre;
-  if (env) {
-    if (key) return env && env[key];
-    return env;
-  } else {
-    wx.navigateTo({
-      url: '/pages/chooseEnviroment/index',
-    });
-    return null;
-  }
-}
-
-// 自动存储到 storage 的双向绑定
-function ObjectDefineProperty(obj, key, value) {
-  Object.defineProperty(app.data, key, {
-    set: function (newVal) {
-      if (!this.temp) this.temp = {};
-      this.temp[key] = newVal;
-      wx.setStorageSync(key, newVal);
-    },
-    get: function () {
-      if (!this.temp) this.temp = {};
-      if (this.temp[key] == undefined) this.temp[key] = value;
-      var val = wx.getStorageSync(key) || this.temp[key];
-      return val;
-    }
-  })
+  if (!env) return null;
+  return key ? env[key] : env;
 }
 
 function InterceptManage() {
@@ -244,18 +161,93 @@ function urlAddSearch(url, search) {
   return url + join + search;
 }
 
+
+/***
+ * 去抖，不断触发 fn，但只有停止后 delta 时间才真正运行
+ * @param fn
+ * @param delta 单位毫秒
+ * @param context this 指向
+ */
+function debounce(fn, delta, context) {
+  var timeoutID = null;
+  return function () {
+    clearTimeout(timeoutID);
+    var args = arguments;
+    return timeoutID = setTimeout(function () {
+      fn.apply(context, args);
+    }, delta);
+    return timeoutID;
+  };
+}
+
+/***
+ * 节流，不断触发 fn，但每 delta 时间间隔才运行一次
+ * @param fn
+ * @param delta 单位毫秒
+ * @param context this 指向
+ */
+function throttle(fn, delta, context) {
+  var timeoutID, lastDate = 0;
+  return function () {
+    var args = arguments;
+    var nowDate = +new Date();
+    if (nowDate - lastDate >= delta) {
+      lastDate = nowDate;
+      fn.apply(context, args);
+    }
+    clearTimeout(timeoutID);
+    timeoutID = setTimeout(function () {
+      fn.apply(context, args);
+    }, delta);
+    return timeoutID;
+  };
+}
+
+/***
+ * 如果是空对象，则返回 null
+ */
+function returnNoEmptyObject(obj) {
+  if (!obj) return null;
+  if (Object.keys) {
+    return Object.keys(obj).length ? obj : null;
+  } else {
+    for (var i in obj) {
+      if (!obj.hasOwnProperty(i)) continue;
+      return obj;
+    }
+  }
+  return null;
+}
+
+/**
+ * 将对象转为带 = 的字符串
+ * 比如 { a:1, b:2 } 转为 a=1&b=2
+ */
+function objectToString(obj, concat = '&') {
+  var result = [];
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key)) continue;
+    var value = obj[key];
+    if (value == undefined) value = '';
+    result.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+  }
+  result = result.join(concat);
+  return result;
+}
+
 module.exports = {
   alert,
   getQueryString,
   getValueFromUrl,
   getCode,
   getUserInfo,
-  hasGotAllAuth,
   isPage,
   isTel,
   getShareParams,
   chooseEnviromentFirst,
-  ObjectDefineProperty,
   interceptManage: new InterceptManage(),
   urlAddSearch,
+  debounce, throttle,
+  returnNoEmptyObject,
+  objectToString
 }

@@ -81,3 +81,6 @@
 <view class='pay-button' wx:if="{{showPayButton}}">
   <button class='btn btn-pay' bindtap='startPay'>立即支付</button>
 </view>
+
+<getUnionId bindchange="onShow" />
+<chooseEnviroment bindchange="onShow" />

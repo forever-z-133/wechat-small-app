@@ -1,6 +1,6 @@
 // pages/login/index.js
 var app = getApp();
-import { isTel, alert, interceptManage } from '../../utils/util.js';
+import { isTel, alert, getQueryString, returnNoEmptyObject } from '../../utils/util.js';
 import post from '../../utils/post.js';
 var msgTimer = null;  // 获取验证码后的倒计时
 var timeout = 0;  // 倒计时时长
@@ -8,6 +8,7 @@ var notLogin = false; // 不是登录，是注册
 
 Page({
   data: {
+    campusData: undefined,
     needLogin: false,
     tel: '',
     code: '',
@@ -22,35 +23,38 @@ Page({
     hasShareOpt: false,  // 是否从注册而来
   },
   onLoad: function (options) {
-    this.options = this.options;
+    this.options = options;
   },
   onShow: function () {
-    if (this.nowFirstLoad && !this.systemReady) return;
-    this.nowFirstLoad = true;
-    wx.showLoading({ mask: true });
-    
-    const gulp = ['wxUnionId', 'auth', 'entryData', 'enviroment'];
-    app.systemSetup(gulp, this.options).then(res => {
-      this.systemReady = true;
-      this.options = app.data.shareInfoData || this.options || {};
-      
-      // 选择校区返回，后续已无操作，可直接登录
-      const { organizationId, id, identity } = app.temp.chooseCampusData || {};
-      if (organizationId) {
-        delete app.temp.chooseCampusData;
-        return this.bindLoginId(id, identity);
-      }
+    const { env_now, wx_auth, openId, unionId } = app.data;
 
+    if (!this.count || this.count < 2) { this.count = 1 + (this.count || 0); return; }
+    if (!returnNoEmptyObject(env_now)) return;
+    if (!returnNoEmptyObject(wx_auth)) return;
+    if (!openId || !unionId) return alert('系统错误：未能取得所需 UnionId');
+
+    wx.showLoading({ mask: true });
+    app.getEntryData(this.options).then(entryData => {
+      console.log('扫码结果', entryData);
+      if (!entryData) return;
+      this.options = entryData;
+      wx.setStorageSync('entryData', entryData);
+    }).then(() => {
       this.baseDataIsOK();
     });
   },
+  campusChange({ detail = {} }) {
+    const { organizationId } = detail;
+    const { campusData: { temp: { id, identity } = {} } } = this.data;
+    wx.setStorageSync('organizationId', organizationId);
+    this.setData({ campusData: null });
+    this.bindLoginId(id, identity);
+  },
   baseDataIsOK() {
-    const { openId, unionId } = app.data;
-    if (!openId || !unionId) {
-      wx.hideLoading();
-      return alert('系统错误：未能取得所需 UniondId');
-    }
+    wx.removeStorageSync('userId');
+    wx.removeStorageSync('organizationId');
 
+    // 登出
     const { method } = this.options;
     if (method === 'logout') {
       return setTimeout(() => {
@@ -60,13 +64,30 @@ Page({
       }, 300);
     }
 
+    // 仅推介商品时有此操作
+    // 推介商品中的机构如果与登录人的机构不符，则得走注册
+    const { redirect, institutionId } = this.options || {};
+    const productRecommendId = getQueryString('productRecommendId', redirect);
+    this.productRecommendId = productRecommendId;
+    if (productRecommendId) {
+      const { unionId } = app.data;
+      return post.getStudentByUnionId({ unionId }, (res) => {
+        const [{ studentId, institutionId: iid } = {}] = (res || []).slice(-1);
+        // 没有登录人
+        if (!studentId || !iid) return this.setData({ needLogin: true });
+        // 登录人机构与推介商品中机构不一致
+        if (iid !== institutionId) return this.setData({ needLogin: true });
+        this.allIsOk(studentId, 'student');
+      });
+    }
+
     this.beforeLogin();
   },
 
   // ---------- 判断能否直接登录
   beforeLogin: function () {
-    const params = { unionId: app.data.unionId };
-    post.getLoginIdDirect(params, (res = {}) => {
+    const { unionId } = app.data;
+    post.getLoginIdDirect({ unionId }, (res = {}) => {
       const { studentIds = [], userIds = [] } = res;
       // 没有相应绑定的账户，走登录流程
       if (studentIds.concat(userIds).length < 1) {
@@ -81,6 +102,7 @@ Page({
       if (userIds.length >= 1) {
         id = userIds[0]; identity = 'worker';
       }
+      wx.hideLoading();
       return this.allIsOk(id, identity);
     });
   },
@@ -106,6 +128,8 @@ Page({
   submit: function(e) {
     const { tel, code } = this.data;
     var params = { contact: tel, verifyCode: code };
+    if (this.loading) return;
+    this.loading = true;
     wx.showLoading({ mask: true });
     post.checkMsgCode(params, () => {
       this.chooseSameLogin();
@@ -118,24 +142,55 @@ Page({
     var params = { contact: tel };
     post.chooseSameLogin(params, (res = {}) => {
       wx.hideLoading();
+      this.loading = false;
       const { wxAppStudentLoginDtos: students = [], wxAppUserLoginDtos: users = [] } = res;
       const loginUserData = students.concat(users);
+
+      // #15608 从推介商品来的，需对选择列表进行一些调整
+      if (this.productRecommendId) {
+        const { institutionId: iid } = this.options;
+        const temp = loginUserData.reduce(([inner, outer], item) => {
+          const { institutionId } = item;
+          item.disabled = iid != institutionId;
+          iid == institutionId ? inner.push(item) : outer.push(item);
+          return [inner, outer];
+        }, [[], []]);
+        const [inner, outer] = temp;
+        // 一个人都没有，则直接注册
+        if (inner.length < 1) return this.alertToRegister();
+        // 很多人，去弹窗选人吧
+        if (inner.length > 1) {
+          return this.setData({ users: inner.concat(outer), showModal: true, studentIndex: -1 });
+        }
+        // 有一个人，直接登录
+        login.call(this, inner[0]);
+        return false;
+      }
 
       if (loginUserData.length < 1) {
         // 一个人都没有，则前往注册
         return this.alertToRegister();
       } else if (loginUserData.length === 1) {
         // 有一个人，直接登录
-        const data = loginUserData[0];
-        const id = data.studentId || data.userId;
-        const identity = data.studentId ? 'student' : 'worker';
-        if (!id) return alert('出问题啦！');
-        app.checkCampusOpen(id, identity, () => {
-          this.bindLoginId(id, identity);
-        });
+        login.call(this, loginUserData[0]);
       } else {
         // 很多人，去弹窗选人吧
         this.setData({ users: loginUserData, showModal: true, studentIndex: -1 });
+      }
+
+      function login(data) {
+        const id = data.studentId || data.userId;
+        const identity = data.studentId ? 'student' : 'worker';
+        if (!id) return alert('出问题啦！');
+
+        const { organizationId } = this.options || {};
+        app.checkCampusOpen(id, identity, organizationId).then((oid) => {
+          wx.setStorageSync('organizationId', oid);
+          this.bindLoginId(id, identity);
+        }).catch(campusData => {
+          campusData.temp = { id, identity };
+          this.setData({ campusData, needLogin: false });
+        });
       }
     }, this.stopTimeCount);
   },
@@ -150,25 +205,33 @@ Page({
 
     this.closeModal();
 
-    app.checkCampusOpen(id, identity, () => {
+    const { organizationId } = this.options || {};
+    app.checkCampusOpen(id, identity, organizationId).then((oid) => {
+      wx.setStorageSync('organizationId', oid);
       this.bindLoginId(id, identity);
+    }).catch(campusData => {
+      campusData.temp = { id, identity };
+      this.setData({ campusData, needLogin: false });
     });
   },
 
   // ---------- 进行学生ID与 unionId 的绑定
   bindLoginId: function (id, identity) {
-    const { unionId, shareInfoData } = app.data;
-    let { institutionId = 1 } = shareInfoData || {};
+    if (!id || !identity) return alert('请检查 bindLoginId 入参');
+    const { unionId } = app.data;
+    let { institutionId = 1 } = this.options || {};
     var params = { unionId, institutionId };
     wx.showLoading({ mask: true });
     if (identity === 'student') {
       params.studentId = id;
       post.bindStudentId(params, res => {
+        wx.hideLoading();
         this.allIsOk(id, identity);
       }, this.stopTimeCount);
     } else {
       params.userId = id;
       post.bindWorkerId(params, res => {
+        wx.hideLoading();
         this.allIsOk(id, identity);
       }, this.stopTimeCount);
     }
@@ -176,26 +239,22 @@ Page({
 
   // ---------- 全部登录和绑定已完成
   allIsOk: function (id, identity) {
-    wx.hideLoading();
-    wx.showToast({ title: '登录成功' });
-
-    app.data.user = { id, identity };
-    wx.setStorageSync('user', app.data.user);
-
-    const { userId } = app.data.shareInfoData || {};
+    const user = { id, identity };
+    wx.setStorageSync('user', user);
+    app.data.user = user; // 可能 setStorageSync 有时不够及时
 
     // 有推荐人时进行记录
+    const { userId } = this.options || {};
+    wx.setStorageSync('userId', userId);
     if (identity === 'student' && id && userId) {
       var params = { studentId: id, userId: userId };
       post.addScanCodeLoginLog(params);
     }
 
     // 所有结束，跳往空白页(为了左上角的箭头)，再跳往目标页
-    let { redirect = '' } = app.data.shareInfoData || {};
+    let { redirect = '' } = this.options || {};
     redirect = redirect ? '&redirect=' + redirect : '';
-    wx.redirectTo({
-      url: '/pages/empty/index' + '?jump=true' + redirect,
-    });
+    wx.redirectTo({ url: '/pages/empty/index' + '?jump=true' + redirect });
   },
 
   //////////////////////////////////////////////////////////////////////// 以下与业务逻辑无关
@@ -205,7 +264,8 @@ Page({
     this.setData({ users: [], showModal: false, studentIndex: -1 });
   },
   chooseStudent: function (e) {
-    var index = e.currentTarget.dataset.index;
+    const { index, disabled } = e.currentTarget.dataset;
+    if (disabled) return this.productRecommendId ? alert('选择的账户无法购买跨机构的推介商品。') : null;
     this.setData({ studentIndex: index });
   },
 
@@ -246,13 +306,14 @@ Page({
   stopTimeCount: function () {
     clearInterval(msgTimer); msgTimer = null;
     this.setData({ yes_msg: true, msgTips: '重新获取' });
+    this.loading = false;
     this.data.code = '';
     this.justifyForm();
   },
 
   // ----------- 莫得人选，跳往去注册
   alertToRegister() {
-    if (!app.data.shareInfoData) {
+    if (!wx.getStorageSync('entryData')) {
       return alert('该账号不存在');
     } else {
       wx.showModal({
